@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    font-family: "Space Grotesk", "Sora", "SF Pro Display", system-ui, -apple-system, sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  @keyframes brutal-static {
+    0% {
+      background-position: 0 0, 3px 2px, 5px 1px;
+    }
+    25% {
+      background-position: -2px 1px, 4px 0, 1px 3px;
+    }
+    50% {
+      background-position: 2px -1px, 0 3px, 3px 0;
+    }
+    75% {
+      background-position: -3px 0, 2px -1px, 0 2px;
+    }
+    100% {
+      background-position: 0 0, 3px 2px, 5px 1px;
+    }
+  }
+}
