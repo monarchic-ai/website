@@ -1,4 +1,5 @@
 ---
+import Shader14 from "../components/Shader14";
 import "../styles/global.css";
 ---
 
@@ -12,10 +13,11 @@ import "../styles/global.css";
   </head>
   <body class="min-h-screen bg-black text-white">
     <main class="relative min-h-screen overflow-hidden">
-      <div class="pointer-events-none absolute inset-0">
-        <div class="absolute inset-0 opacity-20 [background-image:linear-gradient(transparent_95%,_rgba(255,255,255,0.22)_95%),linear-gradient(90deg,transparent_95%,_rgba(255,255,255,0.22)_95%)] [background-size:120px_120px]"></div>
-        <div class="absolute inset-[-10%] opacity-15 mix-blend-screen [background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_3px),repeating-linear-gradient(90deg,rgba(255,255,255,0.04)_0_1px,transparent_1px_4px)]"></div>
-      </div>
+      <Shader14
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        client:only="react"
+      />
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.08),_transparent_30%),linear-gradient(to_bottom,_rgba(0,0,0,0.3),_rgba(0,0,0,0.68))]"></div>
 
       <section class="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-start justify-center px-6 py-16">
         <div class="mb-10 inline-flex items-center gap-3 border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em]">
@@ -47,10 +49,6 @@ import "../styles/global.css";
           <span>Stand by</span>
         </div>
       </section>
-
-      <div class="pointer-events-none absolute inset-0 z-30">
-        <div class="absolute inset-[-5%] opacity-35 mix-blend-soft-light [background-image:radial-gradient(rgba(255,255,255,0.22)_1.4px,transparent_1.5px),radial-gradient(rgba(255,255,255,0.16)_1.2px,transparent_1.3px),radial-gradient(rgba(255,255,255,0.1)_1px,transparent_1.1px)] [background-size:7px_7px,9px_9px,12px_12px] [background-position:0_0,3px_2px,5px_1px] animate-[brutal-static_0.55s_steps(2,end)_infinite]"></div>
-      </div>
     </main>
   </body>
 </html>
