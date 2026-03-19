@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: only dark;
   }
 
   body {
