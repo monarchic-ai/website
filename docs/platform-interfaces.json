@@ -1,0 +1,23 @@
+{
+  "repository": "website",
+  "summary": "Astro-based Monarchic website surface with React/Svelte/Tailwind/Three.js assets and static pages.",
+  "public_interfaces": [
+    {
+      "id": "monarchic-website",
+      "name": "Monarchic Website",
+      "kind": "webapp",
+      "surfaces": [
+        "src/pages/index.astro",
+        "src/components/Shader14.tsx",
+        "src/styles/global.css",
+        "public",
+        "README.md"
+      ]
+    }
+  ],
+  "nix_discovery": {
+    "validation_commands": [
+      "pnpm build"
+    ]
+  }
+}
