@@ -1,5 +1,5 @@
 ---
-import Shader14 from "../components/Shader14";
+import Shader14 from "../components/Shader14.astro";
 import "../styles/global.css";
 ---
 
@@ -17,7 +17,6 @@ import "../styles/global.css";
     <main class="relative min-h-screen overflow-hidden">
       <Shader14
         className="pointer-events-none absolute inset-0 h-full w-full"
-        client:only="react"
       />
       <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.03),_transparent_20%),linear-gradient(to_bottom,_rgba(0,0,0,0.62),_rgba(0,0,0,0.88))]"></div>
 
