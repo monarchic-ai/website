@@ -15,6 +15,16 @@
       ]
     }
   ],
+  "repository_dependencies": [
+    {
+      "repository": "meta",
+      "reason": "The autonomy roadmap and platform blueprint in meta define this repository as the buyer-facing narrative surface and route its commercial milestone sequencing."
+    },
+    {
+      "repository": "monarchic-webapp",
+      "reason": "The platform blueprint pairs website with monarchic-webapp as the commercial client surfaces, with website carrying buyer-facing narrative while monarchic-webapp owns the commercial control plane."
+    }
+  ],
   "nix_discovery": {
     "validation_commands": [
       "pnpm build"

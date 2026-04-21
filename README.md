@@ -1,43 +1,31 @@
-# Astro Starter Kit: Minimal
+# Monarchic Website
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+Buyer-facing narrative and marketing surface for Monarchic AI.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This repository owns the public website experience. It complements the
+commercial control-plane work in `monarchic-webapp` and stays aligned with the
+organization-level routing and milestone sequencing in `meta`.
 
-## 🚀 Project Structure
+## Ownership
 
-Inside of your Astro project, you'll see the following folders and files:
+- `website` owns the buyer-facing narrative surface.
+- `monarchic-webapp` owns the buyer-facing cloud and commercial control-plane
+  surfaces once runtime contracts are stable.
+- `meta` owns the roadmap and platform blueprint that define how these client
+  surfaces are sequenced and where new work should land.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Commands
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Run commands from the repository root:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- `pnpm install`
+- `pnpm dev`
+- `pnpm build`
+- `pnpm preview`
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Interface Discovery
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The hand-owned repo interface manifest lives at `docs/platform-interfaces.json`.
+RepoIntel-generated wiki pages under `docs/wiki/` summarize the current indexed
+shape of the site, but the interface manifest is the stable source for
+cross-repo planning metadata.
