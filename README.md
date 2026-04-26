@@ -1,31 +1,48 @@
-# Monarchic Website
+# website
 
-Buyer-facing narrative and marketing surface for Monarchic AI.
+Public website for Monarchic AI.
 
-This repository owns the public website experience. It complements the
-commercial control-plane work in `monarchic-webapp` and stays aligned with the
-organization-level routing and milestone sequencing in `meta`.
+## Current Scope
 
-## Ownership
+The site is currently a small Astro landing page for the Monarchic brand. The
+checked-in implementation renders a "coming soon" page with:
 
-- `website` owns the buyer-facing narrative surface.
-- `monarchic-webapp` owns the buyer-facing cloud and commercial control-plane
-  surfaces once runtime contracts are stable.
-- `meta` owns the roadmap and platform blueprint that define how these client
-  surfaces are sequenced and where new work should land.
+- Astro as the site shell
+- a React-based shader background component in `src/components/Shader14.tsx`
+- Tailwind CSS v4 for styling
+- Svelte integration available in the project, even though the current page is
+  driven by Astro plus React
 
 ## Commands
-
-Run commands from the repository root:
 
 - `pnpm install`
 - `pnpm dev`
 - `pnpm build`
 - `pnpm preview`
+- `pnpm astro -- --help`
 
-## Interface Discovery
+The project currently expects Node `>=22.12.0`.
 
-The hand-owned repo interface manifest lives at `docs/platform-interfaces.json`.
-RepoIntel-generated wiki pages under `docs/wiki/` summarize the current indexed
-shape of the site, but the interface manifest is the stable source for
-cross-repo planning metadata.
+## Layout
+
+```text
+/
+├── public/
+├── src/
+│   ├── components/
+│   │   └── Shader14.tsx
+│   ├── pages/
+│   │   └── index.astro
+│   └── styles/
+│       └── global.css
+├── astro.config.mjs
+├── svelte.config.js
+└── package.json
+```
+
+## Notes
+
+- `src/pages/index.astro` is the current entry page.
+- `astro.config.mjs` enables both React and Svelte integrations.
+- `dist/` contains generated build output and should be treated as an artifact,
+  not as source.
