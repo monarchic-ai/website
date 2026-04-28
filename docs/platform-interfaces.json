@@ -18,7 +18,7 @@
   "repository_dependencies": [
     {
       "repository": "meta",
-      "reason": "The autonomy roadmap and platform blueprint in meta define this repository as the buyer-facing narrative surface and route its commercial milestone sequencing."
+      "reason": "The compute roadmap and platform blueprint in meta define this repository as the buyer-facing narrative surface and route its commercial milestone sequencing."
     },
     {
       "repository": "monarchic-webapp",
