@@ -10,7 +10,6 @@ const benchmarkRows = [
     tokens: "797 avg",
     memscore: "97.8% / 63ms / 797tok",
     source: "Local reproduced run",
-    sourceHref: "https://github.com/monarchic-ai/ExplicitMem-MCP",
     note: "500-question LongMemEval-S run under longmemeval-s-answer-v1.",
   },
   {
@@ -154,12 +153,16 @@ const explicitMemMetrics = [
                       <p class="mt-3 max-w-md text-xs leading-5 text-white/58">{row.note}</p>
                     </td>
                     <td class="p-4">
-                      <a
-                        href={row.sourceHref}
-                        class="underline decoration-white/40 underline-offset-4 hover:text-white/70"
-                      >
-                        {row.source}
-                      </a>
+                      {row.sourceHref ? (
+                        <a
+                          href={row.sourceHref}
+                          class="underline decoration-white/40 underline-offset-4 hover:text-white/70"
+                        >
+                          {row.source}
+                        </a>
+                      ) : (
+                        <span>{row.source}</span>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -206,9 +209,7 @@ const explicitMemMetrics = [
           <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74">
             <li>
               ExplicitMem artifact:
-              <a class="underline decoration-white/40 underline-offset-4" href="https://github.com/monarchic-ai/ExplicitMem-MCP">
-                ExplicitMem-MCP repository
-              </a>
+              internal reproduced benchmark report.
             </li>
             <li>
               Mem0 research page:
