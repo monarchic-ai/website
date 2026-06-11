@@ -1,0 +1,244 @@
+---
+import Shader14 from "../../components/Shader14.astro";
+import "../../styles/global.css";
+
+const benchmarkRows = [
+  {
+    system: "ExplicitMem",
+    quality: "97.8%",
+    latency: "63ms avg",
+    tokens: "797 avg",
+    memscore: "97.8% / 63ms / 797tok",
+    source: "Local reproduced run",
+    sourceHref: "https://github.com/monarchic-ai/ExplicitMem-MCP",
+    note: "500-question LongMemEval-S run under longmemeval-s-answer-v1.",
+  },
+  {
+    system: "Mem0",
+    quality: "94.4%",
+    latency: "1.09s p50",
+    tokens: "6,787 avg",
+    memscore: "94.4% / 1090ms / 6787tok",
+    source: "Published Mem0 research",
+    sourceHref: "https://mem0.ai/research",
+    note: "Website-published LongMemEval result; not yet imported as a same-protocol provider artifact.",
+  },
+  {
+    system: "Supermemory",
+    quality: "85.4%",
+    latency: "<300ms",
+    tokens: "Not published",
+    memscore: "85.4% / <300ms / n/a",
+    source: "Published Supermemory claim",
+    sourceHref: "https://supermemory.ai/blog/supermemory-vs-zep/",
+    note: "Website-published LongMemEval claim; context-token count was not published on the cited page.",
+  },
+];
+
+const explicitMemMetrics = [
+  ["Questions", "500"],
+  ["Accuracy", "97.8%"],
+  ["Faithfulness", "99.8%"],
+  ["Retrieval recall@K", "100%"],
+  ["Context tokens", "797 avg"],
+  ["Latency", "63ms avg"],
+  ["Retrieval receipts", "100%"],
+  ["Protocol", "longmemeval-s-answer-v1"],
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="ExplicitMem benchmark research and MemScore-style comparison against published Mem0 and Supermemory results."
+    />
+    <title>ExplicitMem Research | Monarchic AI</title>
+  </head>
+  <body class="min-h-screen bg-black text-white">
+    <main class="relative min-h-screen overflow-hidden">
+      <Shader14
+        className="pointer-events-none fixed inset-0 h-full w-full opacity-70"
+      />
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.94))]"></div>
+
+      <section class="relative z-10 mx-auto max-w-7xl px-6 py-8 sm:py-12">
+        <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white pb-6">
+          <a href="/" class="inline-flex items-center gap-3">
+            <img
+              src="/favicon.svg"
+              alt="Monarchic AI logo"
+              class="h-9 w-9 bg-white object-cover p-1"
+              width="36"
+              height="36"
+            />
+            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">
+              Monarchic AI
+            </span>
+          </a>
+          <div class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em]">
+            Research
+          </div>
+        </header>
+
+        <div class="grid gap-10 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+          <div>
+            <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">
+              ExplicitMem MCP
+            </p>
+            <h1 class="max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
+              Auditable Memory<br />Benchmarks
+            </h1>
+            <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
+              ExplicitMem is a private memory MCP runtime with typed memory objects,
+              graph links, bounded context synthesis, and receipt-backed retrieval.
+              This page reports the current reproduced LongMemEval-S run beside
+              published Mem0 and Supermemory website claims in a MemScore-style format.
+            </p>
+          </div>
+
+          <div class="grid gap-3 border-2 border-white bg-black/70 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.34em] text-white/64">
+              Current ExplicitMem Run
+            </p>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
+              {explicitMemMetrics.map(([label, value]) => (
+                <div class="border border-white/30 p-4">
+                  <p class="text-[0.66rem] uppercase tracking-[0.26em] text-white/52">{label}</p>
+                  <p class="mt-2 text-lg font-bold">{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <section class="border-2 border-white bg-black/76">
+          <div class="border-b-2 border-white p-5 sm:p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.34em] text-white/64">
+              MemScore-Style Comparison
+            </p>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase sm:text-3xl">
+              Quality / Latency / Context Tokens
+            </h2>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[920px] border-collapse text-left text-sm">
+              <thead>
+                <tr class="border-b-2 border-white text-xs uppercase tracking-[0.2em] text-white/60">
+                  <th class="p-4">System</th>
+                  <th class="p-4">LongMemEval</th>
+                  <th class="p-4">Latency</th>
+                  <th class="p-4">Context Tokens</th>
+                  <th class="p-4">Summary</th>
+                  <th class="p-4">Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {benchmarkRows.map((row) => (
+                  <tr class="border-b border-white/24 align-top last:border-b-0">
+                    <td class="p-4 text-lg font-extrabold uppercase">{row.system}</td>
+                    <td class="p-4 text-2xl font-extrabold">{row.quality}</td>
+                    <td class="p-4 font-semibold">{row.latency}</td>
+                    <td class="p-4 font-semibold">{row.tokens}</td>
+                    <td class="p-4">
+                      <div class="inline-block border border-white px-3 py-2 font-mono text-xs">
+                        {row.memscore}
+                      </div>
+                      <p class="mt-3 max-w-md text-xs leading-5 text-white/58">{row.note}</p>
+                    </td>
+                    <td class="p-4">
+                      <a
+                        href={row.sourceHref}
+                        class="underline decoration-white/40 underline-offset-4 hover:text-white/70"
+                      >
+                        {row.source}
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="grid gap-5 py-8 lg:grid-cols-3">
+          <div class="border-2 border-white bg-black/70 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+              What We Reproduce
+            </p>
+            <p class="mt-4 text-sm leading-7 text-white/76">
+              ExplicitMem's row is generated from a local 500-question LongMemEval-S
+              benchmark artifact with reproduced accuracy, faithfulness, retrieval
+              recall, latency, token count, and receipt coverage.
+            </p>
+          </div>
+          <div class="border-2 border-white bg-black/70 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+              What We Cite
+            </p>
+            <p class="mt-4 text-sm leading-7 text-white/76">
+              Mem0 and Supermemory values are public website claims. They are shown
+              for market context and should not be read as same-harness reproduced
+              provider results.
+            </p>
+          </div>
+          <div class="border-2 border-white bg-black/70 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+              Next Gate
+            </p>
+            <p class="mt-4 text-sm leading-7 text-white/76">
+              Same-protocol comparison requires provider artifacts with matching
+              dataset, question order, judge, latency boundary, generated answers,
+              context tokens, and retrieved session ids.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-10 border-2 border-white bg-black/70 p-5 sm:p-6">
+          <h2 class="text-xl font-extrabold uppercase">Sources and Scope</h2>
+          <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74">
+            <li>
+              ExplicitMem artifact:
+              <a class="underline decoration-white/40 underline-offset-4" href="https://github.com/monarchic-ai/ExplicitMem-MCP">
+                ExplicitMem-MCP repository
+              </a>
+            </li>
+            <li>
+              Mem0 research page:
+              <a class="underline decoration-white/40 underline-offset-4" href="https://mem0.ai/research">
+                mem0.ai/research
+              </a>
+              and benchmark deep dive:
+              <a class="underline decoration-white/40 underline-offset-4" href="https://mem0.ai/blog/ai-memory-benchmarks-in-2026">
+                AI Memory Benchmarks 2026
+              </a>
+            </li>
+            <li>
+              Supermemory published claim:
+              <a class="underline decoration-white/40 underline-offset-4" href="https://supermemory.ai/blog/supermemory-vs-zep/">
+                Supermemory vs Zep
+              </a>
+              and MemScore format:
+              <a class="underline decoration-white/40 underline-offset-4" href="https://supermemory.ai/docs/memorybench/memscore">
+                MemoryBench MemScore
+              </a>
+            </li>
+          </ul>
+          <p class="mt-5 max-w-5xl text-xs leading-6 text-white/52">
+            ExplicitMem results are benchmark-scoped and should not be presented as
+            a general cross-dataset synthesis claim. Published third-party values are
+            included only as cited market context until same-protocol provider artifacts
+            are imported and validated.
+          </p>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
