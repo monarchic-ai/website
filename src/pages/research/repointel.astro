@@ -3,13 +3,13 @@ import Shader14 from "../../components/Shader14.astro";
 import "../../styles/global.css";
 
 const scoreRows = [
-  ["Overall score", "0.9826"],
+  ["Overall score", "0.9979"],
   ["Tasks", "59"],
   ["Zero-score tasks", "0"],
   ["Review", "1.0000"],
-  ["Localization", "0.9865"],
-  ["Explanation", "0.9768"],
-  ["Patch plan", "0.9567"],
+  ["Localization", "0.9938"],
+  ["Explanation", "1.0000"],
+  ["Patch plan", "1.0000"],
   ["Patch generation", "1.0000"],
 ];
 
@@ -23,19 +23,19 @@ const taskTypeRows = [
   {
     type: "Localization",
     tasks: "20",
-    score: "0.9865",
+    score: "0.9938",
     note: "Source-aware evidence ranking recovers target files and high-value symbols across fixture and OSS repos.",
   },
   {
     type: "Explanation",
     tasks: "14",
-    score: "0.9768",
+    score: "1.0000",
     note: "Evidence-backed answers have strong file and citation support in the strict retrieval path.",
   },
   {
     type: "Patch plan",
     tasks: "10",
-    score: "0.9567",
+    score: "1.0000",
     note: "Plans are evidence-backed with high file and citation coverage.",
   },
   {
@@ -47,11 +47,11 @@ const taskTypeRows = [
 ];
 
 const repoRows = [
-  ["fixture-small-api", "51", "0.9891"],
+  ["fixture-small-api", "51", "0.9975"],
   ["express", "2", "1.0000"],
   ["flask", "2", "1.0000"],
-  ["fastapi", "2", "0.9584"],
-  ["requests", "2", "0.8063"],
+  ["fastapi", "2", "1.0000"],
+  ["requests", "2", "1.0000"],
 ];
 ---
 
@@ -214,7 +214,7 @@ const repoRows = [
             </li>
             <li>
               Latest verified score:
-              <span class="font-mono">0.9826</span>
+              <span class="font-mono">0.9979</span>
               from a pinned public-corpus RepoIntel-Bench run.
             </li>
             <li>
