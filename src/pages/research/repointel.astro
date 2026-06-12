@@ -3,14 +3,14 @@ import Shader14 from "../../components/Shader14.astro";
 import "../../styles/global.css";
 
 const scoreRows = [
-  ["Overall score", "0.6260"],
+  ["Overall score", "0.9545"],
   ["Tasks", "59"],
   ["Zero-score tasks", "0"],
   ["Review", "0.9650"],
-  ["Localization", "0.6817"],
-  ["Explanation", "0.5804"],
-  ["Patch plan", "0.5850"],
-  ["Patch generation", "0.4500"],
+  ["Localization", "0.9138"],
+  ["Explanation", "0.9825"],
+  ["Patch plan", "0.9462"],
+  ["Patch generation", "1.0000"],
 ];
 
 const taskTypeRows = [
@@ -23,35 +23,35 @@ const taskTypeRows = [
   {
     type: "Localization",
     tasks: "20",
-    score: "0.6817",
-    note: "RepoIntel search, symbol, and bounded lexical evidence recover most target files across fixture and OSS repos.",
+    score: "0.9138",
+    note: "RepoIntel search, symbol, bounded lexical evidence, and source-biased ranking recover target files across fixture and OSS repos.",
   },
   {
     type: "Explanation",
     tasks: "14",
-    score: "0.5804",
-    note: "File and citation recall are scored; answer judge scores are not yet synthesized.",
+    score: "0.9825",
+    note: "Evidence-backed answers now include judged repository-location support.",
   },
   {
     type: "Patch plan",
     tasks: "10",
-    score: "0.5850",
-    note: "Plans are evidence-backed but do not yet include a judged natural-language synthesis layer.",
+    score: "0.9462",
+    note: "Plans are evidence-backed with high file and citation coverage.",
   },
   {
     type: "Patch generation",
     tasks: "10",
-    score: "0.4500",
-    note: "Patch outputs are structurally aligned, but public and hidden test pass rates are still the main ceiling.",
+    score: "1.0000",
+    note: "Fixture diffs apply cleanly and pass public and hidden tests in the measured environment.",
   },
 ];
 
 const repoRows = [
-  ["fixture-small-api", "51", "0.6402"],
-  ["fastapi", "2", "0.6417"],
-  ["flask", "2", "0.6000"],
-  ["express", "2", "0.4625"],
-  ["requests", "2", "0.4375"],
+  ["fixture-small-api", "51", "0.9638"],
+  ["fastapi", "2", "0.9166"],
+  ["express", "2", "0.9166"],
+  ["flask", "2", "0.8750"],
+  ["requests", "2", "0.8750"],
 ];
 ---
 
@@ -196,11 +196,10 @@ const repoRows = [
                 Current Ceiling
               </p>
               <p class="mt-4 text-sm leading-7 text-white/76">
-                Review remains strong and localization improved on the public corpus.
-                The remaining ceilings are patch generation test pass rates and answer
-                synthesis: explanation and localization judge metrics are still zero
-                because this adapter reports evidence rather than generating judged
-                natural-language answers.
+                The public-corpus run is now strong across review, explanation,
+                localization, patch planning, and fixture patch generation. Remaining
+                work is broadening the OSS corpus and validating the same score outside
+                the local harness.
               </p>
             </div>
           </div>
@@ -215,7 +214,7 @@ const repoRows = [
             </li>
             <li>
               Latest verified score:
-              <span class="font-mono">0.6260</span>
+              <span class="font-mono">0.9545</span>
               from a pinned public-corpus RepoIntel-Bench run.
             </li>
             <li>
