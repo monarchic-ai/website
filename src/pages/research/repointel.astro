@@ -3,14 +3,14 @@ import Shader14 from "../../components/Shader14.astro";
 import "../../styles/global.css";
 
 const scoreRows = [
-  ["Overall score", "0.9545"],
+  ["Overall score", "0.7606"],
   ["Tasks", "59"],
   ["Zero-score tasks", "0"],
   ["Review", "0.9650"],
-  ["Localization", "0.9138"],
-  ["Explanation", "0.9825"],
-  ["Patch plan", "0.9462"],
-  ["Patch generation", "1.0000"],
+  ["Localization", "0.8876"],
+  ["Explanation", "0.9361"],
+  ["Patch plan", "0.9193"],
+  ["Patch generation", "0.0000"],
 ];
 
 const taskTypeRows = [
@@ -23,31 +23,31 @@ const taskTypeRows = [
   {
     type: "Localization",
     tasks: "20",
-    score: "0.9138",
-    note: "RepoIntel search, symbol, bounded lexical evidence, and source-biased ranking recover target files across fixture and OSS repos.",
+    score: "0.8876",
+    note: "Source-biased ranking recovers target files across fixture and OSS repos.",
   },
   {
     type: "Explanation",
     tasks: "14",
-    score: "0.9825",
-    note: "Evidence-backed answers now include judged repository-location support.",
+    score: "0.9361",
+    note: "Evidence-backed answers have strong file and citation support in the strict retrieval path.",
   },
   {
     type: "Patch plan",
     tasks: "10",
-    score: "0.9462",
+    score: "0.9193",
     note: "Plans are evidence-backed with high file and citation coverage.",
   },
   {
     type: "Patch generation",
     tasks: "10",
-    score: "1.0000",
-    note: "Fixture diffs apply cleanly and pass public and hidden tests in the measured environment.",
+    score: "0.0000",
+    note: "The strict adapter does not use fixture patch templates or a general patcher yet.",
   },
 ];
 
 const repoRows = [
-  ["fixture-small-api", "51", "0.9638"],
+  ["fixture-small-api", "51", "0.7394"],
   ["fastapi", "2", "0.9166"],
   ["express", "2", "0.9166"],
   ["flask", "2", "0.8750"],
@@ -196,10 +196,10 @@ const repoRows = [
                 Current Ceiling
               </p>
               <p class="mt-4 text-sm leading-7 text-white/76">
-                The public-corpus run is now strong across review, explanation,
-                localization, patch planning, and fixture patch generation. Remaining
-                work is broadening the OSS corpus and validating the same score outside
-                the local harness.
+                The strict public-corpus run is strong across review, explanation,
+                localization, and patch planning. Patch generation is intentionally
+                zero until RepoIntel has a general patcher instead of fixture-specific
+                template diffs.
               </p>
             </div>
           </div>
@@ -214,13 +214,14 @@ const repoRows = [
             </li>
             <li>
               Latest verified score:
-              <span class="font-mono">0.9545</span>
+              <span class="font-mono">0.7606</span>
               from a pinned public-corpus RepoIntel-Bench run.
             </li>
             <li>
               Runtime note:
               benchmark corpus and adapter state are stored on the large data disk;
-              private local calibration repos are excluded from this public score.
+              private local calibration repos, prompt-path hints, and fixture patch
+              templates are excluded from this public score.
             </li>
           </ul>
           <p class="mt-5 max-w-5xl text-xs leading-6 text-white/52">
