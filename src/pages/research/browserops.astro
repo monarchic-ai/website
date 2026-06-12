@@ -1,0 +1,266 @@
+---
+import Shader14 from "../../components/Shader14.astro";
+import "../../styles/global.css";
+
+const reliabilityRows = [
+  {
+    check: "Deterministic observation",
+    status: "Passed",
+    evidence: "Fixture observation receipt with title, URL, text, links, DOM hash, screenshot hash, and evidence fingerprint.",
+  },
+  {
+    check: "Deterministic verification",
+    status: "Passed",
+    evidence: "Scenario verification receipt with explicit steps, assertions, console messages, network failures, and screenshot hash.",
+  },
+  {
+    check: "MCP stdio call",
+    status: "Passed",
+    evidence: "JSON-RPC initialize, tools/list, and tools/call path exercises browser_verify_url through the packaged server.",
+  },
+  {
+    check: "Receipt validation",
+    status: "Passed",
+    evidence: "browserops-validate-receipt validates both observation and verification receipt fingerprints without rerunning a browser.",
+  },
+  {
+    check: "Real Chromium observation",
+    status: "Passed",
+    evidence: "Optional Playwright smoke passes when BROWSEROPS_CHROMIUM_EXECUTABLE_PATH points at a working Chromium binary.",
+  },
+  {
+    check: "Real Chromium verification",
+    status: "Passed",
+    evidence: "Optional Playwright verification smoke fills a field, clicks a button, waits for text, and validates assertions.",
+  },
+  {
+    check: "Unsafe target refusal",
+    status: "Passed",
+    evidence: "Localhost, RFC1918, link-local metadata, .local hostnames, and browser-internal schemes are blocked by default.",
+  },
+];
+
+const surfaceRows = [
+  ["MCP tools", "browser_observe_url, browser_verify_url"],
+  ["CLI commands", "browserops-observe, browserops-verify, browserops-validate-receipt, browserops-doctor"],
+  ["Scenario input", "Reusable JSON steps and assertions"],
+  ["Evidence artifacts", "JSON receipts and screenshots"],
+  ["Browser backend", "Fixture mode for deterministic tests; Playwright mode for real Chromium checks"],
+  ["Safety default", "Private/local network targets blocked unless explicitly enabled for trusted local development"],
+];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta
+      name="description"
+      content="BrowserOps reliability notes for browser evidence, UI verification, MCP calls, scenario receipts, screenshots, console errors, and network failures."
+    />
+    <title>BrowserOps Research | Monarchic AI</title>
+  </head>
+  <body class="min-h-screen bg-black text-white">
+    <main class="relative min-h-screen overflow-hidden">
+      <Shader14
+        className="pointer-events-none fixed inset-0 h-full w-full opacity-70"
+      />
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.94))]"></div>
+
+      <section class="relative z-10 mx-auto max-w-7xl px-6 py-8 sm:py-12">
+        <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white pb-6">
+          <a href="/" class="inline-flex items-center gap-3">
+            <img
+              src="/favicon.svg"
+              alt="Monarchic AI logo"
+              class="h-9 w-9 bg-white object-cover p-1"
+              width="36"
+              height="36"
+            />
+            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">
+              Monarchic AI
+            </span>
+          </a>
+          <nav class="flex flex-wrap items-center gap-2">
+            <a href="/research" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Research</a>
+            <a href="/products/mcp-browserops" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">BrowserOps</a>
+          </nav>
+        </header>
+
+        <div class="grid gap-10 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+          <div>
+            <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">
+              BrowserOps MCP
+            </p>
+            <h1 class="max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
+              Browser QA<br />With Receipts
+            </h1>
+            <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
+              BrowserOps is a browser evidence and UI verification MCP for agents.
+              This page is a reliability note, not a broad browser-automation
+              benchmark. It tracks whether BrowserOps can observe pages, run
+              explicit verification scenarios, collect browser diagnostics, and
+              emit receipts reviewers can audit.
+            </p>
+          </div>
+
+          <div class="grid gap-3 border-2 border-white bg-black/70 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.34em] text-white/64">
+              Current Reliability Gate
+            </p>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="border border-white/30 p-4">
+                <p class="text-[0.66rem] uppercase tracking-[0.26em] text-white/52">Checks Passed</p>
+                <p class="mt-2 text-3xl font-extrabold">7/7</p>
+              </div>
+              <div class="border border-white/30 p-4">
+                <p class="text-[0.66rem] uppercase tracking-[0.26em] text-white/52">Tool Surface</p>
+                <p class="mt-2 text-3xl font-extrabold">2 MCP</p>
+              </div>
+              <div class="border border-white/30 p-4">
+                <p class="text-[0.66rem] uppercase tracking-[0.26em] text-white/52">Receipt Types</p>
+                <p class="mt-2 text-3xl font-extrabold">2</p>
+              </div>
+              <div class="border border-white/30 p-4">
+                <p class="text-[0.66rem] uppercase tracking-[0.26em] text-white/52">Unsafe Targets</p>
+                <p class="mt-2 text-3xl font-extrabold">Blocked</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="border-2 border-white bg-black/76">
+          <div class="border-b-2 border-white p-5 sm:p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.34em] text-white/64">
+              Reliability Notes
+            </p>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase sm:text-3xl">
+              Verification Checks
+            </h2>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full min-w-[880px] border-collapse text-left text-sm">
+              <thead>
+                <tr class="border-b-2 border-white text-xs uppercase tracking-[0.2em] text-white/60">
+                  <th class="p-4">Check</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4">Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reliabilityRows.map((row) => (
+                  <tr class="border-b border-white/24 align-top last:border-b-0">
+                    <td class="p-4 text-lg font-extrabold uppercase">{row.check}</td>
+                    <td class="p-4 text-2xl font-extrabold">{row.status}</td>
+                    <td class="p-4 max-w-3xl text-xs leading-5 text-white/62">{row.evidence}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="grid gap-5 py-8 lg:grid-cols-[0.95fr_1.05fr]">
+          <div class="border-2 border-white bg-black/70 p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+              Product Surface
+            </p>
+            <div class="mt-5 grid gap-3">
+              {surfaceRows.map(([label, value]) => (
+                <div class="border border-white/30 p-4">
+                  <p class="text-[0.66rem] uppercase tracking-[0.26em] text-white/52">{label}</p>
+                  <p class="mt-2 text-sm font-semibold leading-6">{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div class="grid gap-5">
+            <div class="border-2 border-white bg-black/70 p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                What This Measures
+              </p>
+              <p class="mt-4 text-sm leading-7 text-white/76">
+                These checks measure BrowserOps as an agent-facing browser QA
+                component: can an agent ask for a bounded page observation or
+                verification, get structured evidence back, and hand that evidence
+                to a reviewer without rerunning the browser.
+              </p>
+            </div>
+            <div class="border-2 border-white bg-black/70 p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                What This Does Not Claim
+              </p>
+              <p class="mt-4 text-sm leading-7 text-white/76">
+                This is not a claim that BrowserOps is a generic hosted browser farm,
+                stealth scraper, CAPTCHA solver, or universal browser benchmark
+                winner. The current claim is narrower: reliable browser evidence
+                and UI verification for governed agent workflows.
+              </p>
+            </div>
+            <div class="border-2 border-white bg-black/70 p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                Current Launch Gate
+              </p>
+              <p class="mt-4 text-sm leading-7 text-white/76">
+                BrowserOps is ready to be evaluated as part of the Developer Bundle
+                when the hosted route, production environment variables, Stripe
+                catalog, and customer-facing scenario examples are wired into the
+                launch app.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-10 border-2 border-white bg-black/70 p-5 sm:p-6">
+          <h2 class="text-xl font-extrabold uppercase">Sources and Scope</h2>
+          <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74">
+            <li>
+              BrowserOps deterministic suite:
+              <span class="font-mono">npm test</span>
+              covers observation, verification, contracts, MCP stdio, CLI flows,
+              receipt validation, private-target refusal, and doctor diagnostics.
+            </li>
+            <li>
+              Real browser smoke:
+              optional Playwright observation and verification checks pass when
+              BrowserOps is pointed at a working Chromium binary with
+              <span class="font-mono"> BROWSEROPS_CHROMIUM_EXECUTABLE_PATH</span>.
+            </li>
+            <li>
+              Safety scope:
+              BrowserOps blocks local/private network browsing by default and does
+              not include credential theft, CAPTCHA bypass, stealth scraping, or
+              unrestricted autonomous browsing.
+            </li>
+          </ul>
+          <p class="mt-5 max-w-5xl text-xs leading-6 text-white/52">
+            BrowserOps research should stay reliability-scoped until there is a
+            pinned public browser-workflow benchmark with comparable third-party
+            baselines. For launch, this page documents the evidence path a buyer
+            can inspect and reproduce.
+          </p>
+        </section>
+
+        <section class="mb-10 grid gap-4 border-2 border-white bg-black/78 p-5 sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.34em] text-white/60">Product Link</p>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase">Use BrowserOps</h2>
+            <p class="mt-3 max-w-3xl text-sm leading-7 text-white/72">
+              The product page connects these reliability notes to the hosted MCP
+              plan, Developer Bundle inclusion, and checkout path.
+            </p>
+          </div>
+          <a href="/products/mcp-browserops" class="inline-flex items-center justify-center border-2 border-white px-5 py-3 text-xs font-bold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">
+            Open Product
+          </a>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

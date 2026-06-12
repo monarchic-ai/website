@@ -1,0 +1,290 @@
+[
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-businessmodel",
+    "displayName": "BusinessModel MCP",
+    "tagline": "Business model design + analysis tools",
+    "description": "Structured business-model exploration, canvas analysis, and competitive teardown — surfaced as MCP tools for product and strategy agents.",
+    "featureBullets": [
+      "Hosted MCP route for BusinessModel",
+      "Scoped API keys for production agents",
+      "Cancel anytime through the Stripe billing portal"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxgRL5iN5g5lPAKJvaeEN",
+        "lookupKey": "monarchic_mcp_businessmodel_test_monthly",
+        "priceCents": 900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWNxgRL5iN5g5lP1JFiEuK5",
+        "lookupKey": "monarchic_mcp_businessmodel_test_annual",
+        "priceCents": 9000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-explicitmem",
+    "displayName": "ExplicitMem MCP",
+    "tagline": "Durable agent memory",
+    "description": "A hosted memory store agents can read and write through MCP. Long-running tasks keep state across runs without bespoke storage.",
+    "featureBullets": [
+      "Hosted MCP route for ExplicitMem",
+      "Scoped API keys for production agents",
+      "Cancel anytime through the Stripe billing portal"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxdRL5iN5g5lPxXFMQD8p",
+        "lookupKey": "monarchic_mcp_explicitmem_test_monthly",
+        "priceCents": 900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWNxdRL5iN5g5lPNIFCBu8S",
+        "lookupKey": "monarchic_mcp_explicitmem_test_annual",
+        "priceCents": 9000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-leadgenerator",
+    "displayName": "LeadGenerator MCP",
+    "tagline": "Outbound lead discovery + enrichment",
+    "description": "Hosted lead discovery, enrichment, and outbound list construction. Agents call it through MCP without managing their own scrapers.",
+    "featureBullets": [
+      "Hosted MCP route for LeadGenerator",
+      "Scoped API keys for production agents",
+      "Cancel anytime through the Stripe billing portal"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxhRL5iN5g5lP1IFsr2Sc",
+        "lookupKey": "monarchic_mcp_leadgenerator_test_monthly",
+        "priceCents": 900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWNxiRL5iN5g5lPx2G4ebsI",
+        "lookupKey": "monarchic_mcp_leadgenerator_test_annual",
+        "priceCents": 9000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-browserops",
+    "displayName": "BrowserOps MCP",
+    "tagline": "Browser evidence and UI verification",
+    "description": "Browser observation, screenshots, interaction checks, and reviewable UI evidence for agents that need to validate web apps.",
+    "featureBullets": [
+      "Hosted MCP route for BrowserOps",
+      "Scoped API keys for production agents",
+      "Cancel anytime through the Stripe billing portal"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": "monarchic_mcp_browserops_test_monthly",
+        "priceCents": 900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": "monarchic_mcp_browserops_test_annual",
+        "priceCents": 9000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-repointel",
+    "displayName": "RepoIntel MCP",
+    "tagline": "Code-base intelligence as a hosted MCP",
+    "description": "Cross-repo code search, dependency graphs, and context retrieval surfaced as MCP tools your agents can call directly. Hosted by Monarchic so you don't ship the indexer yourself.",
+    "featureBullets": [
+      "Hosted MCP route for RepoIntel",
+      "Scoped API keys for production agents",
+      "Cancel anytime through the Stripe billing portal"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxbRL5iN5g5lPlSsL5FC2",
+        "lookupKey": "monarchic_mcp_repointel_test_monthly",
+        "priceCents": 900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWNxcRL5iN5g5lPvysi0UsZ",
+        "lookupKey": "monarchic_mcp_repointel_test_annual",
+        "priceCents": 9000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-all-mcps",
+    "displayName": "All MCPs",
+    "tagline": "Every hosted Monarchic MCP",
+    "description": "Every MCP Monarchic hosts, today and as new ones ship. One subscription gives you access to the full set without picking individual plans.",
+    "featureBullets": [
+      "Every Monarchic MCP, today and future",
+      "Single subscription, single bill",
+      "Catalog expands as new MCPs ship"
+    ],
+    "includedMcpSlugs": [
+      "mcp-agentfirewall",
+      "mcp-browserops",
+      "mcp-repointel",
+      "mcp-explicitmem",
+      "mcp-pty",
+      "mcp-businessmodel",
+      "mcp-leadgenerator",
+      "mcp-proofpack",
+      "mcp-releaseops",
+      "mcp-seo",
+      "mcp-verified"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxlRL5iN5g5lPOLE5xwHp",
+        "lookupKey": "monarchic_bundle_all_mcps_test_monthly",
+        "priceCents": 3500,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWeamRL5iN5g5lPCWU0kUxj",
+        "lookupKey": "monarchic_bundle_all_mcps_test_annual",
+        "priceCents": 35000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-developer",
+    "displayName": "Developer Bundle",
+    "tagline": "Everything a code agent needs",
+    "description": "Hosted MCPs typically used in web development workflows: code intelligence, durable memory, and browser verification.",
+    "featureBullets": [
+      "RepoIntel + ExplicitMem + BrowserOps",
+      "Single subscription, single bill",
+      "Composition expands as new dev MCPs ship"
+    ],
+    "includedMcpSlugs": [
+      "mcp-repointel",
+      "mcp-explicitmem",
+      "mcp-browserops"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxjRL5iN5g5lPGdPHI8U7",
+        "lookupKey": "monarchic_bundle_developer_test_monthly",
+        "priceCents": 2000,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWeajRL5iN5g5lPCyEFLjWs",
+        "lookupKey": "monarchic_bundle_developer_test_annual",
+        "priceCents": 20000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-entrepreneur",
+    "displayName": "Entrepreneur Bundle",
+    "tagline": "Business + go-to-market tools",
+    "description": "Hosted MCPs typically used in business, strategy, and outbound workflows.",
+    "featureBullets": [
+      "BusinessModel + LeadGenerator",
+      "Single subscription, single bill",
+      "Composition expands as new business MCPs ship"
+    ],
+    "includedMcpSlugs": [
+      "mcp-businessmodel",
+      "mcp-leadgenerator"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxkRL5iN5g5lPHasRnDHt",
+        "lookupKey": "monarchic_bundle_entrepreneur_test_monthly",
+        "priceCents": 1500,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWeakRL5iN5g5lPJlPqeMin",
+        "lookupKey": "monarchic_bundle_entrepreneur_test_annual",
+        "priceCents": 15000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-startup",
+    "displayName": "Startup Bundle",
+    "tagline": "The essential mix for a new company",
+    "description": "The MCPs founders reach for first: code intelligence, business modeling, and outbound lead discovery.",
+    "featureBullets": [
+      "RepoIntel + BusinessModel + LeadGenerator",
+      "Single subscription, single bill",
+      "Composition expands as the founder toolset evolves"
+    ],
+    "includedMcpSlugs": [
+      "mcp-repointel",
+      "mcp-businessmodel",
+      "mcp-leadgenerator"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TWNxlRL5iN5g5lPTLZ7QF5V",
+        "lookupKey": "monarchic_bundle_startup_test_monthly",
+        "priceCents": 2000,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TWealRL5iN5g5lPg2RZwiHT",
+        "lookupKey": "monarchic_bundle_startup_test_annual",
+        "priceCents": 20000,
+        "currency": "usd"
+      }
+    ]
+  }
+]

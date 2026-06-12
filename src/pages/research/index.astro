@@ -6,6 +6,7 @@ const researchCards = [
   {
     name: "ExplicitMem",
     href: "/research/explicitmem",
+    productHref: "/products/mcp-explicitmem",
     label: "Memory Runtime",
     score: "97.8%",
     metric: "LongMemEval-S accuracy",
@@ -15,11 +16,22 @@ const researchCards = [
   {
     name: "RepoIntel",
     href: "/research/repointel",
+    productHref: "/products/mcp-repointel",
     label: "Repository Intelligence",
     score: "0.9979",
     metric: "RepoIntel-Bench score",
     description:
       "RepoIntel is a repository intelligence MCP runtime for indexing code, symbols, evidence records, generated wiki pages, and change-aware retrieval.",
+  },
+  {
+    name: "BrowserOps",
+    href: "/research/browserops",
+    productHref: "/products/mcp-browserops",
+    label: "Browser Verification",
+    score: "7/7",
+    metric: "Reliability checks passed",
+    description:
+      "BrowserOps is a browser evidence and UI verification MCP for agents that need screenshots, console and network diagnostics, scenario checks, and receipt-backed browser QA.",
   },
 ];
 ---
@@ -79,10 +91,9 @@ const researchCards = [
           </p>
         </div>
 
-        <section class="grid gap-6 lg:grid-cols-2">
+        <section class="grid gap-6 lg:grid-cols-3">
           {researchCards.map((card) => (
-            <a
-              href={card.href}
+            <article
               class="group border-2 border-white bg-black/72 p-5 transition hover:bg-white hover:text-black sm:p-6"
             >
               <div class="flex flex-wrap items-start justify-between gap-4">
@@ -104,11 +115,16 @@ const researchCards = [
               <p class="mt-6 max-w-2xl text-sm leading-7 text-white/74 group-hover:text-black/74">
                 {card.description}
               </p>
-              <div class="mt-6 inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.28em]">
-                <span>Open Research</span>
-                <span class="h-2 w-2 bg-white group-hover:bg-black"></span>
+              <div class="mt-6 flex flex-wrap gap-2">
+                <a href={card.href} class="inline-flex items-center gap-3 border border-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition hover:bg-black hover:text-white group-hover:border-black">
+                  Open Research
+                  <span class="h-2 w-2 bg-white group-hover:bg-black"></span>
+                </a>
+                <a href={card.productHref} class="inline-flex items-center border border-white px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] transition hover:bg-black hover:text-white group-hover:border-black">
+                  Product Page
+                </a>
               </div>
-            </a>
+            </article>
           ))}
         </section>
 
