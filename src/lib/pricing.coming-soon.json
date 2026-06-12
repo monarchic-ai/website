@@ -1,0 +1,373 @@
+[
+  {
+    "kind": "ai",
+    "slug": "monarchic-ai",
+    "displayName": "Monarchic AI",
+    "tagline": "Full autonomous Monarchic — coming soon",
+    "description": "The full Monarchic agent system on top of the hosted MCP stack. Autonomous, observable, infrastructure-backed agent runs with the entire Monarchic toolchain wired in. Join the waitlist and we'll reach out when it's ready to charge for.",
+    "featureBullets": [
+      "Everything in the launch MCP stack",
+      "Autonomous Monarchic agent runs",
+      "Long-running orchestration with checkpointing",
+      "Full audit trail and reviewable artifacts"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-agentfirewall",
+    "displayName": "AgentFirewall MCP",
+    "tagline": "Policy firewall for agent tool calls",
+    "description": "Allowlist, sandbox, registry-trust, prompt-injection, and redaction checks for MCP tool calls before they reach downstream servers.",
+    "featureBullets": [
+      "Hosted MCP route for AgentFirewall",
+      "Scoped API keys for production agents",
+      "Launch timing depends on operational readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-pty",
+    "displayName": "PTY MCP",
+    "tagline": "Hosted terminal sessions for agents",
+    "description": "Run shell commands, capture output, and manage interactive sessions through MCP. Hosted so agents do not need their own terminal sandboxes.",
+    "featureBullets": [
+      "Hosted MCP route for PTY",
+      "Scoped API keys for production agents",
+      "Launch timing depends on operational readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-businessmodel",
+    "displayName": "BusinessModel MCP",
+    "tagline": "Business model design and analysis tools",
+    "description": "Structured business-model exploration, company synthesis, canvas analysis, and competitive teardown surfaced as MCP tools.",
+    "featureBullets": [
+      "Hosted MCP route for BusinessModel",
+      "Scoped API keys for production agents",
+      "Launch timing depends on product readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-leadgenerator",
+    "displayName": "LeadGenerator MCP",
+    "tagline": "Outbound lead discovery and enrichment",
+    "description": "Hosted lead discovery, enrichment, and outbound list construction for agents working from structured business-model inputs.",
+    "featureBullets": [
+      "Hosted MCP route for LeadGenerator",
+      "Scoped API keys for production agents",
+      "Launch timing depends on product readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-proofpack",
+    "displayName": "ProofPack MCP",
+    "tagline": "Receipts and evidence packs for agent work",
+    "description": "Hash, sign, verify, compare drift, and export reviewable evidence packs for commands, releases, browser sessions, and agent artifacts.",
+    "featureBullets": [
+      "Hosted MCP route for ProofPack",
+      "Scoped API keys for production agents",
+      "Launch timing depends on operational readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-releaseops",
+    "displayName": "ReleaseOps MCP",
+    "tagline": "Release readiness and reviewer evidence",
+    "description": "Release planning, changelog scope checks, artifact manifests, docs drift checks, tag readiness, and exportable release packs.",
+    "featureBullets": [
+      "Hosted MCP route for ReleaseOps",
+      "Scoped API keys for production agents",
+      "Launch timing depends on operational readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-seo",
+    "displayName": "SEO MCP",
+    "tagline": "Deterministic SEO ranking workflows",
+    "description": "SERP intelligence, intent modeling, technical checks, internal linking, and content feedback for verifiable SEO workflows.",
+    "featureBullets": [
+      "Hosted MCP route for SEO",
+      "Scoped API keys for production agents",
+      "Launch timing depends on product readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-verified",
+    "displayName": "Verified MCP",
+    "tagline": "Bounded patching with proof receipts",
+    "description": "Plan, apply, and verify bounded code patches with test receipts, rollback receipts, and verifier-friendly patch evidence.",
+    "featureBullets": [
+      "Hosted MCP route for Verified",
+      "Scoped API keys for production agents",
+      "Launch timing depends on operational readiness"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-entrepreneur",
+    "displayName": "Entrepreneur Bundle",
+    "tagline": "Business and go-to-market tools",
+    "description": "BusinessModel and LeadGenerator packaged for business, strategy, and outbound workflows.",
+    "featureBullets": [
+      "BusinessModel and LeadGenerator",
+      "Single subscription when launched",
+      "Pricing TBD"
+    ],
+    "includedMcpSlugs": [
+      "mcp-businessmodel",
+      "mcp-leadgenerator"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-startup",
+    "displayName": "Startup Bundle",
+    "tagline": "Founder workflow tools",
+    "description": "A future bundle for founders that combines code intelligence with business modeling and outbound workflows.",
+    "featureBullets": [
+      "RepoIntel, BusinessModel, and LeadGenerator",
+      "Single subscription when launched",
+      "Pricing TBD"
+    ],
+    "includedMcpSlugs": [
+      "mcp-repointel",
+      "mcp-businessmodel",
+      "mcp-leadgenerator"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "bundle",
+    "slug": "bundle-all-mcps",
+    "displayName": "All MCPs",
+    "tagline": "Every hosted Monarchic MCP",
+    "description": "A future bundle for the full hosted MCP catalog after the remaining servers graduate from launch readiness.",
+    "featureBullets": [
+      "Every Monarchic MCP when launched",
+      "Single subscription when launched",
+      "Pricing TBD"
+    ],
+    "includedMcpSlugs": [
+      "mcp-agentfirewall",
+      "mcp-browserops",
+      "mcp-repointel",
+      "mcp-explicitmem",
+      "mcp-pty",
+      "mcp-businessmodel",
+      "mcp-leadgenerator",
+      "mcp-proofpack",
+      "mcp-releaseops",
+      "mcp-seo",
+      "mcp-verified"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  }
+]
