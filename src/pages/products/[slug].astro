@@ -4,9 +4,8 @@ import "../../styles/global.css";
 import {
   allPlans,
   availablePlans,
-  cadenceLabel,
-  findPlanPrice,
-  formatPriceUSD,
+  publicPilotDescription,
+  publicPilotFeatureBullet,
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
@@ -22,8 +21,6 @@ if (!plan) {
   return Astro.redirect("/products");
 }
 
-const monthly = findPlanPrice(plan, "monthly");
-const annual = findPlanPrice(plan, "annual");
 const isComingSoon = plan.status === "coming_soon";
 
 const bundlesIncluding = plan.kind === "single-mcp"
@@ -129,7 +126,7 @@ const badge = kindBadge(plan.kind);
               {plan.displayName}
             </h1>
             <p class="mt-6 max-w-3xl text-lg leading-8 text-white/80">{plan.tagline}</p>
-            <p class="mt-5 max-w-3xl text-base leading-8 text-white/72">{plan.description}</p>
+            <p class="mt-5 max-w-3xl text-base leading-8 text-white/72">{publicPilotDescription(plan.description)}</p>
 
             {planResearch !== null && (
               <section class="mt-10 border-2 border-white bg-black/68 p-5">
@@ -149,7 +146,7 @@ const badge = kindBadge(plan.kind);
                   {plan.featureBullets.map((bullet) => (
                     <li class="flex gap-3 border border-white/36 bg-black/54 p-4">
                       <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white"></span>
-                      <span>{bullet}</span>
+                      <span>{publicPilotFeatureBullet(bullet)}</span>
                     </li>
                   ))}
                 </ul>
@@ -161,15 +158,12 @@ const badge = kindBadge(plan.kind);
                 <h2 class="text-xs font-bold uppercase tracking-[0.36em] text-white/54">Available In Bundles</h2>
                 <div class="mt-4 grid gap-3 sm:grid-cols-2">
                   {bundlesIncluding.map((bundle) => {
-                    const bundleMonthly = findPlanPrice(bundle, "monthly");
                     return (
                       <a href={`/products/${bundle.slug}`} class="group border border-white/50 bg-black/60 p-4 transition hover:bg-white hover:text-black">
                         <p class="text-sm font-extrabold uppercase">{bundle.displayName}</p>
-                        {bundleMonthly?.priceCents !== null && bundleMonthly?.priceCents !== undefined && (
-                          <p class="mt-2 text-xs uppercase tracking-[0.18em] text-white/56 group-hover:text-black/56">
-                            {formatPriceUSD(bundleMonthly.priceCents)}/mo
-                          </p>
-                        )}
+                        <p class="mt-2 text-xs uppercase tracking-[0.18em] text-white/56 group-hover:text-black/56">
+                          Custom pilot pricing
+                        </p>
                       </a>
                     );
                   })}
@@ -215,22 +209,18 @@ const badge = kindBadge(plan.kind);
               </>
             ) : (
               <>
-                {monthly?.priceCents !== null && monthly?.priceCents !== undefined && (
-                  <p class="mt-4">
-                    <span class="text-4xl font-extrabold">{formatPriceUSD(monthly.priceCents)}</span>
-                    <span class="ml-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/54">{cadenceLabel("monthly")}</span>
-                  </p>
-                )}
-                {annual?.priceCents !== null && annual?.priceCents !== undefined && (
-                  <p class="mt-2 text-sm text-white/62">
-                    or {formatPriceUSD(annual.priceCents)}{cadenceLabel("annual")}
-                  </p>
-                )}
+                <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">
+                  Custom Pilot Pricing
+                </p>
+                <p class="mt-4 text-sm leading-6 text-white/66">
+                  Pricing is quoted during the pilot phase while real deployment,
+                  storage, evaluation, and support costs are measured.
+                </p>
               </>
             )}
             <div class="mt-6 grid gap-3">
               <a href={appPlanUrl(plan)} class="inline-flex items-center justify-center border-2 border-white bg-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-white">
-                {isComingSoon ? "Join Waitlist" : "Open Checkout"}
+                {isComingSoon ? "Join Waitlist" : "Request Pilot"}
               </a>
               <a href="/products" class="inline-flex items-center justify-center border border-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] transition hover:bg-white hover:text-black">
                 Compare Plans
