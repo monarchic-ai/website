@@ -3,9 +3,8 @@ import Shader14 from "../../components/Shader14.astro";
 import "../../styles/global.css";
 import {
   allPlans,
-  cadenceLabel,
-  findPlanPrice,
-  formatPriceUSD,
+  publicPilotDescription,
+  publicPilotFeatureBullet,
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
@@ -75,7 +74,7 @@ function appPlanUrl(plan: CatalogPlan): string {
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="Monarchic hosted MCP products, bundles, and pricing."
+      content="Monarchic hosted MCP products, bundles, and pilot access."
     />
     <title>Products | Monarchic AI</title>
   </head>
@@ -102,9 +101,20 @@ function appPlanUrl(plan: CatalogPlan): string {
             Tools Agents<br />Can Actually Use
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Public product pages live here. Checkout, account access, API keys,
-            and subscription management remain in the Monarchic app.
+            Public product pages live here. Pilot access, account access, API keys,
+            and deployment coordination remain in the Monarchic app.
           </p>
+          <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
+              Pilot Pricing
+            </p>
+            <p class="mt-3 text-sm leading-7 text-white/76">
+              Pricing is custom during the pilot phase while deployment, storage,
+              evaluation, and support costs are measured across real installs.
+              Public self-serve plans will be published after those cost baselines
+              are known.
+            </p>
+          </div>
         </div>
 
         {monarchicAi !== null && (
@@ -114,7 +124,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                 Flagship
               </span>
               <h2 class="mt-4 text-3xl font-extrabold uppercase sm:text-5xl">{monarchicAi.displayName}</h2>
-              <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{monarchicAi.description}</p>
+              <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{publicPilotDescription(monarchicAi.description)}</p>
             </div>
             <div class="flex items-center">
               <a
@@ -141,8 +151,6 @@ function appPlanUrl(plan: CatalogPlan): string {
             <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {section.plans.map((plan) => {
                 const badge = kindBadge(plan.kind);
-                const monthly = findPlanPrice(plan, "monthly");
-                const annual = findPlanPrice(plan, "annual");
                 return (
                   <article class="group flex min-h-[440px] flex-col border-2 border-white bg-black/74 p-5 transition hover:bg-white hover:text-black">
                     <div class="flex items-start justify-between gap-3">
@@ -159,33 +167,21 @@ function appPlanUrl(plan: CatalogPlan): string {
                       <a href={`/products/${plan.slug}`}>{plan.displayName}</a>
                     </h3>
                     <p class="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-white/58 group-hover:text-black/58">{plan.tagline}</p>
-                    <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{plan.description}</p>
+                    <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicPilotDescription(plan.description)}</p>
                     {plan.featureBullets.length > 0 && (
                       <ul class="mt-5 grid gap-2 text-sm leading-6 text-white/72 group-hover:text-black/72">
                         {plan.featureBullets.slice(0, 3).map((bullet) => (
                           <li class="flex gap-2">
                             <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white group-hover:bg-black"></span>
-                            <span>{bullet}</span>
+                            <span>{publicPilotFeatureBullet(bullet)}</span>
                           </li>
                         ))}
                       </ul>
                     )}
                     <div class="flex-1"></div>
-                    {plan.status === "available" && monthly?.priceCents !== null && monthly?.priceCents !== undefined ? (
-                      <div class="mt-6">
-                        <p>
-                          <span class="text-3xl font-extrabold">{formatPriceUSD(monthly.priceCents)}</span>
-                          <span class="ml-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/54 group-hover:text-black/54">{cadenceLabel("monthly")}</span>
-                        </p>
-                        {annual?.priceCents !== null && annual?.priceCents !== undefined && (
-                          <p class="mt-2 text-sm text-white/60 group-hover:text-black/60">
-                            {formatPriceUSD(annual.priceCents)}{cadenceLabel("annual")}
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200">Pricing TBD</p>
-                    )}
+                    <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
+                      {plan.status === "available" ? "Custom Pilot Pricing" : "Pricing TBD"}
+                    </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">
                         Details
@@ -196,7 +192,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                         </a>
                       )}
                       <a href={appPlanUrl(plan)} class="inline-flex items-center justify-center border border-white bg-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] text-black transition hover:bg-black hover:text-white">
-                        {plan.status === "available" ? "Buy" : "Waitlist"}
+                        {plan.status === "available" ? "Request Pilot" : "Waitlist"}
                       </a>
                     </div>
                   </article>
