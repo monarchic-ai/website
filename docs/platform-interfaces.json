@@ -8,7 +8,7 @@
       "kind": "webapp",
       "surfaces": [
         "src/pages/index.astro",
-        "src/components/Shader14.tsx",
+        "src/components/Shader14.astro",
         "src/styles/global.css",
         "public",
         "README.md"

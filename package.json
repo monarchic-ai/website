@@ -7,8 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "check": "astro check",
     "build": "astro build",
     "preview": "astro preview",
+    "smoke:local": "node scripts/smoke-local.mjs",
+    "smoke:production": "node scripts/smoke-production.mjs",
+    "smoke:staging": "MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io node scripts/smoke-production.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -18,5 +22,9 @@
     "svelte": "^5.53.12",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@playwright/test": "^1.59.1"
   }
 }

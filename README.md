@@ -1,38 +1,80 @@
 # website
 
-Public website for Monarchic AI.
+Public company website for Monarchic AI.
 
 ## Current Scope
 
-The site is currently a small Astro landing page for the Monarchic brand. The
-checked-in implementation renders a "coming soon" page with:
+The site is an Astro static site for the Monarchic brand and public product
+research surface. It currently owns:
+
+- the brand home page at `/`
+- the public products catalog at `/products`
+- individual product detail pages at `/products/[slug]`
+- the research index at `/research`
+- research pages for BrowserOps, ExplicitMem, and RepoIntel
+- generated `robots.txt` and `sitemap.xml` endpoints
+
+The authenticated product experience, cart, account pages, API-key management,
+and hosted MCP dashboard live in `../monarchic-webapp`.
+
+## Stack
 
 - Astro as the site shell
-- a React-based shader background component in `src/components/Shader14.tsx`
 - Tailwind CSS v4 for styling
-- Svelte integration available in the project, even though the current page is
-  driven by Astro plus React
+- Svelte integration available for future interactive islands
+- A code-native shader background component in `src/components/Shader14.astro`
+- Shared canonical/Open Graph/Twitter metadata through
+  `src/components/SeoHead.astro`
+- A 1200x630 branded social preview image at `public/social-card.png`
 
 ## Commands
 
 - `pnpm install`
 - `pnpm dev`
+- `pnpm check`
 - `pnpm build`
 - `pnpm preview`
+- `pnpm smoke:local`
+- `pnpm smoke:production`
+- `pnpm smoke:staging`
 - `pnpm astro -- --help`
 
 The project currently expects Node `>=22.12.0`.
+
+Client release readiness is tracked in
+[`../docs/client-release-readiness.md`](../docs/client-release-readiness.md).
+The root GitHub Actions workflow at
+[`../.github/workflows/clients-readiness.yml`](../.github/workflows/clients-readiness.yml)
+runs the combined client check for website and webapp changes, with a manual
+local smoke job available from GitHub Actions.
 
 ## Layout
 
 ```text
 /
 ├── public/
+│   ├── favicon.svg
+│   ├── social-card.png
+│   └── social-card.svg
 ├── src/
 │   ├── components/
-│   │   └── Shader14.tsx
+│   │   ├── Shader14.astro
+│   │   └── SeoHead.astro
+│   ├── lib/
+│   │   ├── pricing.ts
+│   │   └── productDetails.ts
 │   ├── pages/
-│   │   └── index.astro
+│   │   ├── index.astro
+│   │   ├── robots.txt.ts
+│   │   ├── sitemap.xml.ts
+│   │   ├── products/
+│   │   │   ├── index.astro
+│   │   │   └── [slug].astro
+│   │   └── research/
+│   │       ├── index.astro
+│   │       ├── browserops.astro
+│   │       ├── explicitmem.astro
+│   │       └── repointel.astro
 │   └── styles/
 │       └── global.css
 ├── astro.config.mjs
@@ -42,7 +84,28 @@ The project currently expects Node `>=22.12.0`.
 
 ## Notes
 
-- `src/pages/index.astro` is the current entry page.
-- `astro.config.mjs` enables both React and Svelte integrations.
+- `src/lib/pricing.generated.json`, `src/lib/pricing.coming-soon.json`, and
+  `src/lib/productDetails.ts` are generated deploy artifacts copied from
+  `../shared/product-catalog`. Edit the shared catalog, then run
+  `pnpm sync:shared-catalog` from `../monarchic-webapp`.
+- `vercel.json` defines the expected static deployment settings. Set
+  `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` and `PUBLIC_MONARCHIC_WEBAPP_BASE_URL`
+  from `env.example` in Vercel before deploying.
+- Set `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` when building non-production
+  environments that need canonical URLs, Open Graph URLs, robots output, and
+  sitemap entries to point somewhere other than `https://monarchic.io`.
+- Set `PUBLIC_MONARCHIC_WEBAPP_BASE_URL` when homepage/app CTAs should point
+  somewhere other than `https://app.monarchic.io`.
+- `pnpm smoke:local` builds the static site, starts `astro preview` on
+  `127.0.0.1:4332`, runs the production smoke assertions against that local
+  preview, and stops the server. Override the port with
+  `MONARCHIC_WEBSITE_LOCAL_PORT`.
+- `pnpm smoke:production` uses Playwright to verify the live site HTTP response,
+  `robots.txt`, `sitemap.xml`, homepage metadata, product pages, research pages,
+  app CTAs, and horizontal overflow. Override the target with
+  `MONARCHIC_WEBSITE_SMOKE_URL`. Override expected canonical links with
+  `MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL`, which is useful when smoking a
+  local preview built with production canonical URLs. Override expected app CTA
+  targets with `MONARCHIC_WEBAPP_SMOKE_URL`.
 - `dist/` contains generated build output and should be treated as an artifact,
   not as source.
