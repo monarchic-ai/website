@@ -1,0 +1,102 @@
+name: Website readiness
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/website-readiness.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "astro.config.mjs"
+      - "src/**"
+      - "scripts/**"
+      - "public/**"
+      - "docs/**"
+      - "vercel.json"
+      - "env.example"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/website-readiness.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "astro.config.mjs"
+      - "src/**"
+      - "scripts/**"
+      - "public/**"
+      - "docs/**"
+      - "vercel.json"
+      - "env.example"
+  workflow_dispatch:
+    inputs:
+      run_smoke:
+        description: "Run local Playwright smoke after checks and build"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-readiness-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Diagnostics and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.8.1 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Astro diagnostics
+        run: pnpm check
+
+      - name: Build website
+        run: pnpm build
+
+  smoke:
+    name: Local website smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: check
+    if: github.event_name == 'workflow_dispatch' && inputs.run_smoke
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.8.1 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run local website smoke
+        run: pnpm smoke:local

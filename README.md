@@ -41,12 +41,14 @@ and hosted MCP dashboard live in `../monarchic-webapp`.
 
 The project currently expects Node `>=22.12.0`.
 
-Client release readiness is tracked in
-[`../docs/client-release-readiness.md`](../docs/client-release-readiness.md).
-The root GitHub Actions workflow at
-[`../.github/workflows/clients-readiness.yml`](../.github/workflows/clients-readiness.yml)
-runs the combined client check for website and webapp changes, with a manual
-local smoke job available from GitHub Actions.
+GitHub Actions runs `.github/workflows/website-readiness.yml` on website
+changes. That workflow installs dependencies, runs Astro diagnostics, and
+builds the static site. Its manual smoke job installs Playwright Chromium and
+runs `pnpm smoke:local`.
+
+The manual release workflow at `.github/workflows/website-release-smoke.yml`
+runs `pnpm smoke:production` against the configured production or staging
+target.
 
 ## Layout
 

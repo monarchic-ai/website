@@ -1,0 +1,61 @@
+name: Website release smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      website_url:
+        description: "Production website smoke target"
+        required: false
+        type: string
+        default: "https://monarchic.io"
+      expected_canonical_url:
+        description: "Expected canonical URL origin"
+        required: false
+        type: string
+        default: "https://monarchic.io"
+      webapp_url:
+        description: "Expected app CTA target origin"
+        required: false
+        type: string
+        default: "https://app.monarchic.io"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-release-smoke-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  production-smoke:
+    name: External website gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      MONARCHIC_WEBSITE_SMOKE_URL: ${{ inputs.website_url }}
+      MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL: ${{ inputs.expected_canonical_url }}
+      MONARCHIC_WEBAPP_SMOKE_URL: ${{ inputs.webapp_url }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.8.1 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run production website smoke
+        run: pnpm smoke:production
