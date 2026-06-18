@@ -347,10 +347,130 @@
       "mcp-pty",
       "mcp-businessmodel",
       "mcp-leadgenerator",
+      "mcp-monarchic",
+      "mcp-outreachconnectors",
       "mcp-proofpack",
+      "mcp-create-project",
       "mcp-releaseops",
+      "mcp-repo-fleet",
       "mcp-seo",
       "mcp-verified"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-monarchic",
+    "displayName": "Monarchic MCP",
+    "tagline": "Governed agent orchestration over MCP",
+    "description": "Core Monarchic adapter for long-running agent workflows, run control, artifact discovery, infrastructure launch, and execution gates.",
+    "featureBullets": [
+      "Execute and review agent intents",
+      "Run summaries, artifacts, registry, and control tools",
+      "Company-building execution gates wired to BusinessModel MCP"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-outreachconnectors",
+    "displayName": "OutreachConnectors MCP",
+    "tagline": "Governed outreach readiness and delivery receipts",
+    "description": "Policy preflight, delivery capture templates, send refusal stubs, and redacted provider delivery receipt normalization.",
+    "featureBullets": [
+      "No-send policy preflight for email, LinkedIn, and X",
+      "Delivery capture templates for real operator records",
+      "Normalized receipt hashes without raw contact details"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-create-project",
+    "displayName": "create-project MCP",
+    "tagline": "Governed project scaffolding",
+    "description": "MCP wrapper for project creation workflows with structured JSON and text responses around the create-project CLI.",
+    "featureBullets": [
+      "Standardized project creation route",
+      "JSON and text output modes",
+      "Predictable CLI failure reporting"
+    ],
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": null,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-repo-fleet",
+    "displayName": "repo-fleet MCP",
+    "tagline": "Repository fleet operations",
+    "description": "MCP wrapper for repository fleet operations with structured JSON and text responses around the repo-fleet CLI.",
+    "featureBullets": [
+      "Centralized route for multi-repo operations",
+      "JSON and text output modes",
+      "Predictable CLI failure reporting"
     ],
     "status": "coming_soon",
     "prices": [

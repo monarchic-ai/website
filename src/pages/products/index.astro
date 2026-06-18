@@ -1,5 +1,6 @@
 ---
 import Shader14 from "../../components/Shader14.astro";
+import SeoHead from "../../components/SeoHead.astro";
 import "../../styles/global.css";
 import {
   allPlans,
@@ -8,6 +9,7 @@ import {
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
+import { getProductDetail } from "../../lib/productDetails";
 
 const webappBaseUrl = import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io";
 const MONARCHIC_AI_SLUG = "monarchic-ai";
@@ -72,11 +74,11 @@ function appPlanUrl(plan: CatalogPlan): string {
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta
-      name="description"
-      content="Monarchic hosted MCP products, bundles, and pilot access."
+    <SeoHead
+      title="Products | Monarchic AI"
+      description="Monarchic hosted MCP products, bundles, and pilot access for production agent systems."
+      path="/products"
     />
-    <title>Products | Monarchic AI</title>
   </head>
   <body class="min-h-screen bg-black text-white">
     <main class="relative min-h-screen overflow-hidden">
@@ -101,21 +103,45 @@ function appPlanUrl(plan: CatalogPlan): string {
             Tools Agents<br />Can Actually Use
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Public product pages live here. Pilot access, account access, API keys,
-            and deployment coordination remain in the Monarchic app.
+            Compare the hosted MCPs and bundles that are ready for pilot use.
+            Each product page states the buyer, workflow, evidence boundary, and
+            setup path before you request access in the Monarchic app.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
               Pilot Pricing
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              Pricing is custom during the pilot phase while deployment, storage,
-              evaluation, and support costs are measured across real installs.
-              Public self-serve plans will be published after those cost baselines
-              are known.
+              Pricing is quoted during the pilot phase because deployment,
+              storage, evaluation, and support needs vary by account. Public
+              self-serve plans come after those cost baselines are measured
+              across real installs.
             </p>
           </div>
         </div>
+
+        <section class="mb-10 grid gap-4 border-2 border-white bg-black/70 p-5 md:grid-cols-3">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">How To Choose</p>
+            <p class="mt-3 text-sm leading-7 text-white/74">
+              Start with a single MCP when one workflow is the bottleneck.
+            </p>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Bundle Fit</p>
+            <p class="mt-3 text-sm leading-7 text-white/74">
+              Pick a bundle when repository context, browser evidence, and memory
+              need to work together.
+            </p>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Pilot Handoff</p>
+            <p class="mt-3 text-sm leading-7 text-white/74">
+              Request access in the app and Monarchic will confirm scope,
+              environment, and account setup.
+            </p>
+          </div>
+        </section>
 
         {monarchicAi !== null && (
           <section class="mb-10 grid gap-6 border-2 border-amber-300 bg-black/78 p-5 sm:p-6 lg:grid-cols-[1.5fr_0.8fr]">
@@ -124,7 +150,11 @@ function appPlanUrl(plan: CatalogPlan): string {
                 Flagship
               </span>
               <h2 class="mt-4 text-3xl font-extrabold uppercase sm:text-5xl">{monarchicAi.displayName}</h2>
-              <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{publicPilotDescription(monarchicAi.description)}</p>
+                <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{publicPilotDescription(monarchicAi.description)}</p>
+                <p class="mt-3 max-w-3xl text-sm leading-7 text-amber-100/80">
+                  This tier is intentionally waitlisted until autonomous run
+                  control, billing, and evidence handoff are ready together.
+                </p>
             </div>
             <div class="flex items-center">
               <a
@@ -167,7 +197,17 @@ function appPlanUrl(plan: CatalogPlan): string {
                       <a href={`/products/${plan.slug}`}>{plan.displayName}</a>
                     </h3>
                     <p class="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-white/58 group-hover:text-black/58">{plan.tagline}</p>
+                    {getProductDetail(plan.slug) !== null && (
+                      <p class="mt-4 inline-flex w-fit border border-white/36 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white/58 group-hover:border-black/36 group-hover:text-black/58">
+                        {getProductDetail(plan.slug)?.category}
+                      </p>
+                    )}
                     <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicPilotDescription(plan.description)}</p>
+                    {getProductDetail(plan.slug) !== null && (
+                      <p class="mt-3 text-sm leading-6 text-white/72 group-hover:text-black/72">
+                        <span class="font-bold uppercase">Best for:</span> {getProductDetail(plan.slug)?.buyer}
+                      </p>
+                    )}
                     {plan.featureBullets.length > 0 && (
                       <ul class="mt-5 grid gap-2 text-sm leading-6 text-white/72 group-hover:text-black/72">
                         {plan.featureBullets.slice(0, 3).map((bullet) => (
