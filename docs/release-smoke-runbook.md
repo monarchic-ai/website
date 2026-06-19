@@ -9,11 +9,12 @@ Latest local run date: 2026-06-19 UTC.
 Production and staging smoke are not green yet:
 
 - `pnpm smoke:production` against `https://monarchic.io` reaches the domain
-  enough to resolve DNS, but live requests time out. Current diagnostic:
-  `A=216.198.79.1`, `AAAA=ENODATA`, request failure
+  and the homepage `HEAD /` returns `200`, but `robots.txt` times out. Current
+  diagnostic: `A=216.198.79.1`, `AAAA=ENODATA`, request failure
   `UND_ERR_CONNECT_TIMEOUT`.
-- The staging variant against `https://staging.monarchic.io` fails with the
-  same connection-timeout shape.
+- The staging variant against `https://staging.monarchic.io` has no DNS target:
+  `A=ENODATA`, `AAAA=ENODATA`. The smoke script fails immediately when both
+  record families are missing.
 
 Do not treat website production as launch-ready until this command passes:
 
@@ -68,10 +69,13 @@ If smoke fails before browser assertions:
 1. Confirm DNS for `monarchic.io` resolves from outside the deployment network.
 2. Confirm the resolved A record points at the intended Vercel project or
    deployment target.
-3. Confirm Vercel has a successful deployment for the current `main` commit.
-4. Confirm the deployment serves `/build-info.json`.
-5. Confirm Vercel environment variables match `env.example`.
-6. Rerun `pnpm smoke:production`.
+3. Confirm `staging.monarchic.io` exists before enabling staging as a required
+   launch gate.
+4. Confirm Vercel has a successful deployment for the current `main` commit.
+5. Confirm the deployment serves `/robots.txt`, `/sitemap.xml`, and
+   `/build-info.json`.
+6. Confirm Vercel environment variables match `env.example`.
+7. Rerun `pnpm smoke:production`.
 
 Launch evidence should include the target URL, commit SHA, smoke command,
 timestamp, and the JSON check list printed by the smoke script.
