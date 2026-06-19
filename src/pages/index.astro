@@ -60,7 +60,9 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
               Monarchic gives engineering teams hosted MCP routes,
               account-scoped API access, repository intelligence, durable
               memory, and browser verification for agents already operating
-              near production code, browsers, and customer workflows.
+              near production code, browsers, and customer workflows. Pilots
+              start where ownership, evidence, and rollback expectations are
+              clear enough to run outside a demo environment.
             </p>
             <div class="mt-8 flex flex-wrap gap-3">
               <a
@@ -90,7 +92,8 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
               <p class="mt-3 text-sm leading-7 text-white/74">
                 BrowserOps, ExplicitMem, RepoIntel, and curated bundles ship as
                 account-scoped endpoints with entitlement checks, API-key
-                setup, and rollout handoff instead of loose process snippets.
+                setup, usage boundaries, and rollout handoff instead of loose
+                process snippets.
               </p>
             </div>
             <div class="border-2 border-white bg-black/72 p-5">
@@ -105,8 +108,8 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
               <p class="text-xs font-bold uppercase tracking-[0.32em] text-emerald-200">App Surface</p>
               <p class="mt-3 text-sm leading-7 text-white/74">
                 The app owns signup, account state, API keys, hosted MCP setup,
-                and subscription handoff so public discovery stays separate
-                from production control.
+                subscription handoff, and operator-visible account state so
+                public discovery stays separate from production control.
               </p>
             </div>
           </div>
@@ -156,6 +159,45 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
             <div class="border border-white/46 bg-black/64 p-4">
               <p class="text-sm font-extrabold uppercase">Pilot ready</p>
               <p class="mt-2 text-sm leading-6 text-white/68">Deployment, storage, test accounts, and support scope are coordinated before billing.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid gap-6 border-t-2 border-white py-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Pilot Readiness</p>
+            <h2 class="mt-3 max-w-4xl text-3xl font-extrabold uppercase sm:text-4xl">
+              A Monarchic pilot starts when the tool, account owner, and
+              evidence boundary are explicit.
+            </h2>
+            <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
+              The first deployment is scoped around a named workflow, the MCP
+              routes required for that workflow, and the receipts needed to
+              decide whether the system can graduate from pilot to production
+              access.
+            </p>
+          </div>
+          <div class="grid gap-3">
+            <div class="border border-white/46 bg-black/64 p-4">
+              <p class="text-sm font-extrabold uppercase">Environment</p>
+              <p class="mt-2 text-sm leading-6 text-white/68">
+                Confirm the target repository, browser surface, memory scope,
+                and account that owns the MCP route.
+              </p>
+            </div>
+            <div class="border border-white/46 bg-black/64 p-4">
+              <p class="text-sm font-extrabold uppercase">Evidence</p>
+              <p class="mt-2 text-sm leading-6 text-white/68">
+                Define the receipts, screenshots, logs, or catalog checks that
+                count as proof for the pilot workflow.
+              </p>
+            </div>
+            <div class="border border-white/46 bg-black/64 p-4">
+              <p class="text-sm font-extrabold uppercase">Handoff</p>
+              <p class="mt-2 text-sm leading-6 text-white/68">
+                Keep API access, billing, support scope, and rollback decisions
+                attached to the same account.
+              </p>
             </div>
           </div>
         </section>
