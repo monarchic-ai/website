@@ -13,7 +13,8 @@ need routing work:
   2026-06-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
   `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
   research routes. `/build-info.json` reports the deployed website commit from
-  `monarchic-ai/website` and catalog artifact digest
+  `monarchic-ai/website` as
+  `3b453e12677283bb66df778969368f17028ea447` and catalog artifact digest
   `sha256:44d3fddd9c0394d28170059df6796c0ffe0fd3c06cc9652aa45798a909a3b93e`.
 - `pnpm smoke:production:apex` against `https://monarchic.io` reaches the website
   deployment and `/build-info.json`, but the apex route then times out fetching
