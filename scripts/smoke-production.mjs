@@ -211,6 +211,13 @@ function stringOrUndefined(value) {
 }
 
 function requireCatalogDigest(payload) {
+  if (payload.catalog?.artifactSource !== "shared/product-catalog") {
+    throw new Error(`build-info catalog artifactSource mismatch: ${payload.catalog?.artifactSource}`);
+  }
+  const manifestDigest = payload.catalog?.manifestDigest;
+  if (typeof manifestDigest !== "string" || !/^sha256:[a-f0-9]{64}$/.test(manifestDigest)) {
+    throw new Error(`build-info catalog manifestDigest is missing or invalid: ${manifestDigest}`);
+  }
   const digest = payload.catalog?.artifactDigest;
   if (typeof digest !== "string" || !/^sha256:[a-f0-9]{64}$/.test(digest)) {
     throw new Error(`build-info catalog artifactDigest is missing or invalid: ${digest}`);

@@ -1,6 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "source": "shared/product-catalog",
+  "artifactDigest": "sha256:44baeb5a7d067547e69127aca8ab9c0dbdfa87e6ace3fbcb9852d4c6993a1c90",
   "files": [
     {
       "name": "pricing.ts",
