@@ -142,6 +142,7 @@ async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
         `build-info smoke failed for ${url}: ${response.status} ${response.statusText}`,
         "The live deployment is missing the build marker required by release smoke.",
         "Check that Vercel deployed the current main commit and that the domain points at that project.",
+        `Response headers: ${JSON.stringify(selectedResponseHeaders(response))}`,
         body ? `Response body preview: ${body.slice(0, 240)}` : null,
       ].filter(Boolean).join("\n"),
     );
@@ -172,7 +173,41 @@ async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
     app: payload.app,
     totalPlans: payload.catalog?.totalPlans,
     catalogArtifactDigest: requireCatalogDigest(payload),
+    deployment: summarizeDeployment(payload.deployment),
   });
+}
+
+function selectedResponseHeaders(response) {
+  const selected = {};
+  for (const name of [
+    "cache-control",
+    "content-type",
+    "server",
+    "x-matched-path",
+    "x-vercel-cache",
+    "x-vercel-id",
+  ]) {
+    const value = response.headers.get(name);
+    if (value) selected[name] = value;
+  }
+  return selected;
+}
+
+function summarizeDeployment(value) {
+  if (!value || typeof value !== "object") return undefined;
+  return {
+    generatedAt: stringOrUndefined(value.generatedAt),
+    vercelEnv: stringOrUndefined(value.vercelEnv),
+    vercelUrl: stringOrUndefined(value.vercelUrl),
+    commitSha: stringOrUndefined(value.commitSha),
+    commitRef: stringOrUndefined(value.commitRef),
+    repoOwner: stringOrUndefined(value.repoOwner),
+    repoSlug: stringOrUndefined(value.repoSlug),
+  };
+}
+
+function stringOrUndefined(value) {
+  return typeof value === "string" && value.length > 0 ? value : undefined;
 }
 
 function requireCatalogDigest(payload) {
