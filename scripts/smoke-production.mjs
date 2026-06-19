@@ -1,4 +1,5 @@
 import { chromium } from "@playwright/test";
+import { resolve4, resolve6 } from "node:dns/promises";
 
 const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? "https://monarchic.io");
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
@@ -83,6 +84,7 @@ try {
 console.log(JSON.stringify({ url: baseUrl, checks }, null, 2));
 
 async function checkHttp(url) {
+  await checkDns(url);
   const response = await fetchOrThrow(url, { method: "HEAD" }, "HTTP HEAD");
   if (!response.ok) {
     throw new Error(`HTTP smoke failed for ${url}: ${response.status} ${response.statusText}`);
@@ -105,7 +107,15 @@ async function checkText(url, expected, name) {
 async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
   const response = await fetchOrThrow(url, undefined, "build-info");
   if (!response.ok) {
-    throw new Error(`build-info smoke failed for ${url}: ${response.status} ${response.statusText}`);
+    const body = await safeResponseText(response);
+    throw new Error(
+      [
+        `build-info smoke failed for ${url}: ${response.status} ${response.statusText}`,
+        "The live deployment is missing the build marker required by release smoke.",
+        "Check that Vercel deployed the current main commit and that the domain points at that project.",
+        body ? `Response body preview: ${body.slice(0, 240)}` : null,
+      ].filter(Boolean).join("\n"),
+    );
   }
 
   const payload = await response.json();
@@ -140,7 +150,53 @@ async function fetchOrThrow(url, options, name) {
     return await fetch(url, options);
   } catch (error) {
     const cause = error?.cause?.code ? ` (${error.cause.code})` : "";
-    throw new Error(`${name} smoke failed for ${url}: ${error.message}${cause}`);
+    const diagnostic = await connectionDiagnostic(url);
+    throw new Error(`${name} smoke failed for ${url}: ${error.message}${cause}\n${diagnostic}`);
+  }
+}
+
+async function checkDns(url) {
+  const target = new URL(url);
+  const [ipv4, ipv6] = await Promise.all([
+    resolve4(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
+    resolve6(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
+  ]);
+  checks.push({
+    name: "DNS",
+    status: "ok",
+    hostname: target.hostname,
+    ipv4: Array.isArray(ipv4) ? ipv4 : [],
+    ipv6: Array.isArray(ipv6) ? ipv6 : [],
+    errors: [
+      !Array.isArray(ipv4) ? `A:${ipv4.error}` : null,
+      !Array.isArray(ipv6) ? `AAAA:${ipv6.error}` : null,
+    ].filter(Boolean),
+  });
+}
+
+async function connectionDiagnostic(url) {
+  const target = new URL(url);
+  const [ipv4, ipv6] = await Promise.all([
+    resolve4(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
+    resolve6(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
+  ]);
+  return JSON.stringify({
+    diagnostic: "connection",
+    hostname: target.hostname,
+    ipv4: Array.isArray(ipv4) ? ipv4 : [],
+    ipv6: Array.isArray(ipv6) ? ipv6 : [],
+    errors: [
+      !Array.isArray(ipv4) ? `A:${ipv4.error}` : null,
+      !Array.isArray(ipv6) ? `AAAA:${ipv6.error}` : null,
+    ].filter(Boolean),
+  });
+}
+
+async function safeResponseText(response) {
+  try {
+    return await response.text();
+  } catch {
+    return "";
   }
 }
 

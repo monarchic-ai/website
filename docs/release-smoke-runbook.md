@@ -6,11 +6,14 @@ This runbook covers the public website live smoke gate.
 
 Latest local run date: 2026-06-19 UTC.
 
-Production smoke is not green yet:
+Production and staging smoke are not green yet:
 
-- `pnpm smoke:production` against `https://monarchic.io` fails before page
-  assertions because the HTTP HEAD request times out with
+- `pnpm smoke:production` against `https://monarchic.io` reaches the domain
+  enough to resolve DNS, but live requests time out. Current diagnostic:
+  `A=216.198.79.1`, `AAAA=ENODATA`, request failure
   `UND_ERR_CONNECT_TIMEOUT`.
+- The staging variant against `https://staging.monarchic.io` fails with the
+  same connection-timeout shape.
 
 Do not treat website production as launch-ready until this command passes:
 
@@ -63,10 +66,12 @@ URLs.
 If smoke fails before browser assertions:
 
 1. Confirm DNS for `monarchic.io` resolves from outside the deployment network.
-2. Confirm Vercel has a successful deployment for the current `main` commit.
-3. Confirm the deployment serves `/build-info.json`.
-4. Confirm Vercel environment variables match `env.example`.
-5. Rerun `pnpm smoke:production`.
+2. Confirm the resolved A record points at the intended Vercel project or
+   deployment target.
+3. Confirm Vercel has a successful deployment for the current `main` commit.
+4. Confirm the deployment serves `/build-info.json`.
+5. Confirm Vercel environment variables match `env.example`.
+6. Rerun `pnpm smoke:production`.
 
 Launch evidence should include the target URL, commit SHA, smoke command,
 timestamp, and the JSON check list printed by the smoke script.
