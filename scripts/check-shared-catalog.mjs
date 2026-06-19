@@ -12,24 +12,31 @@ const catalogFiles = [
   "productDetails.ts",
 ];
 
-if (!workspace.sharedCatalogDir) {
-  console.log("skip   shared catalog drift check: sibling shared/product-catalog not found");
-  process.exit(0);
-}
-
 let failed = false;
 
-for (const fileName of catalogFiles) {
-  await checkFile("website", fileName, workspace.websiteDir);
-  if (workspace.webappDir) {
-    await checkFile("monarchic-webapp", fileName, workspace.webappDir);
+if (workspace.sharedCatalogDir) {
+  for (const fileName of catalogFiles) {
+    await checkFile("website", fileName, workspace.websiteDir);
+    if (workspace.webappDir) {
+      await checkFile("monarchic-webapp", fileName, workspace.webappDir);
+    }
   }
+
+  await checkManifest("shared product-catalog", {
+    manifestDir: workspace.sharedCatalogDir,
+    artifactDir: workspace.sharedCatalogDir,
+  });
+} else {
+  console.log("skip   shared catalog byte comparison: sibling shared/product-catalog not found");
 }
 
-await checkManifest("shared product-catalog", { manifestDir: workspace.sharedCatalogDir, artifactDir: workspace.sharedCatalogDir });
 await checkManifest("website", workspace.websiteDir);
 if (workspace.webappDir) {
   await checkManifest("monarchic-webapp", workspace.webappDir);
+}
+await checkBuildInfoDigestMarker("website", workspace.websiteDir);
+if (workspace.webappDir) {
+  await checkBuildInfoDigestMarker("monarchic-webapp", workspace.webappDir);
 }
 
 if (failed) {
@@ -110,6 +117,37 @@ async function checkManifest(label, projectDirOrOptions) {
       `       actual   sha256=${digest(Buffer.from(JSON.stringify(manifest)))}`,
     ].join("\n"),
   );
+}
+
+async function checkBuildInfoDigestMarker(label, projectDir) {
+  const buildInfoPath = resolve(projectDir, "src/pages/build-info.json.ts");
+  const buildInfo = await readFile(buildInfoPath, "utf8");
+  const requiredMarkers = [
+    "catalogManifest",
+    "manifestDigest: catalogManifest.artifactDigest",
+    "artifactSource: catalogManifest.source",
+    "artifactDigest: await catalogArtifactDigest()",
+    "artifactFiles",
+    "artifactFileHashes",
+    "deployment",
+    "VERCEL_GIT_COMMIT_SHA",
+    "VERCEL_GIT_COMMIT_REF",
+    "VERCEL_GIT_REPO_OWNER",
+    "VERCEL_GIT_REPO_SLUG",
+    "VERCEL_ENV",
+    "VERCEL_URL",
+    '"pricing.ts"',
+    '"pricing.generated.json"',
+    '"pricing.coming-soon.json"',
+    '"productDetails.ts"',
+  ];
+  const missing = requiredMarkers.filter((marker) => !buildInfo.includes(marker));
+  if (missing.length === 0) {
+    console.log(`ok     ${label} build-info catalog digest markers`);
+    return;
+  }
+  failed = true;
+  console.error(`missing ${label} build-info catalog digest markers: ${missing.join(", ")}`);
 }
 
 function digest(buffer) {
