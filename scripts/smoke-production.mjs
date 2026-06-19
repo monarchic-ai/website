@@ -13,6 +13,7 @@ const expectedAppBaseUrl = withoutTrailingSlash(
 const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`;
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.CHROMIUM || undefined;
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
+const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 2);
 
 const checks = [];
 const requiredCatalogSlugs = [
@@ -193,13 +194,32 @@ function requireCatalogDigest(payload) {
 }
 
 async function fetchOrThrow(url, options, name) {
-  try {
-    return await fetch(url, options);
-  } catch (error) {
-    const cause = error?.cause?.code ? ` (${error.cause.code})` : "";
-    const diagnostic = await connectionDiagnostic(url);
-    throw new Error(`${name} smoke failed for ${url}: ${error.message}${cause}\n${diagnostic}`);
+  let lastError;
+  for (let attempt = 1; attempt <= fetchAttempts; attempt += 1) {
+    try {
+      const response = await fetch(url, options);
+      if (attempt > 1) {
+        checks.push({ name: `${name} retry`, status: "ok", attempt });
+      }
+      return response;
+    } catch (error) {
+      lastError = error;
+      if (attempt < fetchAttempts) {
+        checks.push({
+          name: `${name} retry`,
+          status: "retrying",
+          attempt,
+          error: error?.cause?.code ?? error.message,
+        });
+        await sleep(750 * attempt);
+      }
+    }
   }
+  const cause = lastError?.cause?.code ? ` (${lastError.cause.code})` : "";
+  const diagnostic = await connectionDiagnostic(url);
+  throw new Error(
+    `${name} smoke failed for ${url} after ${fetchAttempts} attempt(s): ${lastError.message}${cause}\n${diagnostic}`,
+  );
 }
 
 async function checkDns(url) {
@@ -298,6 +318,15 @@ async function expectNoHorizontalOverflow(page) {
 
 function withoutTrailingSlash(value) {
   return value.replace(/\/+$/, "");
+}
+
+function positiveIntEnv(value, fallback) {
+  const parsed = Number.parseInt(value ?? "", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+async function sleep(ms) {
+  await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function arrayOrEmpty(value) {
