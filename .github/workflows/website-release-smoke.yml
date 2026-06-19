@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       website_url:
-        description: "Production website smoke target"
+        description: "Production website smoke target. Use www while apex routing is under investigation."
         required: false
         type: string
-        default: "https://monarchic.io"
+        default: "https://www.monarchic.io"
       expected_canonical_url:
         description: "Expected canonical URL origin"
         required: false

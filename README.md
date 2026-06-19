@@ -36,6 +36,7 @@ and hosted MCP dashboard live in `../monarchic-webapp`.
 - `pnpm preview`
 - `pnpm smoke:local`
 - `pnpm smoke:production`
+- `pnpm smoke:production:www`
 - `pnpm smoke:staging`
 - `pnpm astro -- --help`
 
@@ -119,5 +120,9 @@ live deployment checklist and current smoke evidence.
   `MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL`, which is useful when smoking a
   local preview built with production canonical URLs. Override expected app CTA
   targets with `MONARCHIC_WEBAPP_SMOKE_URL`.
+- `pnpm smoke:production:www` runs the same production gate against
+  `https://www.monarchic.io` while keeping canonical URLs pinned to
+  `https://monarchic.io`. Use it when the apex route is under DNS or edge
+  routing investigation.
 - `dist/` contains generated build output and should be treated as an artifact,
   not as source.

@@ -12,6 +12,7 @@ const requiredText = [
   "staging_website_url",
   "staging_expected_canonical_url",
   "pnpm smoke:production",
+  "https://www.monarchic.io",
   "website-production-smoke-report.json",
   "website-staging-smoke-report.json",
   "MONARCHIC_WEBSITE_SMOKE_URL",
