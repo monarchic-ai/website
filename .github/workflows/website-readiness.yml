@@ -71,6 +71,9 @@ jobs:
       - name: Check release workflow coverage
         run: pnpm check:release-workflow
 
+      - name: Check social preview asset
+        run: pnpm check:social-preview
+
       - name: Build website
         run: pnpm build
 
