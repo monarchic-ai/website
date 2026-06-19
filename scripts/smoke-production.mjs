@@ -34,12 +34,12 @@ try {
 
 async function runSmoke() {
 await checkHttp(`${baseUrl}/`);
-await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
-await checkText(`${baseUrl}/sitemap.xml`, "<urlset", "sitemap.xml");
 await checkBuildInfo(`${baseUrl}/build-info.json`, {
   app: "website",
   requiredCatalogSlugs,
 });
+await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
+await checkText(`${baseUrl}/sitemap.xml`, "<urlset", "sitemap.xml");
 
 const browser = await chromium.launch({
   headless: true,
