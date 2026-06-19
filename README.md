@@ -92,6 +92,10 @@ live deployment checklist and current smoke evidence.
   `src/lib/productDetails.ts` are generated deploy artifacts copied from
   `../shared/product-catalog`. Edit the shared catalog, then run
   `pnpm sync:shared-catalog` from `../monarchic-webapp`.
+- `pnpm check:shared-catalog` compares the website and webapp generated catalog
+  artifacts against `../shared/product-catalog` when the sibling workspace is
+  present. In a standalone website checkout it skips cleanly so Vercel and
+  GitHub can still build the deployable artifact copy.
 - `/build-info.json` exposes a `catalog.artifactDigest` and
   `catalog.artifactFileHashes` for those generated artifacts. The live smoke
   requires this provenance so deployment evidence can tie the public site back
