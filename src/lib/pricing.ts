@@ -1,6 +1,22 @@
+// Catalog of Monarchic plans rendered by the public website and webapp.
+// Product and price data is generated from Stripe into pricing.generated.json;
+// coming-soon plans are maintained in pricing.coming-soon.json.
+
 export type PlanKind = "single-mcp" | "bundle" | "ai";
 export type PlanCadence = "monthly" | "annual";
 export type PlanStatus = "available" | "coming_soon";
+
+// Annual subscriptions are always priced at this multiple of the monthly
+// amount. Centralizing the constant keeps Stripe seeding, the UI, and the
+// pricing invariant check in lock-step.
+export const MONARCHIC_ANNUAL_TO_MONTHLY_MULTIPLIER = 10;
+
+export function deriveAnnualCents(monthlyCents: number): number {
+  if (!Number.isInteger(monthlyCents) || monthlyCents <= 0) {
+    throw new Error(`monthlyCents must be a positive integer (got ${monthlyCents})`);
+  }
+  return monthlyCents * MONARCHIC_ANNUAL_TO_MONTHLY_MULTIPLIER;
+}
 
 export interface PlanPrice {
   cadence: PlanCadence;
@@ -40,8 +56,44 @@ export const comingSoonPlans: CatalogPlan[] = ((comingSoonPlansJson as CatalogPl
   .filter((plan) => !availablePlanSlugs.has(plan.slug));
 export const allPlans: CatalogPlan[] = [...availablePlans, ...comingSoonPlans];
 
-export function findPlanPrice(plan: CatalogPlan, cadence: PlanCadence): PlanPrice | null {
+export function findPlanBySlug(slug: string): CatalogPlan | null {
+  return allPlans.find((plan) => plan.slug === slug) ?? null;
+}
+
+export function findPlanByPriceId(
+  priceId: string,
+): { plan: CatalogPlan; price: PlanPrice } | null {
+  for (const plan of allPlans) {
+    const price = plan.prices.find((p) => p.priceId === priceId);
+    if (price) return { plan, price };
+  }
+  return null;
+}
+
+export function findPlanPrice(
+  plan: CatalogPlan,
+  cadence: PlanCadence,
+): PlanPrice | null {
   return plan.prices.find((price) => price.cadence === cadence) ?? null;
+}
+
+export function resolveDisplayPrice(
+  plan: CatalogPlan,
+  preferredCadence: PlanCadence,
+): { price: PlanPrice; cadence: PlanCadence } | null {
+  const preferred = findPlanPrice(plan, preferredCadence);
+  if (preferred) {
+    return { price: preferred, cadence: preferred.cadence };
+  }
+  const fallback = plan.prices[0];
+  if (!fallback) {
+    return null;
+  }
+  return { price: fallback, cadence: fallback.cadence };
+}
+
+export function planSupportsCadence(plan: CatalogPlan, cadence: PlanCadence): boolean {
+  return plan.prices.some((price) => price.cadence === cadence);
 }
 
 export function formatPriceUSD(priceCents: number): string {
@@ -57,25 +109,6 @@ export function cadenceLabel(cadence: PlanCadence): string {
   return cadence === "annual" ? "/yr" : "/mo";
 }
 
-export function publicPilotFeatureBullet(bullet: string): string {
-  if (bullet === "Cancel anytime through the Stripe billing portal") {
-    return "Pilot access coordinated through the Monarchic app";
-  }
-  if (bullet === "Single subscription, single bill") {
-    return "Single pilot scope and deployment handoff";
-  }
-  if (bullet === "Single subscription when launched") {
-    return "Single pilot scope when launched";
-  }
-  if (bullet === "Every Monarchic MCP, today and future") {
-    return "Every pilot-ready Monarchic MCP";
-  }
-  return bullet;
-}
-
-export function publicPilotDescription(description: string): string {
-  return description.replace(
-    "Join the waitlist and we'll reach out when it's ready to charge for.",
-    "Join the waitlist and we'll reach out when pilot access opens.",
-  );
+export function cadenceFromQueryString(value: string | null | undefined): PlanCadence {
+  return value === "annual" ? "annual" : "monthly";
 }
