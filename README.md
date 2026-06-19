@@ -49,6 +49,8 @@ runs `pnpm smoke:local`.
 The manual release workflow at `.github/workflows/website-release-smoke.yml`
 runs `pnpm smoke:production` against the configured production or staging
 target.
+Use [`docs/release-smoke-runbook.md`](docs/release-smoke-runbook.md) for the
+live deployment checklist and current smoke evidence.
 
 ## Layout
 
