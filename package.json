@@ -16,8 +16,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "smoke:local": "node scripts/smoke-local.mjs",
-    "smoke:production": "node scripts/smoke-production.mjs",
-    "smoke:production:www": "MONARCHIC_WEBSITE_SMOKE_URL=https://www.monarchic.io MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io node scripts/smoke-production.mjs",
+    "smoke:production": "MONARCHIC_WEBSITE_SMOKE_URL=https://www.monarchic.io MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io node scripts/smoke-production.mjs",
+    "smoke:production:www": "pnpm smoke:production",
+    "smoke:production:apex": "node scripts/smoke-production.mjs",
     "smoke:staging": "MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io node scripts/smoke-production.mjs",
     "astro": "astro"
   },

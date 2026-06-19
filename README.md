@@ -37,6 +37,7 @@ and hosted MCP dashboard live in `../monarchic-webapp`.
 - `pnpm smoke:local`
 - `pnpm smoke:production`
 - `pnpm smoke:production:www`
+- `pnpm smoke:production:apex`
 - `pnpm smoke:staging`
 - `pnpm astro -- --help`
 
@@ -113,16 +114,18 @@ live deployment checklist and current smoke evidence.
   `127.0.0.1:4332`, runs the production smoke assertions against that local
   preview, and stops the server. Override the port with
   `MONARCHIC_WEBSITE_LOCAL_PORT`.
-- `pnpm smoke:production` uses Playwright to verify the live site HTTP response,
-  `robots.txt`, `sitemap.xml`, homepage metadata, product pages, research pages,
-  app CTAs, and horizontal overflow. Override the target with
+- `pnpm smoke:production` uses Playwright to verify the live site HTTP
+  response, `robots.txt`, `sitemap.xml`, homepage metadata, product pages,
+  research pages, app CTAs, and horizontal overflow against
+  `https://www.monarchic.io` while keeping canonical URLs pinned to
+  `https://monarchic.io`. Override the target with
   `MONARCHIC_WEBSITE_SMOKE_URL`. Override expected canonical links with
   `MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL`, which is useful when smoking a
   local preview built with production canonical URLs. Override expected app CTA
   targets with `MONARCHIC_WEBAPP_SMOKE_URL`.
-- `pnpm smoke:production:www` runs the same production gate against
-  `https://www.monarchic.io` while keeping canonical URLs pinned to
-  `https://monarchic.io`. Use it when the apex route is under DNS or edge
-  routing investigation.
+- `pnpm smoke:production:www` is an alias for the current production release
+  gate.
+- `pnpm smoke:production:apex` runs the same gate against
+  `https://monarchic.io`. Use it while investigating apex DNS or edge routing.
 - `dist/` contains generated build output and should be treated as an artifact,
   not as source.

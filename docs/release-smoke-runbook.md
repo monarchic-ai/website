@@ -9,16 +9,16 @@ Latest local run date: 2026-06-19 UTC.
 Production website smoke is green on the `www` route. Apex and staging still
 need routing work:
 
-- `pnpm smoke:production:www` against `https://www.monarchic.io` passed on
+- `pnpm smoke:production` against `https://www.monarchic.io` passed on
   2026-06-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
   `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
   research routes. `/build-info.json` reports current website commit
-  `5862b5ed3132c8fd5c15aeebbda2b525eb4516c7` from `monarchic-ai/website` and
+  `2c1f230a2d4f2389cc542c2122d7a90d9895aad1` from `monarchic-ai/website` and
   catalog artifact digest
   `sha256:44d3fddd9c0394d28170059df6796c0ffe0fd3c06cc9652aa45798a909a3b93e`.
-- `pnpm smoke:production` against `https://monarchic.io` reaches the website
+- `pnpm smoke:production:apex` against `https://monarchic.io` reaches the website
   deployment and `/build-info.json` reports commit
-  `5862b5ed3132c8fd5c15aeebbda2b525eb4516c7`, but the apex route then times
+  `2c1f230a2d4f2389cc542c2122d7a90d9895aad1`, but the apex route then times
   out fetching `/robots.txt` with `UND_ERR_CONNECT_TIMEOUT`.
 - The staging variant against `https://staging.monarchic.io` has no DNS target:
   `A=ENODATA`, `AAAA=ENODATA`. The smoke script fails immediately when both
@@ -28,7 +28,7 @@ Keep this command as the current passing production release evidence gate while
 the apex route is under investigation:
 
 ```bash
-pnpm smoke:production:www
+pnpm smoke:production
 ```
 
 ## Production Gate
@@ -53,11 +53,14 @@ Run production locally:
 pnpm smoke:production
 ```
 
-Run the `www` production route while keeping canonical expectations on the apex
-domain:
+`pnpm smoke:production` targets the `www` production route while keeping
+canonical expectations on the apex domain. `pnpm smoke:production:www` is kept
+as a compatibility alias.
+
+Run the apex production route for routing triage:
 
 ```bash
-pnpm smoke:production:www
+pnpm smoke:production:apex
 ```
 
 Run the same gate from GitHub with
@@ -100,7 +103,7 @@ If smoke fails before browser assertions:
 5. Confirm the deployment serves `/robots.txt`, `/sitemap.xml`, and
    `/build-info.json`.
 6. Confirm Vercel environment variables match `env.example`.
-7. Rerun `pnpm smoke:production`.
+7. Rerun `pnpm smoke:production:apex`.
 
 Launch evidence should include the target URL, commit SHA, smoke command,
 timestamp, and the JSON check list printed by the smoke script.
