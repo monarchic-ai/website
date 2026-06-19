@@ -50,7 +50,7 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 
   await checkPage(page, `${baseUrl}/`, async () => {
-    await page.getByRole("heading", { name: "Model Context Built To Run" }).waitFor();
+    await page.getByRole("heading", { name: "Hosted MCPs Built To Run" }).waitFor();
     await page.getByRole("link", { name: "Products" }).first().waitFor();
     await page.getByRole("link", { name: "Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);

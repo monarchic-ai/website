@@ -8,7 +8,7 @@ const checks = [
     label: "homepage launch positioning",
     path: "src/pages/index.astro",
     requiredText: [
-      "Model Context",
+      "Hosted MCPs",
       "Built To Run",
       "hosted MCP routes",
       "account-scoped API access",
