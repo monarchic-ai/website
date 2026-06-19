@@ -40,10 +40,23 @@ function stableStringify(value: unknown): string {
   return JSON.stringify(value);
 }
 
+function envString(value: unknown): string | null {
+  return typeof value === "string" && value.length > 0 ? value : null;
+}
+
 export async function GET() {
   return new Response(
     JSON.stringify({
       app: "website",
+      deployment: {
+        generatedAt: new Date().toISOString(),
+        vercelEnv: envString(import.meta.env.VERCEL_ENV),
+        vercelUrl: envString(import.meta.env.VERCEL_URL),
+        commitSha: envString(import.meta.env.VERCEL_GIT_COMMIT_SHA),
+        commitRef: envString(import.meta.env.VERCEL_GIT_COMMIT_REF),
+        repoOwner: envString(import.meta.env.VERCEL_GIT_REPO_OWNER),
+        repoSlug: envString(import.meta.env.VERCEL_GIT_REPO_SLUG),
+      },
       routes: [
         "/",
         "/products",
