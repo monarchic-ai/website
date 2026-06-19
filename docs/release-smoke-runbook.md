@@ -47,6 +47,10 @@ pnpm smoke:production
 Run the same gate from GitHub with
 `.github/workflows/website-release-smoke.yml`.
 
+Set `MONARCHIC_WEBSITE_SMOKE_REPORT=website-release-smoke-report.json` when
+running in CI or when you need a persisted evidence file. The GitHub workflow
+uploads this report on both pass and fail.
+
 ## Staging Gate
 
 When a staging website domain exists, run:

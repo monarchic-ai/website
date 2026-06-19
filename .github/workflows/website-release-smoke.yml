@@ -36,6 +36,7 @@ jobs:
       MONARCHIC_WEBSITE_SMOKE_URL: ${{ inputs.website_url }}
       MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL: ${{ inputs.expected_canonical_url }}
       MONARCHIC_WEBAPP_SMOKE_URL: ${{ inputs.webapp_url }}
+      MONARCHIC_WEBSITE_SMOKE_REPORT: website-release-smoke-report.json
 
     steps:
       - name: Check out repository
@@ -59,3 +60,11 @@ jobs:
 
       - name: Run production website smoke
         run: pnpm smoke:production
+
+      - name: Upload website smoke report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-release-smoke-report
+          path: website-release-smoke-report.json
+          if-no-files-found: ignore
