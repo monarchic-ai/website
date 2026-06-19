@@ -90,6 +90,35 @@ If smoke fails before browser assertions:
 Launch evidence should include the target URL, commit SHA, smoke command,
 timestamp, and the JSON check list printed by the smoke script.
 
+## Vercel MCP Checks
+
+Use Vercel MCP for production/staging website blockers that need deployment or
+domain inspection.
+
+Codex setup:
+
+```bash
+codex mcp add vercel --url https://mcp.vercel.com
+codex mcp login vercel
+codex mcp list | grep '^vercel'
+```
+
+Expected status after login:
+
+```text
+vercel  https://mcp.vercel.com  enabled  Logged in
+```
+
+For the current website smoke blockers, use Vercel MCP to confirm:
+
+- `monarchic.io` is routed to the `monarchic-ai/website` project
+- the production deployment serves the current `main` commit
+- `/build-info.json` reports the current commit and catalog digest
+- `/robots.txt` and `/sitemap.xml` are served by the same deployment without
+  connect timeouts
+- `staging.monarchic.io` is either configured with DNS/domain routing or
+  excluded from required staging smoke gates
+
 The smoke script prints a JSON report on both pass and fail. Failed reports
 include `status: "failed"`, the checks completed before the error, and a
 redacted error message. Use that report as the release evidence artifact rather
