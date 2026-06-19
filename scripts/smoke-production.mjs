@@ -59,7 +59,7 @@ try {
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
-    await expectAppHref(page, "Request Access", `${expectedAppBaseUrl}/products`);
+    await expectAppHref(page, "Request Pilot", `${expectedAppBaseUrl}/products`);
     await expectNoHorizontalOverflow(page);
   }, "home route");
 

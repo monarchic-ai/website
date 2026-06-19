@@ -71,6 +71,9 @@ jobs:
       - name: Check catalog artifact provenance
         run: pnpm check:catalog-artifact
 
+      - name: Check launch content readiness
+        run: pnpm check:content-readiness
+
       - name: Check release workflow coverage
         run: pnpm check:release-workflow
 

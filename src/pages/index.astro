@@ -57,10 +57,10 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
               Model Context<br />Built To Run
             </h1>
             <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-              Monarchic gives agent teams hosted MCP routes, account-scoped API
-              access, repository intelligence, durable memory, and browser
-              verification without making every deployment invent its own tool
-              layer.
+              Monarchic gives engineering teams hosted MCP routes,
+              account-scoped API access, repository intelligence, durable
+              memory, and browser verification for agents that need governed
+              tools instead of another local demo server.
             </p>
             <div class="mt-8 flex flex-wrap gap-3">
               <a
@@ -79,7 +79,7 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
                 href={`${webappBaseUrl}/products`}
                 class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-xs font-bold uppercase tracking-[0.28em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black"
               >
-                Request Access
+                Request Pilot
               </a>
             </div>
           </div>
@@ -88,9 +88,9 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
             <div class="border-2 border-white bg-black/72 p-5">
               <p class="text-xs font-bold uppercase tracking-[0.32em] text-cyan-200">Hosted MCPs</p>
               <p class="mt-3 text-sm leading-7 text-white/74">
-                BrowserOps, ExplicitMem, RepoIntel, and curated bundles are
-                exposed through account-scoped routes that can be assigned,
-                revoked, and inspected.
+                BrowserOps, ExplicitMem, RepoIntel, and curated bundles ship as
+                account-scoped endpoints with entitlement checks and operational
+                handoff, not loose process snippets.
               </p>
             </div>
             <div class="border-2 border-white bg-black/72 p-5">
@@ -105,8 +105,8 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
               <p class="text-xs font-bold uppercase tracking-[0.32em] text-emerald-200">App Surface</p>
               <p class="mt-3 text-sm leading-7 text-white/74">
                 The app owns signup, account state, API keys, hosted MCP setup,
-                and pilot access so public discovery and production control stay
-                separate.
+                and subscription handoff so public discovery and production
+                control stay separate.
               </p>
             </div>
           </div>
@@ -140,7 +140,8 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Launch Fit</p>
             <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">
-              Built for teams that need agent tools to survive production.
+              Built for teams moving agent tools from scripts to controlled
+              production access.
             </h2>
           </div>
           <div class="grid gap-3 sm:grid-cols-3">
@@ -157,6 +158,49 @@ const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "http
               <p class="mt-2 text-sm leading-6 text-white/68">Deployment, storage, and support scope are coordinated before billing.</p>
             </div>
           </div>
+        </section>
+
+        <section class="grid gap-6 border-t-2 border-white py-10 lg:grid-cols-[1fr_1fr]">
+          <div class="border border-white/46 bg-black/64 p-5">
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-cyan-200">Best Fit</p>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase">
+              Teams with agents already touching real repositories, browsers,
+              and customer workflows.
+            </h2>
+            <p class="mt-4 text-sm leading-7 text-white/70">
+              Start with a pilot when you need hosted tool access, evidence
+              capture, account ownership, and a clear upgrade path before a
+              broader rollout.
+            </p>
+          </div>
+          <div class="border border-white/46 bg-black/64 p-5">
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-amber-200">Not A Fit</p>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase">
+              One-off demos, unaudited automations, or tools that do not need
+              account-level control.
+            </h2>
+            <p class="mt-4 text-sm leading-7 text-white/70">
+              Monarchic is intentionally oriented around hosted operations,
+              receipts, billing handoff, and productized MCP access rather than
+              unmanaged local experimentation.
+            </p>
+          </div>
+        </section>
+
+        <section class="flex flex-col gap-5 border-t-2 border-white py-10 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Pilot Handoff</p>
+            <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase sm:text-4xl">
+              Pick a tool, review its evidence boundary, then request account
+              access in the app.
+            </h2>
+          </div>
+          <a
+            href={`${webappBaseUrl}/products`}
+            class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-xs font-bold uppercase tracking-[0.28em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black"
+          >
+            Request Pilot
+          </a>
         </section>
       </section>
     </main>
