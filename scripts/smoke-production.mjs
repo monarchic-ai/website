@@ -1,5 +1,7 @@
 import { chromium } from "@playwright/test";
 import { resolve4, resolve6 } from "node:dns/promises";
+import { writeFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? "https://monarchic.io");
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
@@ -10,6 +12,7 @@ const expectedAppBaseUrl = withoutTrailingSlash(
 );
 const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`;
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.CHROMIUM || undefined;
+const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
 
 const checks = [];
 const requiredCatalogSlugs = [
@@ -22,9 +25,9 @@ const requiredCatalogSlugs = [
 
 try {
   await runSmoke();
-  printReport("ok");
+  await printReport("ok");
 } catch (error) {
-  printReport("failed", error);
+  await printReport("failed", error);
   throw error;
 }
 
@@ -91,8 +94,8 @@ try {
 }
 }
 
-function printReport(status, error) {
-  console.log(JSON.stringify({
+async function printReport(status, error) {
+  const report = {
     url: baseUrl,
     status,
     checks,
@@ -100,7 +103,12 @@ function printReport(status, error) {
       name: error.name,
       message: error.message,
     } : undefined,
-  }, null, 2));
+  };
+  const json = `${JSON.stringify(report, null, 2)}\n`;
+  console.log(json.trimEnd());
+  if (reportPath) {
+    await writeFile(resolve(process.cwd(), reportPath), json);
+  }
 }
 
 async function checkHttp(url) {
