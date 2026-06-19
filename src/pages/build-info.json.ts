@@ -1,6 +1,7 @@
 import { allPlans, availablePlans, comingSoonPlans } from "../lib/pricing";
 import generatedPlans from "../lib/pricing.generated.json" with { type: "json" };
 import comingSoonPlansJson from "../lib/pricing.coming-soon.json" with { type: "json" };
+import catalogManifest from "../lib/catalog.manifest.json" with { type: "json" };
 import { productDetails } from "../lib/productDetails";
 
 const requiredCatalogSlugs = [
@@ -60,6 +61,7 @@ export async function GET() {
           "pricing.coming-soon.json",
           "productDetails.ts",
         ],
+        artifactFileHashes: catalogManifest.files,
       },
       requiredCatalogSlugs,
       socialImage: "/social-card.png?v=1",

@@ -181,6 +181,7 @@ function requireCatalogDigest(payload) {
     throw new Error(`build-info catalog artifactDigest is missing or invalid: ${digest}`);
   }
   const files = payload.catalog?.artifactFiles;
+  const fileHashes = payload.catalog?.artifactFileHashes;
   for (const fileName of [
     "pricing.generated.json",
     "pricing.coming-soon.json",
@@ -188,6 +189,12 @@ function requireCatalogDigest(payload) {
   ]) {
     if (!Array.isArray(files) || !files.includes(fileName)) {
       throw new Error(`build-info catalog artifactFiles missing ${fileName}`);
+    }
+    const fileHash = Array.isArray(fileHashes)
+      ? fileHashes.find((entry) => entry?.name === fileName)?.sha256
+      : null;
+    if (typeof fileHash !== "string" || !/^[a-f0-9]{64}$/.test(fileHash)) {
+      throw new Error(`build-info catalog artifactFileHashes missing ${fileName}`);
     }
   }
   return digest;
