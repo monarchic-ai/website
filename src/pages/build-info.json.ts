@@ -73,6 +73,8 @@ export async function GET() {
         totalPlans: allPlans.length,
         availablePlans: sortedSlugs(availablePlans),
         comingSoonPlans: sortedSlugs(comingSoonPlans),
+        artifactSource: catalogManifest.source,
+        manifestDigest: catalogManifest.artifactDigest,
         artifactDigest: await catalogArtifactDigest(),
         artifactFiles: [
           "pricing.ts",

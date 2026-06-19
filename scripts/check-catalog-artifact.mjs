@@ -25,8 +25,9 @@ const expectedFiles = await Promise.all(catalogFiles.map(async (fileName) => {
   };
 }));
 const expectedManifest = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   source: "shared/product-catalog",
+  artifactDigest: `sha256:${sha256(stableStringify(expectedFiles))}`,
   files: expectedFiles,
 };
 
@@ -47,9 +48,17 @@ for (const file of expectedFiles) {
   }
 }
 
+if (/^sha256:[a-f0-9]{64}$/.test(manifest.artifactDigest ?? "")) {
+  ok(`artifactDigest ${manifest.artifactDigest}`);
+} else {
+  fail("catalog.manifest.json missing aggregate artifactDigest");
+}
+
 const buildInfo = await readFile(buildInfoPath, "utf8");
 for (const marker of [
   "catalogManifest",
+  "manifestDigest: catalogManifest.artifactDigest",
+  "artifactSource: catalogManifest.source",
   "artifactDigest: await catalogArtifactDigest()",
   "artifactFiles",
   "artifactFileHashes",
@@ -89,6 +98,19 @@ async function readJson(path) {
 
 function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
+}
+
+function stableStringify(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableStringify(item)).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    return `{${Object.entries(value)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, item]) => `${JSON.stringify(key)}:${stableStringify(item)}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
 }
 
 function ok(message) {
