@@ -100,7 +100,8 @@ Codex setup:
 ```bash
 codex mcp add vercel --url https://mcp.vercel.com
 codex mcp login vercel
-codex mcp list | grep '^vercel'
+cd ../monarchic-webapp
+pnpm check:vercel-mcp
 ```
 
 Expected status after login:
@@ -108,6 +109,9 @@ Expected status after login:
 ```text
 vercel  https://mcp.vercel.com  enabled  Logged in
 ```
+
+`pnpm check:vercel-mcp` is an operator-local check. It is intentionally not
+part of CI because it verifies the signed-in Codex user's OAuth state.
 
 For the current website smoke blockers, use Vercel MCP to confirm:
 
