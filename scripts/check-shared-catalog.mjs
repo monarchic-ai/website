@@ -26,6 +26,7 @@ for (const fileName of catalogFiles) {
   }
 }
 
+await checkManifest("shared product-catalog", { manifestDir: workspace.sharedCatalogDir, artifactDir: workspace.sharedCatalogDir });
 await checkManifest("website", workspace.websiteDir);
 if (workspace.webappDir) {
   await checkManifest("monarchic-webapp", workspace.webappDir);
@@ -66,8 +67,14 @@ async function checkFile(label, fileName, projectDir) {
   );
 }
 
-async function checkManifest(label, projectDir) {
-  const manifestPath = resolve(projectDir, "src/lib/catalog.manifest.json");
+async function checkManifest(label, projectDirOrOptions) {
+  const options = typeof projectDirOrOptions === "string"
+    ? {
+        manifestDir: resolve(projectDirOrOptions, "src/lib"),
+        artifactDir: resolve(projectDirOrOptions, "src/lib"),
+      }
+    : projectDirOrOptions;
+  const manifestPath = resolve(options.manifestDir, "catalog.manifest.json");
   let manifest;
   try {
     manifest = JSON.parse(await readFile(manifestPath, "utf8"));
@@ -80,7 +87,7 @@ async function checkManifest(label, projectDir) {
   const files = await Promise.all(catalogFiles.map(async (fileName) => ({
     name: fileName,
     sha256: createHash("sha256")
-      .update(await readFile(resolve(projectDir, "src/lib", fileName)))
+      .update(await readFile(resolve(options.artifactDir, fileName)))
       .digest("hex"),
   })));
   const expected = {
