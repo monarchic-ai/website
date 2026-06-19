@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "source": "shared/product-catalog",
+  "files": [
+    {
+      "name": "pricing.generated.json",
+      "sha256": "f0dfc459ce6a48f5ec0cc4b6a64f30d954d63bd6b7db030ee9d3dde4047d241b"
+    },
+    {
+      "name": "pricing.coming-soon.json",
+      "sha256": "5f9be25c7e03cb1ecd870630d1416a4264d8c7872d7b93fc8188aa8d47efda2a"
+    },
+    {
+      "name": "productDetails.ts",
+      "sha256": "24ee9c3d832a8743d9ccdb372c115b0945f0c9222d3beea71acd4f039038d2bf"
+    }
+  ]
+}
