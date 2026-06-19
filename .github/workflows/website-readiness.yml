@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: check
-    if: github.event_name == 'workflow_dispatch' && inputs.run_smoke
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_smoke)
 
     steps:
       - name: Check out repository
