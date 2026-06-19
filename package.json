@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
+    "check:catalog-artifact": "node scripts/check-catalog-artifact.mjs",
     "check:release-workflow": "node scripts/check-release-workflow.mjs",
     "check:social-preview": "node scripts/check-social-preview.mjs",
     "build": "astro build",
