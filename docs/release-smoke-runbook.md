@@ -9,8 +9,9 @@ Latest local run date: 2026-06-19 UTC.
 Production and staging smoke are not green yet:
 
 - `pnpm smoke:production` against `https://monarchic.io` reaches the domain
-  and the homepage `HEAD /` returns `200`, but `robots.txt` times out. Current
-  diagnostic: `A=216.198.79.1`, `AAAA=ENODATA`, request failure
+  and the homepage `HEAD /` returns `200`. The latest run reached
+  `/robots.txt`, then `/sitemap.xml` timed out. Current diagnostic:
+  `A=216.198.79.1`, `AAAA=ENODATA`, request failure
   `UND_ERR_CONNECT_TIMEOUT`.
 - The staging variant against `https://staging.monarchic.io` has no DNS target:
   `A=ENODATA`, `AAAA=ENODATA`. The smoke script fails immediately when both
@@ -50,6 +51,11 @@ Run the same gate from GitHub with
 Set `MONARCHIC_WEBSITE_SMOKE_REPORT=website-release-smoke-report.json` when
 running in CI or when you need a persisted evidence file. The GitHub workflow
 uploads this report on both pass and fail.
+
+Network-level fetch failures are retried twice by default. Set
+`MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS=1` to disable retries when debugging a
+single request, or raise it temporarily when a provider is known to be
+intermittent. HTTP responses such as `404` and `500` are not retried.
 
 ## Staging Gate
 
