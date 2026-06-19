@@ -13,7 +13,7 @@ const expectedAppBaseUrl = withoutTrailingSlash(
 const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`;
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.CHROMIUM || undefined;
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
-const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 2);
+const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 4);
 
 const checks = [];
 const requiredCatalogSlugs = [
