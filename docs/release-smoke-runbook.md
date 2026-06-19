@@ -75,3 +75,8 @@ If smoke fails before browser assertions:
 
 Launch evidence should include the target URL, commit SHA, smoke command,
 timestamp, and the JSON check list printed by the smoke script.
+
+The smoke script prints a JSON report on both pass and fail. Failed reports
+include `status: "failed"`, the checks completed before the error, and a
+redacted error message. Use that report as the release evidence artifact rather
+than relying only on the stack trace.

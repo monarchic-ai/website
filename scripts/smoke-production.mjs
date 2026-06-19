@@ -20,6 +20,15 @@ const requiredCatalogSlugs = [
   "monarchic-ai",
 ];
 
+try {
+  await runSmoke();
+  printReport("ok");
+} catch (error) {
+  printReport("failed", error);
+  throw error;
+}
+
+async function runSmoke() {
 await checkHttp(`${baseUrl}/`);
 await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
 await checkText(`${baseUrl}/sitemap.xml`, "<urlset", "sitemap.xml");
@@ -80,8 +89,19 @@ try {
 } finally {
   await browser.close();
 }
+}
 
-console.log(JSON.stringify({ url: baseUrl, checks }, null, 2));
+function printReport(status, error) {
+  console.log(JSON.stringify({
+    url: baseUrl,
+    status,
+    checks,
+    error: error ? {
+      name: error.name,
+      message: error.message,
+    } : undefined,
+  }, null, 2));
+}
 
 async function checkHttp(url) {
   await checkDns(url);
