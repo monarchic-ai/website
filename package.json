@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
+    "check:release-workflow": "node scripts/check-release-workflow.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "smoke:local": "node scripts/smoke-local.mjs",

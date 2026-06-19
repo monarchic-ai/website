@@ -68,6 +68,9 @@ jobs:
       - name: Run Astro diagnostics
         run: pnpm check
 
+      - name: Check release workflow coverage
+        run: pnpm check:release-workflow
+
       - name: Build website
         run: pnpm build
 
