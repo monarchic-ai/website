@@ -162,7 +162,26 @@ async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
     status: "ok",
     app: payload.app,
     totalPlans: payload.catalog?.totalPlans,
+    catalogArtifactDigest: requireCatalogDigest(payload),
   });
+}
+
+function requireCatalogDigest(payload) {
+  const digest = payload.catalog?.artifactDigest;
+  if (typeof digest !== "string" || !/^sha256:[a-f0-9]{64}$/.test(digest)) {
+    throw new Error(`build-info catalog artifactDigest is missing or invalid: ${digest}`);
+  }
+  const files = payload.catalog?.artifactFiles;
+  for (const fileName of [
+    "pricing.generated.json",
+    "pricing.coming-soon.json",
+    "productDetails.ts",
+  ]) {
+    if (!Array.isArray(files) || !files.includes(fileName)) {
+      throw new Error(`build-info catalog artifactFiles missing ${fileName}`);
+    }
+  }
+  return digest;
 }
 
 async function fetchOrThrow(url, options, name) {

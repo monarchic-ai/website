@@ -92,6 +92,9 @@ live deployment checklist and current smoke evidence.
   `src/lib/productDetails.ts` are generated deploy artifacts copied from
   `../shared/product-catalog`. Edit the shared catalog, then run
   `pnpm sync:shared-catalog` from `../monarchic-webapp`.
+- `/build-info.json` exposes a `catalog.artifactDigest` for those generated
+  artifacts. The live smoke requires this digest so deployment evidence can tie
+  the public site back to the exact catalog artifact set.
 - `vercel.json` defines the expected static deployment settings. Set
   `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` and `PUBLIC_MONARCHIC_WEBAPP_BASE_URL`
   from `env.example` in Vercel before deploying.
