@@ -18,6 +18,7 @@ function sortedSlugs(plans: { slug: string }[]): string[] {
 
 async function catalogArtifactDigest(): Promise<string> {
   const payload = stableStringify({
+    "pricing.ts": manifestFileHash("pricing.ts"),
     "pricing.generated.json": generatedPlans,
     "pricing.coming-soon.json": comingSoonPlansJson,
     "productDetails.ts": productDetails,
@@ -42,6 +43,10 @@ function stableStringify(value: unknown): string {
 
 function envString(value: unknown): string | null {
   return typeof value === "string" && value.length > 0 ? value : null;
+}
+
+function manifestFileHash(name: string): string | null {
+  return catalogManifest.files.find((file) => file.name === name)?.sha256 ?? null;
 }
 
 export async function GET() {
@@ -70,6 +75,7 @@ export async function GET() {
         comingSoonPlans: sortedSlugs(comingSoonPlans),
         artifactDigest: await catalogArtifactDigest(),
         artifactFiles: [
+          "pricing.ts",
           "pricing.generated.json",
           "pricing.coming-soon.json",
           "productDetails.ts",

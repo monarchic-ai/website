@@ -218,6 +218,7 @@ function requireCatalogDigest(payload) {
   const files = payload.catalog?.artifactFiles;
   const fileHashes = payload.catalog?.artifactFileHashes;
   for (const fileName of [
+    "pricing.ts",
     "pricing.generated.json",
     "pricing.coming-soon.json",
     "productDetails.ts",

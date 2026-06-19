@@ -4,11 +4,10 @@ import SeoHead from "../../components/SeoHead.astro";
 import "../../styles/global.css";
 import {
   allPlans,
-  publicPilotDescription,
-  publicPilotFeatureBullet,
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
+import { publicPilotDescription, publicPilotFeatureBullet } from "../../lib/publicPilotCopy";
 import { getProductDetail } from "../../lib/productDetails";
 
 const webappBaseUrl = import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io";

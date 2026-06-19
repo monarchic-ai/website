@@ -3,6 +3,10 @@
   "source": "shared/product-catalog",
   "files": [
     {
+      "name": "pricing.ts",
+      "sha256": "506013332382b91fccb63794d2987cf93b29b72dc07eaf92c453fb8e99129024"
+    },
+    {
       "name": "pricing.generated.json",
       "sha256": "f0dfc459ce6a48f5ec0cc4b6a64f30d954d63bd6b7db030ee9d3dde4047d241b"
     },
