@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "check": "astro check",
     "check:catalog-artifact": "node scripts/check-catalog-artifact.mjs",
+    "check:shared-catalog": "node scripts/check-shared-catalog.mjs",
     "check:content-readiness": "node scripts/check-content-readiness.mjs",
     "check:release-workflow": "node scripts/check-release-workflow.mjs",
     "check:social-preview": "node scripts/check-social-preview.mjs",

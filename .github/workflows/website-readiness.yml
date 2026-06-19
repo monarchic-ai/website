@@ -71,6 +71,9 @@ jobs:
       - name: Check catalog artifact provenance
         run: pnpm check:catalog-artifact
 
+      - name: Check shared catalog drift
+        run: pnpm check:shared-catalog
+
       - name: Check launch content readiness
         run: pnpm check:content-readiness
 
