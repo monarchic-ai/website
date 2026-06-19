@@ -68,6 +68,9 @@ jobs:
       - name: Run Astro diagnostics
         run: pnpm check
 
+      - name: Check catalog artifact provenance
+        run: pnpm check:catalog-artifact
+
       - name: Check release workflow coverage
         run: pnpm check:release-workflow
 
