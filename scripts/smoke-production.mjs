@@ -200,17 +200,24 @@ async function checkDns(url) {
     resolve4(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
     resolve6(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
   ]);
-  checks.push({
+  const ipv4Records = Array.isArray(ipv4) ? ipv4 : [];
+  const ipv6Records = Array.isArray(ipv6) ? ipv6 : [];
+  const errors = [
+    !Array.isArray(ipv4) ? `A:${ipv4.error}` : null,
+    !Array.isArray(ipv6) ? `AAAA:${ipv6.error}` : null,
+  ].filter(Boolean);
+  const result = {
     name: "DNS",
-    status: "ok",
+    status: ipv4Records.length > 0 || ipv6Records.length > 0 ? "ok" : "failed",
     hostname: target.hostname,
-    ipv4: Array.isArray(ipv4) ? ipv4 : [],
-    ipv6: Array.isArray(ipv6) ? ipv6 : [],
-    errors: [
-      !Array.isArray(ipv4) ? `A:${ipv4.error}` : null,
-      !Array.isArray(ipv6) ? `AAAA:${ipv6.error}` : null,
-    ].filter(Boolean),
-  });
+    ipv4: ipv4Records,
+    ipv6: ipv6Records,
+    errors,
+  };
+  checks.push(result);
+  if (result.status === "failed") {
+    throw new Error(`DNS smoke failed for ${target.hostname}: no A or AAAA records\n${JSON.stringify(result)}`);
+  }
 }
 
 async function connectionDiagnostic(url) {
