@@ -6,18 +6,20 @@ This runbook covers the public website live smoke gate.
 
 Latest local run date: 2026-06-19 UTC.
 
-Production and staging smoke are not green yet:
+Production website smoke is green. Staging smoke is not green yet:
 
-- `pnpm smoke:production` against `https://monarchic.io` reaches the domain
-  and the homepage `HEAD /` returns `200`. The latest run reached
-  `/robots.txt`, then `/sitemap.xml` timed out. Current diagnostic:
-  `A=216.198.79.1`, `AAAA=ENODATA`, request failure
-  `UND_ERR_CONNECT_TIMEOUT`.
+- `pnpm smoke:production` against `https://monarchic.io` passed on
+  2026-06-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
+  `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
+  research routes. `/build-info.json` reports current website commit
+  `a9879f71d27f0a7374cb57cb1d089a8a5998e830` from `monarchic-ai/website` and
+  catalog artifact digest
+  `sha256:44d3fddd9c0394d28170059df6796c0ffe0fd3c06cc9652aa45798a909a3b93e`.
 - The staging variant against `https://staging.monarchic.io` has no DNS target:
   `A=ENODATA`, `AAAA=ENODATA`. The smoke script fails immediately when both
   record families are missing.
 
-Do not treat website production as launch-ready until this command passes:
+Keep this command as the production release evidence gate:
 
 ```bash
 pnpm smoke:production
@@ -52,7 +54,7 @@ Set `MONARCHIC_WEBSITE_SMOKE_REPORT=website-release-smoke-report.json` when
 running in CI or when you need a persisted evidence file. The GitHub workflow
 uploads this report on both pass and fail.
 
-Network-level fetch failures are retried twice by default. Set
+Network-level fetch failures are retried four times by default. Set
 `MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS=1` to disable retries when debugging a
 single request, or raise it temporarily when a provider is known to be
 intermittent. HTTP responses such as `404` and `500` are not retried.
@@ -107,7 +109,7 @@ pnpm check:vercel-mcp
 Expected status after login:
 
 ```text
-vercel  https://mcp.vercel.com  enabled  Logged in
+vercel  https://mcp.vercel.com  enabled  OAuth
 ```
 
 `pnpm check:vercel-mcp` is an operator-local check. It is intentionally not
