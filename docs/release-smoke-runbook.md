@@ -12,14 +12,12 @@ need routing work:
 - `pnpm smoke:production` against `https://www.monarchic.io` passed on
   2026-06-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
   `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
-  research routes. `/build-info.json` reports current website commit
-  `2c1f230a2d4f2389cc542c2122d7a90d9895aad1` from `monarchic-ai/website` and
-  catalog artifact digest
+  research routes. `/build-info.json` reports the deployed website commit from
+  `monarchic-ai/website` and catalog artifact digest
   `sha256:44d3fddd9c0394d28170059df6796c0ffe0fd3c06cc9652aa45798a909a3b93e`.
 - `pnpm smoke:production:apex` against `https://monarchic.io` reaches the website
-  deployment and `/build-info.json` reports commit
-  `2c1f230a2d4f2389cc542c2122d7a90d9895aad1`, but the apex route then times
-  out fetching `/robots.txt` with `UND_ERR_CONNECT_TIMEOUT`.
+  deployment and `/build-info.json`, but the apex route then times out fetching
+  `/robots.txt` with `UND_ERR_CONNECT_TIMEOUT`.
 - The staging variant against `https://staging.monarchic.io` has no DNS target:
   `A=ENODATA`, `AAAA=ENODATA`. The smoke script fails immediately when both
   record families are missing.
