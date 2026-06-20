@@ -47,7 +47,7 @@ const researchCards = [
     <meta name="generator" content={Astro.generator} />
     <SeoHead
       title="Research | Monarchic AI"
-      description="Monarchic AI research pages for ExplicitMem, RepoIntel, and BrowserOps benchmark scope, receipts, and reliability notes."
+      description="Benchmark notes, receipts, and reliability checks for Monarchic MCP products."
       path="/research"
     />
   </head>
@@ -83,13 +83,12 @@ const researchCards = [
             Product Research
           </p>
           <h1 class="max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
-            Systems Under<br />Measurement
+            Benchmarks<br />With Receipts
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Monarchic research pages track product-specific benchmark runs,
-            reproduced artifacts, and scoring scope. Each page explains what the
-            product is, what the current benchmark measures, and where the score
-            should not be overread.
+            These pages show the tests behind the products: what ran, what
+            passed, and where the results stop. The point is not to make every
+            score sound impressive. It is to make the evidence readable.
           </p>
         </div>
 
@@ -133,10 +132,10 @@ const researchCards = [
         <section class="my-10 border-2 border-white bg-black/70 p-5 sm:p-6">
           <h2 class="text-xl font-extrabold uppercase">Scope</h2>
           <p class="mt-4 max-w-5xl text-sm leading-7 text-white/74">
-            These are benchmark-scoped research notes, not broad product claims.
-            Scores are useful for tracking concrete capabilities and regressions
-            inside a named harness. Product pages should be updated when datasets,
-            scoring rules, or runtime boundaries change.
+            These notes are scoped to specific benchmarks. A score can show
+            progress inside a harness, but it does not prove every real-world
+            use case. Product pages should change when datasets, scoring rules,
+            or runtime boundaries change.
           </p>
         </section>
       </section>

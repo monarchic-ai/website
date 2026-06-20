@@ -1,6 +1,6 @@
 export function publicCatalogFeatureBullet(bullet: string): string {
   if (bullet === "Cancel anytime through the Stripe billing portal") {
-    return "Manage billing through the Monarchic app";
+    return "Manage billing from the account surface";
   }
   if (bullet === "Single subscription, single bill") {
     return "Single subscription and account-scoped access";
