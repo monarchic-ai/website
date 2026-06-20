@@ -3,8 +3,6 @@ import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import "../../styles/global.css";
 
-const webappBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
-
 const researchCards = [
   {
     name: "ExplicitMem",
@@ -77,7 +75,6 @@ const researchCards = [
           <nav class="flex flex-wrap items-center gap-2">
             <a href="/products" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Products</a>
             <a href="/research" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Research</a>
-            <a href={webappBaseUrl} class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">App</a>
           </nav>
         </header>
 
