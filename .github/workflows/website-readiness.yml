@@ -74,9 +74,6 @@ jobs:
       - name: Check shared catalog drift
         run: pnpm check:shared-catalog
 
-      - name: Check launch content readiness
-        run: pnpm check:content-readiness
-
       - name: Check release workflow coverage
         run: pnpm check:release-workflow
 

@@ -57,6 +57,7 @@ try {
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
     await page.getByRole("link", { name: "Join Waitlist" }).first().waitFor();
+    await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "home route");
 
@@ -65,6 +66,7 @@ try {
     await page.getByRole("link", { name: "Developer Bundle" }).waitFor();
     await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
+    await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "products route");
 
@@ -74,18 +76,21 @@ try {
     await page.getByRole("link", { name: "Open Research" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/mcp-browserops`);
     await page.getByRole("link", { name: "View Catalog" }).waitFor();
+    await expectNoExternalAppLinks(page);
   }, "BrowserOps product route");
 
   await checkPage(page, `${baseUrl}/research`, async () => {
     await page.getByRole("heading", { name: "Systems Under Measurement" }).waitFor();
     await page.getByRole("link", { name: "Open Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
+    await expectNoExternalAppLinks(page);
   }, "research route");
 
   await checkPage(page, `${baseUrl}/research/repointel`, async () => {
     await page.getByRole("heading", { name: "Repository Intelligence Bench" }).waitFor();
     await page.getByText("Overall score").waitFor();
     await expectMeta(page, "og:type", "article");
+    await expectNoExternalAppLinks(page);
   }, "RepoIntel research route");
 } finally {
   await browser.close();
@@ -363,6 +368,17 @@ async function expectNoHorizontalOverflow(page) {
   }));
   if (overflow.scrollWidth > overflow.clientWidth + 1 || overflow.bodyScrollWidth > overflow.clientWidth + 1) {
     throw new Error(`Horizontal overflow detected: ${JSON.stringify(overflow)}`);
+  }
+}
+
+async function expectNoExternalAppLinks(page) {
+  const appHrefs = await page.locator("a[href]").evaluateAll((anchors) =>
+    anchors
+      .map((node) => node instanceof HTMLAnchorElement ? node.href : "")
+      .filter((href) => /(^|\/\/)app\.monarchic\.io\/|monarchic-webapp/i.test(href)),
+  );
+  if (appHrefs.length > 0) {
+    throw new Error(`Unexpected website links to webapp: ${appHrefs.join(", ")}`);
   }
 }
 
