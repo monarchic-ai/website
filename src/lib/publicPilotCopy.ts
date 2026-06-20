@@ -15,8 +15,5 @@ export function publicPilotFeatureBullet(bullet: string): string {
 }
 
 export function publicPilotDescription(description: string): string {
-  return description.replace(
-    "Join the waitlist and we'll reach out when it's ready to charge for.",
-    "Join the waitlist and we'll reach out when pilot access opens.",
-  );
+  return description;
 }

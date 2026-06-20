@@ -6,7 +6,7 @@ export interface ProductDetail {
   outcomes: string[];
   workflows: string[];
   proof: string;
-  vpsPrice: string;
+  accessModel: string;
 }
 
 export const productDetails: Record<string, ProductDetail> = {
@@ -22,7 +22,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Tool-call preflight", "Prompt scanning", "Redaction review", "Provenance verification"],
     proof: "Strict MCP input schemas and policy tests cover each public firewall tool.",
-    vpsPrice: "$199-$599/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-browserops": {
     slug: "mcp-browserops",
@@ -36,7 +36,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Observe URL", "Verify URL", "Screenshot receipt", "Console and network checks"],
     proof: "Deterministic CLI, MCP, stdio, contract, receipt, and doctor tests pass.",
-    vpsPrice: "$149-$499/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-businessmodel": {
     slug: "mcp-businessmodel",
@@ -50,7 +50,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Company synthesis", "Execution gate review", "Blueprint creation", "Research-backed reports"],
     proof: "Integration coverage verifies draft blocking, approved gates, blueprint creation, and stored resources.",
-    vpsPrice: "$299-$999/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-explicitmem": {
     slug: "mcp-explicitmem",
@@ -64,7 +64,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Memory write", "Memory lookup", "Curated recall", "State handoff"],
     proof: "Feature-complete for the bounded memory product surface.",
-    vpsPrice: "$29-$79/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-leadgenerator": {
     slug: "mcp-leadgenerator",
@@ -78,7 +78,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Validate enrichment", "Generate lead targets", "Audit report", "Campaign package"],
     proof: "Tests isolate state and verify validated enrichment gates, linked receipts, reports, and audit resources.",
-    vpsPrice: "$199-$799/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-proofpack": {
     slug: "mcp-proofpack",
@@ -92,7 +92,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Hash artifact", "Create receipt", "Verify receipt", "Export evidence pack"],
     proof: "Black-box stdio MCP tests cover initialize, tools/list, hash, create, verify, errors, and recovery.",
-    vpsPrice: "$99-$299/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-pty": {
     slug: "mcp-pty",
@@ -106,7 +106,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Start session", "Write input", "Read output", "Close session"],
     proof: "Feature-complete for controlled PTY operations.",
-    vpsPrice: "$49-$149/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-releaseops": {
     slug: "mcp-releaseops",
@@ -120,7 +120,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Release readiness", "Changelog scope", "Artifact manifest", "Export release pack"],
     proof: "Feature-complete for the current release workflow surface.",
-    vpsPrice: "$149-$399/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-repointel": {
     slug: "mcp-repointel",
@@ -134,7 +134,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Repo summary", "Generated wiki", "Targeted evidence lookup", "Workflow discovery"],
     proof: "Feature-complete as the repository intelligence backbone used across this workspace.",
-    vpsPrice: "$99-$299/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-seo": {
     slug: "mcp-seo",
@@ -148,7 +148,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Route discovery", "Live page inspection", "Internal link planning", "Ranking pipeline"],
     proof: "Feature-complete for deterministic SEO workflows.",
-    vpsPrice: "$149-$499/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-verified": {
     slug: "mcp-verified",
@@ -162,7 +162,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Plan patch", "Apply bounded change", "Run validation", "Emit proof receipt"],
     proof: "Feature-complete for verified patch workflows.",
-    vpsPrice: "$99-$249/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-outreachconnectors": {
     slug: "mcp-outreachconnectors",
@@ -176,7 +176,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Connector status", "Policy preflight", "Capture template", "Delivery receipt normalization"],
     proof: "MCP server and stdio tests pass for status, preflight, template, send refusal, and receipt recording.",
-    vpsPrice: "$99-$399/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-monarchic": {
     slug: "mcp-monarchic",
@@ -190,7 +190,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Execute intent", "Review intent", "Run summary", "Infra launch", "Orchestrated campaign"],
     proof: "Full suite passes: 89 unit tests and 15 stdio integration tests.",
-    vpsPrice: "$499-$1,999/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-create-project": {
     slug: "mcp-create-project",
@@ -204,7 +204,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Create project JSON", "Create project text", "Template selection", "Failure reporting"],
     proof: "Wrapper tests cover JSON, text, CLI failure propagation, and invalid JSON.",
-    vpsPrice: "$49-$199/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-repo-fleet": {
     slug: "mcp-repo-fleet",
@@ -218,7 +218,7 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Fleet JSON", "Fleet text", "Repo inventory", "Failure reporting"],
     proof: "Wrapper tests cover JSON, text, CLI failure propagation, and invalid JSON.",
-    vpsPrice: "$99-$399/mo self-hosted",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
   },
 };
 
