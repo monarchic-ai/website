@@ -8,7 +8,12 @@ import {
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
-import { publicCatalogDescription, publicCatalogFeatureBullet } from "../../lib/publicCatalogCopy";
+import {
+  publicCatalogDescription,
+  publicCatalogDisplayName,
+  publicCatalogFeatureBullet,
+  publicCatalogTagline,
+} from "../../lib/publicCatalogCopy";
 import { getProductDetail } from "../../lib/productDetails";
 
 export function getStaticPaths() {
@@ -80,6 +85,8 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
 
 const badge = kindBadge(plan.kind);
 const productDetail = getProductDetail(plan.slug);
+const publicDisplayName = publicCatalogDisplayName(plan.slug, plan.displayName);
+const publicTagline = publicCatalogTagline(plan.slug, plan.tagline);
 ---
 
 <html lang="en">
@@ -91,8 +98,8 @@ const productDetail = getProductDetail(plan.slug);
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <SeoHead
-      title={`${plan.displayName} | Monarchic AI`}
-      description={`${plan.displayName}: ${plan.tagline}. ${publicCatalogDescription(plan.description)}`}
+      title={`${publicDisplayName} | Monarchic LLC`}
+      description={`${publicDisplayName}: ${publicTagline}. ${publicCatalogDescription(plan.description)}`}
       path={`/products/${plan.slug}`}
     />
   </head>
@@ -104,8 +111,8 @@ const productDetail = getProductDetail(plan.slug);
       <section class="relative z-10 mx-auto max-w-6xl px-6 py-8 sm:py-12">
         <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white pb-6">
           <a href="/" class="inline-flex items-center gap-3">
-            <img src="/favicon.svg" alt="Monarchic AI logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">Monarchic AI</span>
+            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
+            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">Monarchic LLC</span>
           </a>
           <nav class="flex flex-wrap items-center gap-2">
             <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
@@ -114,7 +121,7 @@ const productDetail = getProductDetail(plan.slug);
         </header>
 
         <p class="mt-10 text-xs font-semibold uppercase tracking-[0.32em] text-white/54">
-          <a href="/products" class="hover:text-white">Products</a> / {plan.displayName}
+          <a href="/products" class="hover:text-white">Products</a> / {publicDisplayName}
         </p>
 
         <section class="mt-6 grid gap-8 lg:grid-cols-[1fr_340px]">
@@ -123,9 +130,9 @@ const productDetail = getProductDetail(plan.slug);
               {badge.label}
             </span>
             <h1 class="mt-5 max-w-4xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
-              {plan.displayName}
+              {publicDisplayName}
             </h1>
-            <p class="mt-6 max-w-3xl text-lg leading-8 text-white/80">{plan.tagline}</p>
+            <p class="mt-6 max-w-3xl text-lg leading-8 text-white/80">{publicTagline}</p>
             <p class="mt-5 max-w-3xl text-base leading-8 text-white/72">{publicCatalogDescription(plan.description)}</p>
 
             {productDetail !== null && (
@@ -226,7 +233,7 @@ const productDetail = getProductDetail(plan.slug);
                   {bundlesIncluding.map((bundle) => {
                     return (
                       <a href={`/products/${bundle.slug}`} class="group border border-white/50 bg-black/60 p-4 transition hover:bg-white hover:text-black">
-                        <p class="text-sm font-extrabold uppercase">{bundle.displayName}</p>
+                        <p class="text-sm font-extrabold uppercase">{publicCatalogDisplayName(bundle.slug, bundle.displayName)}</p>
                         <p class="mt-2 text-xs uppercase tracking-[0.18em] text-white/56 group-hover:text-black/56">
                           Coming soon
                         </p>
@@ -243,8 +250,8 @@ const productDetail = getProductDetail(plan.slug);
                 <div class="mt-4 grid gap-3 sm:grid-cols-2">
                   {bundleMcps.map((mcp) => (
                     <a href={`/products/${mcp.slug}`} class="group border border-white/50 bg-black/60 p-4 transition hover:bg-white hover:text-black">
-                      <p class="text-sm font-extrabold uppercase">{mcp.displayName}</p>
-                      <p class="mt-2 text-xs leading-5 text-white/60 group-hover:text-black/60">{mcp.tagline}</p>
+                      <p class="text-sm font-extrabold uppercase">{publicCatalogDisplayName(mcp.slug, mcp.displayName)}</p>
+                      <p class="mt-2 text-xs leading-5 text-white/60 group-hover:text-black/60">{publicCatalogTagline(mcp.slug, mcp.tagline)}</p>
                     </a>
                   ))}
                 </div>
@@ -258,7 +265,9 @@ const productDetail = getProductDetail(plan.slug);
                   {bundleResearch.map(({ mcp, research }) => (
                     <a href={research.href} class="group border border-white/50 bg-black/60 p-4 transition hover:bg-white hover:text-black">
                       <p class="text-sm font-extrabold uppercase">{research.label}</p>
-                      <p class="mt-2 text-xs leading-5 text-white/60 group-hover:text-black/60">{mcp.displayName}</p>
+                      <p class="mt-2 text-xs leading-5 text-white/60 group-hover:text-black/60">
+                        {publicCatalogDisplayName(mcp.slug, mcp.displayName)}
+                      </p>
                     </a>
                   ))}
                 </div>

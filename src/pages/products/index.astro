@@ -7,7 +7,12 @@ import {
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
-import { publicCatalogDescription, publicCatalogFeatureBullet } from "../../lib/publicCatalogCopy";
+import {
+  publicCatalogDescription,
+  publicCatalogDisplayName,
+  publicCatalogFeatureBullet,
+  publicCatalogTagline,
+} from "../../lib/publicCatalogCopy";
 import { getProductDetail } from "../../lib/productDetails";
 
 const MONARCHIC_AI_SLUG = "monarchic-ai";
@@ -70,8 +75,8 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <SeoHead
-      title="Products | Monarchic AI"
-      description="Monarchic hosted MCP products and bundles. Access is coming soon while account controls and hosted routes are tested."
+      title="Products | Monarchic LLC"
+      description="Monarchic LLC product catalog for MCP tools, bundles, and the longer-term Monarchic platform direction."
       path="/products"
     />
   </head>
@@ -83,8 +88,8 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
       <section class="relative z-10 mx-auto max-w-7xl px-6 py-8 sm:py-12">
         <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white pb-6">
           <a href="/" class="inline-flex items-center gap-3">
-            <img src="/favicon.svg" alt="Monarchic AI logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">Monarchic AI</span>
+            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
+            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">Monarchic LLC</span>
           </a>
           <nav class="flex flex-wrap items-center gap-2">
             <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
@@ -93,21 +98,22 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
         </header>
 
         <div class="py-12">
-          <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">Hosted MCP catalog</p>
+          <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">Product catalog</p>
           <h1 class="max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
-            MCP Tools<br />Coming Soon
+            MCP Catalog<br />Coming Soon
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Compare the MCP servers and bundles we plan to host. Each product
-            page explains who it is for, what it does, and what evidence we have
-            before access opens.
+            The current focus is the MCP catalog: tools and bundles for agent
+            workflows around code, memory, browser checks, and review evidence.
+            Monarchic, the larger autonomous development platform, is the
+            direction behind the catalog, not the offer today.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
               Coming Soon
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              We are not publishing fixed prices yet. Hosted access is coming
+              We are not publishing fixed prices yet. Product access is coming
               soon, and waitlist updates will go out before access opens.
             </p>
           </div>
@@ -130,8 +136,8 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Waitlist</p>
             <p class="mt-3 text-sm leading-7 text-white/74">
-              Access is coming soon while hosted routes, API keys, and billing
-              are tested.
+              Access is coming soon while hosted routes, API keys, account
+              controls, and billing are tested.
             </p>
           </div>
         </section>
@@ -142,11 +148,13 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
               <span class={`inline-flex border px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.28em] ${kindBadge("ai").classes}`}>
                 Flagship
               </span>
-              <h2 class="mt-4 text-3xl font-extrabold uppercase sm:text-5xl">{monarchicAi.displayName}</h2>
+              <h2 class="mt-4 text-3xl font-extrabold uppercase sm:text-5xl">
+                {publicCatalogDisplayName(monarchicAi.slug, monarchicAi.displayName)}
+              </h2>
                 <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{publicCatalogDescription(monarchicAi.description)}</p>
                 <p class="mt-3 max-w-3xl text-sm leading-7 text-amber-100/80">
-                  This tier stays waitlisted until autonomous run control,
-                  billing, and review artifacts are ready together.
+                  This larger platform is not available yet. The MCP catalog is
+                  the current launch focus.
                 </p>
             </div>
             <div class="flex items-center">
@@ -187,9 +195,11 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
                       )}
                     </div>
                     <h3 class="mt-4 text-2xl font-extrabold uppercase">
-                      <a href={`/products/${plan.slug}`}>{plan.displayName}</a>
+                      <a href={`/products/${plan.slug}`}>{publicCatalogDisplayName(plan.slug, plan.displayName)}</a>
                     </h3>
-                    <p class="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-white/58 group-hover:text-black/58">{plan.tagline}</p>
+                    <p class="mt-2 text-sm font-semibold uppercase tracking-[0.18em] text-white/58 group-hover:text-black/58">
+                      {publicCatalogTagline(plan.slug, plan.tagline)}
+                    </p>
                     {getProductDetail(plan.slug) !== null && (
                       <p class="mt-4 inline-flex w-fit border border-white/36 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white/58 group-hover:border-black/36 group-hover:text-black/58">
                         {getProductDetail(plan.slug)?.category}

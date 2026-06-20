@@ -1,6 +1,6 @@
 # website
 
-Public company website for Monarchic AI.
+Public company website for Monarchic LLC.
 
 ## Current Scope
 
