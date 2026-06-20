@@ -100,6 +100,7 @@ async function printReport(status, error) {
     url: baseUrl,
     status,
     checks,
+    failureCategory: error ? classifyFailure(error.message) : undefined,
     error: error ? {
       name: error.name,
       message: error.message,
@@ -241,6 +242,18 @@ function requireCatalogDigest(payload) {
     }
   }
   return digest;
+}
+
+function classifyFailure(message) {
+  if (/DNS smoke failed/i.test(message)) return "dns";
+  if (/build-info smoke failed|missing the build marker|deployment commit expected/i.test(message)) {
+    return "deployment-marker";
+  }
+  if (/robots\.txt|sitemap\.xml|UND_ERR_CONNECT_TIMEOUT|fetch failed/i.test(message)) {
+    return "static-asset-connectivity";
+  }
+  if (/waitlist|alreadyOnWaitlist/i.test(message)) return "waitlist";
+  return "unknown";
 }
 
 async function fetchOrThrow(url, options, name) {
