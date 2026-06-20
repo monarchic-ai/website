@@ -10,7 +10,6 @@ import {
 import { publicCatalogDescription, publicCatalogFeatureBullet } from "../../lib/publicCatalogCopy";
 import { getProductDetail } from "../../lib/productDetails";
 
-const webappBaseUrl = import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io";
 const MONARCHIC_AI_SLUG = "monarchic-ai";
 const monarchicAi = allPlans.find((plan) => plan.slug === MONARCHIC_AI_SLUG) ?? null;
 
@@ -60,9 +59,6 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
   }
 }
 
-function appPlanUrl(plan: CatalogPlan): string {
-  return `${webappBaseUrl.replace(/\/$/, "")}/products/${plan.slug}`;
-}
 ---
 
 <html lang="en">
@@ -75,7 +71,7 @@ function appPlanUrl(plan: CatalogPlan): string {
     <meta name="generator" content={Astro.generator} />
     <SeoHead
       title="Products | Monarchic AI"
-      description="Monarchic hosted MCP products, bundles, and immediate app access for production agent systems."
+      description="Monarchic hosted MCP products, bundles, and coming-soon access for production agent systems."
       path="/products"
     />
   </head>
@@ -93,7 +89,6 @@ function appPlanUrl(plan: CatalogPlan): string {
           <nav class="flex flex-wrap items-center gap-2">
             <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
             <a href="/products" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Products</a>
-            <a href={webappBaseUrl.replace(/\/$/, "")} class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">App</a>
           </nav>
         </header>
 
@@ -103,18 +98,17 @@ function appPlanUrl(plan: CatalogPlan): string {
             Tools Agents<br />Can Actually Use
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Compare the hosted MCPs and bundles that are ready to buy and use.
+            Compare the hosted MCPs and bundles preparing for launch access.
             Each product page states the buyer, workflow, evidence boundary, and
-            app access path before you start from the Monarchic app.
+            app access path before availability opens in the Monarchic app.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
-              Checkout Access
+              Coming Soon
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              We are not publishing fixed prices on the public site yet.
-              Available products are purchased in the app, with hosted access
-              attached to the account immediately after checkout.
+              We are not publishing fixed prices yet. Hosted access is coming
+              soon, and launch notifications will go through the app waitlist.
             </p>
           </div>
         </div>
@@ -134,10 +128,10 @@ function appPlanUrl(plan: CatalogPlan): string {
             </p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">App Checkout</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Launch Waitlist</p>
             <p class="mt-3 text-sm leading-7 text-white/74">
-              Buy in the app and use the account dashboard for API keys,
-              hosted MCP setup, and billing.
+              Launch access is coming soon while hosted access, API keys, and
+              billing are tested.
             </p>
           </div>
         </section>
@@ -157,10 +151,10 @@ function appPlanUrl(plan: CatalogPlan): string {
             </div>
             <div class="flex items-center">
               <a
-                href={appPlanUrl(monarchicAi)}
+                href={`/products/${monarchicAi.slug}`}
                 class="inline-flex w-full items-center justify-center border-2 border-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.26em] transition hover:bg-white hover:text-black"
               >
-                Join Waitlist
+                View Status
               </a>
             </div>
           </section>
@@ -219,7 +213,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      {plan.status === "available" ? "Pricing Shown In App" : "Purchase Access TBD"}
+                      Coming Soon
                     </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">
@@ -230,8 +224,8 @@ function appPlanUrl(plan: CatalogPlan): string {
                           {researchByPlanSlug[plan.slug].label}
                         </a>
                       )}
-                      <a href={appPlanUrl(plan)} class="inline-flex items-center justify-center border border-white bg-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] text-black transition hover:bg-black hover:text-white">
-                        {plan.status === "available" ? "Buy In App" : "Waitlist"}
+                      <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white bg-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] text-black transition hover:bg-black hover:text-white">
+                        Status
                       </a>
                     </div>
                   </article>

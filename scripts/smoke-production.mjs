@@ -7,9 +7,6 @@ const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? 
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
-const expectedAppBaseUrl = withoutTrailingSlash(
-  process.env.MONARCHIC_WEBAPP_SMOKE_URL ?? process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io",
-);
 const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`;
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.CHROMIUM || undefined;
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
@@ -59,7 +56,7 @@ try {
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
-    await expectAppHref(page, "Buy In App", `${expectedAppBaseUrl}/products`);
+    await page.getByRole("link", { name: "Join Waitlist" }).first().waitFor();
     await expectNoHorizontalOverflow(page);
   }, "home route");
 
@@ -76,7 +73,7 @@ try {
     await page.getByText("Browser QA").first().waitFor();
     await page.getByRole("link", { name: "Open Research" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/mcp-browserops`);
-    await expectAppHref(page, "Buy In App", `${expectedAppBaseUrl}/products/mcp-browserops`);
+    await page.getByRole("link", { name: "View Catalog" }).waitFor();
   }, "BrowserOps product route");
 
   await checkPage(page, `${baseUrl}/research`, async () => {
@@ -355,16 +352,6 @@ async function expectMeta(page, key, expected) {
   });
   if (value !== expected) {
     throw new Error(`Expected ${key} to be ${expected}, got ${value}`);
-  }
-}
-
-async function expectAppHref(page, linkName, expected) {
-  const href = await page.getByRole("link", { name: linkName }).first().evaluate((node) => {
-    if (node instanceof HTMLAnchorElement) return node.href.replace(/\/$/, "");
-    return "";
-  });
-  if (href !== withoutTrailingSlash(expected)) {
-    throw new Error(`Expected ${linkName} href to be ${expected}, got ${href}`);
   }
 }
 

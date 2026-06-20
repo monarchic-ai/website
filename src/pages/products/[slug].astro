@@ -15,7 +15,6 @@ export function getStaticPaths() {
   return allPlans.map((plan) => ({ params: { slug: plan.slug } }));
 }
 
-const webappBaseUrl = import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io";
 const { slug } = Astro.params;
 const plan = allPlans.find((candidate) => candidate.slug === slug);
 if (!plan) {
@@ -79,10 +78,6 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
   }
 }
 
-function appPlanUrl(target: CatalogPlan): string {
-  return `${webappBaseUrl.replace(/\/$/, "")}/products/${target.slug}`;
-}
-
 const badge = kindBadge(plan.kind);
 const productDetail = getProductDetail(plan.slug);
 ---
@@ -115,7 +110,6 @@ const productDetail = getProductDetail(plan.slug);
           <nav class="flex flex-wrap items-center gap-2">
             <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
             <a href="/products" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Products</a>
-            <a href={webappBaseUrl.replace(/\/$/, "")} class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">App</a>
           </nav>
         </header>
 
@@ -153,8 +147,8 @@ const productDetail = getProductDetail(plan.slug);
 
             <section class="mt-8 grid gap-3 border-2 border-white bg-black/64 p-5 md:grid-cols-3">
               <div>
-                <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/50">Checkout Step</p>
-                <p class="mt-3 text-sm leading-6 text-white/72">Buy in the app so tenant, billing, and route access are created together.</p>
+                <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/50">Launch Step</p>
+                <p class="mt-3 text-sm leading-6 text-white/72">Hosted access is coming soon while tenant, billing, and route access are tested together.</p>
               </div>
               <div>
                 <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/50">Evidence Step</p>
@@ -234,7 +228,7 @@ const productDetail = getProductDetail(plan.slug);
                       <a href={`/products/${bundle.slug}`} class="group border border-white/50 bg-black/60 p-4 transition hover:bg-white hover:text-black">
                         <p class="text-sm font-extrabold uppercase">{bundle.displayName}</p>
                         <p class="mt-2 text-xs uppercase tracking-[0.18em] text-white/56 group-hover:text-black/56">
-                  Available in app checkout
+                  Coming soon in the app
                         </p>
                       </a>
                     );
@@ -273,27 +267,26 @@ const productDetail = getProductDetail(plan.slug);
           </div>
 
           <aside class="h-fit border-2 border-white bg-black/74 p-5">
-            <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/54">App Checkout</p>
+            <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/54">Coming Soon</p>
             {isComingSoon ? (
               <>
-                <p class="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-amber-200">Purchase access TBD</p>
-                <p class="mt-4 text-sm leading-6 text-white/66">Join the app waitlist for this product.</p>
+                <p class="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-amber-200">Launch access TBD</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">Launch access is coming soon for this product.</p>
               </>
             ) : (
               <>
                 <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">
-                  Buy and use immediately
+                  Launch access coming soon
                 </p>
                 <p class="mt-4 text-sm leading-6 text-white/66">
-                  We do not publish fixed pricing on the public site yet.
-                  Available products are purchased in the app and attached to
-                  your account after checkout.
+                  We do not publish fixed pricing yet. Hosted access is coming
+                  soon while the webapp is tested.
                 </p>
               </>
             )}
             <div class="mt-6 grid gap-3">
-              <a href={appPlanUrl(plan)} class="inline-flex items-center justify-center border-2 border-white bg-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-white">
-                {isComingSoon ? "Join Waitlist" : "Buy In App"}
+              <a href="/products" class="inline-flex items-center justify-center border-2 border-white bg-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-white">
+                View Catalog
               </a>
               <a href="/products" class="inline-flex items-center justify-center border border-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] transition hover:bg-white hover:text-black">
                 Compare Plans

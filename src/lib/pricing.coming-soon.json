@@ -4,7 +4,7 @@
     "slug": "monarchic-ai",
     "displayName": "Monarchic AI",
     "tagline": "Full autonomous Monarchic — coming soon",
-    "description": "The full Monarchic agent system on top of the hosted MCP stack. Autonomous, observable, infrastructure-backed agent runs with the entire Monarchic toolchain wired in. Join the waitlist and we'll reach out when purchase access opens.",
+    "description": "The full Monarchic agent system on top of the hosted MCP stack. Autonomous, observable, infrastructure-backed agent runs with the entire Monarchic toolchain wired in. Join the waitlist and we'll reach out when launch access opens.",
     "featureBullets": [
       "Everything in the launch MCP stack",
       "Autonomous Monarchic agent runs",
@@ -270,7 +270,7 @@
     "featureBullets": [
       "BusinessModel and LeadGenerator",
       "Single subscription when launched",
-      "Purchase access TBD"
+      "Launch access TBD"
     ],
     "includedMcpSlugs": [
       "mcp-businessmodel",
@@ -303,7 +303,7 @@
     "featureBullets": [
       "RepoIntel, BusinessModel, and LeadGenerator",
       "Single subscription when launched",
-      "Purchase access TBD"
+      "Launch access TBD"
     ],
     "includedMcpSlugs": [
       "mcp-repointel",
@@ -337,7 +337,7 @@
     "featureBullets": [
       "Every Monarchic MCP when launched",
       "Single subscription when launched",
-      "Purchase access TBD"
+      "Launch access TBD"
     ],
     "includedMcpSlugs": [
       "mcp-agentfirewall",
