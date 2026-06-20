@@ -45,6 +45,22 @@ const browser = await chromium.launch({
 
 try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  let waitlistRequests = 0;
+  await page.route("**/v1/marketplace/waitlist", async (route) => {
+    waitlistRequests += 1;
+    const body = route.request().postDataJSON();
+    if (body.email !== "smoke+website@monarchic.ai") {
+      throw new Error(`unexpected waitlist email: ${body.email}`);
+    }
+    if (body.slug !== "monarchic-ai") {
+      throw new Error(`unexpected waitlist slug: ${body.slug}`);
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ accepted: true, alreadyOnWaitlist: false }),
+    });
+  });
 
   await checkPage(page, `${baseUrl}/`, async () => {
     await page.getByRole("heading", { name: "MCP Tools For Agent Work" }).waitFor();
@@ -69,6 +85,19 @@ try {
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "products route");
+
+  await checkPage(page, `${baseUrl}/waitlist`, async () => {
+    await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
+    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
+    await page.getByLabel("Email").fill("smoke+website@monarchic.ai");
+    await page.getByRole("button", { name: "Join waitlist" }).click();
+    await page.getByText("Thanks. You're on the waitlist.").waitFor();
+    if (waitlistRequests !== 1) {
+      throw new Error(`expected one waitlist request, got ${waitlistRequests}`);
+    }
+    await expectNoExternalAppLinks(page);
+    await expectNoHorizontalOverflow(page);
+  }, "waitlist route");
 
   await checkPage(page, `${baseUrl}/products/mcp-browserops`, async () => {
     await page.getByRole("heading", { name: "BrowserOps MCP" }).waitFor();
