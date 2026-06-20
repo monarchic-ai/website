@@ -74,6 +74,9 @@ export async function GET() {
         availablePlans: sortedSlugs(availablePlans),
         comingSoonPlans: sortedSlugs(comingSoonPlans),
         artifactSource: catalogManifest.source,
+        artifactGenerated: catalogManifest.generatedArtifact,
+        artifactGeneratedBy: catalogManifest.generatedBy,
+        artifactDeployableCopies: catalogManifest.deployableCopies,
         manifestDigest: catalogManifest.artifactDigest,
         artifactDigest: await catalogArtifactDigest(),
         artifactFiles: [
