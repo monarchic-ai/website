@@ -7,7 +7,7 @@ import {
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
-import { publicPilotDescription, publicPilotFeatureBullet } from "../../lib/publicPilotCopy";
+import { publicCatalogDescription, publicCatalogFeatureBullet } from "../../lib/publicCatalogCopy";
 import { getProductDetail } from "../../lib/productDetails";
 
 const webappBaseUrl = import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io";
@@ -75,7 +75,7 @@ function appPlanUrl(plan: CatalogPlan): string {
     <meta name="generator" content={Astro.generator} />
     <SeoHead
       title="Products | Monarchic AI"
-      description="Monarchic hosted MCP products, bundles, and pilot access for production agent systems."
+      description="Monarchic hosted MCP products, bundles, and immediate app access for production agent systems."
       path="/products"
     />
   </head>
@@ -103,19 +103,18 @@ function appPlanUrl(plan: CatalogPlan): string {
             Tools Agents<br />Can Actually Use
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Compare the hosted MCPs and bundles that are ready for pilot use.
+            Compare the hosted MCPs and bundles that are ready to buy and use.
             Each product page states the buyer, workflow, evidence boundary, and
-            setup path before you request access in the Monarchic app.
+            app access path before you start from the Monarchic app.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
-              Pilot Terms
+              Checkout Access
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              Pricing is confirmed during pilot setup because deployment,
-              storage, evaluation, and support needs vary by account. Public
-              published plans come after those cost baselines are measured
-              across real installs.
+              We are not publishing fixed prices on the public site yet.
+              Available products are purchased in the app, with hosted access
+              attached to the account immediately after checkout.
             </p>
           </div>
         </div>
@@ -135,10 +134,10 @@ function appPlanUrl(plan: CatalogPlan): string {
             </p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Pilot Handoff</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">App Checkout</p>
             <p class="mt-3 text-sm leading-7 text-white/74">
-              Request access in the app and Monarchic will confirm scope,
-              environment, and account setup.
+              Buy in the app and use the account dashboard for API keys,
+              hosted MCP setup, and billing.
             </p>
           </div>
         </section>
@@ -150,7 +149,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                 Flagship
               </span>
               <h2 class="mt-4 text-3xl font-extrabold uppercase sm:text-5xl">{monarchicAi.displayName}</h2>
-                <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{publicPilotDescription(monarchicAi.description)}</p>
+                <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">{publicCatalogDescription(monarchicAi.description)}</p>
                 <p class="mt-3 max-w-3xl text-sm leading-7 text-amber-100/80">
                   This tier is intentionally waitlisted until autonomous run
                   control, billing, and evidence handoff are ready together.
@@ -202,7 +201,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                         {getProductDetail(plan.slug)?.category}
                       </p>
                     )}
-                    <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicPilotDescription(plan.description)}</p>
+                    <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicCatalogDescription(plan.description)}</p>
                     {getProductDetail(plan.slug) !== null && (
                       <p class="mt-3 text-sm leading-6 text-white/72 group-hover:text-black/72">
                         <span class="font-bold uppercase">Best for:</span> {getProductDetail(plan.slug)?.buyer}
@@ -213,14 +212,14 @@ function appPlanUrl(plan: CatalogPlan): string {
                         {plan.featureBullets.slice(0, 3).map((bullet) => (
                           <li class="flex gap-2">
                             <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white group-hover:bg-black"></span>
-                            <span>{publicPilotFeatureBullet(bullet)}</span>
+                            <span>{publicCatalogFeatureBullet(bullet)}</span>
                           </li>
                         ))}
                       </ul>
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      {plan.status === "available" ? "Pricing Confirmed During Setup" : "Pilot Access TBD"}
+                      {plan.status === "available" ? "Pricing Shown In App" : "Purchase Access TBD"}
                     </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">
@@ -232,7 +231,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                         </a>
                       )}
                       <a href={appPlanUrl(plan)} class="inline-flex items-center justify-center border border-white bg-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] text-black transition hover:bg-black hover:text-white">
-                        {plan.status === "available" ? "Request Pilot" : "Waitlist"}
+                        {plan.status === "available" ? "Buy In App" : "Waitlist"}
                       </a>
                     </div>
                   </article>

@@ -59,7 +59,7 @@ try {
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
-    await expectAppHref(page, "Request Pilot", `${expectedAppBaseUrl}/products`);
+    await expectAppHref(page, "Buy In App", `${expectedAppBaseUrl}/products`);
     await expectNoHorizontalOverflow(page);
   }, "home route");
 
@@ -76,7 +76,7 @@ try {
     await page.getByText("Browser QA").first().waitFor();
     await page.getByRole("link", { name: "Open Research" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/mcp-browserops`);
-    await expectAppHref(page, "Request Pilot", `${expectedAppBaseUrl}/products/mcp-browserops`);
+    await expectAppHref(page, "Buy In App", `${expectedAppBaseUrl}/products/mcp-browserops`);
   }, "BrowserOps product route");
 
   await checkPage(page, `${baseUrl}/research`, async () => {
