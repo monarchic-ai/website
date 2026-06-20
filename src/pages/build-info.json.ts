@@ -65,6 +65,7 @@ export async function GET() {
       routes: [
         "/",
         "/products",
+        "/waitlist",
         "/research",
         "/robots.txt",
         "/sitemap.xml",
