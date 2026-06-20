@@ -98,8 +98,14 @@ async function checkManifest(label, projectDirOrOptions) {
       .digest("hex"),
   })));
   const expected = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     source: "shared/product-catalog",
+    generatedArtifact: true,
+    generatedBy: "monarchic-webapp/scripts/sync-shared-catalog.mjs",
+    deployableCopies: [
+      "monarchic-webapp/src/lib",
+      "website/src/lib",
+    ],
     artifactDigest: `sha256:${createHash("sha256").update(stableStringify(files)).digest("hex")}`,
     files,
   };
@@ -126,6 +132,9 @@ async function checkBuildInfoDigestMarker(label, projectDir) {
     "catalogManifest",
     "manifestDigest: catalogManifest.artifactDigest",
     "artifactSource: catalogManifest.source",
+    "artifactGenerated: catalogManifest.generatedArtifact",
+    "artifactGeneratedBy: catalogManifest.generatedBy",
+    "artifactDeployableCopies: catalogManifest.deployableCopies",
     "artifactDigest: await catalogArtifactDigest()",
     "artifactFiles",
     "artifactFileHashes",

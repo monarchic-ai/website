@@ -25,8 +25,14 @@ const expectedFiles = await Promise.all(catalogFiles.map(async (fileName) => {
   };
 }));
 const expectedManifest = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   source: "shared/product-catalog",
+  generatedArtifact: true,
+  generatedBy: "monarchic-webapp/scripts/sync-shared-catalog.mjs",
+  deployableCopies: [
+    "monarchic-webapp/src/lib",
+    "website/src/lib",
+  ],
   artifactDigest: `sha256:${sha256(stableStringify(expectedFiles))}`,
   files: expectedFiles,
 };
@@ -59,6 +65,9 @@ for (const marker of [
   "catalogManifest",
   "manifestDigest: catalogManifest.artifactDigest",
   "artifactSource: catalogManifest.source",
+  "artifactGenerated: catalogManifest.generatedArtifact",
+  "artifactGeneratedBy: catalogManifest.generatedBy",
+  "artifactDeployableCopies: catalogManifest.deployableCopies",
   "artifactDigest: await catalogArtifactDigest()",
   "artifactFiles",
   "artifactFileHashes",

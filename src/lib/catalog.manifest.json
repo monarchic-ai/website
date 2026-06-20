@@ -1,6 +1,12 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "source": "shared/product-catalog",
+  "generatedArtifact": true,
+  "generatedBy": "monarchic-webapp/scripts/sync-shared-catalog.mjs",
+  "deployableCopies": [
+    "monarchic-webapp/src/lib",
+    "website/src/lib"
+  ],
   "artifactDigest": "sha256:44baeb5a7d067547e69127aca8ab9c0dbdfa87e6ace3fbcb9852d4c6993a1c90",
   "files": [
     {
