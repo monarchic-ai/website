@@ -47,11 +47,11 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 
   await checkPage(page, `${baseUrl}/`, async () => {
-    await page.getByRole("heading", { name: "Hosted MCPs Built To Run" }).waitFor();
+    await page.getByRole("heading", { name: "MCP Servers Without The Ops" }).waitFor();
     await page.getByRole("link", { name: "Products" }).first().waitFor();
     await page.getByRole("link", { name: "Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-    await expectMeta(page, "og:title", "Monarchic AI | Hosted MCPs for production agents");
+    await expectMeta(page, "og:title", "Monarchic AI | Hosted MCPs for agent teams");
     await expectMeta(page, "og:image", expectedSocialImageUrl);
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");
@@ -62,7 +62,7 @@ try {
   }, "home route");
 
   await checkPage(page, `${baseUrl}/products`, async () => {
-    await page.getByRole("heading", { name: "Tools Agents Can Actually Use" }).waitFor();
+    await page.getByRole("heading", { name: "MCP Tools Coming Soon" }).waitFor();
     await page.getByRole("link", { name: "Developer Bundle" }).waitFor();
     await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
@@ -80,7 +80,7 @@ try {
   }, "BrowserOps product route");
 
   await checkPage(page, `${baseUrl}/research`, async () => {
-    await page.getByRole("heading", { name: "Systems Under Measurement" }).waitFor();
+    await page.getByRole("heading", { name: "Benchmarks With Receipts" }).waitFor();
     await page.getByRole("link", { name: "Open Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
     await expectNoExternalAppLinks(page);
