@@ -109,12 +109,12 @@ function appPlanUrl(plan: CatalogPlan): string {
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
-              Pilot Pricing
+              Pilot Terms
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              Pricing is quoted during the pilot phase because deployment,
+              Pricing is confirmed during pilot setup because deployment,
               storage, evaluation, and support needs vary by account. Public
-              self-serve plans come after those cost baselines are measured
+              published plans come after those cost baselines are measured
               across real installs.
             </p>
           </div>
@@ -220,7 +220,7 @@ function appPlanUrl(plan: CatalogPlan): string {
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      {plan.status === "available" ? "Custom Pilot Pricing" : "Pricing TBD"}
+                      {plan.status === "available" ? "Pricing Confirmed During Setup" : "Pilot Access TBD"}
                     </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">

@@ -46,7 +46,7 @@ const checks = [
     requiredText: [
       "Tools Agents",
       "Can Actually Use",
-      "Pilot Pricing",
+      "Pilot Terms",
       "How To Choose",
       "Bundle Fit",
       "Pilot Handoff",
@@ -54,7 +54,23 @@ const checks = [
       "Join Waitlist",
       "Research",
       "App",
-      "Custom Pilot Pricing",
+      "Pricing Confirmed During Setup",
+    ],
+  },
+  {
+    label: "product detail source copy",
+    path: "src/lib/productDetails.ts",
+    requiredText: [
+      "accessModel",
+      "Hosted on Monarchic-managed infrastructure",
+    ],
+  },
+  {
+    label: "coming soon catalog copy",
+    path: "src/lib/pricing.coming-soon.json",
+    requiredText: [
+      "pilot access opens",
+      "Pilot access terms TBD",
     ],
   },
   {
@@ -75,10 +91,31 @@ const checks = [
   },
 ];
 
+const forbiddenText = [
+  `Self-${"Hosted"}`,
+  `self-${"hosted"}`,
+  `vps${"Price"}`,
+  `Custom Pilot ${"Pricing"}`,
+  `Pricing ${"TBD"}`,
+  `$${"199"}`,
+  `$${"149"}`,
+  `$${"299"}`,
+  `$${"29"}`,
+  `$${"99"}`,
+  `$${"49"}`,
+  `$${"499"}`,
+];
+
 let failed = false;
 
 for (const check of checks) {
   const content = await readFile(resolve(process.cwd(), check.path), "utf8");
+  for (const marker of forbiddenText) {
+    if (content.includes(marker)) {
+      failed = true;
+      console.error(`forbidden ${check.label}: ${marker} (${check.path})`);
+    }
+  }
   for (const marker of check.requiredText) {
     if (content.includes(marker)) {
       console.log(`ok     ${check.label}: ${marker}`);

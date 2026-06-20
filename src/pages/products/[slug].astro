@@ -141,8 +141,8 @@ const productDetail = getProductDetail(plan.slug);
                   <p class="mt-2 text-sm font-bold uppercase leading-5">{productDetail.category}</p>
                 </div>
                 <div class="border border-white/40 bg-black/54 p-4">
-                  <p class="text-[0.65rem] font-bold uppercase tracking-[0.24em] text-white/48">Self-Hosted Range</p>
-                  <p class="mt-2 text-sm font-bold uppercase leading-5">{productDetail.vpsPrice}</p>
+                  <p class="text-[0.65rem] font-bold uppercase tracking-[0.24em] text-white/48">Access Model</p>
+                  <p class="mt-2 text-sm font-bold uppercase leading-5">{productDetail.accessModel}</p>
                 </div>
                 <div class="border border-white/40 bg-black/54 p-4">
                   <p class="text-[0.65rem] font-bold uppercase tracking-[0.24em] text-white/48">Buyer</p>
@@ -234,7 +234,7 @@ const productDetail = getProductDetail(plan.slug);
                       <a href={`/products/${bundle.slug}`} class="group border border-white/50 bg-black/60 p-4 transition hover:bg-white hover:text-black">
                         <p class="text-sm font-extrabold uppercase">{bundle.displayName}</p>
                         <p class="mt-2 text-xs uppercase tracking-[0.18em] text-white/56 group-hover:text-black/56">
-                          Custom pilot pricing
+                  Pilot scope quote
                         </p>
                       </a>
                     );
@@ -273,21 +273,21 @@ const productDetail = getProductDetail(plan.slug);
           </div>
 
           <aside class="h-fit border-2 border-white bg-black/74 p-5">
-            <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/54">Pricing</p>
+            <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/54">Pilot Scope</p>
             {isComingSoon ? (
               <>
-                <p class="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-amber-200">Pricing TBD</p>
+                <p class="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-amber-200">Pilot access TBD</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Join the app waitlist for this product.</p>
               </>
             ) : (
               <>
                 <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">
-                  Custom Pilot Pricing
+                  Pricing confirmed during pilot setup
                 </p>
                 <p class="mt-4 text-sm leading-6 text-white/66">
-                  Pricing is quoted during the pilot phase after deployment
-                  shape, storage needs, evaluation scope, and support coverage
-                  are known.
+                  We do not publish fixed pricing yet. Scope, expected usage,
+                  storage needs, evaluation boundary, and support coverage are
+                  confirmed before any paid pilot is opened.
                 </p>
               </>
             )}
