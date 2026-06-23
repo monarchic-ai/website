@@ -318,6 +318,18 @@ async function fetchOrThrow(url, options, name) {
 
 async function checkDns(url) {
   const target = new URL(url);
+  if (target.hostname === "localhost" || target.hostname === "127.0.0.1" || target.hostname === "::1") {
+    checks.push({
+      name: "DNS",
+      status: "ok",
+      hostname: target.hostname,
+      ipv4: target.hostname === "127.0.0.1" ? ["127.0.0.1"] : [],
+      ipv6: target.hostname === "::1" ? ["::1"] : [],
+      errors: [],
+      loopback: true,
+    });
+    return;
+  }
   const [ipv4, ipv6] = await Promise.all([
     resolve4(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
     resolve6(target.hostname).catch((error) => ({ error: error.code ?? error.message })),
