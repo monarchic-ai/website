@@ -1,10 +1,39 @@
 [
   {
     "kind": "single-mcp",
+    "slug": "mcp-browserops",
+    "displayName": "BrowserOps MCP",
+    "tagline": "Browser evidence and UI verification",
+    "description": "Browser observation, screenshots, interaction checks, and reviewable UI evidence for agents that need to validate web apps.",
+    "featureBullets": [
+      "Hosted MCP route for BrowserOps",
+      "Scoped API keys for production agents",
+      "Cancel anytime through the Stripe billing portal"
+    ],
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1TlV40GmcDOdOLjF4NYSUb6w",
+        "lookupKey": "monarchic_mcp_browserops_test_monthly",
+        "priceCents": 900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1TlV41GmcDOdOLjFIPdqvYa3",
+        "lookupKey": "monarchic_mcp_browserops_test_annual",
+        "priceCents": 9000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
     "slug": "mcp-businessmodel",
     "displayName": "BusinessModel MCP",
     "tagline": "Business model design + analysis tools",
-    "description": "Structured business-model exploration, canvas analysis, and competitive teardown — surfaced as MCP tools for product and strategy agents.",
+    "description": "Structured business-model exploration, canvas analysis, and competitive teardown - surfaced as MCP tools for product and strategy agents.",
     "featureBullets": [
       "Hosted MCP route for BusinessModel",
       "Scoped API keys for production agents",
@@ -14,14 +43,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxgRL5iN5g5lPAKJvaeEN",
+        "priceId": "price_1TlV3uGmcDOdOLjFfsdFFabK",
         "lookupKey": "monarchic_mcp_businessmodel_test_monthly",
         "priceCents": 900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWNxgRL5iN5g5lP1JFiEuK5",
+        "priceId": "price_1TlV3vGmcDOdOLjFoyswHdwU",
         "lookupKey": "monarchic_mcp_businessmodel_test_annual",
         "priceCents": 9000,
         "currency": "usd"
@@ -43,14 +72,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxdRL5iN5g5lPxXFMQD8p",
+        "priceId": "price_1TlV3wGmcDOdOLjFJdJZuMHE",
         "lookupKey": "monarchic_mcp_explicitmem_test_monthly",
         "priceCents": 900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWNxdRL5iN5g5lPNIFCBu8S",
+        "priceId": "price_1TlV3xGmcDOdOLjFpmZqKYEb",
         "lookupKey": "monarchic_mcp_explicitmem_test_annual",
         "priceCents": 9000,
         "currency": "usd"
@@ -72,44 +101,15 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxhRL5iN5g5lP1IFsr2Sc",
+        "priceId": "price_1TlV3yGmcDOdOLjFx1Lj56DP",
         "lookupKey": "monarchic_mcp_leadgenerator_test_monthly",
         "priceCents": 900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWNxiRL5iN5g5lPx2G4ebsI",
+        "priceId": "price_1TlV3zGmcDOdOLjFH0GvhYjL",
         "lookupKey": "monarchic_mcp_leadgenerator_test_annual",
-        "priceCents": 9000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-browserops",
-    "displayName": "BrowserOps MCP",
-    "tagline": "Browser evidence and UI verification",
-    "description": "Browser observation, screenshots, interaction checks, and reviewable UI evidence for agents that need to validate web apps.",
-    "featureBullets": [
-      "Hosted MCP route for BrowserOps",
-      "Scoped API keys for production agents",
-      "Cancel anytime through the Stripe billing portal"
-    ],
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": "monarchic_mcp_browserops_test_monthly",
-        "priceCents": 900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": "monarchic_mcp_browserops_test_annual",
         "priceCents": 9000,
         "currency": "usd"
       }
@@ -120,7 +120,7 @@
     "slug": "mcp-repointel",
     "displayName": "RepoIntel MCP",
     "tagline": "Code-base intelligence as a hosted MCP",
-    "description": "Cross-repo code search, dependency graphs, and context retrieval surfaced as MCP tools your agents can call directly. Hosted by Monarchic so you don't ship the indexer yourself.",
+    "description": "Cross-repo code search, dependency graphs, and context retrieval surfaced as MCP tools your agents can call directly. Hosted by Monarchic so you do not ship the indexer yourself.",
     "featureBullets": [
       "Hosted MCP route for RepoIntel",
       "Scoped API keys for production agents",
@@ -130,14 +130,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxbRL5iN5g5lPlSsL5FC2",
+        "priceId": "price_1TlV43GmcDOdOLjFofPZagPA",
         "lookupKey": "monarchic_mcp_repointel_test_monthly",
         "priceCents": 900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWNxcRL5iN5g5lPvysi0UsZ",
+        "priceId": "price_1TlV43GmcDOdOLjFZbbnwB2H",
         "lookupKey": "monarchic_mcp_repointel_test_annual",
         "priceCents": 9000,
         "currency": "usd"
@@ -172,14 +172,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxlRL5iN5g5lPOLE5xwHp",
+        "priceId": "price_1TlV45GmcDOdOLjFX5kJDaVs",
         "lookupKey": "monarchic_bundle_all_mcps_test_monthly",
         "priceCents": 3500,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWeamRL5iN5g5lPCWU0kUxj",
+        "priceId": "price_1TlV45GmcDOdOLjF0dJy7Sx5",
         "lookupKey": "monarchic_bundle_all_mcps_test_annual",
         "priceCents": 35000,
         "currency": "usd"
@@ -206,14 +206,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxjRL5iN5g5lPGdPHI8U7",
+        "priceId": "price_1TlV47GmcDOdOLjFdJsbcLtO",
         "lookupKey": "monarchic_bundle_developer_test_monthly",
         "priceCents": 2000,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWeajRL5iN5g5lPCyEFLjWs",
+        "priceId": "price_1TlV48GmcDOdOLjF0fdeh8LS",
         "lookupKey": "monarchic_bundle_developer_test_annual",
         "priceCents": 20000,
         "currency": "usd"
@@ -239,14 +239,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxkRL5iN5g5lPHasRnDHt",
+        "priceId": "price_1TlV49GmcDOdOLjFHSd4KSlK",
         "lookupKey": "monarchic_bundle_entrepreneur_test_monthly",
         "priceCents": 1500,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWeakRL5iN5g5lPJlPqeMin",
+        "priceId": "price_1TlV4AGmcDOdOLjF1OtrRlGu",
         "lookupKey": "monarchic_bundle_entrepreneur_test_annual",
         "priceCents": 15000,
         "currency": "usd"
@@ -273,14 +273,14 @@
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TWNxlRL5iN5g5lPTLZ7QF5V",
+        "priceId": "price_1TlV4BGmcDOdOLjFGBNeGEIe",
         "lookupKey": "monarchic_bundle_startup_test_monthly",
         "priceCents": 2000,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TWealRL5iN5g5lPg2RZwiHT",
+        "priceId": "price_1TlV4CGmcDOdOLjFMRqKwm1X",
         "lookupKey": "monarchic_bundle_startup_test_annual",
         "priceCents": 20000,
         "currency": "usd"
