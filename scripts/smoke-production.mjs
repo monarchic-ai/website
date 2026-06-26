@@ -63,16 +63,19 @@ try {
   });
 
   await checkPage(page, `${baseUrl}/`, async () => {
-    await page.getByRole("heading", { name: "MCP Tools For Agent Work" }).waitFor();
+    await page.getByRole("heading", { name: "Autonomous engineering as a service" }).waitFor();
     await page.getByRole("link", { name: "Products" }).first().waitFor();
     await page.getByRole("link", { name: "Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-    await expectMeta(page, "og:title", "Monarchic LLC | MCP tools for agent teams");
+    await expectMeta(page, "og:title", "Monarchic LLC | Autonomous engineering as a service");
     await expectMeta(page, "og:image", expectedSocialImageUrl);
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
     await page.getByRole("link", { name: "Join Waitlist" }).first().waitFor();
+    await page.getByText("Hosted MCP write").waitFor();
+    await page.getByText("3.45s p50").first().waitFor();
+    await page.getByText("Hosted MCP search").waitFor();
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "home route");
@@ -121,6 +124,15 @@ try {
     await expectMeta(page, "og:type", "article");
     await expectNoExternalAppLinks(page);
   }, "RepoIntel research route");
+
+  await checkPage(page, `${baseUrl}/research/explicitmem`, async () => {
+    await page.getByRole("heading", { name: "Auditable Memory Benchmarks" }).waitFor();
+    await page.getByText("Hosted write p50").first().waitFor();
+    await page.getByText("3.45s").first().waitFor();
+    await page.getByText("Hosted route latency is a staging infrastructure smoke").waitFor();
+    await expectMeta(page, "og:type", "article");
+    await expectNoExternalAppLinks(page);
+  }, "ExplicitMem research route");
 } finally {
   await browser.close();
 }
