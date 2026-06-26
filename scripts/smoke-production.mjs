@@ -63,7 +63,7 @@ try {
   });
 
   await checkPage(page, `${baseUrl}/`, async () => {
-    await page.getByRole("heading", { name: "Autonomous engineering as a service" }).waitFor();
+    await page.getByRole("heading", { name: "Autonomous engineering as a service", exact: true }).waitFor();
     await page.getByRole("link", { name: "Products" }).first().waitFor();
     await page.getByRole("link", { name: "Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
