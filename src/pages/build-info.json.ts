@@ -4,6 +4,8 @@ import comingSoonPlansJson from "../lib/pricing.coming-soon.json" with { type: "
 import catalogManifest from "../lib/catalog.manifest.json" with { type: "json" };
 import { productDetails } from "../lib/productDetails";
 
+export const prerender = true;
+
 const requiredCatalogSlugs = [
   "mcp-browserops",
   "mcp-explicitmem",

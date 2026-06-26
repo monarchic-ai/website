@@ -6,12 +6,12 @@ import "../../styles/global.css";
 const benchmarkRows = [
   {
     system: "ExplicitMem",
-    quality: "97.8%",
-    latency: "63ms avg",
-    tokens: "797 avg",
-    memscore: "97.8% / 63ms / 797tok",
+    quality: "99.8%",
+    latency: "30ms local / 3.45s hosted write p50",
+    tokens: "796 avg",
+    memscore: "99.8% / 30ms local / 796tok",
     source: "Local reproduced run",
-    note: "500-question LongMemEval-S run under longmemeval-s-answer-v1.",
+    note: "499 of 500 LongMemEval-S questions passed under the synthesis answer protocol. Hosted staging MCP smoke measured 3.45s write p50, 3.28s search p50, and 3.48s context p50 across 10 successful samples.",
   },
   {
     system: "Mem0",
@@ -37,13 +37,17 @@ const benchmarkRows = [
 
 const explicitMemMetrics = [
   ["Questions", "500"],
-  ["Accuracy", "97.8%"],
-  ["Faithfulness", "99.8%"],
+  ["Passed", "499"],
+  ["Accuracy", "99.8%"],
+  ["Faithfulness", "100%"],
   ["Retrieval recall@K", "100%"],
-  ["Context tokens", "797 avg"],
-  ["Latency", "63ms avg"],
+  ["Context tokens", "796 avg"],
+  ["Local eval latency", "30ms avg"],
+  ["Hosted write p50", "3.45s"],
+  ["Hosted search p50", "3.28s"],
+  ["Hosted context p50", "3.48s"],
   ["Retrieval receipts", "100%"],
-  ["Protocol", "longmemeval-s-answer-v1"],
+  ["Protocol", "synthesis"],
 ];
 ---
 
@@ -84,8 +88,8 @@ const explicitMemMetrics = [
             </span>
           </a>
           <nav class="flex flex-wrap items-center gap-2">
+            <a href="/products" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Products</a>
             <a href="/research" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Research</a>
-            <a href="/products/mcp-explicitmem" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">ExplicitMem</a>
           </nav>
         </header>
 
@@ -101,7 +105,8 @@ const explicitMemMetrics = [
               ExplicitMem is a private memory MCP runtime with typed memory objects,
               graph links, bounded context synthesis, and receipt-backed retrieval.
               This page reports the current reproduced LongMemEval-S run beside
-              published Mem0 and Supermemory website claims in a MemScore-style format.
+              published Mem0 and Supermemory website claims in a MemScore-style format,
+              plus a live staging smoke for hosted MCP route latency.
             </p>
           </div>
 
@@ -182,7 +187,9 @@ const explicitMemMetrics = [
             <p class="mt-4 text-sm leading-7 text-white/76">
               ExplicitMem's row is generated from a local 500-question LongMemEval-S
               benchmark artifact with reproduced accuracy, faithfulness, retrieval
-              recall, latency, token count, and receipt coverage.
+              recall, latency, token count, and receipt coverage. Hosted latency is
+              reported separately from a June 26, 2026 staging route smoke because it
+              includes Auth0, the Monarchic API route, Lambda invocation, and MCP tool execution.
             </p>
           </div>
           <div class="border-2 border-white bg-black/70 p-5">
@@ -202,7 +209,7 @@ const explicitMemMetrics = [
             <p class="mt-4 text-sm leading-7 text-white/76">
               Same-protocol comparison requires provider artifacts with matching
               dataset, question order, judge, latency boundary, generated answers,
-              context tokens, and retrieved session ids.
+              context tokens, retrieved session ids, and hosted-route measurements.
             </p>
           </div>
         </section>
@@ -212,7 +219,9 @@ const explicitMemMetrics = [
           <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74">
             <li>
               ExplicitMem artifact:
-              internal reproduced benchmark report.
+              internal reproduced benchmark report; hosted staging smoke on June 26,
+              2026 using `project_specific` scope, 10 successful samples, and the
+              `https://staging-api.monarchic.io/mcp/explicitmem` route.
             </li>
             <li>
               Mem0 research page:
@@ -239,7 +248,8 @@ const explicitMemMetrics = [
             ExplicitMem results are benchmark-scoped and should not be presented as
             a general cross-dataset synthesis claim. Published third-party values are
             included only as cited market context until same-protocol provider artifacts
-            are imported and validated.
+            are imported and validated. Hosted route latency is a staging infrastructure
+            smoke, not the local LongMemEval harness latency.
           </p>
         </section>
 
