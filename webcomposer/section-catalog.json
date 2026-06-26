@@ -1,0 +1,123 @@
+{
+  "templates": [
+    {
+      "id": "hero.platform_statement",
+      "name": "Platform Statement Hero",
+      "intent": "State Monarchic's autonomous engineering platform direction while making the current commercial surface obvious.",
+      "bestFor": ["home", "product-overview", "brand-entry"],
+      "requiredInputs": ["platform_positioning", "current_offer", "primary_cta"],
+      "allowedComponents": ["Hero", "Badge", "Button", "TrustBar", "StatusPanel"],
+      "layoutRules": [
+        "Keep the hero and the adjacent proof or status panel visible in the first desktop viewport.",
+        "Use direct product nouns before abstract platform language.",
+        "Keep the brutalist black, white, border-led visual system intact."
+      ],
+      "antiPatterns": [
+        "Do not make the page read like a generic AI agency landing page.",
+        "Do not imply the full autonomous platform is generally available when the MCP catalog is the current surface."
+      ]
+    },
+    {
+      "id": "proof.metric_grid",
+      "name": "Metric Proof Grid",
+      "intent": "Present benchmark or operational proof points with scope and caveats close to the numbers.",
+      "bestFor": ["home", "research", "product-detail"],
+      "requiredInputs": ["proof_points", "measurement_scope", "caveats"],
+      "allowedComponents": ["MetricGrid", "Table", "Badge", "Callout", "Link"],
+      "layoutRules": [
+        "Pair each metric with the dataset, environment, or route that produced it.",
+        "Separate local benchmark quality from hosted infrastructure latency.",
+        "Avoid color coding that makes metrics look more certain than the source supports."
+      ],
+      "antiPatterns": [
+        "Do not mix unrelated benchmark harnesses in one unlabeled ranking.",
+        "Do not hide limitations below the fold when the metric is used as sales proof."
+      ]
+    },
+    {
+      "id": "catalog.product_matrix",
+      "name": "Product Catalog Matrix",
+      "intent": "Help buyers compare MCP products, bundles, availability, and waitlist state.",
+      "bestFor": ["products", "catalog"],
+      "requiredInputs": ["product_names", "availability", "buyer_fit", "primary_cta"],
+      "allowedComponents": ["ProductCard", "Badge", "FeatureList", "AnchorNav", "Button"],
+      "layoutRules": [
+        "Group bundles, available MCPs, and coming-soon products clearly.",
+        "Make ExplicitMem, RepoIntel, and BrowserOps easy to compare without tab switching.",
+        "Keep waitlist or access state visible on every product path that cannot be purchased."
+      ],
+      "antiPatterns": [
+        "Do not bury the Monarchic AI platform direction under individual MCP cards.",
+        "Do not publish prices or checkout promises unless the catalog artifact exposes them as available."
+      ]
+    },
+    {
+      "id": "research.evidence_cards",
+      "name": "Evidence Cards",
+      "intent": "Summarize research pages with the metric, product connection, and evidence boundary visible.",
+      "bestFor": ["research-index", "benchmark-index"],
+      "requiredInputs": ["research_subjects", "headline_metrics", "evidence_boundary"],
+      "allowedComponents": ["ResearchCard", "MetricBadge", "Link", "ScopeNote"],
+      "layoutRules": [
+        "Show product and research links together.",
+        "Keep the scope note on the same page as the benchmark summaries.",
+        "Use cards only for repeated research items."
+      ],
+      "antiPatterns": [
+        "Do not present benchmark cards as universal product claims.",
+        "Do not use tabbed navigation for unrelated product and research destinations."
+      ]
+    },
+    {
+      "id": "research.benchmark_report",
+      "name": "Benchmark Report",
+      "intent": "Document one product benchmark with methodology, result tables, and limits.",
+      "bestFor": ["research-detail", "product-proof"],
+      "requiredInputs": ["methodology", "result_table", "environment", "limitations"],
+      "allowedComponents": ["Table", "DefinitionList", "MetricGrid", "Callout", "Link"],
+      "layoutRules": [
+        "Put the headline result before the detailed table.",
+        "Keep methodology and environment data explicit enough for a release reviewer.",
+        "Link back to the product page after the evidence is established."
+      ],
+      "antiPatterns": [
+        "Do not use unverifiable adjectives in place of method details.",
+        "Do not compare products without naming the benchmark source and measurement type."
+      ]
+    },
+    {
+      "id": "conversion.waitlist_form",
+      "name": "Waitlist Conversion Form",
+      "intent": "Collect qualified interest while being clear that access is gated.",
+      "bestFor": ["waitlist", "home", "product-detail"],
+      "requiredInputs": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary"],
+      "allowedComponents": ["Form", "Input", "Button", "Callout", "StatusMessage"],
+      "layoutRules": [
+        "The form must have an obvious submitted state.",
+        "Explain what happens after joining without promising immediate access.",
+        "Keep the form reachable from homepage, catalog, and coming-soon product surfaces."
+      ],
+      "antiPatterns": [
+        "Do not make a no-op CTA.",
+        "Do not request more personal data than the workflow uses."
+      ]
+    },
+    {
+      "id": "detail.product_proof",
+      "name": "Product Proof Detail",
+      "intent": "Connect a product's buyer fit, capability, research evidence, and availability state.",
+      "bestFor": ["product-detail"],
+      "requiredInputs": ["product_name", "buyer_fit", "capabilities", "proof_points", "availability"],
+      "allowedComponents": ["Hero", "FeatureList", "MetricGrid", "Button", "Callout"],
+      "layoutRules": [
+        "Lead with what the product does, then show proof and availability.",
+        "Keep research links near the claims they substantiate.",
+        "Make coming-soon products feel intentionally gated rather than broken."
+      ],
+      "antiPatterns": [
+        "Do not reuse the same generic product copy across MCPs.",
+        "Do not let dynamic catalog cards obscure product-specific evidence."
+      ]
+    }
+  ]
+}
