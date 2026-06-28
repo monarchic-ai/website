@@ -18,6 +18,19 @@ const explicitMemComparison = [
   ["Mem0", "94.4%", "1090ms", "6787tok"],
   ["Supermemory", "85.4%", "<300ms", "n/a"],
 ];
+
+const infraProfilerSignals = [
+  ["Scope", "staging"],
+  ["Mode", "read-only"],
+  ["Cap", "20 resources"],
+  ["Owners", "repo mapped"],
+];
+
+const infraProfilerHotspots = [
+  ["monarchic-staging-api", "ECS service", "monarchic-api", "critical path"],
+  ["monarchic-staging-worker", "ECS service", "monarchic-worker", "deploy path"],
+  ["monarchic-staging-mcp-repointel", "Lambda", "RepoIntel-MCP", "repo context"],
+];
 ---
 
 <html lang="en">
@@ -335,6 +348,83 @@ const explicitMemComparison = [
         </section>
 
         <section class="border-t-2 border-white py-10">
+          <div class="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
+            <div>
+              <p class="text-xs font-bold uppercase text-white/54">InfraProfiler MCP</p>
+              <h2 class="mt-3 max-w-4xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
+                Ask what infra is hurting reliability, cost, or deployment speed.
+              </h2>
+              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
+                InfraProfiler connects cloud telemetry to the same agent workflow:
+                discover resources, rank hotspots, explain the evidence, and map
+                each target back to the repository likely responsible for the fix.
+              </p>
+              <div class="mt-5 grid gap-2 sm:grid-cols-2">
+                {infraProfilerSignals.map(([label, value]) => (
+                  <div class="border border-white/36 bg-black/58 p-4">
+                    <p class="text-[0.66rem] font-bold uppercase text-white/46">{label}</p>
+                    <p class="mt-2 text-lg font-extrabold uppercase text-white">{value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="infra-shell relative overflow-hidden border-2 border-white bg-black shadow-[12px_12px_0_rgba(255,255,255,0.12)]">
+              <div class="infra-scan" aria-hidden="true"></div>
+              <div class="flex items-center justify-between gap-4 border-b-2 border-white px-4 py-3">
+                <div>
+                  <p class="text-xs font-bold uppercase text-white">infraprofiler / hotspot report</p>
+                  <p class="mt-1 text-[0.68rem] font-bold uppercase text-white/42">aws staging profile / no mutation</p>
+                </div>
+                <div class="border border-white px-2 py-1 text-[0.66rem] font-bold uppercase text-white/72">
+                  Strict
+                </div>
+              </div>
+
+              <div class="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+                <div class="border-b border-white/28 p-4 lg:border-b-0 lg:border-r">
+                  <pre class="relative z-10 overflow-x-auto whitespace-pre-wrap break-words text-[0.74rem] leading-6 text-white/82 sm:text-xs"><code><span class="text-white/46">$</span> infraprofiler rank_hotspots \
+  --provider aws \
+  --env staging \
+  --max-resources 20
+<span class="infra-cursor text-cyan-200">_</span>
+
+<span class="text-white">discover</span> ECS / Lambda / S3
+<span class="text-white">score</span>    latency + errors + drift
+<span class="text-white">attach</span>   repo ownership
+<span class="text-cyan-200">guard</span>    read-only report, no fixes</code></pre>
+                </div>
+
+                <div class="grid divide-y divide-white/24">
+                  {infraProfilerHotspots.map(([resource, type, repo, reason], index) => (
+                    <div class={`infra-row grid gap-3 p-4 sm:grid-cols-[1fr_7rem] ${index === 0 ? "bg-white text-black" : ""}`}>
+                      <div>
+                        <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>{type}</p>
+                        <p class="mt-1 text-sm font-extrabold uppercase">{resource}</p>
+                        <p class={`mt-2 text-xs font-semibold uppercase ${index === 0 ? "text-black/58" : "text-white/54"}`}>{reason}</p>
+                      </div>
+                      <div>
+                        <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>Owner</p>
+                        <p class="mt-1 text-sm font-extrabold">{repo}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div class="border-t-2 border-white bg-white px-4 py-4 text-black">
+                <p class="text-xs font-bold uppercase text-black/54">Codex handoff</p>
+                <p class="mt-2 text-sm font-semibold leading-6">
+                  The report tells the agent what to inspect first, why it was
+                  ranked, which repository likely owns it, and what not to change
+                  automatically.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="border-t-2 border-white py-10">
           <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
             <div class="border-2 border-white bg-black/72">
               <div class="border-b-2 border-white p-5">
@@ -597,6 +687,10 @@ const explicitMemComparison = [
     isolation: isolate;
   }
 
+  .infra-shell {
+    isolation: isolate;
+  }
+
   .demo-grid {
     position: absolute;
     inset: 0;
@@ -614,6 +708,15 @@ const explicitMemComparison = [
     z-index: -1;
     background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.18) 48%, rgba(34, 211, 238, 0.18) 52%, transparent 64%);
     animation: demo-sweep 5.6s linear infinite;
+    opacity: 0.72;
+  }
+
+  .infra-scan {
+    position: absolute;
+    inset: -35% -12%;
+    z-index: -1;
+    background: linear-gradient(120deg, transparent 38%, rgba(255, 255, 255, 0.16) 49%, rgba(34, 211, 238, 0.13) 54%, transparent 66%);
+    animation: demo-sweep 6.2s linear infinite;
     opacity: 0.72;
   }
 
@@ -652,6 +755,10 @@ const explicitMemComparison = [
   }
 
   .demo-cursor {
+    animation: demo-cursor 0.9s steps(2, end) infinite;
+  }
+
+  .infra-cursor {
     animation: demo-cursor 0.9s steps(2, end) infinite;
   }
 
@@ -790,6 +897,8 @@ const explicitMemComparison = [
     .demo-cursor,
     .demo-fact,
     .demo-pulse,
+    .infra-cursor,
+    .infra-scan,
     .mem-scan,
     .mem-row,
     .mem-bar {
