@@ -20,16 +20,22 @@ const explicitMemComparison = [
 ];
 
 const infraProfilerSignals = [
-  ["Scope", "staging"],
-  ["Mode", "read-only"],
-  ["Cap", "20 resources"],
-  ["Owners", "repo mapped"],
+  ["CPU max", "98.45%"],
+  ["Queue wait", "0s -> 20s"],
+  ["Task size", "+0"],
+  ["Guard", "live"],
 ];
 
 const infraProfilerHotspots = [
-  ["monarchic-staging-api", "ECS service", "monarchic-api", "critical path"],
-  ["monarchic-staging-worker", "ECS service", "monarchic-worker", "deploy path"],
-  ["monarchic-staging-mcp-repointel", "Lambda", "RepoIntel-MCP", "repo context"],
+  ["monarchic-staging-worker", "ECS service", "monarchic-worker", "hot polling"],
+  ["monarchic-staging-queue", "SQS queue", "monarchic-infra", "empty receives"],
+  ["worker-sqs-long-polling-check", "release guard", "monarchic-plan", "regression block"],
+];
+
+const infraProfilerProofSteps = [
+  ["Detect", "Staging worker hit 98.45% max CPU while the queue had no meaningful backlog."],
+  ["Fix", "Set SQS long polling to 20s in the queue and worker runtime without increasing task size."],
+  ["Codify", "Added a deploy-time guard plus an InfraProfiler rule so the same failure is ranked first next time."],
 ];
 ---
 
@@ -355,9 +361,10 @@ const infraProfilerHotspots = [
                 Ask what infra is hurting reliability, cost, or deployment speed.
               </h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
-                InfraProfiler connects cloud telemetry to the same agent workflow:
-                discover resources, rank hotspots, explain the evidence, and map
-                each target back to the repository likely responsible for the fix.
+                InfraProfiler already caught a real Monarchic staging failure:
+                an idle worker burning CPU because SQS was being polled hot. The
+                agent traced it to owner repos, fixed the queue behavior, and
+                added a release guard without scaling up compute.
               </p>
               <div class="mt-5 grid gap-2 sm:grid-cols-2">
                 {infraProfilerSignals.map(([label, value]) => (
@@ -389,10 +396,10 @@ const infraProfilerHotspots = [
   --max-resources 20
 <span class="infra-cursor text-cyan-200">_</span>
 
-<span class="text-white">discover</span> ECS / Lambda / S3
-<span class="text-white">score</span>    latency + errors + drift
-<span class="text-white">attach</span>   repo ownership
-<span class="text-cyan-200">guard</span>    read-only report, no fixes</code></pre>
+<span class="text-white">detect</span>   worker CPU max 98.45%
+<span class="text-white">compare</span>  queue depth stayed empty
+<span class="text-white">rank</span>     SQS hot polling as root target
+<span class="text-cyan-200">guard</span>    long polling required at deploy</code></pre>
                 </div>
 
                 <div class="grid divide-y divide-white/24">
@@ -412,12 +419,21 @@ const infraProfilerHotspots = [
                 </div>
               </div>
 
+              <div class="grid border-t-2 border-white sm:grid-cols-3">
+                {infraProfilerProofSteps.map(([label, copy], index) => (
+                  <div class={`p-4 ${index < infraProfilerProofSteps.length - 1 ? "border-b border-white/28 sm:border-b-0 sm:border-r" : ""}`}>
+                    <p class="text-[0.66rem] font-bold uppercase text-white/46">{label}</p>
+                    <p class="mt-2 text-xs font-semibold leading-6 text-white/72">{copy}</p>
+                  </div>
+                ))}
+              </div>
+
               <div class="border-t-2 border-white bg-white px-4 py-4 text-black">
                 <p class="text-xs font-bold uppercase text-black/54">Codex handoff</p>
                 <p class="mt-2 text-sm font-semibold leading-6">
-                  The report tells the agent what to inspect first, why it was
-                  ranked, which repository likely owns it, and what not to change
-                  automatically.
+                  The report did not auto-mutate infra. It gave Codex the ranked
+                  target, telemetry evidence, owner repositories, and the exact
+                  guard to add after the fix was verified.
                 </p>
               </div>
             </div>
