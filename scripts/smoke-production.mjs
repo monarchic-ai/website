@@ -98,7 +98,7 @@ try {
 
   await checkPage(page, `${baseUrl}/products`, async () => {
     await page.getByRole("heading", { name: "Hosted MCP Catalog" }).waitFor();
-    await page.getByRole("link", { name: "Developer Bundle" }).waitFor();
+    await page.getByRole("link", { name: "Developer Workflow Pack" }).waitFor();
     await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
     await expectNoExternalAppLinks(page);
