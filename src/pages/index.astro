@@ -49,9 +49,10 @@ const featuredRoutes = [
 });
 
 const proofPoints = [
-  ["Memory", "ExplicitMem publishes accuracy, recall, token, and hosted latency notes."],
-  ["Repositories", "RepoIntel returns source paths and evidence instead of loose summaries."],
-  ["Browser", "BrowserOps records screenshots, console output, network checks, and receipts."],
+  ["Accuracy", "99.8%", "ExplicitMem local benchmark quality"],
+  ["Recall@K", "100%", "ExplicitMem retrieval coverage"],
+  ["Write p50", "3.45s", "Hosted staging MCP route"],
+  ["Search p50", "3.28s", "Hosted staging MCP route"],
 ];
 ---
 
@@ -105,6 +106,9 @@ const proofPoints = [
               <a href="/products" class="inline-flex items-center justify-center border-2 border-white bg-white px-5 py-3 text-black transition hover:bg-black hover:text-white">
                 View products
               </a>
+              <a href="/research" class="inline-flex items-center justify-center border-2 border-white/88 px-5 py-3 text-white transition hover:bg-white hover:text-black">
+                Research
+              </a>
               <a href="/tutorial" class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
                 Use the MCPs
               </a>
@@ -141,16 +145,25 @@ const proofPoints = [
         <section class="border-t-2 border-white py-10">
           <div class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p class="text-xs font-bold uppercase text-white/54">What Monarchic is</p>
+              <p class="text-xs font-bold uppercase text-white/54">Proof boundary</p>
               <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                A hosted layer for agent work that should be inspectable.
+                The homepage proof is deliberately scoped.
               </h2>
+              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
+                Quality metrics come from the ExplicitMem benchmark. Hosted
+                latency comes from staging MCP route smoke data. They are not
+                blended into one universal ranking.
+              </p>
+              <a href="/research/explicitmem" class="mt-5 inline-flex border border-white/70 px-4 py-3 text-xs font-bold uppercase transition hover:bg-white hover:text-black">
+                Read methodology
+              </a>
             </div>
-            <div class="grid gap-3 md:grid-cols-3">
-              {proofPoints.map(([label, copy]) => (
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {proofPoints.map(([label, value, scope]) => (
                 <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">{label}</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">{copy}</p>
+                  <p class="text-[0.68rem] font-bold uppercase text-white/46">{label}</p>
+                  <p class="mt-3 text-3xl font-extrabold leading-none text-white">{value}</p>
+                  <p class="mt-3 text-xs font-semibold uppercase leading-5 text-white/56">{scope}</p>
                 </div>
               ))}
             </div>
