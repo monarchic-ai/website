@@ -104,6 +104,11 @@ try {
 
   await checkPage(page, `${baseUrl}/products`, async () => {
     await page.getByRole("heading", { name: "Hosted MCP Catalog" }).waitFor();
+    await page.getByText("Live Prices, Gated Onboarding").waitFor();
+    await page.getByText("Available MCPs").waitFor();
+    await page.getByText("Route Bands").waitFor();
+    await page.getByText("$19 / $29 / $49 / $79").waitFor();
+    await page.getByRole("link", { name: "Available MCP Routes" }).waitFor();
     await page.getByRole("link", { name: "Developer Workflow Pack" }).waitFor();
     await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);

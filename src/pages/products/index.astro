@@ -45,6 +45,17 @@ const singleMcps = allPlans
 const otherComingSoon = allPlans.filter(
   (plan) => plan.status === "coming_soon" && plan.kind !== "single-mcp" && plan.kind !== "bundle" && plan.slug !== MONARCHIC_AI_SLUG,
 );
+const availableSingleMcps = singleMcps.filter((plan) => plan.status === "available");
+const availableUsagePlans = usagePlans.filter((plan) => plan.status === "available");
+const singleMcpPriceBands = Array.from(
+  new Set(
+    availableSingleMcps
+      .map((plan) => resolveDisplayPrice(plan, "monthly")?.price.priceCents)
+      .filter((priceCents): priceCents is number => typeof priceCents === "number"),
+  ),
+)
+  .sort((a, b) => a - b)
+  .map((priceCents) => formatPriceUSD(priceCents));
 
 const researchByPlanSlug: Record<string, { href: string; label: string }> = {
   "mcp-browserops": { href: "/research/browserops", label: "Research" },
@@ -59,8 +70,8 @@ interface Section {
 }
 
 const sections: Section[] = [
-  { id: "access", heading: "Access Tiers", plans: usagePlans },
-  { id: "mcps", heading: "MCP Routes", plans: singleMcps },
+  { id: "mcps", heading: "Available MCP Routes", plans: singleMcps },
+  { id: "access", heading: "Usage Tiers", plans: usagePlans },
   { id: "bundles", heading: "Workflow Packs", plans: bundles },
   { id: "coming-soon", heading: "Coming Soon", plans: otherComingSoon },
 ].filter((section) => section.plans.length > 0);
@@ -124,16 +135,16 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
             Hosted MCP<br />Catalog
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            The current public surface is the MCP catalog: route-level product
-            pages, research evidence, workflow packs, and waitlist access while
-            account controls are finalized.
+            Stripe-backed prices are published for available usage tiers and
+            individual MCP routes. Website access remains gated while account
+            controls are finalized.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
-              Gated Access
+              Live Prices, Gated Onboarding
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              Access is not self-serve from the website. Join the waitlist for
+              Compare the MCP routes below, then join the waitlist for
               availability updates and account onboarding.
             </p>
             <a href="/waitlist" class="mt-5 inline-flex items-center justify-center border-2 border-cyan-300 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
@@ -142,27 +153,26 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
           </div>
         </div>
 
-        <section class="mb-10 grid gap-4 border-2 border-white bg-black/70 p-5 md:grid-cols-3">
+        <section class="mb-10 grid gap-4 border-2 border-white bg-black/70 p-5 md:grid-cols-4">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Start small</p>
-            <p class="mt-3 text-sm leading-7 text-white/74">
-              Start with a route that matches the workflow bottleneck: memory,
-              repository intelligence, browser evidence, or proof packaging.
-            </p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Available MCPs</p>
+            <p class="mt-3 text-3xl font-extrabold uppercase">{availableSingleMcps.length}</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">Single-route products priced from the generated Stripe catalog.</p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Access State</p>
-            <p class="mt-3 text-sm leading-7 text-white/74">
-              Product pages show what each route does, who it fits, and whether
-              deeper proof exists before access opens.
-            </p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Route Bands</p>
+            <p class="mt-3 text-2xl font-extrabold uppercase">{singleMcpPriceBands.join(" / ")}</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">Monthly single-MCP price points available now.</p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Waitlist</p>
-            <p class="mt-3 text-sm leading-7 text-white/74">
-              Waitlist updates cover route availability, account setup, and the
-              product surfaces moving through release checks.
-            </p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Usage Tiers</p>
+            <p class="mt-3 text-3xl font-extrabold uppercase">{availableUsagePlans.length}</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">Credit-based plans for repeated hosted calls.</p>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Checkout State</p>
+            <p class="mt-3 text-2xl font-extrabold uppercase">Waitlist</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">No self-serve checkout claim until account onboarding is live.</p>
           </div>
         </section>
 
@@ -207,12 +217,16 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
               {section.plans.map((plan) => {
                 const badge = kindBadge(plan.kind);
                 return (
-                  <article class={`group flex min-h-[440px] flex-col border-2 bg-black/74 p-5 transition hover:bg-white hover:text-black ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
+                  <article class={`group flex min-h-[390px] flex-col border-2 bg-black/74 p-5 transition hover:bg-white hover:text-black ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
                     <div class="flex items-start justify-between gap-3">
                       <span class={`inline-flex border px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.22em] ${badge.classes}`}>
                         {badge.label}
                       </span>
-                      {plan.status === "coming_soon" && (
+                      {plan.status === "available" ? (
+                        <span class="border border-emerald-300 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-emerald-200">
+                          Available
+                        </span>
+                      ) : plan.status === "coming_soon" && (
                         <span class="border border-amber-300 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-amber-200">
                           Soon
                         </span>
@@ -259,7 +273,7 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                     )}
                     {publicFeatureBulletsFor(plan).length > 0 && (
                       <ul class="mt-5 grid gap-2 text-sm leading-6 text-white/72 group-hover:text-black/72">
-                        {publicFeatureBulletsFor(plan).slice(0, 3).map((bullet) => (
+                        {publicFeatureBulletsFor(plan).slice(0, 2).map((bullet) => (
                           <li class="flex gap-2">
                             <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white group-hover:bg-black"></span>
                             <span>{publicCatalogFeatureBullet(bullet)}</span>
@@ -280,9 +294,6 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                           {researchByPlanSlug[plan.slug].label}
                         </a>
                       )}
-                      <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white bg-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] text-black transition hover:bg-black hover:text-white">
-                        Status
-                      </a>
                     </div>
                   </article>
                 );

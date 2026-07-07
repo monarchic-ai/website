@@ -32,6 +32,7 @@ and hosted MCP dashboard live in `../monarchic-webapp`.
 - `pnpm install`
 - `pnpm dev`
 - `pnpm check`
+- `pnpm check:webcomposer`
 - `pnpm build`
 - `pnpm preview`
 - `pnpm smoke:local`
@@ -51,9 +52,9 @@ nix develop -c pnpm smoke:production
 ```
 
 GitHub Actions runs `.github/workflows/website-readiness.yml` on website
-changes. That workflow installs dependencies, runs Astro diagnostics, and
-builds the static site. Its manual smoke job installs Playwright Chromium and
-runs `pnpm smoke:local`.
+changes. That workflow installs dependencies, runs Astro diagnostics, checks
+the WebComposer contract, and builds the static site. Its manual smoke job
+installs Playwright Chromium and runs `pnpm smoke:local`.
 
 The manual release workflow at `.github/workflows/website-release-smoke.yml`
 runs `pnpm smoke:production` against the configured production or staging

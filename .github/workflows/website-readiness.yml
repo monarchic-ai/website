@@ -70,6 +70,9 @@ jobs:
       - name: Run Astro diagnostics
         run: pnpm check
 
+      - name: Check WebComposer contract
+        run: pnpm check:webcomposer
+
       - name: Check catalog artifact provenance
         run: pnpm check:catalog-artifact
 
