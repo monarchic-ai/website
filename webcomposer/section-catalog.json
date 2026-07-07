@@ -42,13 +42,14 @@
       "requiredInputs": ["product_names", "availability", "buyer_fit", "primary_cta"],
       "allowedComponents": ["ProductCard", "Badge", "FeatureList", "AnchorNav", "Button"],
       "layoutRules": [
-        "Group bundles, available MCPs, and coming-soon products clearly.",
+        "Group usage tiers, available MCPs, bundles, and coming-soon products clearly.",
         "Make ExplicitMem, RepoIntel, and BrowserOps easy to compare without tab switching.",
+        "Show prices only when the generated Stripe catalog exposes the plan as available.",
         "Keep waitlist or access state visible on every product path that cannot be purchased."
       ],
       "antiPatterns": [
         "Do not bury the Monarchic AI platform direction under individual MCP cards.",
-        "Do not publish prices or checkout promises unless the catalog artifact exposes them as available."
+        "Do not invent prices or checkout promises outside pricing.generated.json."
       ]
     },
     {

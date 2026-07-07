@@ -81,3 +81,6 @@
 {#if errorMessage}
   <p class="mt-3 text-sm leading-6 text-amber-100">{errorMessage}</p>
 {/if}
+<p class="mt-3 text-xs leading-5 text-white/48">
+  We use this email for Monarchic access updates only.
+</p>

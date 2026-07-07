@@ -50,8 +50,8 @@
       "title": "Products",
       "purpose": "Let buyers compare available MCPs, bundles, coming-soon plans, and the future Monarchic AI platform.",
       "audience": ["buyers", "agent builders", "founders", "engineering teams"],
-      "requiredContent": ["product_names", "availability", "buyer_fit", "primary_cta", "waitlist_offer"],
-      "forbiddenContent": ["unpublished prices", "checkout promises for unavailable products", "private catalog metadata", "debug labels"],
+      "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "primary_cta", "waitlist_offer"],
+      "forbiddenContent": ["prices not present in pricing.generated.json", "checkout promises for unavailable products", "private catalog metadata", "debug labels"],
       "primaryActions": ["inspect_product", "join_waitlist", "view_research"],
       "sections": [
         {
@@ -66,14 +66,14 @@
           "id": "product_matrix",
           "template": "catalog.product_matrix",
           "purpose": "Display bundles, individual MCPs, and coming-soon products with clear buyer fit.",
-          "requiredContent": ["product_names", "availability", "buyer_fit", "primary_cta"],
+          "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "primary_cta"],
           "allowedComponents": ["ProductCard", "AnchorNav", "Badge", "FeatureList", "Button"],
           "layoutGuidance": ["Avoid products/research tab swapping; use direct page links instead."]
         },
         {
           "id": "waitlist",
           "template": "conversion.waitlist_form",
-          "purpose": "Route non-purchasable product demand to waitlist capture.",
+          "purpose": "Route non-purchasable product demand to waitlist capture while available Stripe-backed products retain clear pricing.",
           "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary"],
           "allowedComponents": ["Form", "Input", "Button", "StatusMessage"],
           "layoutGuidance": ["Make access state and waitlist action visible before the page ends."]

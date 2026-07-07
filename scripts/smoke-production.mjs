@@ -82,6 +82,7 @@ try {
     await page.getByRole("heading", { name: "Agent tools that leave evidence.", exact: true }).waitFor();
     await page.getByRole("heading", { name: "Individual MCP routes" }).waitFor();
     await page.getByRole("link", { name: "View products" }).first().waitFor();
+    await page.getByRole("link", { name: "Research" }).first().waitFor();
     await page.getByRole("link", { name: "Use the MCPs" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
     await expectMeta(page, "og:title", "Monarchic LLC | Hosted MCPs for agent engineering");
@@ -93,6 +94,9 @@ try {
     await page.getByText("$19/mo").first().waitFor();
     await page.getByText("$29/mo").first().waitFor();
     await page.getByText("$49/mo").first().waitFor();
+    await page.getByText("99.8%").first().waitFor();
+    await page.getByText("Hosted staging MCP route").first().waitFor();
+    await page.getByText("Quality metrics come from the ExplicitMem benchmark.").waitFor();
     await page.getByText("Buy one route, or use the shared usage tiers").waitFor();
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
