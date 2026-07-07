@@ -50,6 +50,13 @@ Run production locally:
 pnpm smoke:production
 ```
 
+On NixOS, use the repository dev shell so Playwright launches the packaged
+Chromium build instead of the downloaded browser cache:
+
+```bash
+nix develop -c pnpm smoke:production
+```
+
 `pnpm smoke:production` targets the `www` production route while keeping
 canonical expectations on the apex domain. `pnpm smoke:production:www` is kept
 as a compatibility alias.

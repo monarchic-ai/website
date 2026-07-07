@@ -43,6 +43,13 @@ and hosted MCP dashboard live in `../monarchic-webapp`.
 
 The project currently expects Node `>=22.12.0`.
 
+On NixOS, run browser smoke inside the repository dev shell so Playwright uses
+the packaged Chromium build:
+
+```bash
+nix develop -c pnpm smoke:production
+```
+
 GitHub Actions runs `.github/workflows/website-readiness.yml` on website
 changes. That workflow installs dependencies, runs Astro diagnostics, and
 builds the static site. Its manual smoke job installs Playwright Chromium and
@@ -122,6 +129,8 @@ live deployment checklist and current smoke evidence.
   `MONARCHIC_WEBSITE_SMOKE_URL`. Override expected canonical links with
   `MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL`, which is useful when smoking a
   local preview built with production canonical URLs.
+  On NixOS, prefer `nix develop -c pnpm smoke:production` so the smoke script
+  gets a Chromium executable with the required shared libraries.
 - `pnpm smoke:production:www` is an alias for the current production release
   gate.
 - `pnpm smoke:production:apex` runs the same gate against
