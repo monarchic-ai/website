@@ -97,7 +97,7 @@ try {
   }, "home route");
 
   await checkPage(page, `${baseUrl}/products`, async () => {
-    await page.getByRole("heading", { name: "MCP Catalog Coming Soon" }).waitFor();
+    await page.getByRole("heading", { name: "Hosted MCP Catalog" }).waitFor();
     await page.getByRole("link", { name: "Developer Bundle" }).waitFor();
     await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
