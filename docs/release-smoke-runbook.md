@@ -4,23 +4,22 @@ This runbook covers the public website live smoke gate.
 
 ## Current Evidence
 
-Latest local run date: 2026-06-19 UTC.
+Latest local run date: 2026-07-02 UTC.
 
-Production website smoke is green on the `www` route. Apex and staging still
-need routing work:
+Production website smoke is green on the `www` route. Staging DNS is now
+configured and Vercel-verified:
 
 - `pnpm smoke:production` against `https://www.monarchic.io` passed on
-  2026-06-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
+  2026-07-02 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
   `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
   research routes. `/build-info.json` reports the deployed website commit from
   `monarchic-ai/website` and catalog artifact digest
-  `sha256:44d3fddd9c0394d28170059df6796c0ffe0fd3c06cc9652aa45798a909a3b93e`.
-- `pnpm smoke:production:apex` against `https://monarchic.io` reaches the website
-  deployment and `/build-info.json`, but the apex route then times out fetching
-  `/robots.txt` with `UND_ERR_CONNECT_TIMEOUT`.
-- The staging variant against `https://staging.monarchic.io` has no DNS target:
-  `A=ENODATA`, `AAAA=ENODATA`. The smoke script fails immediately when both
-  record families are missing.
+  `sha256:f222975ba9e40824d8127d23e64df4dc56123229a81ac09952bdd2dfd5e8d878`.
+- `pnpm smoke:staging` against `https://staging.monarchic.io` passed on
+  2026-07-02 UTC after adding the Cloudflare `staging` CNAME and Vercel
+  verification TXT record. The staging hostname currently serves the same
+  production-canonical website deployment, so the smoke command expects
+  canonical URLs under `https://monarchic.io`.
 
 Keep this command as the current passing production release evidence gate while
 the apex route is under investigation:
@@ -79,14 +78,15 @@ When a staging website domain exists, run:
 
 ```bash
 MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io \
-MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://staging.monarchic.io \
+MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io \
 MONARCHIC_WEBAPP_SMOKE_URL=https://staging-app.monarchic.io \
 pnpm smoke:production
 ```
 
-Use `MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io` only when
-intentionally validating a preview deployment built with production canonical
-URLs.
+The current staging hostname intentionally validates a production-canonical
+website deployment. If staging gets its own Vercel project or environment with
+`PUBLIC_MONARCHIC_WEBSITE_BASE_URL=https://staging.monarchic.io`, update
+`MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL` accordingly.
 
 ## Deployment Checks
 

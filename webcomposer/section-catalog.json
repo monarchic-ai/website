@@ -118,6 +118,27 @@
         "Do not reuse the same generic product copy across MCPs.",
         "Do not let dynamic catalog cards obscure product-specific evidence."
       ]
+    },
+    {
+      "id": "guide.mcp_quickstart",
+      "name": "MCP Quickstart Guide",
+      "intent": "Explain how a gated account holder connects Monarchic MCP routes to an MCP-aware client without implying public self-serve access.",
+      "bestFor": ["tutorial", "quickstart", "setup-guide"],
+      "requiredInputs": ["account_prerequisites", "delivery_model", "client_config", "first_workflow", "validation_steps", "limitations"],
+      "allowedComponents": ["StepList", "CodeBlock", "Callout", "Link", "Badge"],
+      "layoutRules": [
+        "Show prerequisites before configuration snippets.",
+        "State that Monarchic MCP capability runs on hosted infrastructure while client packages are lightweight adapters.",
+        "Position S3 as supporting artifact storage, not the primary public install path.",
+        "Use placeholders for credentials and dashboard-provided URLs.",
+        "Keep validation and limitations close to setup instructions."
+      ],
+      "antiPatterns": [
+        "Do not publish private API URLs or secret names.",
+        "Do not add public website download buttons for MCP server binaries.",
+        "Do not imply instant access from the public website.",
+        "Do not present client snippets as active until account access is granted."
+      ]
     }
   ]
 }

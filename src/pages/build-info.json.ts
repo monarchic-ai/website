@@ -7,10 +7,13 @@ import { productDetails } from "../lib/productDetails";
 export const prerender = true;
 
 const requiredCatalogSlugs = [
+  "usage-individual",
+  "usage-developer",
+  "usage-team",
+  "usage-business",
   "mcp-browserops",
   "mcp-explicitmem",
   "mcp-repointel",
-  "bundle-developer",
   "monarchic-ai",
 ];
 
@@ -67,6 +70,7 @@ export async function GET() {
       routes: [
         "/",
         "/products",
+        "/tutorial",
         "/waitlist",
         "/research",
         "/robots.txt",

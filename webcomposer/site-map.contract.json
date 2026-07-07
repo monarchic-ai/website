@@ -135,6 +135,33 @@
       ]
     },
     {
+      "route": "/tutorial",
+      "title": "MCP Tutorial",
+      "purpose": "Teach prospects and gated account holders how Monarchic MCP routes connect to client tools, what prerequisites are needed, and how to validate a first workflow.",
+      "audience": ["agent builders", "engineering teams", "technical buyers", "release reviewers"],
+      "requiredContent": ["account_prerequisites", "delivery_model", "client_config", "first_workflow", "validation_steps", "limitations", "primary_cta"],
+      "forbiddenContent": ["secret values", "private API URLs", "public binary download CTA", "instant access promises", "unsupported client claims", "checkout promises"],
+      "primaryActions": ["view_products", "join_waitlist", "read_research"],
+      "sections": [
+        {
+          "id": "tutorial_hero",
+          "template": "hero.platform_statement",
+          "purpose": "Frame the tutorial as a gated-access setup guide for MCP-aware clients.",
+          "requiredContent": ["platform_positioning", "current_offer", "account_prerequisites", "primary_cta"],
+          "allowedComponents": ["Hero", "Badge", "Button", "Callout"],
+          "layoutGuidance": ["Make the gated-access requirement visible in the first viewport."]
+        },
+        {
+          "id": "quickstart",
+          "template": "guide.mcp_quickstart",
+          "purpose": "Show the setup sequence, configuration shape, first workflow, and validation boundary.",
+          "requiredContent": ["account_prerequisites", "delivery_model", "client_config", "first_workflow", "validation_steps", "limitations"],
+          "allowedComponents": ["StepList", "CodeBlock", "Callout", "Link", "Badge"],
+          "layoutGuidance": ["Keep snippets generic and credential-free; explain hosted execution before adapter config; link to product and research pages for product-specific evidence."]
+        }
+      ]
+    },
+    {
       "route": "/research/explicitmem",
       "title": "ExplicitMem Research",
       "purpose": "Document ExplicitMem benchmark results, hosted latency smoke data, and the limits of those measurements.",

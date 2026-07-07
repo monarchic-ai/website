@@ -1,288 +1,133 @@
 [
   {
-    "kind": "single-mcp",
-    "slug": "mcp-browserops",
-    "displayName": "BrowserOps MCP",
-    "tagline": "Browser evidence and UI verification",
-    "description": "Browser observation, screenshots, interaction checks, and reviewable UI evidence for agents that need to validate web apps.",
+    "kind": "usage-plan",
+    "slug": "usage-business",
+    "displayName": "Business",
+    "tagline": "Higher-volume hosted agent infrastructure",
+    "description": "For companies running heavier hosted MCP workloads and needing a larger included allowance before metered usage begins.",
     "featureBullets": [
-      "Hosted MCP route for BrowserOps",
-      "Scoped API keys for production agents",
-      "Cancel anytime through the Stripe billing portal"
+      "75,000 included credits each month",
+      "Larger shared allowance for production agent workloads",
+      "$0.015 per additional credit after the included allowance",
+      "Best fit for sustained BrowserOps, RepoIntel, SEO, and lead workflows"
     ],
+    "includedCredits": 75000,
+    "overageLabel": "$0.015/credit overage",
+    "usageSummary": "Built for sustained infrastructure-backed agent workloads where usage-based billing reflects actual hosted compute and route cost.",
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TlV40GmcDOdOLjF4NYSUb6w",
-        "lookupKey": "monarchic_mcp_browserops_test_monthly",
-        "priceCents": 900,
+        "priceId": "price_1TqL9tGmcDOdOLjFV56kHPir",
+        "lookupKey": "monarchic_usage_business_live_monthly",
+        "priceCents": 79900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TlV41GmcDOdOLjFIPdqvYa3",
-        "lookupKey": "monarchic_mcp_browserops_test_annual",
-        "priceCents": 9000,
+        "priceId": "price_1TqL9tGmcDOdOLjF4lTpwZB7",
+        "lookupKey": "monarchic_usage_business_live_annual",
+        "priceCents": 799000,
         "currency": "usd"
       }
     ]
   },
   {
-    "kind": "single-mcp",
-    "slug": "mcp-businessmodel",
-    "displayName": "BusinessModel MCP",
-    "tagline": "Business model design + analysis tools",
-    "description": "Structured business-model exploration, canvas analysis, and competitive teardown - surfaced as MCP tools for product and strategy agents.",
+    "kind": "usage-plan",
+    "slug": "usage-developer",
+    "displayName": "Developer",
+    "tagline": "A practical tier for one active production developer",
+    "description": "For a developer running hosted MCPs regularly from local agents, CI checks, and production workflows that need room beyond evaluation traffic.",
     "featureBullets": [
-      "Hosted MCP route for BusinessModel",
-      "Scoped API keys for production agents",
-      "Cancel anytime through the Stripe billing portal"
+      "4,000 included credits each month",
+      "Usage-based access across hosted MCP routes",
+      "$0.025 per additional credit after the included allowance",
+      "Scoped API keys, billing controls, and account dashboard access"
     ],
+    "includedCredits": 4000,
+    "overageLabel": "$0.025/credit overage",
+    "usageSummary": "Standard MCP calls use 1 credit. Heavy calls such as BrowserOps evidence capture, PTY sessions, SEO ranking runs, lead generation, and project creation are expected to cost 3-10 credits.",
+    "highlighted": true,
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TlV3uGmcDOdOLjFfsdFFabK",
-        "lookupKey": "monarchic_mcp_businessmodel_test_monthly",
-        "priceCents": 900,
+        "priceId": "price_1TqL9pGmcDOdOLjFD1Rl1mxL",
+        "lookupKey": "monarchic_usage_developer_live_monthly",
+        "priceCents": 7900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TlV3vGmcDOdOLjFoyswHdwU",
-        "lookupKey": "monarchic_mcp_businessmodel_test_annual",
-        "priceCents": 9000,
+        "priceId": "price_1TqL9qGmcDOdOLjFVd2JpZgK",
+        "lookupKey": "monarchic_usage_developer_live_annual",
+        "priceCents": 79000,
         "currency": "usd"
       }
     ]
   },
   {
-    "kind": "single-mcp",
-    "slug": "mcp-explicitmem",
-    "displayName": "ExplicitMem MCP",
-    "tagline": "Durable agent memory",
-    "description": "A hosted memory store agents can read and write through MCP. Long-running tasks keep state across runs without bespoke storage.",
+    "kind": "usage-plan",
+    "slug": "usage-individual",
+    "displayName": "Individual",
+    "tagline": "Solo hosted MCP access with a hard monthly cap",
+    "description": "A single-developer entry tier for trying hosted Monarchic routes without surprise overage. Built for solo agents, side projects, and evaluation work.",
     "featureBullets": [
-      "Hosted MCP route for ExplicitMem",
-      "Scoped API keys for production agents",
-      "Cancel anytime through the Stripe billing portal"
+      "1,000 included credits each month",
+      "Hosted access to the Monarchic MCP routes as they open",
+      "Overage disabled at launch so spend stays capped",
+      "Dashboard API keys and billing controls"
     ],
+    "includedCredits": 1000,
+    "overageLabel": "Overage disabled at launch",
+    "usageSummary": "Basic auth, list, config, and read calls are free or near-free. Standard MCP calls use 1 credit; heavy browser, terminal, SEO, lead, and project-generation calls use more.",
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TlV3wGmcDOdOLjFJdJZuMHE",
-        "lookupKey": "monarchic_mcp_explicitmem_test_monthly",
-        "priceCents": 900,
+        "priceId": "price_1TqL9oGmcDOdOLjF4lG2IBm7",
+        "lookupKey": "monarchic_usage_individual_live_monthly",
+        "priceCents": 2900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TlV3xGmcDOdOLjFpmZqKYEb",
-        "lookupKey": "monarchic_mcp_explicitmem_test_annual",
-        "priceCents": 9000,
+        "priceId": "price_1TqL9oGmcDOdOLjFasMBDagk",
+        "lookupKey": "monarchic_usage_individual_live_annual",
+        "priceCents": 29000,
         "currency": "usd"
       }
     ]
   },
   {
-    "kind": "single-mcp",
-    "slug": "mcp-leadgenerator",
-    "displayName": "LeadGenerator MCP",
-    "tagline": "Outbound lead discovery + enrichment",
-    "description": "Hosted lead discovery, enrichment, and outbound list construction. Agents call it through MCP without managing their own scrapers.",
+    "kind": "usage-plan",
+    "slug": "usage-team",
+    "displayName": "Team",
+    "tagline": "Shared hosted MCP capacity for small teams",
+    "description": "For small teams standardizing agent access to hosted Monarchic infrastructure across development, QA, research, and go-to-market workflows.",
     "featureBullets": [
-      "Hosted MCP route for LeadGenerator",
-      "Scoped API keys for production agents",
-      "Cancel anytime through the Stripe billing portal"
+      "15,000 included credits each month",
+      "Shared usage pool for team workflows",
+      "$0.02 per additional credit after the included allowance",
+      "Designed for multiple API keys and repeat production usage"
     ],
+    "includedCredits": 15000,
+    "overageLabel": "$0.02/credit overage",
+    "usageSummary": "The shared allowance covers normal hosted MCP usage while preserving cost visibility for heavier browser, terminal, and data-intensive workflows.",
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TlV3yGmcDOdOLjFx1Lj56DP",
-        "lookupKey": "monarchic_mcp_leadgenerator_test_monthly",
-        "priceCents": 900,
+        "priceId": "price_1TqL9rGmcDOdOLjFpovzQZNh",
+        "lookupKey": "monarchic_usage_team_live_monthly",
+        "priceCents": 24900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TlV3zGmcDOdOLjFH0GvhYjL",
-        "lookupKey": "monarchic_mcp_leadgenerator_test_annual",
-        "priceCents": 9000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-repointel",
-    "displayName": "RepoIntel MCP",
-    "tagline": "Code-base intelligence as a hosted MCP",
-    "description": "Cross-repo code search, dependency graphs, and context retrieval surfaced as MCP tools your agents can call directly. Hosted by Monarchic so you do not ship the indexer yourself.",
-    "featureBullets": [
-      "Hosted MCP route for RepoIntel",
-      "Scoped API keys for production agents",
-      "Cancel anytime through the Stripe billing portal"
-    ],
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1TlV43GmcDOdOLjFofPZagPA",
-        "lookupKey": "monarchic_mcp_repointel_test_monthly",
-        "priceCents": 900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1TlV43GmcDOdOLjFZbbnwB2H",
-        "lookupKey": "monarchic_mcp_repointel_test_annual",
-        "priceCents": 9000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-all-mcps",
-    "displayName": "All MCPs",
-    "tagline": "Every hosted Monarchic MCP",
-    "description": "Every MCP Monarchic hosts, today and as new ones ship. One subscription gives you access to the full set without picking individual plans.",
-    "featureBullets": [
-      "Every Monarchic MCP, today and future",
-      "Single subscription, single bill",
-      "Catalog expands as new MCPs ship"
-    ],
-    "includedMcpSlugs": [
-      "mcp-agentfirewall",
-      "mcp-browserops",
-      "mcp-repointel",
-      "mcp-explicitmem",
-      "mcp-pty",
-      "mcp-businessmodel",
-      "mcp-leadgenerator",
-      "mcp-proofpack",
-      "mcp-releaseops",
-      "mcp-seo",
-      "mcp-verified"
-    ],
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1TlV45GmcDOdOLjFX5kJDaVs",
-        "lookupKey": "monarchic_bundle_all_mcps_test_monthly",
-        "priceCents": 3500,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1TlV45GmcDOdOLjF0dJy7Sx5",
-        "lookupKey": "monarchic_bundle_all_mcps_test_annual",
-        "priceCents": 35000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-developer",
-    "displayName": "Developer Bundle",
-    "tagline": "Everything a code agent needs",
-    "description": "Hosted MCPs typically used in web development workflows: code intelligence, durable memory, and browser verification.",
-    "featureBullets": [
-      "RepoIntel + ExplicitMem + BrowserOps",
-      "Single subscription, single bill",
-      "Composition expands as new dev MCPs ship"
-    ],
-    "includedMcpSlugs": [
-      "mcp-repointel",
-      "mcp-explicitmem",
-      "mcp-browserops"
-    ],
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1TlV47GmcDOdOLjFdJsbcLtO",
-        "lookupKey": "monarchic_bundle_developer_test_monthly",
-        "priceCents": 2000,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1TlV48GmcDOdOLjF0fdeh8LS",
-        "lookupKey": "monarchic_bundle_developer_test_annual",
-        "priceCents": 20000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-entrepreneur",
-    "displayName": "Entrepreneur Bundle",
-    "tagline": "Business + go-to-market tools",
-    "description": "Hosted MCPs typically used in business, strategy, and outbound workflows.",
-    "featureBullets": [
-      "BusinessModel + LeadGenerator",
-      "Single subscription, single bill",
-      "Composition expands as new business MCPs ship"
-    ],
-    "includedMcpSlugs": [
-      "mcp-businessmodel",
-      "mcp-leadgenerator"
-    ],
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1TlV49GmcDOdOLjFHSd4KSlK",
-        "lookupKey": "monarchic_bundle_entrepreneur_test_monthly",
-        "priceCents": 1500,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1TlV4AGmcDOdOLjF1OtrRlGu",
-        "lookupKey": "monarchic_bundle_entrepreneur_test_annual",
-        "priceCents": 15000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-startup",
-    "displayName": "Startup Bundle",
-    "tagline": "The essential mix for a new company",
-    "description": "The MCPs founders reach for first: code intelligence, business modeling, and outbound lead discovery.",
-    "featureBullets": [
-      "RepoIntel + BusinessModel + LeadGenerator",
-      "Single subscription, single bill",
-      "Composition expands as the founder toolset evolves"
-    ],
-    "includedMcpSlugs": [
-      "mcp-repointel",
-      "mcp-businessmodel",
-      "mcp-leadgenerator"
-    ],
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1TlV4BGmcDOdOLjFGBNeGEIe",
-        "lookupKey": "monarchic_bundle_startup_test_monthly",
-        "priceCents": 2000,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1TlV4CGmcDOdOLjFMRqKwm1X",
-        "lookupKey": "monarchic_bundle_startup_test_annual",
-        "priceCents": 20000,
+        "priceId": "price_1TqL9sGmcDOdOLjFhxwOHg02",
+        "lookupKey": "monarchic_usage_team_live_annual",
+        "priceCents": 249000,
         "currency": "usd"
       }
     ]
