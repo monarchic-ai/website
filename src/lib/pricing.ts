@@ -46,15 +46,8 @@ export interface CatalogPlan {
 import generatedPlans from "./pricing.generated.json" with { type: "json" };
 import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json" };
 
-const launchPlanSlugs = new Set([
-  "usage-individual",
-  "usage-developer",
-  "usage-team",
-  "usage-business",
-]);
-
 export const availablePlans: CatalogPlan[] = ((generatedPlans as CatalogPlan[]) ?? [])
-  .filter((plan) => launchPlanSlugs.has(plan.slug));
+  .filter((plan) => plan.kind === "usage-plan" || plan.kind === "single-mcp");
 const availablePlanSlugs = new Set(availablePlans.map((plan) => plan.slug));
 export const comingSoonPlans: CatalogPlan[] = ((comingSoonPlansJson as CatalogPlan[]) ?? [])
   .filter((plan) => !availablePlanSlugs.has(plan.slug));
