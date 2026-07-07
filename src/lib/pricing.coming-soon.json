@@ -3,491 +3,266 @@
     "kind": "ai",
     "slug": "monarchic-ai",
     "displayName": "Monarchic AI",
-    "tagline": "Full autonomous Monarchic — coming soon",
-    "description": "The full Monarchic agent system on top of the hosted MCP stack. Autonomous, observable, infrastructure-backed agent runs with the entire Monarchic toolchain wired in. Join the waitlist and we'll reach out when launch access opens.",
+    "tagline": "Autonomous development platform, coming later",
+    "description": "The full Monarchic agent system on top of the hosted MCP stack. Autonomous, observable, infrastructure-backed agent runs with the entire Monarchic toolchain wired in. Join the waitlist and we will reach out when launch access opens.",
     "featureBullets": [
-      "Everything in the launch MCP stack",
-      "Autonomous Monarchic agent runs",
-      "Long-running orchestration with checkpointing",
-      "Full audit trail and reviewable artifacts"
+      "Hosted agent runs with the Monarchic MCP stack wired in",
+      "Infrastructure-backed execution with receipts and review artifacts",
+      "Account controls, billing, and launch access managed through Monarchic"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-agentfirewall",
     "displayName": "AgentFirewall MCP",
-    "tagline": "Policy firewall for agent tool calls",
-    "description": "Allowlist, sandbox, registry-trust, prompt-injection, and redaction checks for MCP tool calls before they reach downstream servers.",
+    "tagline": "Prompt and tool-call safety firewall",
+    "description": "AgentFirewall MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
-      "Hosted MCP route for AgentFirewall",
-      "Scoped API keys for production agents",
-      "Launch timing depends on operational readiness"
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-pty",
-    "displayName": "PTY MCP",
-    "tagline": "Hosted terminal sessions for agents",
-    "description": "Run shell commands, capture output, and manage interactive sessions through MCP. Hosted so agents do not need their own terminal sandboxes.",
+    "slug": "mcp-browserops",
+    "displayName": "BrowserOps MCP",
+    "tagline": "Browser evidence and UI verification",
+    "description": "BrowserOps MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
-      "Hosted MCP route for PTY",
-      "Scoped API keys for production agents",
-      "Launch timing depends on operational readiness"
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-businessmodel",
     "displayName": "BusinessModel MCP",
     "tagline": "Business model design and analysis tools",
-    "description": "Structured business-model exploration, company synthesis, canvas analysis, and competitive teardown surfaced as MCP tools.",
+    "description": "BusinessModel MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
-      "Hosted MCP route for BusinessModel",
-      "Scoped API keys for production agents",
-      "Launch timing depends on product readiness"
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-create-project",
+    "displayName": "Create Project MCP",
+    "tagline": "Project scaffolding from structured intent",
+    "description": "Create Project MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-explicitmem",
+    "displayName": "ExplicitMem MCP",
+    "tagline": "Durable agent memory",
+    "description": "ExplicitMem MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-leadgenerator",
     "displayName": "LeadGenerator MCP",
     "tagline": "Outbound lead discovery and enrichment",
-    "description": "Hosted lead discovery, enrichment, and outbound list construction for agents working from structured business-model inputs.",
+    "description": "LeadGenerator MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
-      "Hosted MCP route for LeadGenerator",
-      "Scoped API keys for production agents",
-      "Launch timing depends on product readiness"
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-proofpack",
-    "displayName": "ProofPack MCP",
-    "tagline": "Receipts and evidence packs for agent work",
-    "description": "Hash, sign, verify, compare drift, and export reviewable evidence packs for commands, releases, browser sessions, and agent artifacts.",
-    "featureBullets": [
-      "Hosted MCP route for ProofPack",
-      "Scoped API keys for production agents",
-      "Launch timing depends on operational readiness"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-releaseops",
-    "displayName": "ReleaseOps MCP",
-    "tagline": "Release readiness and reviewer evidence",
-    "description": "Release planning, changelog scope checks, artifact manifests, docs drift checks, tag readiness, and exportable release packs.",
-    "featureBullets": [
-      "Hosted MCP route for ReleaseOps",
-      "Scoped API keys for production agents",
-      "Launch timing depends on operational readiness"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-seo",
-    "displayName": "SEO MCP",
-    "tagline": "Deterministic SEO ranking workflows",
-    "description": "SERP intelligence, intent modeling, technical checks, internal linking, and content feedback for verifiable SEO workflows.",
-    "featureBullets": [
-      "Hosted MCP route for SEO",
-      "Scoped API keys for production agents",
-      "Launch timing depends on product readiness"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-verified",
-    "displayName": "Verified MCP",
-    "tagline": "Bounded patching with proof receipts",
-    "description": "Plan, apply, and verify bounded code patches with test receipts, rollback receipts, and verifier-friendly patch evidence.",
-    "featureBullets": [
-      "Hosted MCP route for Verified",
-      "Scoped API keys for production agents",
-      "Launch timing depends on operational readiness"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-entrepreneur",
-    "displayName": "Entrepreneur Bundle",
-    "tagline": "Business and go-to-market tools",
-    "description": "BusinessModel and LeadGenerator packaged for business, strategy, and outbound workflows.",
-    "featureBullets": [
-      "BusinessModel and LeadGenerator",
-      "Single subscription when launched",
-      "Launch access TBD"
-    ],
-    "includedMcpSlugs": [
-      "mcp-businessmodel",
-      "mcp-leadgenerator"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-startup",
-    "displayName": "Startup Bundle",
-    "tagline": "Founder workflow tools",
-    "description": "A future bundle for founders that combines code intelligence with business modeling and outbound workflows.",
-    "featureBullets": [
-      "RepoIntel, BusinessModel, and LeadGenerator",
-      "Single subscription when launched",
-      "Launch access TBD"
-    ],
-    "includedMcpSlugs": [
-      "mcp-repointel",
-      "mcp-businessmodel",
-      "mcp-leadgenerator"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-all-mcps",
-    "displayName": "All MCPs",
-    "tagline": "Every hosted Monarchic MCP",
-    "description": "A future bundle for the full hosted MCP catalog after the remaining servers graduate from launch readiness.",
-    "featureBullets": [
-      "Every Monarchic MCP when launched",
-      "Single subscription when launched",
-      "Launch access TBD"
-    ],
-    "includedMcpSlugs": [
-      "mcp-agentfirewall",
-      "mcp-browserops",
-      "mcp-repointel",
-      "mcp-explicitmem",
-      "mcp-pty",
-      "mcp-businessmodel",
-      "mcp-leadgenerator",
-      "mcp-monarchic",
-      "mcp-outreachconnectors",
-      "mcp-proofpack",
-      "mcp-create-project",
-      "mcp-releaseops",
-      "mcp-repo-fleet",
-      "mcp-seo",
-      "mcp-verified"
-    ],
-    "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-monarchic",
     "displayName": "Monarchic MCP",
-    "tagline": "Governed agent orchestration over MCP",
-    "description": "Core Monarchic adapter for long-running agent workflows, run control, artifact discovery, infrastructure launch, and execution gates.",
+    "tagline": "Monarchic orchestration interface",
+    "description": "Monarchic MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
-      "Execute and review agent intents",
-      "Run summaries, artifacts, registry, and control tools",
-      "Company-building execution gates wired to BusinessModel MCP"
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-proofpack",
+    "displayName": "ProofPack MCP",
+    "tagline": "Receipts and reviewable evidence packs",
+    "description": "ProofPack MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-pty",
+    "displayName": "PTY MCP",
+    "tagline": "Hosted terminal execution bridge",
+    "description": "PTY MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-releaseops",
+    "displayName": "ReleaseOps MCP",
+    "tagline": "Release workflow automation",
+    "description": "ReleaseOps MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-repo-fleet",
+    "displayName": "Repo Fleet MCP",
+    "tagline": "Multi-repository fleet inventory",
+    "description": "Repo Fleet MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-repointel",
+    "displayName": "RepoIntel MCP",
+    "tagline": "Code-base intelligence as a hosted MCP",
+    "description": "RepoIntel MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-seo",
+    "displayName": "SEO MCP",
+    "tagline": "Deterministic SEO workflow tools",
+    "description": "SEO MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-verified",
+    "displayName": "Verified MCP",
+    "tagline": "Verified patch and review workflow tools",
+    "description": "Verified MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
+    ],
+    "status": "coming_soon",
+    "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-outreachconnectors",
     "displayName": "OutreachConnectors MCP",
-    "tagline": "Governed outreach readiness and delivery receipts",
-    "description": "Policy preflight, delivery capture templates, send refusal stubs, and redacted provider delivery receipt normalization.",
+    "tagline": "Outbound delivery connector layer",
+    "description": "OutreachConnectors MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
-      "No-send policy preflight for email, LinkedIn, and X",
-      "Delivery capture templates for real operator records",
-      "Normalized receipt hashes without raw contact details"
+      "Hosted MCP route under the Monarchic API",
+      "Scoped API-key access through the dashboard",
+      "Usage counted through the account credit pool"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   },
   {
-    "kind": "single-mcp",
-    "slug": "mcp-create-project",
-    "displayName": "create-project MCP",
-    "tagline": "Governed project scaffolding",
-    "description": "MCP wrapper for project creation workflows with structured JSON and text responses around the create-project CLI.",
+    "kind": "bundle",
+    "slug": "bundle-developer",
+    "displayName": "Developer Workflow Pack",
+    "tagline": "Repo intelligence, memory, browser checks, and terminal evidence",
+    "description": "A capability grouping for developer-agent workflows. These routes are included under usage-plan credits rather than sold as a separate checkout bundle.",
     "featureBullets": [
-      "Standardized project creation route",
-      "JSON and text output modes",
-      "Predictable CLI failure reporting"
+      "RepoIntel, ExplicitMem, BrowserOps, PTY, ProofPack, and Verified workflow coverage",
+      "Usage-based access through account credits",
+      "Useful for coding agents, UI review, and release checks"
+    ],
+    "includedMcpSlugs": [
+      "mcp-repointel",
+      "mcp-explicitmem",
+      "mcp-browserops",
+      "mcp-pty",
+      "mcp-proofpack",
+      "mcp-verified"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   },
   {
-    "kind": "single-mcp",
-    "slug": "mcp-repo-fleet",
-    "displayName": "repo-fleet MCP",
-    "tagline": "Repository fleet operations",
-    "description": "MCP wrapper for repository fleet operations with structured JSON and text responses around the repo-fleet CLI.",
+    "kind": "bundle",
+    "slug": "bundle-go-to-market",
+    "displayName": "Go-To-Market Workflow Pack",
+    "tagline": "Business modeling, lead generation, SEO, and outreach preparation",
+    "description": "A capability grouping for market research and revenue workflows. It maps to the same usage-plan credit pool as the rest of the hosted catalog.",
     "featureBullets": [
-      "Centralized route for multi-repo operations",
-      "JSON and text output modes",
-      "Predictable CLI failure reporting"
+      "BusinessModel, LeadGenerator, SEO, and OutreachConnectors coverage",
+      "Usage-based access through account credits",
+      "Useful for research, positioning, lists, and campaign preparation"
+    ],
+    "includedMcpSlugs": [
+      "mcp-businessmodel",
+      "mcp-leadgenerator",
+      "mcp-seo",
+      "mcp-outreachconnectors"
     ],
     "status": "coming_soon",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": null,
-        "lookupKey": null,
-        "priceCents": null,
-        "currency": "usd"
-      }
-    ]
+    "prices": []
   }
 ]

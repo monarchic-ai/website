@@ -18,20 +18,29 @@ import { getProductDetail } from "../../lib/productDetails";
 const MONARCHIC_AI_SLUG = "monarchic-ai";
 const monarchicAi = allPlans.find((plan) => plan.slug === MONARCHIC_AI_SLUG) ?? null;
 
-const bundleOrder = ["bundle-developer", "bundle-entrepreneur", "bundle-startup", "bundle-all-mcps"];
+const usageOrder = ["usage-individual", "usage-developer", "usage-team", "usage-business"];
+function usageRank(slug: string): number {
+  const index = usageOrder.indexOf(slug);
+  return index === -1 ? usageOrder.length : index;
+}
+const usagePlans = allPlans
+  .filter((plan) => plan.kind === "usage-plan")
+  .sort((a, b) => usageRank(a.slug) - usageRank(b.slug) || a.displayName.localeCompare(b.displayName));
+
+const bundleOrder = ["bundle-developer", "bundle-go-to-market", "bundle-startup", "bundle-all-mcps"];
 function bundleRank(slug: string): number {
   const index = bundleOrder.indexOf(slug);
   return index === -1 ? bundleOrder.length : index;
 }
 
 const bundles = allPlans
-  .filter((plan) => plan.kind === "bundle" && plan.status === "available")
+  .filter((plan) => plan.kind === "bundle")
   .sort((a, b) => bundleRank(a.slug) - bundleRank(b.slug) || a.displayName.localeCompare(b.displayName));
 const singleMcps = allPlans
   .filter((plan) => plan.kind === "single-mcp")
   .sort((a, b) => a.displayName.localeCompare(b.displayName));
 const otherComingSoon = allPlans.filter(
-  (plan) => plan.status === "coming_soon" && plan.kind !== "single-mcp" && plan.slug !== MONARCHIC_AI_SLUG,
+  (plan) => plan.status === "coming_soon" && plan.kind !== "single-mcp" && plan.kind !== "bundle" && plan.slug !== MONARCHIC_AI_SLUG,
 );
 
 const researchByPlanSlug: Record<string, { href: string; label: string }> = {
@@ -47,13 +56,16 @@ interface Section {
 }
 
 const sections: Section[] = [
-  { id: "bundles", heading: "Bundles", plans: bundles },
-  { id: "mcps", heading: "MCPs", plans: singleMcps },
+  { id: "access", heading: "Access Tiers", plans: usagePlans },
+  { id: "mcps", heading: "MCP Routes", plans: singleMcps },
+  { id: "bundles", heading: "Workflow Packs", plans: bundles },
   { id: "coming-soon", heading: "Coming Soon", plans: otherComingSoon },
 ].filter((section) => section.plans.length > 0);
 
 function kindBadge(kind: PlanKind): { label: string; classes: string } {
   switch (kind) {
+    case "usage-plan":
+      return { label: "Usage Plan", classes: "border-white text-white" };
     case "single-mcp":
       return { label: "Single MCP", classes: "border-emerald-300 text-emerald-200" };
     case "bundle":
@@ -62,6 +74,11 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
     default:
       return { label: "AI System", classes: "border-amber-300 text-amber-200" };
   }
+}
+
+function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
+  if (plan.kind !== "usage-plan") return plan.featureBullets;
+  return plan.featureBullets.filter((bullet) => !bullet.includes("$"));
 }
 
 ---
@@ -76,7 +93,7 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
     <meta name="generator" content={Astro.generator} />
     <SeoHead
       title="Products | Monarchic LLC"
-      description="Monarchic LLC product catalog for MCP tools, bundles, and the longer-term Monarchic platform direction."
+      description="Monarchic hosted MCP route catalog, research evidence, and gated launch access."
       path="/products"
     />
   </head>
@@ -93,6 +110,7 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
           </a>
           <nav class="flex flex-wrap items-center gap-2">
             <a href="/products" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Products</a>
+            <a href="/tutorial" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Tutorial</a>
             <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
           </nav>
         </header>
@@ -100,21 +118,20 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
         <div class="py-12">
           <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">Product catalog</p>
           <h1 class="max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
-            MCP Catalog<br />Coming Soon
+            Hosted MCP<br />Catalog
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            The current focus is the MCP catalog: tools and bundles for agent
-            workflows around code, memory, browser checks, and review evidence.
-            Monarchic, the larger autonomous development platform, is the
-            direction behind the catalog, not the offer today.
+            The current public surface is the MCP catalog: route-level product
+            pages, research evidence, workflow packs, and waitlist access while
+            account controls are finalized.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
-              Coming Soon
+              Gated Access
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
-              We are not publishing fixed prices yet. Product access is coming
-              soon, and waitlist updates will go out before access opens.
+              Access is not self-serve from the website. Join the waitlist for
+              availability updates and account onboarding.
             </p>
             <a href="/waitlist" class="mt-5 inline-flex items-center justify-center border-2 border-cyan-300 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
               Join Waitlist
@@ -126,21 +143,22 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Start small</p>
             <p class="mt-3 text-sm leading-7 text-white/74">
-              Start with a single MCP when one workflow is the bottleneck.
+              Start with a route that matches the workflow bottleneck: memory,
+              repository intelligence, browser evidence, or proof packaging.
             </p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Use a bundle</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Access State</p>
             <p class="mt-3 text-sm leading-7 text-white/74">
-              Pick a bundle when repository context, browser evidence, and memory
-              need to work together.
+              Product pages show what each route does, who it fits, and whether
+              deeper proof exists before access opens.
             </p>
           </div>
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Waitlist</p>
             <p class="mt-3 text-sm leading-7 text-white/74">
-              Access is coming soon while hosted routes, API keys, account
-              controls, and billing are tested.
+              Waitlist updates cover route availability, account setup, and the
+              product surfaces moving through release checks.
             </p>
           </div>
         </section>
@@ -186,7 +204,7 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
               {section.plans.map((plan) => {
                 const badge = kindBadge(plan.kind);
                 return (
-                  <article class="group flex min-h-[440px] flex-col border-2 border-white bg-black/74 p-5 transition hover:bg-white hover:text-black">
+                  <article class={`group flex min-h-[440px] flex-col border-2 bg-black/74 p-5 transition hover:bg-white hover:text-black ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
                     <div class="flex items-start justify-between gap-3">
                       <span class={`inline-flex border px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.22em] ${badge.classes}`}>
                         {badge.label}
@@ -209,14 +227,27 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
                       </p>
                     )}
                     <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicCatalogDescription(plan.description)}</p>
+                    {plan.kind === "usage-plan" && (
+                      <div class="mt-5 border border-white/40 bg-black/40 p-4 group-hover:border-black/40 group-hover:bg-white/70">
+                        <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52 group-hover:text-black/52">
+                          Gated usage tier
+                        </p>
+                        <div class="mt-3 grid gap-2 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white/60 group-hover:text-black/60">
+                          {plan.includedCredits !== undefined && (
+                            <span>{plan.includedCredits.toLocaleString()} monthly credit allowance target</span>
+                          )}
+                          <span>Waitlist before checkout</span>
+                        </div>
+                      </div>
+                    )}
                     {getProductDetail(plan.slug) !== null && (
                       <p class="mt-3 text-sm leading-6 text-white/72 group-hover:text-black/72">
                         <span class="font-bold uppercase">Best for:</span> {getProductDetail(plan.slug)?.buyer}
                       </p>
                     )}
-                    {plan.featureBullets.length > 0 && (
+                    {publicFeatureBulletsFor(plan).length > 0 && (
                       <ul class="mt-5 grid gap-2 text-sm leading-6 text-white/72 group-hover:text-black/72">
-                        {plan.featureBullets.slice(0, 3).map((bullet) => (
+                        {publicFeatureBulletsFor(plan).slice(0, 3).map((bullet) => (
                           <li class="flex gap-2">
                             <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white group-hover:bg-black"></span>
                             <span>{publicCatalogFeatureBullet(bullet)}</span>
@@ -226,7 +257,7 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      Coming Soon
+                      {plan.kind === "usage-plan" ? "Access gated" : "Included under gated access"}
                     </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">

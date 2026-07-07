@@ -11,6 +11,7 @@ const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.CHROMIUM || undefined;
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
 const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 4);
+const staticOnly = boolEnv(process.env.MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY);
 
 const checks = [];
 const requiredCatalogSlugs = [
@@ -37,6 +38,21 @@ await checkBuildInfo(`${baseUrl}/build-info.json`, {
 });
 await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
 await checkText(`${baseUrl}/sitemap.xml`, "<urlset", "sitemap.xml");
+await checkTextIncludes(`${baseUrl}/tutorial`, [
+  "@monarchic-ai/repointel-mcp",
+  "MONARCHIC_API_BASE_URL",
+  "MONARCHIC_API_KEY",
+  "S3 is not the public MCP binary download path",
+], "tutorial static contract");
+
+if (staticOnly) {
+  checks.push({
+    name: "browser route checks",
+    status: "skipped",
+    reason: "MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY",
+  });
+  return;
+}
 
 const browser = await chromium.launch({
   headless: true,
@@ -101,6 +117,18 @@ try {
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "waitlist route");
+
+  await checkPage(page, `${baseUrl}/tutorial`, async () => {
+    await page.getByRole("heading", { name: "Connect A Client" }).waitFor();
+    await page.getByText("@monarchic-ai/repointel-mcp").first().waitFor();
+    await page.getByText("MONARCHIC_API_BASE_URL").first().waitFor();
+    await page.getByText("MONARCHIC_API_KEY").first().waitFor();
+    await page.getByText("Codex TOML").waitFor();
+    await page.getByText("S3 is not the public MCP binary download path").waitFor();
+    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/tutorial`);
+    await expectNoExternalAppLinks(page);
+    await expectNoHorizontalOverflow(page);
+  }, "tutorial route");
 
   await checkPage(page, `${baseUrl}/products/mcp-browserops`, async () => {
     await page.getByRole("heading", { name: "BrowserOps MCP" }).waitFor();
@@ -175,6 +203,19 @@ async function checkText(url, expected, name) {
     throw new Error(`${name} did not include expected text: ${expected}`);
   }
   checks.push({ name, status: "ok" });
+}
+
+async function checkTextIncludes(url, expectedStrings, name) {
+  const response = await fetchOrThrow(url, undefined, name);
+  if (!response.ok) {
+    throw new Error(`${name} smoke failed for ${url}: ${response.status} ${response.statusText}`);
+  }
+  const body = await response.text();
+  const missing = expectedStrings.filter((expected) => !body.includes(expected));
+  if (missing.length > 0) {
+    throw new Error(`${name} did not include expected text: ${missing.join(", ")}`);
+  }
+  checks.push({ name, status: "ok", expected: expectedStrings.length });
 }
 
 async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
@@ -291,6 +332,9 @@ function classifyFailure(message) {
   if (/DNS smoke failed/i.test(message)) return "dns";
   if (/build-info smoke failed|missing the build marker|deployment commit expected/i.test(message)) {
     return "deployment-marker";
+  }
+  if (/browserType\.launch|error while loading shared libraries|libglib-2\.0\.so\.0/i.test(message)) {
+    return "browser-runtime";
   }
   if (/robots\.txt|sitemap\.xml|UND_ERR_CONNECT_TIMEOUT|fetch failed/i.test(message)) {
     return "static-asset-connectivity";
@@ -442,6 +486,10 @@ function withoutTrailingSlash(value) {
 function positiveIntEnv(value, fallback) {
   const parsed = Number.parseInt(value ?? "", 10);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function boolEnv(value) {
+  return /^(1|true|yes|on)$/i.test(value ?? "");
 }
 
 async function sleep(ms) {

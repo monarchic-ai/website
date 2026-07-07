@@ -2,7 +2,7 @@
 // Product and price data is generated from Stripe into pricing.generated.json;
 // coming-soon plans are maintained in pricing.coming-soon.json.
 
-export type PlanKind = "single-mcp" | "bundle" | "ai";
+export type PlanKind = "usage-plan" | "single-mcp" | "bundle" | "ai";
 export type PlanCadence = "monthly" | "annual";
 export type PlanStatus = "available" | "coming_soon";
 
@@ -34,6 +34,10 @@ export interface CatalogPlan {
   description: string;
   featureBullets: string[];
   includedMcpSlugs?: string[];
+  includedCredits?: number;
+  overageLabel?: string;
+  usageSummary?: string;
+  highlighted?: boolean;
   status: PlanStatus;
   prices: PlanPrice[];
   waitlistUrl?: string;
@@ -43,10 +47,10 @@ import generatedPlans from "./pricing.generated.json" with { type: "json" };
 import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json" };
 
 const launchPlanSlugs = new Set([
-  "mcp-browserops",
-  "mcp-explicitmem",
-  "mcp-repointel",
-  "bundle-developer",
+  "usage-individual",
+  "usage-developer",
+  "usage-team",
+  "usage-business",
 ]);
 
 export const availablePlans: CatalogPlan[] = ((generatedPlans as CatalogPlan[]) ?? [])

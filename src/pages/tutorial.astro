@@ -1,0 +1,319 @@
+---
+import Shader14 from "../components/Shader14.astro";
+import SeoHead from "../components/SeoHead.astro";
+import "../styles/global.css";
+
+const setupSteps = [
+  {
+    label: "Account",
+    title: "Get gated access",
+    body: "Join the waitlist or use an approved account. The dashboard shows the MCP routes and adapter packages enabled for that account.",
+  },
+  {
+    label: "Key",
+    title: "Create an MCP API key",
+    body: "Use a scoped key for agent clients. The adapter sends it as bearer auth; Monarchic still enforces tenant access and entitlements server-side.",
+  },
+  {
+    label: "Client",
+    title: "Paste the MCP config",
+    body: "Use the dashboard snippet for your client. It pins the route package, API base URL, and credential environment variable.",
+  },
+  {
+    label: "Verify",
+    title: "Run a small read-only task first",
+    body: "Start with initialize, tools/list, or a read-only tool call before letting an agent mutate files, browse authenticated pages, or trigger workflows.",
+  },
+];
+
+const routeExamples = [
+  {
+    name: "ExplicitMem",
+    href: "/products/mcp-explicitmem",
+    researchHref: "/research/explicitmem",
+    firstTask: "Store and retrieve a scoped project note, then inspect the returned receipt.",
+  },
+  {
+    name: "RepoIntel",
+    href: "/products/mcp-repointel",
+    researchHref: "/research/repointel",
+    firstTask: "Ask for repository context around one file or symbol before planning a code change.",
+  },
+  {
+    name: "BrowserOps",
+    href: "/products/mcp-browserops",
+    researchHref: "/research/browserops",
+    firstTask: "Observe one public page and check screenshots, console output, and network notes.",
+  },
+];
+
+const deliveryModel = [
+  {
+    label: "Hosted route",
+    title: "The MCP capability runs on Monarchic AWS",
+    body: "The product is account-scoped hosted execution, metering, receipts, and route controls. Your client calls Monarchic infrastructure for each workflow.",
+  },
+  {
+    label: "Adapter",
+    title: "Clients launch a tiny registry package",
+    body: "The package handles stdio transport, auth headers, retries, and version checks. It contains no product logic and should not contain secrets.",
+  },
+  {
+    label: "Artifacts",
+    title: "S3 is supporting infrastructure",
+    body: "S3 can store receipts, release artifacts, checksums, or binary outputs. Normal MCP access starts from the dashboard-issued client config.",
+  },
+];
+
+const supportedClients = [
+  "Claude Desktop",
+  "Claude Code",
+  "Codex",
+  "Cursor",
+  "Continue.dev",
+  "Cline",
+  "Windsurf",
+  "VS Code Copilot",
+  "Zed",
+  "Goose",
+];
+
+const genericConfig = `{
+  "mcpServers": {
+    "repointel": {
+      "command": "pnpm",
+      "args": ["dlx", "@monarchic-ai/repointel-mcp"],
+      "env": {
+        "MONARCHIC_API_BASE_URL": "https://api.monarchic.io",
+        "MONARCHIC_API_KEY": "<copy-from-dashboard>"
+      }
+    }
+  }
+}`;
+
+const codexConfig = `[mcp_servers.repointel]
+command = "pnpm"
+args = ["dlx", "@monarchic-ai/repointel-mcp"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.repointel.env]
+MONARCHIC_API_BASE_URL = "https://api.monarchic.io"
+MONARCHIC_API_KEY = "<copy-from-dashboard>"`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <SeoHead
+      title="MCP Tutorial | Monarchic LLC"
+      description="How gated Monarchic MCP access connects to MCP-aware clients, with credential-safe configuration examples and validation steps."
+      path="/tutorial"
+    />
+  </head>
+  <body class="min-h-screen bg-black text-white">
+    <main class="relative min-h-screen overflow-hidden">
+      <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-70" />
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.94))]"></div>
+
+      <section class="relative z-10 mx-auto max-w-7xl px-6 py-8 sm:py-12">
+        <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white pb-6">
+          <a href="/" class="inline-flex items-center gap-3">
+            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
+            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">Monarchic LLC</span>
+          </a>
+          <nav class="flex flex-wrap items-center gap-2">
+            <a href="/products" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Products</a>
+            <a href="/tutorial" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Tutorial</a>
+            <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
+          </nav>
+        </header>
+
+        <section class="grid gap-8 py-12 lg:grid-cols-[1fr_0.82fr] lg:items-start">
+          <div>
+            <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">MCP tutorial</p>
+            <h1 class="max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
+              Connect<br />A Client
+            </h1>
+            <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
+              Monarchic MCPs are accessed through account-scoped routes. This
+              guide shows the setup shape without publishing private endpoints
+              or implying same-day activation from the public website.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href="/products" class="inline-flex items-center justify-center border-2 border-white bg-white px-5 py-3 text-xs font-bold uppercase tracking-[0.24em] text-black transition hover:bg-black hover:text-white">
+                View Products
+              </a>
+              <a href="/waitlist" class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-xs font-bold uppercase tracking-[0.24em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
+                Join Waitlist
+              </a>
+            </div>
+          </div>
+
+          <aside class="border-2 border-white bg-black/72 p-5 sm:p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.32em] text-cyan-200">Before you start</p>
+            <ul class="mt-5 grid gap-3 text-sm leading-7 text-white/74">
+              <li class="flex gap-3">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white"></span>
+                <span>Use an approved account with MCP access enabled.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white"></span>
+                <span>Copy the exact route package, API base URL, and key from the dashboard.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white"></span>
+                <span>Install through the package registry; S3 is not the public MCP binary download path.</span>
+              </li>
+            </ul>
+          </aside>
+        </section>
+
+        <section class="mb-10 grid gap-4 lg:grid-cols-4">
+          {setupSteps.map((step) => (
+            <article class="border-2 border-white bg-black/70 p-5">
+              <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/52">{step.label}</p>
+              <h2 class="mt-3 text-xl font-extrabold uppercase">{step.title}</h2>
+              <p class="mt-3 text-sm leading-7 text-white/74">{step.body}</p>
+            </article>
+          ))}
+        </section>
+
+        <section class="mb-10 border-2 border-white bg-black/72 p-5 sm:p-6">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.34em] text-white/54">Access model</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase">Hosted product, small adapter.</h2>
+            </div>
+            <span class="border border-cyan-300 px-3 py-2 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200">
+              Dashboard-issued config
+            </span>
+          </div>
+          <div class="mt-6 grid gap-4 lg:grid-cols-3">
+            {deliveryModel.map((item) => (
+              <article class="border border-white/44 bg-black/58 p-4">
+                <p class="text-xs font-bold uppercase tracking-[0.26em] text-cyan-200">{item.label}</p>
+                <h3 class="mt-3 text-xl font-extrabold uppercase">{item.title}</h3>
+                <p class="mt-3 text-sm leading-7 text-white/72">{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-10 grid gap-6 lg:grid-cols-[0.72fr_1.28fr]">
+          <div class="border-2 border-white bg-black/72 p-5 sm:p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.34em] text-white/54">Adapter example</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase">One route, one package.</h2>
+            <p class="mt-4 text-sm leading-7 text-white/74">
+              RepoIntel uses <code class="border border-white/30 px-1">@monarchic-ai/repointel-mcp</code>.
+              Other hosted MCPs follow the same pattern, such as
+              <code class="border border-white/30 px-1">@monarchic-ai/explicitmem-mcp</code>
+              and <code class="border border-white/30 px-1">@monarchic-ai/browserops-mcp</code>.
+            </p>
+          </div>
+          <div class="border-2 border-white bg-black/72 p-5 sm:p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.34em] text-white/54">Supported clients</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {supportedClients.map((client) => (
+                <span class="border border-white/40 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white/72">
+                  {client}
+                </span>
+              ))}
+            </div>
+            <p class="mt-5 text-sm leading-7 text-white/72">
+              The dashboard renders the right wrapper for each client. The underlying server definition remains the same:
+              launch <code class="border border-white/30 px-1">pnpm dlx</code>, pass the route package, and provide the hosted API credential in environment variables.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-10 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div class="border-2 border-white bg-black/74 p-5 sm:p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.34em] text-white/54">Generic MCP JSON</p>
+            <p class="mt-3 text-sm leading-7 text-white/72">
+              Many clients use a top-level <code class="border border-white/30 px-1">mcpServers</code>
+              object. Keep the package name route-specific, and replace the credential placeholder with the generated API key.
+            </p>
+            <pre class="mt-5 overflow-x-auto whitespace-pre-wrap break-words border border-white/34 bg-black p-4 text-xs leading-6 text-white/78"><code>{genericConfig}</code></pre>
+          </div>
+
+          <div class="border-2 border-white bg-black/74 p-5 sm:p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.34em] text-white/54">Codex TOML</p>
+            <p class="mt-3 text-sm leading-7 text-white/72">
+              Codex uses TOML instead of JSON. The same hosted adapter contract still applies:
+              package-registry launch, hosted API base URL, and scoped API key.
+            </p>
+            <pre class="mt-5 overflow-x-auto whitespace-pre-wrap break-words border border-white/34 bg-black p-4 text-xs leading-6 text-white/78"><code>{codexConfig}</code></pre>
+          </div>
+        </section>
+
+        <section class="mb-10 border-2 border-white bg-black/72 p-5 sm:p-6">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.34em] text-white/54">First workflows</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase">Start small, then expand.</h2>
+            </div>
+            <a href="/research" class="inline-flex items-center justify-center border border-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] transition hover:bg-white hover:text-black">
+              Read Research
+            </a>
+          </div>
+          <div class="mt-6 grid gap-4 lg:grid-cols-3">
+            {routeExamples.map((route) => (
+              <article class="border border-white/44 bg-black/58 p-4">
+                <h3 class="text-xl font-extrabold uppercase">{route.name}</h3>
+                <p class="mt-3 text-sm leading-7 text-white/72">{route.firstTask}</p>
+                <div class="mt-5 flex flex-wrap gap-2">
+                  <a href={route.href} class="border border-white px-3 py-2 text-xs font-bold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black">Product</a>
+                  <a href={route.researchHref} class="border border-white/60 px-3 py-2 text-xs font-bold uppercase tracking-[0.2em] text-white/70 transition hover:border-white hover:text-white">Evidence</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-10 grid gap-4 border-2 border-white bg-black/72 p-5 sm:p-6 lg:grid-cols-3">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Validate</p>
+            <p class="mt-3 text-sm leading-7 text-white/72">
+              Confirm the client can list available tools and run one scoped
+              operation before handing it a broad task.
+            </p>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Observe</p>
+            <p class="mt-3 text-sm leading-7 text-white/72">
+              Keep receipts, screenshots, logs, or returned evidence attached
+              to the work so reviewers can inspect the result. Paid/test
+              accounts should see hosted MCP usage in the dashboard after a
+              billable tool call.
+            </p>
+          </div>
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Limit</p>
+            <p class="mt-3 text-sm leading-7 text-white/72">
+              Treat each MCP as a bounded tool. Product and research pages name
+              the scope; do not turn a narrow proof into a universal claim.
+            </p>
+          </div>
+        </section>
+
+        <section class="border-2 border-cyan-300 bg-black/78 p-5 sm:p-6">
+          <p class="text-xs font-bold uppercase tracking-[0.34em] text-cyan-200">Access boundary</p>
+          <p class="mt-4 max-w-4xl text-sm leading-7 text-white/76">
+            This tutorial is a setup model for gated access. It does not expose
+            private routes, credentials, or instant activation. Join the waitlist
+            for account onboarding and route availability updates.
+          </p>
+          <a href="/waitlist" class="mt-5 inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-xs font-bold uppercase tracking-[0.24em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
+            Join Waitlist
+          </a>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
