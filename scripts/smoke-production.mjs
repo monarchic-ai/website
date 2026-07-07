@@ -79,19 +79,21 @@ try {
   });
 
   await checkPage(page, `${baseUrl}/`, async () => {
-    await page.getByRole("heading", { name: "Autonomous engineering as a service", exact: true }).waitFor();
-    await page.getByRole("link", { name: "Products" }).first().waitFor();
-    await page.getByRole("link", { name: "Research" }).first().waitFor();
+    await page.getByRole("heading", { name: "Agent tools that leave evidence.", exact: true }).waitFor();
+    await page.getByRole("heading", { name: "Individual MCP routes" }).waitFor();
+    await page.getByRole("link", { name: "View products" }).first().waitFor();
+    await page.getByRole("link", { name: "Use the MCPs" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-    await expectMeta(page, "og:title", "Monarchic LLC | Autonomous engineering as a service");
+    await expectMeta(page, "og:title", "Monarchic LLC | Hosted MCPs for agent engineering");
     await expectMeta(page, "og:image", expectedSocialImageUrl);
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
-    await page.getByRole("link", { name: "Join Waitlist" }).first().waitFor();
-    await page.getByText("Hosted MCP write").waitFor();
-    await page.getByText("3.45s p50").first().waitFor();
-    await page.getByText("Hosted MCP search").waitFor();
+    await page.getByRole("link", { name: "Join waitlist" }).first().waitFor();
+    await page.getByText("$19/mo").first().waitFor();
+    await page.getByText("$29/mo").first().waitFor();
+    await page.getByText("$49/mo").first().waitFor();
+    await page.getByText("Buy one route, or use the shared usage tiers").waitFor();
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "home route");
