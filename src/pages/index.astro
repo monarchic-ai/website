@@ -2,40 +2,56 @@
 import Shader14 from "../components/Shader14.astro";
 import SeoHead from "../components/SeoHead.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
+import { cadenceLabel, findPlanBySlug, formatPriceUSD, resolveDisplayPrice } from "../lib/pricing";
 import "../styles/global.css";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
 
-const explicitMemMetrics = [
-  ["Accuracy", "99.8%"],
-  ["Retrieval recall@K", "100%"],
-  ["Hosted write p50", "3.45s"],
-  ["Hosted search p50", "3.28s"],
-];
+const featuredRoutes = [
+  {
+    slug: "mcp-explicitmem",
+    label: "ExplicitMem",
+    href: "/products/mcp-explicitmem",
+    proof: "99.8% memory benchmark accuracy",
+    role: "Durable memory",
+  },
+  {
+    slug: "mcp-repointel",
+    label: "RepoIntel",
+    href: "/products/mcp-repointel",
+    proof: "Repository maps and cited evidence",
+    role: "Codebase context",
+  },
+  {
+    slug: "mcp-browserops",
+    label: "BrowserOps",
+    href: "/products/mcp-browserops",
+    proof: "Screenshots, console logs, and receipts",
+    role: "Browser evidence",
+  },
+  {
+    slug: "mcp-proofpack",
+    label: "ProofPack",
+    href: "/products/mcp-proofpack",
+    proof: "Hashes, verification, and review packs",
+    role: "Evidence handoff",
+  },
+].map((route) => {
+  const plan = findPlanBySlug(route.slug);
+  const displayPrice = plan ? resolveDisplayPrice(plan, "monthly") : null;
+  return {
+    ...route,
+    price:
+      displayPrice?.price.priceCents !== null && displayPrice?.price.priceCents !== undefined
+        ? `${formatPriceUSD(displayPrice.price.priceCents)}${cadenceLabel(displayPrice.cadence)}`
+        : null,
+  };
+});
 
-const explicitMemComparison = [
-  ["ExplicitMem", "99.8%", "3.45s p50", "796tok"],
-  ["Mem0", "94.4%", "1090ms", "6787tok"],
-  ["Supermemory", "85.4%", "<300ms", "n/a"],
-];
-
-const infraProfilerSignals = [
-  ["CPU max", "98.45%"],
-  ["Queue wait", "0s -> 20s"],
-  ["Task size", "+0"],
-  ["Guard", "live"],
-];
-
-const infraProfilerHotspots = [
-  ["monarchic-staging-worker", "ECS service", "monarchic-worker", "hot polling"],
-  ["monarchic-staging-queue", "SQS queue", "monarchic-infra", "empty receives"],
-  ["worker-sqs-long-polling-check", "release guard", "monarchic-plan", "regression block"],
-];
-
-const infraProfilerProofSteps = [
-  ["Detect", "Staging worker hit 98.45% max CPU while the queue had no meaningful backlog."],
-  ["Fix", "Set SQS long polling to 20s in the queue and worker runtime without increasing task size."],
-  ["Codify", "Added a deploy-time guard plus an InfraProfiler rule so the same failure is ranked first next time."],
+const proofPoints = [
+  ["Memory", "ExplicitMem publishes accuracy, recall, token, and hosted latency notes."],
+  ["Repositories", "RepoIntel returns source paths and evidence instead of loose summaries."],
+  ["Browser", "BrowserOps records screenshots, console output, network checks, and receipts."],
 ];
 ---
 
@@ -48,32 +64,22 @@ const infraProfilerProofSteps = [
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <SeoHead
-      title="Monarchic LLC | Autonomous engineering as a service"
-      description="Monarchic LLC is building autonomous engineering as a service, starting with MCP products for durable memory, repository intelligence, browser evidence, and proof-backed agent workflows."
+      title="Monarchic LLC | Hosted MCPs for agent engineering"
+      description="Monarchic LLC sells hosted MCP routes for durable memory, repository intelligence, browser evidence, and proof-backed agent workflows."
       path="/"
     />
   </head>
   <body class="min-h-screen bg-black text-white">
     <main class="relative min-h-screen overflow-hidden">
-      <Shader14
-        className="pointer-events-none fixed inset-0 h-full w-full opacity-75"
-      />
-      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.58),_rgba(0,0,0,0.82)_48%,_rgba(0,0,0,0.96))]"></div>
-      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(90deg,_rgba(0,0,0,0.88),_rgba(0,0,0,0.36)_42%,_rgba(0,0,0,0.86))]"></div>
+      <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-70" />
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.62),_rgba(0,0,0,0.86)_55%,_rgba(0,0,0,0.98))]"></div>
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(90deg,_rgba(0,0,0,0.9),_rgba(0,0,0,0.38)_48%,_rgba(0,0,0,0.82))]"></div>
 
       <section class="relative z-10 mx-auto max-w-7xl px-6 py-8 sm:py-12">
         <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white/88 pb-6">
           <a href="/" class="inline-flex items-center gap-3">
-            <img
-              src="/favicon.svg"
-              alt="Monarchic LLC logo"
-              class="h-9 w-9 bg-white object-cover p-1"
-              width="36"
-              height="36"
-            />
-            <span class="text-[0.7rem] font-semibold uppercase text-white/72">
-              Monarchic LLC
-            </span>
+            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
+            <span class="text-[0.7rem] font-semibold uppercase text-white/72">Monarchic LLC</span>
           </a>
           <nav class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase">
             <a href="/products" class="border-2 border-white/82 px-4 py-2 transition hover:bg-white hover:text-black">Products</a>
@@ -82,618 +88,120 @@ const infraProfilerProofSteps = [
           </nav>
         </header>
 
-        <section class="grid min-h-[calc(100vh-112px)] gap-8 py-6 lg:min-h-[680px] lg:grid-cols-[1.12fr_0.88fr] lg:items-start lg:py-8">
-          <div class="max-w-5xl">
-            <div class="mb-4 flex flex-wrap items-center gap-3">
-              <p class="border border-white/42 bg-black/44 px-3 py-2 text-xs font-bold uppercase text-white/64">
-                Autonomous engineering
-              </p>
-              <p class="border border-white/64 bg-white/8 px-3 py-2 text-xs font-bold uppercase text-white/76">
-                MCP layer available first
-              </p>
-            </div>
-            <h1 class="max-w-5xl text-5xl font-extrabold uppercase leading-[0.86] text-white sm:text-7xl lg:text-8xl [text-shadow:8px_8px_0_rgba(255,255,255,0.11)]">
-              Autonomous engineering as a service
+        <section class="grid min-h-[calc(100vh-112px)] gap-8 py-10 lg:min-h-[640px] lg:grid-cols-[1fr_0.82fr] lg:items-center">
+          <div>
+            <p class="mb-5 inline-flex border border-white/46 bg-black/48 px-3 py-2 text-xs font-bold uppercase text-white/68">
+              Hosted MCP infrastructure
+            </p>
+            <h1 class="max-w-5xl text-5xl font-extrabold uppercase leading-[0.88] text-white sm:text-7xl lg:text-8xl [text-shadow:8px_8px_0_rgba(255,255,255,0.11)]">
+              Agent tools that leave evidence.
             </h1>
-            <p class="mt-7 max-w-3xl text-base leading-8 text-white/76 sm:text-lg">
-              Monarchic is building the platform for agent teams that plan,
-              code, verify, remember, and ship work with evidence. The first
-              commercial surface is the MCP layer: ExplicitMem for durable
-              memory, RepoIntel for repository intelligence, BrowserOps for
-              browser evidence, and proof tools for release-grade handoff.
+            <p class="mt-7 max-w-2xl text-base leading-8 text-white/76 sm:text-lg">
+              Monarchic sells hosted MCP routes for agents that need memory,
+              repository context, browser checks, and proof-backed handoffs
+              without running the infrastructure yourself.
             </p>
             <div class="mt-8 flex flex-wrap gap-3 text-xs font-bold uppercase">
-              <a
-                href="/products"
-                class="inline-flex items-center justify-center border-2 border-white bg-white px-5 py-3 text-black transition hover:bg-black hover:text-white"
-              >
-                Products
+              <a href="/products" class="inline-flex items-center justify-center border-2 border-white bg-white px-5 py-3 text-black transition hover:bg-black hover:text-white">
+                View products
               </a>
-              <a
-                href="/research"
-                class="inline-flex items-center justify-center border-2 border-white/88 px-5 py-3 transition hover:bg-white hover:text-black"
-              >
-                Research
+              <a href="/tutorial" class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
+                Use the MCPs
               </a>
-              <a
-                href="/tutorial"
-                class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-cyan-200 transition hover:bg-cyan-200 hover:text-black"
-              >
-                MCP Tutorial
-              </a>
-              <a
-                href="#waitlist"
-                class="inline-flex items-center justify-center border-2 border-white/88 px-5 py-3 text-white transition hover:bg-white hover:text-black"
-              >
-                Join Waitlist
+              <a href="#waitlist" class="inline-flex items-center justify-center border-2 border-white/88 px-5 py-3 text-white transition hover:bg-white hover:text-black">
+                Join waitlist
               </a>
             </div>
           </div>
 
-          <div class="border-2 border-white bg-black/72 shadow-[12px_12px_0_rgba(255,255,255,0.1)] lg:mt-10">
+          <aside class="border-2 border-white bg-black/72 shadow-[12px_12px_0_rgba(255,255,255,0.1)]">
             <div class="border-b-2 border-white px-5 py-4">
-              <p class="text-xs font-bold uppercase text-white/58">Platform Direction</p>
-              <h2 class="mt-2 text-3xl font-extrabold uppercase leading-none">Agents that can be trusted with real engineering work.</h2>
+              <p class="text-xs font-bold uppercase text-white/58">Available first</p>
+              <h2 class="mt-2 text-3xl font-extrabold uppercase leading-none">Individual MCP routes</h2>
             </div>
             <div class="divide-y divide-white/24">
-              <div class="grid gap-3 px-5 py-5 sm:grid-cols-[7rem_1fr]">
-                <p class="text-xs font-bold uppercase text-white">Now</p>
-                <p class="text-sm leading-7 text-white/76">
-                  Hosted MCP tools for memory, repo context, browser checks,
-                  release evidence, and agent handoffs.
-                </p>
-              </div>
-              <div class="grid gap-3 px-5 py-5 sm:grid-cols-[7rem_1fr]">
-                <p class="text-xs font-bold uppercase text-white">Next</p>
-                <p class="text-sm leading-7 text-white/76">
-                  Account-owned autonomous engineering workflows with bounded
-                  tools, durable state, and reviewable proof.
-                </p>
-              </div>
-              <div class="grid gap-3 px-5 py-5 sm:grid-cols-[7rem_1fr]">
-                <p class="text-xs font-bold uppercase text-white">Rule</p>
-                <p class="text-sm leading-7 text-white/76">
-                  No invisible agent work. Benchmarks, screenshots, logs, and
-                  receipt files stay attached to the decisions they support.
-                </p>
-              </div>
+              {featuredRoutes.map((route) => (
+                <a href={route.href} class="group grid gap-3 px-5 py-5 transition hover:bg-white hover:text-black sm:grid-cols-[1fr_auto]">
+                  <div>
+                    <p class="text-sm font-extrabold uppercase">{route.label}</p>
+                    <p class="mt-1 text-xs font-bold uppercase text-white/48 group-hover:text-black/48">{route.role}</p>
+                    <p class="mt-3 text-sm leading-6 text-white/70 group-hover:text-black/70">{route.proof}</p>
+                  </div>
+                  {route.price && (
+                    <p class="self-start border border-white/50 px-3 py-2 text-sm font-extrabold uppercase group-hover:border-black/50">
+                      {route.price}
+                    </p>
+                  )}
+                </a>
+              ))}
             </div>
-          </div>
+          </aside>
         </section>
 
         <section class="border-t-2 border-white py-10">
-          <div class="grid gap-4 lg:grid-cols-12 lg:grid-rows-[auto_auto]">
-            <div class="border-2 border-white bg-black/72 p-6 shadow-[10px_10px_0_rgba(255,255,255,0.08)] lg:col-span-7">
-              <p class="text-xs font-bold uppercase text-white/54">Commercial surface</p>
+          <div class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+            <div>
+              <p class="text-xs font-bold uppercase text-white/54">What Monarchic is</p>
               <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                The MCP catalog is the first layer of the larger Monarchic platform.
+                A hosted layer for agent work that should be inspectable.
               </h2>
-              <a href="/products" class="mt-6 inline-flex w-fit items-center justify-center border border-white/70 px-4 py-3 text-xs font-bold uppercase transition hover:bg-white hover:text-black">
-                View catalog
-              </a>
             </div>
-
-            <div class="border-2 border-white bg-black/72 p-6 text-white shadow-[10px_10px_0_rgba(255,255,255,0.08)] lg:col-span-5 lg:row-span-2">
-              <p class="text-xs font-bold uppercase text-white/54">Who It Is For</p>
-              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                Teams preparing agents to do real engineering work without losing
-                memory, proof, or control.
-              </h2>
-              <div class="mt-6 grid gap-3">
-                <div class="border border-white/36 bg-white/5 p-4">
-                  <p class="text-sm font-extrabold uppercase">Account scoped</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">Routes and API keys belong to an account, not a loose demo token.</p>
+            <div class="grid gap-3 md:grid-cols-3">
+              {proofPoints.map(([label, copy]) => (
+                <div class="border border-white/46 bg-black/64 p-5">
+                  <p class="text-sm font-extrabold uppercase">{label}</p>
+                  <p class="mt-2 text-sm leading-6 text-white/68">{copy}</p>
                 </div>
-                <div class="border border-white/36 bg-white/5 p-4">
-                  <p class="text-sm font-extrabold uppercase">Proof included</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">Research and receipts say what each MCP proves and what it does not.</p>
-                </div>
-                <div class="border border-white/36 bg-white/5 p-4">
-                  <p class="text-sm font-extrabold uppercase">Coming soon</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">We are holding access until the account controls are boring and reliable.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid gap-4 lg:col-span-7 md:grid-cols-3">
-              <a href="/products/mcp-explicitmem" class="group border border-white/58 bg-black/64 p-5 transition hover:-translate-y-1 hover:bg-white hover:text-black">
-                <p class="text-xs font-bold uppercase text-white/52 group-hover:text-black/52">01 / ExplicitMem</p>
-                <h3 class="mt-4 text-2xl font-extrabold uppercase leading-tight">Durable memory with receipts</h3>
-                <p class="mt-3 text-sm leading-6 text-white/70 group-hover:text-black/70">
-                  99.8% benchmark accuracy, graph memory, bounded recall, and audit-friendly retrieval.
-                </p>
-              </a>
-              <a href="/products/mcp-repointel" class="group border border-white/58 bg-black/64 p-5 transition hover:-translate-y-1 hover:bg-white hover:text-black">
-                <p class="text-xs font-bold uppercase text-white/52 group-hover:text-black/52">02 / RepoIntel</p>
-                <h3 class="mt-4 text-2xl font-extrabold uppercase leading-tight">Repository intelligence for agents</h3>
-                <p class="mt-3 text-sm leading-6 text-white/70 group-hover:text-black/70">
-                  59 evaluated rows with citations, dependency summaries, and targeted code evidence.
-                </p>
-              </a>
-              <a href="/products/mcp-browserops" class="group border border-white/58 bg-black/64 p-5 transition hover:-translate-y-1 hover:bg-white hover:text-black">
-                <p class="text-xs font-bold uppercase text-white/52 group-hover:text-black/52">03 / BrowserOps</p>
-                <h3 class="mt-4 text-2xl font-extrabold uppercase leading-tight">Browser verification evidence</h3>
-                <p class="mt-3 text-sm leading-6 text-white/70 group-hover:text-black/70">
-                  Screenshots, console diagnostics, network checks, and scenario receipts.
-                </p>
-              </a>
+              ))}
             </div>
           </div>
         </section>
 
         <section class="border-t-2 border-white py-10">
-          <div class="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
+          <div class="grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
             <div class="border-2 border-white bg-white p-6 text-black">
-              <p class="text-xs font-bold uppercase text-black/54">Monarchic Vision</p>
-              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                Autonomous engineering as a service, built from proof-carrying tools.
+              <p class="text-xs font-bold uppercase text-black/54">Pricing model</p>
+              <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
+                Buy one route, or use the shared usage tiers when you need the full catalog.
               </h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-black/72">
-                The destination is not a pile of MCP servers. It is an account-owned
-                engineering platform where agents remember context, inspect code,
-                operate browsers, produce receipts, and hand off work that humans
-                can verify.
+                Single MCP subscriptions are priced for focused workflows. Usage
+                tiers cover broader hosted agent work where route cost and
+                volume vary by account.
               </p>
+              <a href="/products" class="mt-6 inline-flex border-2 border-black px-5 py-3 text-xs font-bold uppercase transition hover:bg-black hover:text-white">
+                Compare plans
+              </a>
             </div>
 
             <div class="grid gap-3 sm:grid-cols-2">
-              <div class="border border-white/46 bg-black/64 p-5">
-                <p class="text-sm font-extrabold uppercase">Persistent state</p>
-                <p class="mt-2 text-sm leading-6 text-white/68">
-                  ExplicitMem keeps useful memory outside hidden chat history and
-                  makes recall inspectable.
-                </p>
-              </div>
-              <div class="border border-white/46 bg-black/64 p-5">
-                <p class="text-sm font-extrabold uppercase">Repository ground truth</p>
-                <p class="mt-2 text-sm leading-6 text-white/68">
-                  RepoIntel gives agents source paths, citations, symbols, and
-                  risk notes instead of vague summaries.
-                </p>
-              </div>
-              <div class="border border-white/46 bg-black/64 p-5">
-                <p class="text-sm font-extrabold uppercase">Browser evidence</p>
-                <p class="mt-2 text-sm leading-6 text-white/68">
-                  BrowserOps captures what happened in the UI with hashes,
-                  screenshots, console output, and verification receipts.
-                </p>
-              </div>
-              <div class="border border-white/46 bg-black/64 p-5">
-                <p class="text-sm font-extrabold uppercase">Release proof</p>
-                <p class="mt-2 text-sm leading-6 text-white/68">
-                  ProofPack, ReleaseOps, and Verified turn tests, patches, packs,
-                  and release gates into reviewable artifacts.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-t-2 border-white py-10">
-          <div class="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
-            <div>
-              <p class="text-xs font-bold uppercase text-white/54">Repository Demo</p>
-              <h2 class="mt-3 max-w-4xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                Ask for repo facts. Get structured context, source paths, and
-                evidence an agent can reuse.
-              </h2>
-              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
-                This is the kind of output RepoIntel is built for: not a vague
-                summary, but a bounded readout of architecture, dependencies,
-                entry points, and files that prove the answer.
-              </p>
-            </div>
-
-            <div class="demo-shell relative overflow-hidden border-2 border-white bg-black shadow-[12px_12px_0_rgba(255,255,255,0.12)]">
-              <div class="demo-scan" aria-hidden="true"></div>
-              <div class="demo-grid" aria-hidden="true"></div>
-              <div class="flex items-center justify-between gap-4 border-b-2 border-white px-4 py-3">
-                <div>
-                  <p class="text-xs font-bold uppercase text-white">repointel / live repository extract</p>
-                  <p class="mt-1 text-[0.68rem] font-bold uppercase text-white/42">streaming repo facts into agent context</p>
-                </div>
-                <div class="flex gap-1.5" aria-hidden="true">
-                  <span class="demo-led h-2.5 w-2.5 border border-white/70 bg-white"></span>
-                  <span class="demo-led h-2.5 w-2.5 border border-white/60 bg-white/45"></span>
-                  <span class="demo-led h-2.5 w-2.5 border border-cyan-200 bg-cyan-200"></span>
-                </div>
-              </div>
-
-              <div class="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
-                <div class="border-b border-white/28 p-4 lg:border-b-0 lg:border-r">
-                  <div class="mb-4 grid grid-cols-3 gap-2">
-                    <div class="border border-white/24 bg-white/5 p-2">
-                      <p class="text-[0.62rem] font-bold uppercase text-white/42">Index</p>
-                      <div class="mt-2 h-1.5 bg-white/12"><div class="demo-bar h-full bg-white"></div></div>
-                    </div>
-                    <div class="border border-white/24 bg-white/5 p-2">
-                      <p class="text-[0.62rem] font-bold uppercase text-white/42">Evidence</p>
-                      <div class="mt-2 h-1.5 bg-white/12"><div class="demo-bar demo-bar-delay h-full bg-white/70"></div></div>
-                    </div>
-                    <div class="border border-white/24 bg-white/5 p-2">
-                      <p class="text-[0.62rem] font-bold uppercase text-white/42">Handoff</p>
-                      <div class="mt-2 h-1.5 bg-white/12"><div class="demo-bar demo-bar-late h-full bg-cyan-200"></div></div>
-                    </div>
-                  </div>
-
-                  <pre class="relative z-10 overflow-x-auto whitespace-pre-wrap break-words text-[0.74rem] leading-6 text-white/82 sm:text-xs"><code><span class="text-white/46">$</span> monarchic repointel inspect ./monarchic-webapp \
-  --question "where does checkout data come from?"
-<span class="demo-cursor text-cyan-200">_</span>
-
-<span class="text-white">indexed</span> 579 components / 6854 files
-<span class="text-white">found</span>   Stripe checkout surface
-<span class="text-white">linked</span>  source paths + evidence notes
-<span class="text-cyan-200">warn</span>    unresolved ownership boundary</code></pre>
-                </div>
-
-                <div class="grid divide-y divide-white/24">
-                  <div class="p-4">
-                    <p class="text-xs font-bold uppercase text-white/54">Extracted Facts</p>
-                    <ul class="mt-3 grid gap-2 text-sm leading-6 text-white/74">
-                      <li class="demo-fact flex gap-2 border border-white/28 bg-white/5 p-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white"></span><span>Checkout behavior is traced to route handlers, catalog data, and UI entry points.</span></li>
-                      <li class="demo-fact demo-fact-delay flex gap-2 border border-white/28 bg-white/5 p-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 bg-white/70"></span><span>Every claim includes source paths an agent can open during the next task.</span></li>
-                      <li class="demo-fact demo-fact-late flex gap-2 border border-cyan-200/28 bg-cyan-200/8 p-2"><span class="mt-2 h-1.5 w-1.5 shrink-0 bg-cyan-200"></span><span>Risk notes flag unknown owners, missing evidence, and stale assumptions.</span></li>
-                    </ul>
-                  </div>
-                  <div class="grid grid-cols-2 divide-x divide-white/24">
-                    <div class="p-4">
-                      <p class="text-[0.68rem] font-bold uppercase text-white/48">Evidence paths</p>
-                      <p class="demo-count mt-2 text-3xl font-extrabold text-white">14</p>
-                    </div>
-                    <div class="p-4">
-                      <p class="text-[0.68rem] font-bold uppercase text-white/48">Confidence</p>
-                      <p class="demo-pulse mt-2 text-3xl font-extrabold text-white">High</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative border-t-2 border-white bg-white px-4 py-4 text-black">
-                <p class="text-xs font-bold uppercase text-black/54">Agent handoff</p>
-                <p class="mt-2 text-sm font-semibold leading-6">
-                  Export the repository findings as structured context with
-                  source paths, confidence, and evidence notes an agent can reuse
-                  in the next task.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-t-2 border-white py-10">
-          <div class="grid gap-6 lg:grid-cols-[0.94fr_1.06fr]">
-            <div>
-              <p class="text-xs font-bold uppercase text-white/54">InfraProfiler MCP</p>
-              <h2 class="mt-3 max-w-4xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                Ask what infra is hurting reliability, cost, or deployment speed.
-              </h2>
-              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
-                InfraProfiler already caught a real Monarchic staging failure:
-                an idle worker burning CPU because SQS was being polled hot. The
-                agent traced it to owner repos, fixed the queue behavior, and
-                added a release guard without scaling up compute.
-              </p>
-              <div class="mt-5 grid gap-2 sm:grid-cols-2">
-                {infraProfilerSignals.map(([label, value]) => (
-                  <div class="border border-white/36 bg-black/58 p-4">
-                    <p class="text-[0.66rem] font-bold uppercase text-white/46">{label}</p>
-                    <p class="mt-2 text-lg font-extrabold uppercase text-white">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div class="infra-shell relative overflow-hidden border-2 border-white bg-black shadow-[12px_12px_0_rgba(255,255,255,0.12)]">
-              <div class="infra-scan" aria-hidden="true"></div>
-              <div class="flex items-center justify-between gap-4 border-b-2 border-white px-4 py-3">
-                <div>
-                  <p class="text-xs font-bold uppercase text-white">infraprofiler / hotspot report</p>
-                  <p class="mt-1 text-[0.68rem] font-bold uppercase text-white/42">aws staging profile / no mutation</p>
-                </div>
-                <div class="border border-white px-2 py-1 text-[0.66rem] font-bold uppercase text-white/72">
-                  Strict
-                </div>
-              </div>
-
-              <div class="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-                <div class="border-b border-white/28 p-4 lg:border-b-0 lg:border-r">
-                  <pre class="relative z-10 overflow-x-auto whitespace-pre-wrap break-words text-[0.74rem] leading-6 text-white/82 sm:text-xs"><code><span class="text-white/46">$</span> infraprofiler rank_hotspots \
-  --provider aws \
-  --env staging \
-  --max-resources 20
-<span class="infra-cursor text-cyan-200">_</span>
-
-<span class="text-white">detect</span>   worker CPU max 98.45%
-<span class="text-white">compare</span>  queue depth stayed empty
-<span class="text-white">rank</span>     SQS hot polling as root target
-<span class="text-cyan-200">guard</span>    long polling required at deploy</code></pre>
-                </div>
-
-                <div class="grid divide-y divide-white/24">
-                  {infraProfilerHotspots.map(([resource, type, repo, reason], index) => (
-                    <div class={`infra-row grid gap-3 p-4 sm:grid-cols-[1fr_7rem] ${index === 0 ? "bg-white text-black" : ""}`}>
-                      <div>
-                        <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>{type}</p>
-                        <p class="mt-1 text-sm font-extrabold uppercase">{resource}</p>
-                        <p class={`mt-2 text-xs font-semibold uppercase ${index === 0 ? "text-black/58" : "text-white/54"}`}>{reason}</p>
-                      </div>
-                      <div>
-                        <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>Owner</p>
-                        <p class="mt-1 text-sm font-extrabold">{repo}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div class="grid border-t-2 border-white sm:grid-cols-3">
-                {infraProfilerProofSteps.map(([label, copy], index) => (
-                  <div class={`p-4 ${index < infraProfilerProofSteps.length - 1 ? "border-b border-white/28 sm:border-b-0 sm:border-r" : ""}`}>
-                    <p class="text-[0.66rem] font-bold uppercase text-white/46">{label}</p>
-                    <p class="mt-2 text-xs font-semibold leading-6 text-white/72">{copy}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div class="border-t-2 border-white bg-white px-4 py-4 text-black">
-                <p class="text-xs font-bold uppercase text-black/54">Codex handoff</p>
-                <p class="mt-2 text-sm font-semibold leading-6">
-                  The report did not auto-mutate infra. It gave Codex the ranked
-                  target, telemetry evidence, owner repositories, and the exact
-                  guard to add after the fix was verified.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-t-2 border-white py-10">
-          <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
-            <div class="border-2 border-white bg-black/72">
-              <div class="border-b-2 border-white p-5">
-                <p class="text-xs font-bold uppercase text-white/54">ExplicitMem Benchmark</p>
-                <h2 class="mt-3 max-w-4xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                  Durable memory is the strongest proof point.
-                </h2>
-                <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-                  ExplicitMem turns agent memory into typed objects, graph links,
-                  bounded context synthesis, and receipt-backed retrieval. The local
-                  500-question LongMemEval-S run proves retrieval quality; the hosted
-                  staging MCP route now has live latency smoke data from successful
-                  writes, searches, and context retrievals.
-                </p>
-              </div>
-
-              <div class="grid gap-0 sm:grid-cols-4">
-                {explicitMemMetrics.map(([label, value]) => (
-                  <div class="border-b border-white/30 p-5 sm:border-b-0 sm:border-r sm:last:border-r-0">
-                    <p class="text-[0.68rem] font-bold uppercase text-white/46">{label}</p>
-                    <p class="mt-3 text-3xl font-extrabold leading-none text-white">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div class="mem-panel relative overflow-hidden border-2 border-white bg-black shadow-[12px_12px_0_rgba(255,255,255,0.12)]">
-              <div class="mem-scan" aria-hidden="true"></div>
-              <div class="flex items-center justify-between gap-4 border-b-2 border-white px-4 py-3">
-                <div>
-                  <p class="text-xs font-bold uppercase text-white">explicitmem / recall run</p>
-                  <p class="mt-1 text-[0.68rem] font-bold uppercase text-white/42">longmemeval-s-answer-v1 / 500 questions</p>
-                </div>
-                <div class="border border-white px-2 py-1 text-[0.66rem] font-bold uppercase text-white/72">
-                  Receipts 100%
-                </div>
-              </div>
-
-              <div class="grid divide-y divide-white/24">
-                {explicitMemComparison.map(([system, quality, latency, tokens], index) => (
-                  <div class={`mem-row grid gap-3 p-4 sm:grid-cols-[1fr_5rem_5rem_5rem] sm:items-center ${index === 0 ? "bg-white text-black" : ""}`}>
-                    <p class="text-sm font-extrabold uppercase">{system}</p>
-                    <div>
-                      <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>Quality</p>
-                      <p class="mt-1 text-lg font-extrabold">{quality}</p>
-                    </div>
-                    <div>
-                      <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>Latency</p>
-                      <p class="mt-1 text-lg font-extrabold">{latency}</p>
-                    </div>
-                    <div>
-                      <p class={`text-[0.62rem] font-bold uppercase ${index === 0 ? "text-black/48" : "text-white/42"}`}>Tokens</p>
-                      <p class="mt-1 text-lg font-extrabold">{tokens}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div class="border-t-2 border-white p-4">
-                <div class="grid gap-2">
-                  <div>
-                    <div class="mb-1 flex justify-between text-[0.66rem] font-bold uppercase text-white/54">
-                      <span>Recall coverage</span><span>100%</span>
-                    </div>
-                    <div class="h-2 bg-white/12"><div class="mem-bar h-full bg-white"></div></div>
-                  </div>
-                  <div>
-                    <div class="mb-1 flex justify-between text-[0.66rem] font-bold uppercase text-white/54">
-                      <span>Hosted MCP write</span><span>3.45s p50</span>
-                    </div>
-                    <div class="h-2 bg-white/12"><div class="mem-bar mem-bar-short h-full bg-cyan-200"></div></div>
-                  </div>
-                  <div>
-                    <div class="mb-1 flex justify-between text-[0.66rem] font-bold uppercase text-white/54">
-                      <span>Hosted MCP search</span><span>3.28s p50</span>
-                    </div>
-                    <div class="h-2 bg-white/12"><div class="mem-bar mem-bar-short h-full bg-cyan-200"></div></div>
-                  </div>
-                </div>
-                <p class="mt-4 text-xs font-semibold leading-6 text-white/56">
-                  Hosted figures are from the staging API route on June 26, 2026:
-                  10 successful samples, `project_specific` scope, bearer-authenticated MCP.
-                  Local evaluation latency remains a separate 30ms average benchmark artifact.
-                </p>
-              </div>
-
-              <a
-                href="/research/explicitmem"
-                class="flex items-center justify-between border-t-2 border-white bg-white px-4 py-4 text-xs font-bold uppercase text-black transition hover:bg-black hover:text-white"
-              >
-                <span>Open benchmark research</span>
-                <span aria-hidden="true">-&gt;</span>
+              <a href="/products/mcp-repointel" class="group border border-white/46 bg-black/64 p-5 transition hover:bg-white hover:text-black">
+                <p class="text-sm font-extrabold uppercase">Start narrow</p>
+                <p class="mt-2 text-sm leading-6 text-white/68 group-hover:text-black/68">Pick one route such as RepoIntel or ExplicitMem when one agent workflow is the bottleneck.</p>
               </a>
-            </div>
-          </div>
-        </section>
-
-        <section class="border-t-2 border-white py-10">
-          <div class="grid gap-4 lg:grid-cols-12">
-            <div class="border-2 border-white bg-black/68 lg:col-span-7">
-              <div class="border-b-2 border-white p-6">
-                <p class="text-xs font-bold uppercase text-white/54">Operating Model</p>
-                <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                  Each MCP should make its boundary visible before it touches the work.
-                </h2>
-              </div>
-              <div class="grid gap-0 md:grid-cols-2">
-                <div class="border-b border-white/30 p-5 md:border-r">
-                  <p class="text-xs font-bold uppercase text-white">01</p>
-                  <p class="mt-3 text-sm font-extrabold uppercase">Target</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">Define the repo, browser, memory scope, or release surface.</p>
-                </div>
-                <div class="border-b border-white/30 p-5">
-                  <p class="text-xs font-bold uppercase text-white">02</p>
-                  <p class="mt-3 text-sm font-extrabold uppercase">Run</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">Execute the MCP workflow through account-owned access.</p>
-                </div>
-                <div class="border-b border-white/30 p-5 md:border-b-0 md:border-r">
-                  <p class="text-xs font-bold uppercase text-white">03</p>
-                  <p class="mt-3 text-sm font-extrabold uppercase">Record</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">Keep screenshots, logs, traces, and notes attached.</p>
-                </div>
-                <div class="p-5">
-                  <p class="text-xs font-bold uppercase text-white/58">04</p>
-                  <p class="mt-3 text-sm font-extrabold uppercase">Decide</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">Expand, change course, or stop with the evidence in view.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid gap-4 lg:col-span-5">
-              <div class="border-2 border-white bg-black/68 p-6">
-                <p class="text-xs font-bold uppercase text-white/54">Access</p>
-                <h2 class="mt-3 text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                  Access opens when routes, account setup, and receipts are ready.
-                </h2>
-                <p class="mt-4 text-sm leading-7 text-white/70">
-                  Access is gated while account controls are finalized. Use the
-                  catalog to compare MCP routes and see which ones already have
-                  research behind them.
-                </p>
-              </div>
-              <div class="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">Environment</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    Know which repo, browser surface, memory scope, or account the workflow will touch.
-                  </p>
-                </div>
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">Evidence</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    Keep screenshots, logs, benchmark notes, and receipt files close to the work.
-                  </p>
-                </div>
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">Handoff</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    Tie API access, billing, support, and rollback decisions to the same account.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid gap-4 lg:col-span-12 lg:grid-cols-[0.78fr_1.22fr]">
-              <div class="border-2 border-white bg-white p-6 text-black">
-                <p class="text-xs font-bold uppercase text-black/54">What You Get</p>
-                <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                  Hosted MCP products, account ownership, and enough evidence to
-                  know what happened.
-                </h2>
-                <p class="mt-4 max-w-2xl text-sm leading-7 text-black/72">
-                  The point is to make agent tooling less opaque: what the tool
-                  did, what evidence it produced, and where the boundary sits.
-                </p>
-              </div>
-              <div class="grid gap-3 sm:grid-cols-2">
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">MCP access</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    A controlled surface for MCP tools, API keys, and target environment notes.
-                  </p>
-                </div>
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">Owner record</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    The account owner, support path, and rollback decision stay attached.
-                  </p>
-                </div>
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">Evidence pack</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    Screenshots, repository context, memory traces, logs, or receipt files stay available.
-                  </p>
-                </div>
-                <div class="border border-white/46 bg-black/64 p-5">
-                  <p class="text-sm font-extrabold uppercase">Exit criteria</p>
-                  <p class="mt-2 text-sm leading-6 text-white/68">
-                    A clear place to decide whether to expand, change course, or stop using a route.
-                  </p>
-                </div>
-              </div>
+              <a href="/products/usage-developer" class="group border border-white/46 bg-black/64 p-5 transition hover:bg-white hover:text-black">
+                <p class="text-sm font-extrabold uppercase">Scale usage</p>
+                <p class="mt-2 text-sm leading-6 text-white/68 group-hover:text-black/68">Move to a usage tier when multiple MCPs call Monarchic infrastructure regularly.</p>
+              </a>
             </div>
           </div>
         </section>
 
         <section id="waitlist" class="border-t-2 border-white py-10">
-          <div class="grid gap-4 lg:grid-cols-[0.72fr_0.72fr_1fr]">
-            <div class="border border-white/46 bg-black/64 p-6">
-              <p class="text-xs font-bold uppercase text-white">Good Fit</p>
-              <h2 class="mt-3 text-2xl font-extrabold uppercase leading-tight">
-                Teams preparing autonomous engineering agents to touch real repos,
-                browsers, releases, and customer workflows.
+          <div class="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p class="text-xs font-bold uppercase text-white/54">Next step</p>
+              <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
+                Use the catalog, then tell us which route should be opened for your account.
               </h2>
-              <p class="mt-4 text-sm leading-7 text-white/70">
-                Join when you need durable memory, repository intelligence,
-                browser evidence, and account-level control in one direction.
+              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
+                Access is still gated while account controls and route
+                availability finish release checks. The product pages show the
+                current pricing and proof boundary for each MCP.
               </p>
             </div>
-            <div class="border border-white/46 bg-black/64 p-6">
-              <p class="text-xs font-bold uppercase text-white">Bad Fit</p>
-              <h2 class="mt-3 text-2xl font-extrabold uppercase leading-tight">
-                One-off demos, unaudited automations, or local tools that do not
-                need account-level control.
-              </h2>
-              <p class="mt-4 text-sm leading-7 text-white/70">
-                Monarchic is for engineering work that needs memory, evidence,
-                boundaries, and review. Local experimentation should stay local.
-              </p>
-            </div>
-            <div class="flex flex-col justify-between border-2 border-white bg-black p-6 shadow-[10px_10px_0_rgba(255,255,255,0.12)]">
-              <div>
-                <p class="text-xs font-bold uppercase text-white/54">Next Step</p>
-                <h2 class="mt-3 text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                  Start with the MCP layer. Build toward autonomous engineering
-                  work that can be inspected.
-                </h2>
-              </div>
-              <div class="mt-8">
-                <WaitlistForm
-                  client:load
-                  apiBaseUrl={apiBaseUrl}
-                  slug="monarchic-ai"
-                  submitLabel="Join waitlist"
-                />
-              </div>
+            <div class="border-2 border-white bg-black p-6 shadow-[10px_10px_0_rgba(255,255,255,0.12)]">
+              <WaitlistForm client:load apiBaseUrl={apiBaseUrl} slug="monarchic-ai" submitLabel="Join waitlist" />
             </div>
           </div>
         </section>
@@ -701,232 +209,3 @@ const infraProfilerProofSteps = [
     </main>
   </body>
 </html>
-
-<style>
-  .demo-shell {
-    isolation: isolate;
-  }
-
-  .mem-panel {
-    isolation: isolate;
-  }
-
-  .infra-shell {
-    isolation: isolate;
-  }
-
-  .demo-grid {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background-image:
-      linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
-    background-size: 28px 28px;
-    opacity: 0.35;
-  }
-
-  .mem-scan {
-    position: absolute;
-    inset: -30% -10%;
-    z-index: -1;
-    background: linear-gradient(115deg, transparent 36%, rgba(255, 255, 255, 0.18) 48%, rgba(34, 211, 238, 0.18) 52%, transparent 64%);
-    animation: demo-sweep 5.6s linear infinite;
-    opacity: 0.72;
-  }
-
-  .infra-scan {
-    position: absolute;
-    inset: -35% -12%;
-    z-index: -1;
-    background: linear-gradient(120deg, transparent 38%, rgba(255, 255, 255, 0.16) 49%, rgba(34, 211, 238, 0.13) 54%, transparent 66%);
-    animation: demo-sweep 6.2s linear infinite;
-    opacity: 0.72;
-  }
-
-  .demo-scan {
-    position: absolute;
-    inset: -40% -20%;
-    z-index: -1;
-    background: linear-gradient(110deg, transparent 35%, rgba(34, 211, 238, 0.28) 47%, rgba(255, 255, 255, 0.22) 50%, transparent 62%);
-    animation: demo-sweep 4.8s linear infinite;
-    opacity: 0.85;
-  }
-
-  .demo-led {
-    animation: demo-blink 1.4s steps(2, end) infinite;
-  }
-
-  .demo-led:nth-child(2) {
-    animation-delay: 0.24s;
-  }
-
-  .demo-led:nth-child(3) {
-    animation-delay: 0.48s;
-  }
-
-  .demo-bar {
-    transform-origin: left;
-    animation: demo-fill 2.6s ease-in-out infinite;
-  }
-
-  .demo-bar-delay {
-    animation-delay: 0.42s;
-  }
-
-  .demo-bar-late {
-    animation-delay: 0.84s;
-  }
-
-  .demo-cursor {
-    animation: demo-cursor 0.9s steps(2, end) infinite;
-  }
-
-  .infra-cursor {
-    animation: demo-cursor 0.9s steps(2, end) infinite;
-  }
-
-  .demo-fact {
-    animation: demo-pop 3.6s ease-in-out infinite;
-  }
-
-  .demo-fact-delay {
-    animation-delay: 0.36s;
-  }
-
-  .demo-fact-late {
-    animation-delay: 0.72s;
-  }
-
-  .demo-count {
-    text-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
-  }
-
-  .demo-pulse {
-    animation: demo-pulse 1.9s ease-in-out infinite;
-  }
-
-  .mem-row {
-    animation: mem-row 4.2s ease-in-out infinite;
-  }
-
-  .mem-row:nth-child(2) {
-    animation-delay: 0.3s;
-  }
-
-  .mem-row:nth-child(3) {
-    animation-delay: 0.6s;
-  }
-
-  .mem-bar {
-    transform-origin: left;
-    animation: mem-fill 3.2s ease-in-out infinite;
-  }
-
-  .mem-bar-short {
-    animation-delay: 0.4s;
-  }
-
-  @keyframes demo-sweep {
-    0% {
-      transform: translateX(-55%);
-    }
-    100% {
-      transform: translateX(55%);
-    }
-  }
-
-  @keyframes demo-blink {
-    0%,
-    44% {
-      opacity: 1;
-    }
-    45%,
-    100% {
-      opacity: 0.35;
-    }
-  }
-
-  @keyframes demo-fill {
-    0% {
-      transform: scaleX(0.12);
-    }
-    48% {
-      transform: scaleX(1);
-    }
-    100% {
-      transform: scaleX(0.72);
-    }
-  }
-
-  @keyframes demo-cursor {
-    0%,
-    45% {
-      opacity: 1;
-    }
-    46%,
-    100% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes demo-pop {
-    0%,
-    100% {
-      transform: translateX(0);
-      filter: brightness(1);
-    }
-    42% {
-      transform: translateX(4px);
-      filter: brightness(1.4);
-    }
-  }
-
-  @keyframes demo-pulse {
-    0%,
-    100% {
-      text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-    }
-    50% {
-      text-shadow: 0 0 18px rgba(255, 255, 255, 0.55);
-    }
-  }
-
-  @keyframes mem-row {
-    0%,
-    100% {
-      filter: brightness(1);
-    }
-    45% {
-      filter: brightness(1.28);
-    }
-  }
-
-  @keyframes mem-fill {
-    0% {
-      transform: scaleX(0.22);
-    }
-    52% {
-      transform: scaleX(1);
-    }
-    100% {
-      transform: scaleX(0.82);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .demo-scan,
-    .demo-led,
-    .demo-bar,
-    .demo-cursor,
-    .demo-fact,
-    .demo-pulse,
-    .infra-cursor,
-    .infra-scan,
-    .mem-scan,
-    .mem-row,
-    .mem-bar {
-      animation: none;
-    }
-  }
-</style>
