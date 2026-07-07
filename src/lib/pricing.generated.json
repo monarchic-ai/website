@@ -131,5 +131,471 @@
         "currency": "usd"
       }
     ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-agentfirewall",
+    "displayName": "AgentFirewall MCP",
+    "tagline": "Hosted policy checks before agent tool calls execute",
+    "description": "Route-level hosted access for teams that need AgentFirewall policy checks without buying the full catalog first.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Policy preflight, prompt scanning, redaction review, and provenance verification",
+      "Priced from light control-plane telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd54GmcDOdOLjF6tXKTP0W",
+        "lookupKey": "monarchic_mcp_agentfirewall_live_monthly",
+        "priceCents": 1900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd54GmcDOdOLjF1AaEwZog",
+        "lookupKey": "monarchic_mcp_agentfirewall_live_annual",
+        "priceCents": 19000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-browserops",
+    "displayName": "BrowserOps MCP",
+    "tagline": "Hosted browser evidence capture for agent QA",
+    "description": "Route-level hosted access for teams that need browser screenshots, console checks, network checks, and URL verification.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Playwright-backed browser evidence and receipt workflows",
+      "Priced from heavier browser-session route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd55GmcDOdOLjFQB7DbJrZ",
+        "lookupKey": "monarchic_mcp_browserops_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd56GmcDOdOLjFwL6MJRy0",
+        "lookupKey": "monarchic_mcp_browserops_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-businessmodel",
+    "displayName": "BusinessModel MCP",
+    "tagline": "Hosted company synthesis and execution gates",
+    "description": "Route-level hosted access for founders and studios that need evidence-backed business-model synthesis before execution work starts.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Company synthesis reports, execution gates, and blueprint exports",
+      "Priced from heavier synthesis route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd57GmcDOdOLjFSF96LzP2",
+        "lookupKey": "monarchic_mcp_businessmodel_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd57GmcDOdOLjF7JHfV9N4",
+        "lookupKey": "monarchic_mcp_businessmodel_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-create-project",
+    "displayName": "Create Project MCP",
+    "tagline": "Hosted governed project scaffolding",
+    "description": "Route-level hosted access for teams that want agents to create projects through known templates and predictable failure paths.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Template-backed project creation in JSON or text mode",
+      "Priced from light wrapper-route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd58GmcDOdOLjFEJJCtM38",
+        "lookupKey": "monarchic_mcp_create_project_live_monthly",
+        "priceCents": 1900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd59GmcDOdOLjFrRV2PuTT",
+        "lookupKey": "monarchic_mcp_create_project_live_annual",
+        "priceCents": 19000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-explicitmem",
+    "displayName": "ExplicitMem MCP",
+    "tagline": "Hosted durable memory for long-running agents",
+    "description": "Route-level hosted access for teams that need explicit, inspectable agent memory across sessions.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Memory write, lookup, curated recall, and state handoff workflows",
+      "Priced from light storage-backed route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5AGmcDOdOLjFjYssKZPJ",
+        "lookupKey": "monarchic_mcp_explicitmem_live_monthly",
+        "priceCents": 1900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5AGmcDOdOLjFCp2f4a3N",
+        "lookupKey": "monarchic_mcp_explicitmem_live_annual",
+        "priceCents": 19000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-leadgenerator",
+    "displayName": "LeadGenerator MCP",
+    "tagline": "Hosted lead generation from validated business models",
+    "description": "Route-level hosted access for B2B teams generating ranked accounts, buyer personas, and outreach angles.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Validated enrichment gates, lead targets, audit reports, and campaign packages",
+      "Priced from heavier generation route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5BGmcDOdOLjFAOwfWhA9",
+        "lookupKey": "monarchic_mcp_leadgenerator_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5CGmcDOdOLjFzvbxRnz5",
+        "lookupKey": "monarchic_mcp_leadgenerator_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-monarchic",
+    "displayName": "Monarchic MCP",
+    "tagline": "Hosted orchestration for governed agent runs",
+    "description": "Route-level hosted access for teams that need Monarchic run control, artifact discovery, execution gates, and campaign orchestration.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Run summaries, artifacts, registry, controls, infra launch, and orchestrated campaigns",
+      "Priced from orchestration-route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "highlighted": true,
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5DGmcDOdOLjFh0OsirxS",
+        "lookupKey": "monarchic_mcp_monarchic_live_monthly",
+        "priceCents": 7900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5DGmcDOdOLjFZJWGY2vF",
+        "lookupKey": "monarchic_mcp_monarchic_live_annual",
+        "priceCents": 79000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-outreachconnectors",
+    "displayName": "OutreachConnectors MCP",
+    "tagline": "Hosted governed outreach connector checks",
+    "description": "Route-level hosted access for revenue teams that need outreach readiness and delivery evidence without unsafe auto-send claims.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Connector status, policy preflight, capture templates, and receipt normalization",
+      "Priced from standard connector-route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5QGmcDOdOLjFJZoym9oA",
+        "lookupKey": "monarchic_mcp_outreachconnectors_live_monthly",
+        "priceCents": 2900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5QGmcDOdOLjFhJZiq85e",
+        "lookupKey": "monarchic_mcp_outreachconnectors_live_annual",
+        "priceCents": 29000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-proofpack",
+    "displayName": "ProofPack MCP",
+    "tagline": "Hosted proof receipts for agent work",
+    "description": "Route-level hosted access for teams that need hashes, signatures, drift checks, and exportable evidence packs.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Hash, receipt, verification, drift, and export workflows",
+      "Priced from light evidence-route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5FGmcDOdOLjF5dxRFfkD",
+        "lookupKey": "monarchic_mcp_proofpack_live_monthly",
+        "priceCents": 1900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5FGmcDOdOLjFwPT4qIKt",
+        "lookupKey": "monarchic_mcp_proofpack_live_annual",
+        "priceCents": 19000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-pty",
+    "displayName": "PTY MCP",
+    "tagline": "Hosted governed terminal sessions",
+    "description": "Route-level hosted access for teams that need observable terminal sessions through MCP.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Start, write, read, and close governed PTY sessions",
+      "Priced from heavier terminal-session telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5GGmcDOdOLjFJ7A8xvT7",
+        "lookupKey": "monarchic_mcp_pty_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5HGmcDOdOLjFYqT1GEmX",
+        "lookupKey": "monarchic_mcp_pty_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-releaseops",
+    "displayName": "ReleaseOps MCP",
+    "tagline": "Hosted release checks and evidence packs",
+    "description": "Route-level hosted access for engineering teams coordinating release readiness, changelogs, and reviewer evidence.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Release readiness, changelog scope, artifact manifests, and release packs",
+      "Priced from slower hosted Lambda telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5IGmcDOdOLjFLR8NFwe3",
+        "lookupKey": "monarchic_mcp_releaseops_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5IGmcDOdOLjFlspjwiEJ",
+        "lookupKey": "monarchic_mcp_releaseops_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-repo-fleet",
+    "displayName": "Repo Fleet MCP",
+    "tagline": "Hosted repo-fleet operations for agents",
+    "description": "Route-level hosted access for organizations managing many repositories with structured agent workflows.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Fleet JSON, fleet text, repo inventory, and failure reporting",
+      "Priced from slower hosted Lambda telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5JGmcDOdOLjFAFZRlrAG",
+        "lookupKey": "monarchic_mcp_repo_fleet_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5KGmcDOdOLjF8ufiS6QL",
+        "lookupKey": "monarchic_mcp_repo_fleet_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-repointel",
+    "displayName": "RepoIntel MCP",
+    "tagline": "Hosted repository intelligence for coding agents",
+    "description": "Route-level hosted access for teams that need repository maps, generated wiki context, dependency summaries, and targeted evidence lookup.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Repo summary, generated wiki, targeted evidence lookup, and workflow discovery",
+      "Priced above the legacy smoke-test price to reflect hosted route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5LGmcDOdOLjFEvjfurvh",
+        "lookupKey": "monarchic_mcp_repointel_live_monthly",
+        "priceCents": 2900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5LGmcDOdOLjFb64clOfa",
+        "lookupKey": "monarchic_mcp_repointel_live_annual",
+        "priceCents": 29000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-seo",
+    "displayName": "SEO MCP",
+    "tagline": "Hosted deterministic SEO workflows",
+    "description": "Route-level hosted access for teams running route discovery, live page inspection, internal-link planning, and ranking checks.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Route discovery, live page inspection, link planning, and ranking pipeline runs",
+      "Priced from the slowest hosted Lambda telemetry bucket",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5MGmcDOdOLjFh253rrau",
+        "lookupKey": "monarchic_mcp_seo_live_monthly",
+        "priceCents": 4900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5NGmcDOdOLjFfmRZWwVw",
+        "lookupKey": "monarchic_mcp_seo_live_annual",
+        "priceCents": 49000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-verified",
+    "displayName": "Verified MCP",
+    "tagline": "Hosted bounded patch verification",
+    "description": "Route-level hosted access for teams that want agents to plan, apply, and verify patches with receipt-backed evidence.",
+    "featureBullets": [
+      "Single hosted MCP route access",
+      "Patch planning, bounded application, validation, and proof receipts",
+      "Priced from standard verification-route telemetry",
+      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
+    ],
+    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "status": "available",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": "price_1Tqd5OGmcDOdOLjFdaeR19IJ",
+        "lookupKey": "monarchic_mcp_verified_live_monthly",
+        "priceCents": 2900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": "price_1Tqd5OGmcDOdOLjFMg6vzWId",
+        "lookupKey": "monarchic_mcp_verified_live_annual",
+        "priceCents": 29000,
+        "currency": "usd"
+      }
+    ]
   }
 ]

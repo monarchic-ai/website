@@ -4,6 +4,9 @@ import SeoHead from "../../components/SeoHead.astro";
 import "../../styles/global.css";
 import {
   allPlans,
+  cadenceLabel,
+  formatPriceUSD,
+  resolveDisplayPrice,
   type CatalogPlan,
   type PlanKind,
 } from "../../lib/pricing";
@@ -227,16 +230,25 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                       </p>
                     )}
                     <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicCatalogDescription(plan.description)}</p>
-                    {plan.kind === "usage-plan" && (
+                    {(plan.kind === "usage-plan" || plan.kind === "single-mcp") && (
                       <div class="mt-5 border border-white/40 bg-black/40 p-4 group-hover:border-black/40 group-hover:bg-white/70">
                         <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52 group-hover:text-black/52">
-                          Gated usage tier
+                          {plan.kind === "usage-plan" ? "Usage tier" : "Single route"}
                         </p>
+                        {(() => {
+                          const displayPrice = resolveDisplayPrice(plan, "monthly");
+                          return displayPrice?.price.priceCents !== null && displayPrice?.price.priceCents !== undefined ? (
+                            <p class="mt-3 text-3xl font-extrabold uppercase text-white group-hover:text-black">
+                              {formatPriceUSD(displayPrice.price.priceCents)}
+                              <span class="ml-1 text-sm font-bold text-white/52 group-hover:text-black/52">{cadenceLabel(displayPrice.cadence)}</span>
+                            </p>
+                          ) : null;
+                        })()}
                         <div class="mt-3 grid gap-2 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white/60 group-hover:text-black/60">
                           {plan.includedCredits !== undefined && (
                             <span>{plan.includedCredits.toLocaleString()} monthly credit allowance target</span>
                           )}
-                          <span>Waitlist before checkout</span>
+                          <span>{plan.kind === "single-mcp" ? "One hosted MCP route" : "Waitlist before checkout"}</span>
                         </div>
                       </div>
                     )}
@@ -257,7 +269,7 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      {plan.kind === "usage-plan" ? "Access gated" : "Included under gated access"}
+                      {plan.kind === "usage-plan" || plan.kind === "single-mcp" ? "Launch pricing" : "Included under gated access"}
                     </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">
