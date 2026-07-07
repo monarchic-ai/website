@@ -27,3 +27,4 @@ pnpm-debug.log*
 .idea/
 .vercel
 *smoke-report.json
+website-smoke-*.json
