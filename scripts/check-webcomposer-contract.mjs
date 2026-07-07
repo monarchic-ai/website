@@ -28,6 +28,14 @@ checkFileIncludes("src/components/WaitlistForm.svelte", [
   "We use this email for Monarchic access updates only.",
 ]);
 
+checkFileIncludes("src/pages/products/index.astro", [
+  "Stripe-backed prices are published for available usage tiers",
+  "Live Prices, Gated Onboarding",
+  "Available MCP Routes",
+  "singleMcpPriceBands",
+  "No self-serve checkout claim until account onboarding is live.",
+]);
+
 checkFileIncludes("webcomposer/site-map.contract.json", [
   "stripe_backed_prices",
   "prices not present in pricing.generated.json",
