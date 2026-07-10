@@ -71,6 +71,20 @@
   },
   {
     "kind": "single-mcp",
+    "slug": "mcp-incidentops",
+    "displayName": "IncidentOps MCP",
+    "tagline": "Incident response evidence and coordination",
+    "description": "IncidentOps MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits rather than being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Build evidence-backed incident timelines and response packets",
+      "Prepare guarded provider updates with dry-run controls",
+      "Use the authenticated hosted route through account credits"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
     "slug": "mcp-leadgenerator",
     "displayName": "LeadGenerator MCP",
     "tagline": "Outbound lead discovery and enrichment",

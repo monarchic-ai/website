@@ -52,6 +52,20 @@ export const productDetails: Record<string, ProductDetail> = {
     proof: "Feature-complete for the bounded memory product surface.",
     accessModel: "Hosted on Monarchic-managed infrastructure",
   },
+  "mcp-incidentops": {
+    slug: "mcp-incidentops",
+    category: "Incident Response",
+    buyer: "Engineering and operations teams coordinating production incidents across monitoring, ticketing, and chat systems.",
+    useCase: "Normalize incident evidence, construct response artifacts, and prepare guarded provider updates through one MCP surface.",
+    outcomes: [
+      "Turn fragmented alerts and notes into a structured incident timeline",
+      "Generate response packets and post-incident review artifacts from traceable evidence",
+      "Keep external writes explicit, reviewable, and dry-run capable",
+    ],
+    workflows: ["Evidence ingestion", "Timeline construction", "Response packet", "Guarded provider updates"],
+    proof: "Fifty tests, a 99-tool protocol smoke, hosted security controls, and authenticated staging and production route checks pass.",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
+  },
   "mcp-leadgenerator": {
     slug: "mcp-leadgenerator",
     category: "Go-To-Market",
