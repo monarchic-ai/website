@@ -10,20 +10,6 @@ export interface ProductDetail {
 }
 
 export const productDetails: Record<string, ProductDetail> = {
-  "mcp-agentfirewall": {
-    slug: "mcp-agentfirewall",
-    category: "Agent Security",
-    buyer: "Teams letting agents call tools, APIs, terminals, or internal MCPs.",
-    useCase: "Policy-check agent actions before they reach risky tools.",
-    outcomes: [
-      "Block prompt-injection-shaped tool calls before execution",
-      "Require explicit authority for read, write, execute, and admin actions",
-      "Redact sensitive prompt material and verify provenance claims",
-    ],
-    workflows: ["Tool-call preflight", "Prompt scanning", "Redaction review", "Provenance verification"],
-    proof: "Strict MCP input schemas and policy tests cover each public firewall tool.",
-    accessModel: "Hosted on Monarchic-managed infrastructure",
-  },
   "mcp-browserops": {
     slug: "mcp-browserops",
     category: "Browser QA",
@@ -78,20 +64,6 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Validate enrichment", "Generate lead targets", "Audit report", "Campaign package"],
     proof: "Tests isolate state and verify validated enrichment gates, linked receipts, reports, and audit resources.",
-    accessModel: "Hosted on Monarchic-managed infrastructure",
-  },
-  "mcp-proofpack": {
-    slug: "mcp-proofpack",
-    category: "Evidence",
-    buyer: "Teams that need verifiable receipts for agent work, releases, and artifacts.",
-    useCase: "Hash, sign, verify, compare drift, and export reviewable proof packs.",
-    outcomes: [
-      "Attach artifact hashes to work products",
-      "Create receipt bundles reviewers can inspect",
-      "Verify receipt integrity after handoff",
-    ],
-    workflows: ["Hash artifact", "Create receipt", "Verify receipt", "Export evidence pack"],
-    proof: "Black-box stdio MCP tests cover initialize, tools/list, hash, create, verify, errors, and recovery.",
     accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-pty": {

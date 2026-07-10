@@ -15,20 +15,6 @@
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-agentfirewall",
-    "displayName": "AgentFirewall MCP",
-    "tagline": "Prompt and tool-call safety firewall",
-    "description": "AgentFirewall MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
-    "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
-    ],
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
     "slug": "mcp-browserops",
     "displayName": "BrowserOps MCP",
     "tagline": "Browser evidence and UI verification",
@@ -103,20 +89,6 @@
     "displayName": "Monarchic MCP",
     "tagline": "Monarchic orchestration interface",
     "description": "Monarchic MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
-    "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
-    ],
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-proofpack",
-    "displayName": "ProofPack MCP",
-    "tagline": "Receipts and reviewable evidence packs",
-    "description": "ProofPack MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
     "featureBullets": [
       "Hosted MCP route under the Monarchic API",
       "Scoped API-key access through the dashboard",
@@ -230,7 +202,7 @@
     "tagline": "Repo intelligence, memory, browser checks, and terminal evidence",
     "description": "A capability grouping for developer-agent workflows. These routes are included under usage-plan credits rather than sold as a separate checkout bundle.",
     "featureBullets": [
-      "RepoIntel, ExplicitMem, BrowserOps, PTY, ProofPack, and Verified workflow coverage",
+      "RepoIntel, ExplicitMem, BrowserOps, PTY, and Verified workflow coverage",
       "Usage-based access through account credits",
       "Useful for coding agents, UI review, and release checks"
     ],
@@ -239,7 +211,6 @@
       "mcp-explicitmem",
       "mcp-browserops",
       "mcp-pty",
-      "mcp-proofpack",
       "mcp-verified"
     ],
     "status": "coming_soon",
