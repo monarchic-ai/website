@@ -66,6 +66,20 @@ export const productDetails: Record<string, ProductDetail> = {
     proof: "Fifty tests, a 99-tool protocol smoke, hosted security controls, and authenticated staging and production route checks pass.",
     accessModel: "Hosted on Monarchic-managed infrastructure",
   },
+  "mcp-infraprofiler": {
+    slug: "mcp-infraprofiler",
+    category: "Infrastructure Intelligence",
+    buyer: "Platform, SRE, and engineering teams reducing infrastructure risk, cost, and delivery latency.",
+    useCase: "Profile infrastructure telemetry and CI/CD evidence, rank hotspots, and export merged system topology without mutating production systems.",
+    outcomes: [
+      "Prioritize reliability, cost, saturation, security, and pipeline bottlenecks",
+      "Connect CI/CD behavior to runtime infrastructure and ownership",
+      "Produce architecture graphs and evidence-backed optimization plans",
+    ],
+    workflows: ["Hotspot ranking", "Pipeline profiling", "Engineering-system analysis", "CodeGraph export"],
+    proof: "One hundred twenty tests, a 110-tool protocol smoke, hosted deny-by-default controls, and deterministic pipeline and graph checks pass.",
+    accessModel: "Hosted on Monarchic-managed infrastructure",
+  },
   "mcp-leadgenerator": {
     slug: "mcp-leadgenerator",
     category: "Go-To-Market",
