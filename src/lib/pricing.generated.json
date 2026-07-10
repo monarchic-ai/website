@@ -134,37 +134,6 @@
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-agentfirewall",
-    "displayName": "AgentFirewall MCP",
-    "tagline": "Hosted policy checks before agent tool calls execute",
-    "description": "Route-level hosted access for teams that need AgentFirewall policy checks without buying the full catalog first.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Policy preflight, prompt scanning, redaction review, and provenance verification",
-      "Priced from light control-plane telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd54GmcDOdOLjF6tXKTP0W",
-        "lookupKey": "monarchic_mcp_agentfirewall_live_monthly",
-        "priceCents": 1900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd54GmcDOdOLjF1AaEwZog",
-        "lookupKey": "monarchic_mcp_agentfirewall_live_annual",
-        "priceCents": 19000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
     "slug": "mcp-browserops",
     "displayName": "BrowserOps MCP",
     "tagline": "Hosted browser evidence capture for agent QA",
@@ -377,37 +346,6 @@
         "priceId": "price_1Tqd5QGmcDOdOLjFhJZiq85e",
         "lookupKey": "monarchic_mcp_outreachconnectors_live_annual",
         "priceCents": 29000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-proofpack",
-    "displayName": "ProofPack MCP",
-    "tagline": "Hosted proof receipts for agent work",
-    "description": "Route-level hosted access for teams that need hashes, signatures, drift checks, and exportable evidence packs.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Hash, receipt, verification, drift, and export workflows",
-      "Priced from light evidence-route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5FGmcDOdOLjF5dxRFfkD",
-        "lookupKey": "monarchic_mcp_proofpack_live_monthly",
-        "priceCents": 1900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5FGmcDOdOLjFwPT4qIKt",
-        "lookupKey": "monarchic_mcp_proofpack_live_annual",
-        "priceCents": 19000,
         "currency": "usd"
       }
     ]
