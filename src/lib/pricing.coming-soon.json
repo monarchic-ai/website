@@ -85,6 +85,20 @@
   },
   {
     "kind": "single-mcp",
+    "slug": "mcp-infraprofiler",
+    "displayName": "InfraProfiler MCP",
+    "tagline": "Infrastructure and pipeline performance intelligence",
+    "description": "InfraProfiler MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits rather than being sold as a separate fixed-price subscription.",
+    "featureBullets": [
+      "Rank infrastructure, CI/CD, cost, reliability, and delivery hotspots",
+      "Build merged architecture graphs and CodeGraph Studio exports",
+      "Use guarded hosted provider access through account credits"
+    ],
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
     "slug": "mcp-leadgenerator",
     "displayName": "LeadGenerator MCP",
     "tagline": "Outbound lead discovery and enrichment",
