@@ -2,7 +2,7 @@ version = 1
 profile = "monarchic-strict"
 
 [git]
-version_control = "jj"
+version_control = "auto"
 commit_mode = "atomic"
 message_style = "conventional"
 push_mode = "on_success"
