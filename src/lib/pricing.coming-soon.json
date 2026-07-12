@@ -198,13 +198,13 @@
   {
     "kind": "single-mcp",
     "slug": "mcp-verified",
-    "displayName": "Verified MCP",
-    "tagline": "Verified patch and review workflow tools",
-    "description": "Verified MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "displayName": "Verified Patch",
+    "tagline": "Internal bounded patch execution",
+    "description": "Verified Patch is an internal Monarchic execution capability for high-risk and unattended code changes. It is not sold as a standalone MCP or included with public usage plans.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Bounded write scopes and preflight policy checks",
+      "Test, rollback, and repository-state receipts",
+      "Isolated asynchronous sandbox execution"
     ],
     "status": "coming_soon",
     "prices": []
@@ -238,8 +238,7 @@
       "mcp-repointel",
       "mcp-explicitmem",
       "mcp-browserops",
-      "mcp-pty",
-      "mcp-verified"
+      "mcp-pty"
     ],
     "status": "coming_soon",
     "prices": []
