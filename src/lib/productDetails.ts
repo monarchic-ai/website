@@ -119,7 +119,7 @@ export const productDetails: Record<string, ProductDetail> = {
       "Keep agent release work bounded and auditable",
     ],
     workflows: ["Release readiness", "Changelog scope", "Artifact manifest", "Export release pack"],
-    proof: "Feature-complete for the current release workflow surface.",
+    proof: "Production evidence covers 42 tests, receipt-authenticated readiness, deterministic reviewer packs, and identical hosted deployments in dev, staging, and production.",
     accessModel: "Hosted on Monarchic-managed infrastructure",
   },
   "mcp-repointel": {
@@ -153,16 +153,16 @@ export const productDetails: Record<string, ProductDetail> = {
   "mcp-verified": {
     slug: "mcp-verified",
     category: "Patch Verification",
-    buyer: "Teams that want agents to patch code without losing test and rollback evidence.",
-    useCase: "Plan, apply, and verify bounded patches with proof receipts.",
+    buyer: "Internal Monarchic workflows running high-risk or unattended code changes.",
+    useCase: "Plan bounded patches through an isolated sandbox, with validation, rollback, and receipt verification.",
     outcomes: [
       "Constrain patch scope before mutation",
       "Capture test results as verifier-friendly evidence",
       "Keep rollback and drift checks close to the patch",
     ],
     workflows: ["Plan patch", "Apply bounded change", "Run validation", "Emit proof receipt"],
-    proof: "Feature-complete for verified patch workflows.",
-    accessModel: "Hosted on Monarchic-managed infrastructure",
+    proof: "Version 0.3.0 passes 40 tests and has matching isolated sandbox evidence in dev, staging, and production; direct hosted mutation remains denied.",
+    accessModel: "Internal Monarchic capability; not sold as a standalone MCP",
   },
   "mcp-outreachconnectors": {
     slug: "mcp-outreachconnectors",

@@ -504,36 +504,5 @@
         "currency": "usd"
       }
     ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-verified",
-    "displayName": "Verified MCP",
-    "tagline": "Hosted bounded patch verification",
-    "description": "Route-level hosted access for teams that want agents to plan, apply, and verify patches with receipt-backed evidence.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Patch planning, bounded application, validation, and proof receipts",
-      "Priced from standard verification-route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5OGmcDOdOLjFdaeR19IJ",
-        "lookupKey": "monarchic_mcp_verified_live_monthly",
-        "priceCents": 2900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5OGmcDOdOLjFMg6vzWId",
-        "lookupKey": "monarchic_mcp_verified_live_annual",
-        "priceCents": 29000,
-        "currency": "usd"
-      }
-    ]
   }
 ]
