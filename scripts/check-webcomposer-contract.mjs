@@ -29,8 +29,8 @@ checkFileIncludes("src/components/WaitlistForm.svelte", [
 ]);
 
 checkFileIncludes("src/pages/products/index.astro", [
-  "Stripe-backed prices are published for available usage tiers",
-  "Live Prices, Gated Onboarding",
+  "Checkout-backed prices are marked available.",
+  "Measured Pricing, Gated Onboarding",
   "Available MCP Routes",
   "singleMcpPriceBands",
   "No self-serve checkout claim until account onboarding is live.",
@@ -38,13 +38,15 @@ checkFileIncludes("src/pages/products/index.astro", [
 
 checkFileIncludes("webcomposer/site-map.contract.json", [
   "stripe_backed_prices",
-  "prices not present in pricing.generated.json",
+  "pricing_previews",
+  "prices not present in the synchronized product catalog",
   "checkout promises for unavailable products",
 ]);
 
 checkFileIncludes("webcomposer/section-catalog.json", [
-  "Show prices only when the generated Stripe catalog exposes the plan as available.",
-  "Do not invent prices or checkout promises outside pricing.generated.json.",
+  "Mark generated Stripe prices as available checkout-backed prices.",
+  "Preview prices require a synchronized coming-soon catalog entry with null Stripe price and lookup identifiers.",
+  "Do not invent prices outside the synchronized product catalog or attach checkout promises to preview prices.",
 ]);
 
 checkForbidden("src/pages/index.astro", [

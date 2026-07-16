@@ -44,12 +44,13 @@
       "layoutRules": [
         "Group usage tiers, available MCPs, bundles, and coming-soon products clearly.",
         "Make ExplicitMem, RepoIntel, and BrowserOps easy to compare without tab switching.",
-        "Show prices only when the generated Stripe catalog exposes the plan as available.",
+        "Mark generated Stripe prices as available checkout-backed prices.",
+        "Preview prices require a synchronized coming-soon catalog entry with null Stripe price and lookup identifiers.",
         "Keep waitlist or access state visible on every product path that cannot be purchased."
       ],
       "antiPatterns": [
         "Do not bury the Monarchic AI platform direction under individual MCP cards.",
-        "Do not invent prices or checkout promises outside pricing.generated.json."
+        "Do not invent prices outside the synchronized product catalog or attach checkout promises to preview prices."
       ]
     },
     {

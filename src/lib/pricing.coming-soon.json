@@ -14,6 +14,78 @@
     "prices": []
   },
   {
+    "kind": "usage-plan",
+    "slug": "usage-evaluation",
+    "displayName": "Evaluation",
+    "tagline": "A bounded first run through the hosted MCP catalog",
+    "description": "Evaluate hosted Monarchic MCP routes with a one-time credit allowance and a hard usage cap before choosing a paid plan.",
+    "featureBullets": [
+      "200 one-time evaluation credits",
+      "Verified email required",
+      "No card and no overage"
+    ],
+    "includedCredits": 200,
+    "creditAllowanceLabel": "200 one-time credits",
+    "overageLabel": "No overage",
+    "usageSummary": "Metadata and configuration calls are free. Standard hosted operations use one credit; stateful and infrastructure-backed work uses more.",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "usage-plan",
+    "slug": "usage-developer",
+    "displayName": "Developer",
+    "tagline": "Production capacity for one active developer",
+    "description": "For one developer using hosted MCPs across local agents, CI checks, and recurring production workflows.",
+    "featureBullets": [
+      "4,000 included credits each month",
+      "Usage access across hosted MCP routes",
+      "$0.025 per additional credit after the allowance",
+      "Scoped API keys and account usage controls"
+    ],
+    "includedCredits": 4000,
+    "overageLabel": "$0.025/credit overage",
+    "usageSummary": "Metadata and configuration calls are free. Standard hosted operations use one credit; stateful analysis starts at three credits, and browser or provider-backed work follows measured usage.",
+    "highlighted": true,
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 5900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 59000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "usage-plan",
+    "slug": "usage-business",
+    "displayName": "Business",
+    "tagline": "Contract capacity for sustained hosted workloads",
+    "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
+    "featureBullets": [
+      "75,000-credit monthly capacity starting point",
+      "Volume and overage terms based on measured workload",
+      "Support and service objectives defined in the agreement",
+      "Security and deployment review before activation"
+    ],
+    "includedCredits": 75000,
+    "creditAllowanceLabel": "75,000+ credits/mo",
+    "overageLabel": "Contract terms",
+    "usageSummary": "Business pricing is quoted from expected route mix, external-provider exposure, concurrency, support, and service requirements.",
+    "status": "contact_sales",
+    "prices": [],
+    "salesContactUrl": "mailto:sales@monarchic.io?subject=Monarchic%20Business"
+  },
+  {
     "kind": "single-mcp",
     "slug": "mcp-browserops",
     "displayName": "BrowserOps MCP",
