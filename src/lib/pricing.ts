@@ -4,7 +4,7 @@
 
 export type PlanKind = "usage-plan" | "single-mcp" | "bundle" | "ai";
 export type PlanCadence = "monthly" | "annual";
-export type PlanStatus = "available" | "coming_soon";
+export type PlanStatus = "available" | "coming_soon" | "contact_sales";
 
 // Annual subscriptions are always priced at this multiple of the monthly
 // amount. Centralizing the constant keeps Stripe seeding, the UI, and the
@@ -35,12 +35,14 @@ export interface CatalogPlan {
   featureBullets: string[];
   includedMcpSlugs?: string[];
   includedCredits?: number;
+  creditAllowanceLabel?: string;
   overageLabel?: string;
   usageSummary?: string;
   highlighted?: boolean;
   status: PlanStatus;
   prices: PlanPrice[];
   waitlistUrl?: string;
+  salesContactUrl?: string;
 }
 
 import generatedPlans from "./pricing.generated.json" with { type: "json" };
@@ -51,14 +53,23 @@ import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json"
 // legacy Price.
 export const retiredPublicPlanSlugs = new Set(["mcp-verified"]);
 
-export const availablePlans: CatalogPlan[] = ((generatedPlans as CatalogPlan[]) ?? [])
+// These plans have updated public terms but do not have matching live Stripe
+// prices yet. Keep the generated records available for historical subscription
+// lookup while the public catalog uses non-checkout preview entries.
+export const previewPublicPlanSlugs = new Set(["usage-developer", "usage-business"]);
+
+const generatedCatalogPlans = (generatedPlans as CatalogPlan[]) ?? [];
+const nonGeneratedPlans = (comingSoonPlansJson as CatalogPlan[]) ?? [];
+
+export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   .filter(
     (plan) =>
       (plan.kind === "usage-plan" || plan.kind === "single-mcp") &&
-      !retiredPublicPlanSlugs.has(plan.slug),
+      !retiredPublicPlanSlugs.has(plan.slug) &&
+      !previewPublicPlanSlugs.has(plan.slug),
   );
 const availablePlanSlugs = new Set(availablePlans.map((plan) => plan.slug));
-export const comingSoonPlans: CatalogPlan[] = ((comingSoonPlansJson as CatalogPlan[]) ?? [])
+export const comingSoonPlans: CatalogPlan[] = nonGeneratedPlans
   .filter((plan) => !availablePlanSlugs.has(plan.slug));
 export const allPlans: CatalogPlan[] = [...availablePlans, ...comingSoonPlans];
 
@@ -69,7 +80,7 @@ export function findPlanBySlug(slug: string): CatalogPlan | null {
 export function findPlanByPriceId(
   priceId: string,
 ): { plan: CatalogPlan; price: PlanPrice } | null {
-  for (const plan of allPlans) {
+  for (const plan of [...allPlans, ...generatedCatalogPlans]) {
     const price = plan.prices.find((p) => p.priceId === priceId);
     if (price) return { plan, price };
   }
@@ -117,4 +128,16 @@ export function cadenceLabel(cadence: PlanCadence): string {
 
 export function cadenceFromQueryString(value: string | null | undefined): PlanCadence {
   return value === "annual" ? "annual" : "monthly";
+}
+
+export function creditAllowanceLabel(plan: CatalogPlan): string | null {
+  if (plan.creditAllowanceLabel) return plan.creditAllowanceLabel;
+  if (plan.includedCredits === undefined) return null;
+  return `${plan.includedCredits.toLocaleString("en-US")} credits/mo`;
+}
+
+export function planStatusLabel(status: PlanStatus): string {
+  if (status === "available") return "Available";
+  if (status === "contact_sales") return "Contact sales";
+  return "Preview";
 }

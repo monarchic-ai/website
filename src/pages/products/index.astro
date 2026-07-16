@@ -5,7 +5,9 @@ import "../../styles/global.css";
 import {
   allPlans,
   cadenceLabel,
+  creditAllowanceLabel,
   formatPriceUSD,
+  planStatusLabel,
   resolveDisplayPrice,
   type CatalogPlan,
   type PlanKind,
@@ -21,7 +23,7 @@ import { getProductDetail } from "../../lib/productDetails";
 const MONARCHIC_AI_SLUG = "monarchic-ai";
 const monarchicAi = allPlans.find((plan) => plan.slug === MONARCHIC_AI_SLUG) ?? null;
 
-const usageOrder = ["usage-individual", "usage-developer", "usage-team", "usage-business"];
+const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
 function usageRank(slug: string): number {
   const index = usageOrder.indexOf(slug);
   return index === -1 ? usageOrder.length : index;
@@ -43,7 +45,7 @@ const singleMcps = allPlans
   .filter((plan) => plan.kind === "single-mcp")
   .sort((a, b) => a.displayName.localeCompare(b.displayName));
 const otherComingSoon = allPlans.filter(
-  (plan) => plan.status === "coming_soon" && plan.kind !== "single-mcp" && plan.kind !== "bundle" && plan.slug !== MONARCHIC_AI_SLUG,
+  (plan) => plan.status !== "available" && plan.kind !== "usage-plan" && plan.kind !== "single-mcp" && plan.kind !== "bundle" && plan.slug !== MONARCHIC_AI_SLUG,
 );
 const availableSingleMcps = singleMcps.filter((plan) => plan.status === "available");
 const availableUsagePlans = usagePlans.filter((plan) => plan.status === "available");
@@ -95,6 +97,12 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
   return plan.featureBullets.filter((bullet) => !bullet.includes("$"));
 }
 
+function statusBadgeClasses(plan: CatalogPlan): string {
+  if (plan.status === "available") return "border-emerald-300 text-emerald-200";
+  if (plan.status === "contact_sales") return "border-cyan-300 text-cyan-200";
+  return "border-amber-300 text-amber-200";
+}
+
 ---
 
 <html lang="en">
@@ -135,13 +143,12 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
             Hosted MCP<br />Catalog
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Stripe-backed prices are published for available usage tiers and
-            individual MCP routes. Website access remains gated while account
-            controls are finalized.
+            Checkout-backed prices are marked available. Pricing previews have
+            no checkout IDs, and Business terms are handled through sales.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
-              Live Prices, Gated Onboarding
+              Measured Pricing, Gated Onboarding
             </p>
             <p class="mt-3 text-sm leading-7 text-white/76">
               Compare the MCP routes below, then join the waitlist for
@@ -222,15 +229,9 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                       <span class={`inline-flex border px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.22em] ${badge.classes}`}>
                         {badge.label}
                       </span>
-                      {plan.status === "available" ? (
-                        <span class="border border-emerald-300 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-emerald-200">
-                          Available
-                        </span>
-                      ) : plan.status === "coming_soon" && (
-                        <span class="border border-amber-300 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-amber-200">
-                          Soon
-                        </span>
-                      )}
+                      <span class={`border px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] ${statusBadgeClasses(plan)}`}>
+                        {planStatusLabel(plan.status)}
+                      </span>
                     </div>
                     <h3 class="mt-4 text-2xl font-extrabold uppercase">
                       <a href={`/products/${plan.slug}`}>{publicCatalogDisplayName(plan.slug, plan.displayName)}</a>
@@ -259,10 +260,10 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                           ) : null;
                         })()}
                         <div class="mt-3 grid gap-2 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-white/60 group-hover:text-black/60">
-                          {plan.includedCredits !== undefined && (
-                            <span>{plan.includedCredits.toLocaleString()} monthly credit allowance target</span>
+                          {creditAllowanceLabel(plan) !== null && (
+                            <span>{creditAllowanceLabel(plan)}</span>
                           )}
-                          <span>{plan.kind === "single-mcp" ? "One hosted MCP route" : "Waitlist before checkout"}</span>
+                          <span>{plan.kind === "single-mcp" ? "One hosted MCP route" : plan.status === "contact_sales" ? "Sales-led terms" : "Waitlist before checkout"}</span>
                         </div>
                       </div>
                     )}
@@ -283,7 +284,13 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      {plan.kind === "usage-plan" || plan.kind === "single-mcp" ? "Launch pricing" : "Included under gated access"}
+                      {plan.kind === "usage-plan" || plan.kind === "single-mcp"
+                        ? plan.status === "available"
+                          ? "Launch pricing"
+                          : plan.status === "contact_sales"
+                            ? "Contract pricing"
+                            : "Pricing preview"
+                        : "Included under gated access"}
                     </p>
                     <div class="mt-5 grid gap-2 sm:grid-cols-2">
                       <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">

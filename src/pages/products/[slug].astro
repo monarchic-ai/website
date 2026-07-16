@@ -6,7 +6,9 @@ import {
   allPlans,
   availablePlans,
   cadenceLabel,
+  creditAllowanceLabel,
   formatPriceUSD,
+  planStatusLabel,
   resolveDisplayPrice,
   type CatalogPlan,
   type PlanKind,
@@ -30,6 +32,7 @@ if (!plan) {
 }
 
 const isComingSoon = plan.status === "coming_soon";
+const isContactSales = plan.status === "contact_sales";
 
 const bundlesIncluding = plan.kind === "single-mcp"
   ? availablePlans
@@ -183,10 +186,10 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
               <section class="mt-10 border-2 border-white bg-black/68 p-5">
                 <p class="text-xs font-bold uppercase tracking-[0.36em] text-white/54">Access Model</p>
                 <div class="mt-4 grid gap-3 sm:grid-cols-3">
-                  {plan.includedCredits !== undefined && (
+                  {creditAllowanceLabel(plan) !== null && (
                     <div class="border border-white/36 bg-black/54 p-4">
                       <p class="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-white/48">Allowance</p>
-                      <p class="mt-2 text-sm font-extrabold uppercase">{plan.includedCredits.toLocaleString()} credit target</p>
+                      <p class="mt-2 text-sm font-extrabold uppercase">{creditAllowanceLabel(plan)}</p>
                     </div>
                   )}
                   <div class="border border-white/36 bg-black/54 p-4">
@@ -195,7 +198,7 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                   </div>
                   <div class="border border-white/36 bg-black/54 p-4">
                     <p class="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-white/48">Status</p>
-                    <p class="mt-2 text-sm font-extrabold uppercase">Waitlist first</p>
+                    <p class="mt-2 text-sm font-extrabold uppercase">{planStatusLabel(plan.status)}</p>
                   </div>
                 </div>
                 {plan.usageSummary && (
@@ -314,14 +317,23 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
 
           <aside class="h-fit border-2 border-white bg-black/74 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/54">Launch Access</p>
-            {displayPrice?.price.priceCents !== null && displayPrice?.price.priceCents !== undefined ? (
+            {isContactSales ? (
+              <>
+                <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">Contact sales</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">
+                  Capacity, support, and service terms are quoted from the expected workload.
+                </p>
+              </>
+            ) : displayPrice?.price.priceCents !== null && displayPrice?.price.priceCents !== undefined ? (
               <>
                 <p class="mt-4 text-3xl font-extrabold uppercase leading-tight">
                   {formatPriceUSD(displayPrice.price.priceCents)}
                   <span class="ml-1 text-sm font-bold text-white/54">{cadenceLabel(displayPrice.cadence)}</span>
                 </p>
                 <p class="mt-4 text-sm leading-6 text-white/66">
-                  {plan.kind === "single-mcp"
+                  {plan.status === "coming_soon"
+                    ? "This is a non-checkout pricing preview. Join the waitlist for activation updates."
+                    : plan.kind === "single-mcp"
                     ? "Route-level access for teams that want one hosted MCP before committing to the full usage catalog."
                     : "Join the waitlist and we'll notify you when checkout and account access open."}
                 </p>
@@ -343,11 +355,17 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
               </>
             )}
             <div class="mt-6 grid gap-3">
+              {isContactSales && plan.salesContactUrl ? (
+                <a href={plan.salesContactUrl} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-cyan-200">
+                  Contact Sales
+                </a>
+              ) : (
+                <a href="/waitlist" class="inline-flex items-center justify-center border border-cyan-300 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
+                  Join Waitlist
+                </a>
+              )}
               <a href="/products" class="inline-flex items-center justify-center border-2 border-white bg-white px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-white">
                 View Catalog
-              </a>
-              <a href="/waitlist" class="inline-flex items-center justify-center border border-cyan-300 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-cyan-200 transition hover:bg-cyan-200 hover:text-black">
-                Join Waitlist
               </a>
             </div>
           </aside>
