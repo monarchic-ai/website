@@ -37,14 +37,15 @@
     {
       "id": "catalog.product_matrix",
       "name": "Product Catalog Matrix",
-      "intent": "Help buyers compare MCP products, bundles, availability, and waitlist state.",
+      "intent": "Help buyers compare usage plans, MCP routes, availability, and waitlist state.",
       "bestFor": ["products", "catalog"],
       "requiredInputs": ["product_names", "availability", "buyer_fit", "primary_cta"],
       "allowedComponents": ["ProductCard", "Badge", "FeatureList", "AnchorNav", "Button"],
       "layoutRules": [
-        "Group usage tiers, available MCPs, bundles, and coming-soon products clearly.",
+        "Group usage tiers, MCP routes, bundles, and coming-soon products clearly.",
         "Make ExplicitMem, RepoIntel, and BrowserOps easy to compare without tab switching.",
-        "Mark generated Stripe prices as available checkout-backed prices.",
+        "Only usage plans may expose generated Stripe checkout prices.",
+        "MCP routes consume usage-plan credits and must not advertise standalone prices.",
         "Preview prices require a synchronized coming-soon catalog entry with null Stripe price and lookup identifiers.",
         "Keep waitlist or access state visible on every product path that cannot be purchased."
       ],

@@ -47,17 +47,8 @@ const singleMcps = allPlans
 const otherComingSoon = allPlans.filter(
   (plan) => plan.status !== "available" && plan.kind !== "usage-plan" && plan.kind !== "single-mcp" && plan.kind !== "bundle" && plan.slug !== MONARCHIC_AI_SLUG,
 );
-const availableSingleMcps = singleMcps.filter((plan) => plan.status === "available");
-const availableUsagePlans = usagePlans.filter((plan) => plan.status === "available");
-const singleMcpPriceBands = Array.from(
-  new Set(
-    availableSingleMcps
-      .map((plan) => resolveDisplayPrice(plan, "monthly")?.price.priceCents)
-      .filter((priceCents): priceCents is number => typeof priceCents === "number"),
-  ),
-)
-  .sort((a, b) => a - b)
-  .map((priceCents) => formatPriceUSD(priceCents));
+const paidUsagePlans = usagePlans.filter((plan) => plan.slug !== "usage-evaluation");
+const evaluationPlan = usagePlans.find((plan) => plan.slug === "usage-evaluation") ?? null;
 
 const researchByPlanSlug: Record<string, { href: string; label: string }> = {
   "mcp-browserops": { href: "/research/browserops", label: "Research" },
@@ -72,7 +63,7 @@ interface Section {
 }
 
 const sections: Section[] = [
-  { id: "mcps", heading: "Available MCP Routes", plans: singleMcps },
+  { id: "mcps", heading: "Hosted MCP Routes", plans: singleMcps },
   { id: "access", heading: "Usage Tiers", plans: usagePlans },
   { id: "bundles", heading: "Workflow Packs", plans: bundles },
   { id: "coming-soon", heading: "Coming Soon", plans: otherComingSoon },
@@ -83,7 +74,7 @@ function kindBadge(kind: PlanKind): { label: string; classes: string } {
     case "usage-plan":
       return { label: "Usage Plan", classes: "border-white text-white" };
     case "single-mcp":
-      return { label: "Single MCP", classes: "border-emerald-300 text-emerald-200" };
+      return { label: "MCP Route", classes: "border-emerald-300 text-emerald-200" };
     case "bundle":
       return { label: "Bundle", classes: "border-cyan-300 text-cyan-200" };
     case "ai":
@@ -143,8 +134,9 @@ function statusBadgeClasses(plan: CatalogPlan): string {
             Hosted MCP<br />Catalog
           </h1>
           <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Checkout-backed prices are marked available. Pricing previews have
-            no checkout IDs, and Business terms are handled through sales.
+            Usage tiers are the only public paid products. MCP routes consume
+            plan credits, pricing previews have no checkout IDs, and Business
+            terms are handled through sales.
           </p>
           <div class="mt-7 max-w-3xl border-2 border-white bg-black/72 p-5">
             <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/62">
@@ -162,19 +154,19 @@ function statusBadgeClasses(plan: CatalogPlan): string {
 
         <section class="mb-10 grid gap-4 border-2 border-white bg-black/70 p-5 md:grid-cols-4">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Available MCPs</p>
-            <p class="mt-3 text-3xl font-extrabold uppercase">{availableSingleMcps.length}</p>
-            <p class="mt-2 text-sm leading-6 text-white/66">Single-route products priced from the generated Stripe catalog.</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Evaluation</p>
+            <p class="mt-3 text-3xl font-extrabold uppercase">{evaluationPlan ? creditAllowanceLabel(evaluationPlan) : "Preview"}</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">A bounded first run with no card or overage.</p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Route Bands</p>
-            <p class="mt-3 text-2xl font-extrabold uppercase">{singleMcpPriceBands.join(" / ")}</p>
-            <p class="mt-2 text-sm leading-6 text-white/66">Monthly single-MCP price points available now.</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Paid Plans</p>
+            <p class="mt-3 text-3xl font-extrabold uppercase">{paidUsagePlans.length}</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">Individual through Business capacity, with explicit launch states.</p>
           </div>
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Usage Tiers</p>
-            <p class="mt-3 text-3xl font-extrabold uppercase">{availableUsagePlans.length}</p>
-            <p class="mt-2 text-sm leading-6 text-white/66">Credit-based plans for repeated hosted calls.</p>
+            <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">MCP Routes</p>
+            <p class="mt-3 text-3xl font-extrabold uppercase">{singleMcps.length}</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">Hosted capabilities included through usage-plan credits.</p>
           </div>
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52">Checkout State</p>
@@ -224,7 +216,7 @@ function statusBadgeClasses(plan: CatalogPlan): string {
               {section.plans.map((plan) => {
                 const badge = kindBadge(plan.kind);
                 return (
-                  <article class={`group flex min-h-[390px] flex-col border-2 bg-black/74 p-5 transition hover:bg-white hover:text-black ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
+                  <article data-plan-card={plan.slug} data-plan-status={plan.status} class={`group flex min-h-[390px] flex-col border-2 bg-black/74 p-5 transition hover:bg-white hover:text-black ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
                     <div class="flex items-start justify-between gap-3">
                       <span class={`inline-flex border px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.22em] ${badge.classes}`}>
                         {badge.label}
@@ -245,7 +237,7 @@ function statusBadgeClasses(plan: CatalogPlan): string {
                       </p>
                     )}
                     <p class="mt-5 text-sm leading-7 text-white/74 group-hover:text-black/74">{publicCatalogDescription(plan.description)}</p>
-                    {(plan.kind === "usage-plan" || plan.kind === "single-mcp") && (
+                    {plan.kind === "usage-plan" && (
                       <div class="mt-5 border border-white/40 bg-black/40 p-4 group-hover:border-black/40 group-hover:bg-white/70">
                         <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/52 group-hover:text-black/52">
                           {plan.kind === "usage-plan" ? "Usage tier" : "Single route"}
@@ -263,7 +255,7 @@ function statusBadgeClasses(plan: CatalogPlan): string {
                           {creditAllowanceLabel(plan) !== null && (
                             <span>{creditAllowanceLabel(plan)}</span>
                           )}
-                          <span>{plan.kind === "single-mcp" ? "One hosted MCP route" : plan.status === "contact_sales" ? "Sales-led terms" : "Waitlist before checkout"}</span>
+                          <span>{plan.status === "contact_sales" ? "Sales-led terms" : "Waitlist before checkout"}</span>
                         </div>
                       </div>
                     )}
@@ -284,7 +276,9 @@ function statusBadgeClasses(plan: CatalogPlan): string {
                     )}
                     <div class="flex-1"></div>
                     <p class="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-amber-200 group-hover:text-black">
-                      {plan.kind === "usage-plan" || plan.kind === "single-mcp"
+                      {plan.kind === "single-mcp"
+                        ? "Included through usage plans"
+                        : plan.kind === "usage-plan"
                         ? plan.status === "available"
                           ? "Launch pricing"
                           : plan.status === "contact_sales"

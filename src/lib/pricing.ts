@@ -49,8 +49,8 @@ import generatedPlans from "./pricing.generated.json" with { type: "json" };
 import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json" };
 
 // Stripe may retain retired products for historical subscription records. Keep
-// them out of the public available catalog even if a future sync sees an active
-// legacy Price.
+// them out of the public catalog even if a future sync sees an active legacy
+// Price.
 export const retiredPublicPlanSlugs = new Set(["mcp-verified"]);
 
 // These plans have updated public terms but do not have matching live Stripe
@@ -64,7 +64,7 @@ const nonGeneratedPlans = (comingSoonPlansJson as CatalogPlan[]) ?? [];
 export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   .filter(
     (plan) =>
-      (plan.kind === "usage-plan" || plan.kind === "single-mcp") &&
+      plan.kind === "usage-plan" &&
       !retiredPublicPlanSlugs.has(plan.slug) &&
       !previewPublicPlanSlugs.has(plan.slug),
   );
