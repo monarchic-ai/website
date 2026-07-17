@@ -29,10 +29,10 @@ checkFileIncludes("src/components/WaitlistForm.svelte", [
 ]);
 
 checkFileIncludes("src/pages/products/index.astro", [
-  "Checkout-backed prices are marked available.",
+  "Usage tiers are the only public paid products.",
   "Measured Pricing, Gated Onboarding",
-  "Available MCP Routes",
-  "singleMcpPriceBands",
+  "Hosted MCP Routes",
+  "Hosted capabilities included through usage-plan credits.",
   "No self-serve checkout claim until account onboarding is live.",
 ]);
 
@@ -44,7 +44,8 @@ checkFileIncludes("webcomposer/site-map.contract.json", [
 ]);
 
 checkFileIncludes("webcomposer/section-catalog.json", [
-  "Mark generated Stripe prices as available checkout-backed prices.",
+  "Only usage plans may expose generated Stripe checkout prices.",
+  "MCP routes consume usage-plan credits and must not advertise standalone prices.",
   "Preview prices require a synchronized coming-soon catalog entry with null Stripe price and lookup identifiers.",
   "Do not invent prices outside the synchronized product catalog or attach checkout promises to preview prices.",
 ]);

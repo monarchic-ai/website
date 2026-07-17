@@ -80,7 +80,7 @@ try {
 
   await checkPage(page, `${baseUrl}/`, async () => {
     await page.getByRole("heading", { name: "Agent tools that leave evidence.", exact: true }).waitFor();
-    await page.getByRole("heading", { name: "Individual MCP routes" }).waitFor();
+    await page.getByRole("heading", { name: "MCP routes under one usage plan" }).waitFor();
     await page.getByRole("link", { name: "View products" }).first().waitFor();
     await page.getByRole("link", { name: "Research" }).first().waitFor();
     await page.getByRole("link", { name: "Use the MCPs" }).first().waitFor();
@@ -91,26 +91,33 @@ try {
     await expectMeta(page, "og:image:height", "630");
     await expectMeta(page, "twitter:card", "summary_large_image");
     await page.getByRole("link", { name: "Join waitlist" }).first().waitFor();
-    await page.getByText("$19/mo").first().waitFor();
-    await page.getByText("$29/mo").first().waitFor();
-    await page.getByText("$49/mo").first().waitFor();
+    await page.getByText("Usage credits").first().waitFor();
     await page.getByText("99.8%").first().waitFor();
     await page.getByText("Hosted staging MCP route").first().waitFor();
     await page.getByText("Quality metrics come from the ExplicitMem benchmark.").waitFor();
-    await page.getByText("Buy one route, or use the shared usage tiers").waitFor();
+    await page.getByText("One usage plan covers the hosted MCP catalog.").waitFor();
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "home route");
 
   await checkPage(page, `${baseUrl}/products`, async () => {
     await page.getByRole("heading", { name: "Hosted MCP Catalog" }).waitFor();
-    await page.getByText("Live Prices, Gated Onboarding").waitFor();
-    await page.getByText("Available MCPs").waitFor();
-    await page.getByText("Route Bands").waitFor();
-    await page.getByText("$19 / $29 / $49 / $79").waitFor();
-    await page.getByRole("link", { name: "Available MCP Routes" }).waitFor();
+    await page.getByText("Measured Pricing, Gated Onboarding").waitFor();
+    await page.getByText("200 one-time credits").first().waitFor();
+    await page.getByText("Paid Plans").waitFor();
+    await page.getByText("MCP Routes").first().waitFor();
+    await page.getByRole("link", { name: "Hosted MCP Routes" }).waitFor();
     await page.getByRole("link", { name: "Developer Workflow Pack" }).waitFor();
     await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
+    const developerCard = page.locator('[data-plan-card="usage-developer"]');
+    await developerCard.getByText("$59", { exact: false }).waitFor();
+    await developerCard.getByText("Preview", { exact: true }).waitFor();
+    const businessCard = page.locator('[data-plan-card="usage-business"]');
+    await businessCard.getByText("Contact sales", { exact: false }).first().waitFor();
+    const repoIntelCardText = await page.locator('[data-plan-card="mcp-repointel"]').textContent();
+    if (repoIntelCardText?.includes("$29") || repoIntelCardText?.includes("$49")) {
+      throw new Error("RepoIntel must not advertise a standalone price");
+    }
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
     await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
