@@ -158,7 +158,9 @@ try {
   }, "BrowserOps product route");
 
   await checkPage(page, `${baseUrl}/research`, async () => {
-    await page.getByRole("heading", { name: "Benchmarks With Receipts" }).waitFor();
+    await page
+      .getByRole("heading", { name: "Research receipts for production agent tools." })
+      .waitFor();
     await page.getByRole("link", { name: "Open Research" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
     await expectNoExternalAppLinks(page);
