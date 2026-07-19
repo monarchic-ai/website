@@ -5,6 +5,9 @@ import { resolve } from "node:path";
 
 const workflowPath = resolve(process.cwd(), ".github/workflows/website-release-smoke.yml");
 const content = await readFile(workflowPath, "utf8");
+const packageJson = await readFile(resolve(process.cwd(), "package.json"), "utf8");
+const deployScript = await readFile(resolve(process.cwd(), "scripts/deploy-vercel-local.mjs"), "utf8");
+const runbook = await readFile(resolve(process.cwd(), "docs/release-smoke-runbook.md"), "utf8");
 
 const requiredText = [
   "Website release smoke",
@@ -29,6 +32,20 @@ for (const expected of requiredText) {
   }
   failed = true;
   console.error(`missing website-release-smoke.yml: ${expected}`);
+}
+
+for (const [label, source, expected] of [
+  ["package.json", packageJson, '"deploy:vercel:local": "node scripts/deploy-vercel-local.mjs"'],
+  ["deploy-vercel-local.mjs", deployScript, "MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED"],
+  ["deploy-vercel-local.mjs", deployScript, 'process.argv.slice(2).includes("--apply")'],
+  ["release-smoke-runbook.md", runbook, "Vercel Git integration is disconnected"],
+]) {
+  if (source.includes(expected)) {
+    console.log(`ok     ${label}: ${expected}`);
+  } else {
+    failed = true;
+    console.error(`missing ${label}: ${expected}`);
+  }
 }
 
 if (failed) {

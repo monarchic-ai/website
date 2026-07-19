@@ -4,10 +4,20 @@ This runbook covers the public website live smoke gate.
 
 ## Current Evidence
 
-Latest local run date: 2026-07-02 UTC.
+Latest local run date: 2026-07-19 UTC.
 
 Production website smoke is green on the `www` route. Staging DNS is now
 configured and Vercel-verified:
+
+- Website commit `53a41eff315199e0f938a4a63677bbe59b687d03`
+  removes Verified Patch from the public catalog and replaces its homepage card
+  with ReleaseOps. Local catalog, WebComposer, Astro, build, and desktop/mobile
+  rendering checks passed. A Git-connected Vercel deployment briefly routed
+  this commit to production after the main push. The release hold was restored
+  immediately by rolling back to deployment
+  `dpl_4zXsY8xfeKm6iwHh6xEmLVqJyYp7`, commit
+  `579f15cfab08732ca922905b9ad61574ef24445f`. Vercel Git integration is disconnected,
+  so later main pushes cannot create website deployments.
 
 - `pnpm smoke:production` against `https://www.monarchic.io` passed on
   2026-07-02 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
@@ -97,6 +107,29 @@ website deployment. If staging gets its own Vercel project or environment with
 
 ## Deployment Checks
 
+Production website deployment uses the authenticated local Vercel CLI. The
+default command is read-only:
+
+```bash
+pnpm vercel:whoami
+pnpm vercel:inspect:production
+pnpm deploy:vercel:local
+```
+
+After pricing and production deployment approval, deploy from a clean checkout
+of the pinned candidate:
+
+```bash
+MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA="$(git rev-parse HEAD)" \
+MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED=true \
+pnpm deploy:vercel:local -- --apply
+```
+
+The command sets commit metadata for `/build-info.json`, builds locally, and
+deploys prebuilt output through the operator's Vercel session. It requires no
+`VERCEL_TOKEN`. Reconnect Vercel Git only if automatic production deployment is
+explicitly approved later.
+
 If smoke fails before browser assertions:
 
 1. Confirm DNS for `monarchic.io` resolves from outside the deployment network.
@@ -104,7 +137,8 @@ If smoke fails before browser assertions:
    deployment target.
 3. Confirm `staging.monarchic.io` exists before enabling staging as a required
    launch gate.
-4. Confirm Vercel has a successful deployment for the current `main` commit.
+4. Confirm Vercel has a successful deployment for the approved candidate
+   commit.
 5. Confirm the deployment serves `/robots.txt`, `/sitemap.xml`, and
    `/build-info.json`.
 6. Confirm Vercel environment variables match `env.example`.
