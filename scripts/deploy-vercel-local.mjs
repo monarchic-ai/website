@@ -1,7 +1,26 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
 
+const projects = {
+  production: {
+    project: "website",
+    projectId: "prj_uvlSntyUhQQLRpG08KwpGqccIJEp",
+    url: "www.monarchic.io",
+  },
+  staging: {
+    project: "website-staging",
+    projectId: "prj_2fPB376hEAE3blFj67hsA3jc1Tme",
+    url: "staging.monarchic.io",
+  },
+};
+
 const apply = process.argv.slice(2).includes("--apply");
+const target = process.env.MONARCHIC_VERCEL_PROJECT ?? "production";
+if (!Object.hasOwn(projects, target)) {
+  throw new Error(`MONARCHIC_VERCEL_PROJECT must be production or staging, got ${target}`);
+}
+
+const project = projects[target];
 const sha = git(["rev-parse", "HEAD"]);
 const ref = process.env.VERCEL_GIT_COMMIT_REF ?? git(["rev-parse", "--abbrev-ref", "HEAD"]);
 const expectedSha = process.env.MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA;
@@ -12,9 +31,10 @@ if (expectedSha && expectedSha !== sha) {
 
 const plan = {
   mode: apply ? "apply" : "dry-run",
-  project: "website",
-  projectId: "prj_uvlSntyUhQQLRpG08KwpGqccIJEp",
-  productionUrl: "https://www.monarchic.io",
+  target,
+  project: project.project,
+  projectId: project.projectId,
+  url: `https://${project.url}`,
   commitSha: sha,
   commitRef: ref,
   gitIntegration: "disconnected",
@@ -22,21 +42,21 @@ const plan = {
 console.log(JSON.stringify(plan, null, 2));
 
 if (!apply) {
-  console.log("[deploy-vercel-local] ready for operator review; rerun with --apply after production approval");
+  console.log("[deploy-vercel-local] ready for operator review; rerun with --apply after target approval");
   process.exit(0);
 }
-if (process.env.MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED !== "true") {
+if (target === "production" && process.env.MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED !== "true") {
   throw new Error("--apply requires MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED=true");
 }
 if (git(["status", "--porcelain"])) {
-  throw new Error("production deploy requires a clean Git checkout");
+  throw new Error(`${target} deploy requires a clean Git checkout`);
 }
 
 const gitEnv = {
   VERCEL_ORG_ID: process.env.VERCEL_ORG_ID ?? "team_PrEo6RnV4WdmfQee8ZufSsGl",
-  VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID ?? plan.projectId,
+  VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID ?? project.projectId,
   VERCEL_ENV: "production",
-  VERCEL_URL: process.env.VERCEL_URL ?? "www.monarchic.io",
+  VERCEL_URL: process.env.VERCEL_URL ?? project.url,
   VERCEL_GIT_COMMIT_SHA: sha,
   VERCEL_GIT_COMMIT_REF: ref,
   VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER ?? "monarchic-ai",

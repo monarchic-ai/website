@@ -95,15 +95,17 @@ When a staging website domain exists, run:
 
 ```bash
 MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io \
-MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io \
+MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://staging.monarchic.io \
 MONARCHIC_WEBAPP_SMOKE_URL=https://staging-app.monarchic.io \
 pnpm smoke:production
 ```
 
-The current staging hostname intentionally validates a production-canonical
-website deployment. If staging gets its own Vercel project or environment with
-`PUBLIC_MONARCHIC_WEBSITE_BASE_URL=https://staging.monarchic.io`, update
-`MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL` accordingly.
+The staging hostname is served by the dedicated `website-staging` Vercel
+project. Its production environment uses
+`PUBLIC_MONARCHIC_WEBSITE_BASE_URL=https://staging.monarchic.io` and
+`PUBLIC_MONARCHIC_API_BASE_URL=https://staging-api.monarchic.io`. The Vercel
+project is not connected to Git, so staging promotion is an explicit local CLI
+operation.
 
 ## Deployment Checks
 
@@ -115,6 +117,20 @@ pnpm vercel:whoami
 pnpm vercel:inspect:production
 pnpm deploy:vercel:local
 ```
+
+Review and deploy a clean, pinned commit to the dedicated staging project:
+
+```bash
+MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA="$(git rev-parse HEAD)" \
+pnpm deploy:vercel:staging
+
+MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA="$(git rev-parse HEAD)" \
+pnpm deploy:vercel:staging -- --apply
+```
+
+Staging deployment does not require the production approval variable. It cannot
+target the production project because the project ID is selected from the
+`MONARCHIC_VERCEL_PROJECT=staging` contract.
 
 After pricing and production deployment approval, deploy from a clean checkout
 of the pinned candidate:

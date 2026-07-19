@@ -36,7 +36,10 @@ for (const expected of requiredText) {
 
 for (const [label, source, expected] of [
   ["package.json", packageJson, '"deploy:vercel:local": "node scripts/deploy-vercel-local.mjs"'],
+  ["package.json", packageJson, '"deploy:vercel:staging": "MONARCHIC_VERCEL_PROJECT=staging node scripts/deploy-vercel-local.mjs"'],
   ["deploy-vercel-local.mjs", deployScript, "MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED"],
+  ["deploy-vercel-local.mjs", deployScript, 'project: "website-staging"'],
+  ["deploy-vercel-local.mjs", deployScript, "MONARCHIC_VERCEL_PROJECT"],
   ["deploy-vercel-local.mjs", deployScript, 'process.argv.slice(2).includes("--apply")'],
   ["release-smoke-runbook.md", runbook, "Vercel Git integration is disconnected"],
 ]) {
