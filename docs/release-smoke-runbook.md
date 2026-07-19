@@ -6,8 +6,8 @@ This runbook covers the public website live smoke gate.
 
 Latest local run date: 2026-07-19 UTC.
 
-Production website smoke is green on the `www` route. Staging DNS is now
-configured and Vercel-verified:
+Production website smoke is green on the `www` route. Staging is isolated from
+the production Vercel project:
 
 - Website commit `53a41eff315199e0f938a4a63677bbe59b687d03`
   removes Verified Patch from the public catalog and replaces its homepage card
@@ -19,17 +19,25 @@ configured and Vercel-verified:
   `579f15cfab08732ca922905b9ad61574ef24445f`. Vercel Git integration is disconnected,
   so later main pushes cannot create website deployments.
 
+- Website commit `76fce1ac85102117e5799294ab97f528dfd46b70` is deployed to the
+  dedicated `website-staging` Vercel project as deployment
+  `dpl_FdjtbprmRmLSLnjSYJSQr4AojDHo`. Cloudflare Worker version
+  `e9f68142-753a-41f6-99ba-d8198e907ae0` routes only
+  `staging.monarchic.io/*` to the stable staging-project alias and adds
+  `X-Robots-Tag: noindex, nofollow`.
+
 - `pnpm smoke:production` against `https://www.monarchic.io` passed on
-  2026-07-02 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
+  2026-07-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
   `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
-  research routes. `/build-info.json` reports the deployed website commit from
-  `monarchic-ai/website` and catalog artifact digest
-  `sha256:f222975ba9e40824d8127d23e64df4dc56123229a81ac09952bdd2dfd5e8d878`.
+  research routes. `/build-info.json` reports the intentional rollback commit
+  `579f15cfab08732ca922905b9ad61574ef24445f` and catalog artifact digest
+  `sha256:9b41a101430d3d001bb5f53f1661d29bbac3f5bb18fdd7dd736ceee397915e7e`.
 - `pnpm smoke:staging` against `https://staging.monarchic.io` passed on
-  2026-07-02 UTC after adding the Cloudflare `staging` CNAME and Vercel
-  verification TXT record. The staging hostname currently serves the same
-  production-canonical website deployment, so the smoke command expects
-  canonical URLs under `https://monarchic.io`.
+  2026-07-19 UTC through the dedicated staging Vercel project and Cloudflare
+  route. The commit-pinned smoke reported 22 public plans, catalog artifact
+  digest `sha256:e15dc23ae6193b8001199ce17036c2c3112fab0fda0fa415d3830994f2622cfe`,
+  no public `mcp-verified` plan, and canonical URLs under
+  `https://staging.monarchic.io`.
 
 Keep this command as the current passing production release evidence gate while
 the apex route is under investigation:
@@ -202,12 +210,12 @@ part of CI because it verifies the signed-in Codex user's OAuth state.
 For the current website smoke blockers, use Vercel MCP to confirm:
 
 - `monarchic.io` is routed to the `monarchic-ai/website` project
-- the production deployment serves the current `main` commit
+- the production deployment serves the explicitly approved commit
 - `/build-info.json` reports the current commit and catalog digest
 - `/robots.txt` and `/sitemap.xml` are served by the same deployment without
   connect timeouts
-- `staging.monarchic.io` is either configured with DNS/domain routing or
-  excluded from required staging smoke gates
+- `staging.monarchic.io` routes through `monarchic-website-staging-proxy` to
+  the dedicated `website-staging` Vercel project
 
 The smoke script prints a JSON report on both pass and fail. Failed reports
 include `status: "failed"`, the checks completed before the error, and a
