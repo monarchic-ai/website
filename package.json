@@ -18,6 +18,7 @@
     "vercel:inspect:production": "node scripts/vercel-cli.mjs inspect https://www.monarchic.io",
     "deploy:vercel:local": "node scripts/deploy-vercel-local.mjs",
     "deploy:vercel:staging": "MONARCHIC_VERCEL_PROJECT=staging node scripts/deploy-vercel-local.mjs",
+    "deploy:cloudflare:staging-proxy": "node scripts/deploy-cloudflare-staging-proxy.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "smoke:local": "node scripts/smoke-local.mjs",

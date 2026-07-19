@@ -105,7 +105,10 @@ project. Its production environment uses
 `PUBLIC_MONARCHIC_WEBSITE_BASE_URL=https://staging.monarchic.io` and
 `PUBLIC_MONARCHIC_API_BASE_URL=https://staging-api.monarchic.io`. The Vercel
 project is not connected to Git, so staging promotion is an explicit local CLI
-operation.
+operation. Because Vercel domain ownership is held in an older account context,
+a Cloudflare Worker route proxies only `staging.monarchic.io/*` to the stable
+`website-staging-lac.vercel.app` project alias. The proxy adds an
+`X-Robots-Tag: noindex, nofollow` response header.
 
 ## Deployment Checks
 
@@ -131,6 +134,16 @@ pnpm deploy:vercel:staging -- --apply
 Staging deployment does not require the production approval variable. It cannot
 target the production project because the project ID is selected from the
 `MONARCHIC_VERCEL_PROJECT=staging` contract.
+
+The staging hostname proxy has its own dry-run and apply gate:
+
+```bash
+pnpm deploy:cloudflare:staging-proxy
+
+MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA="$(git rev-parse HEAD)" \
+MONARCHIC_WEBSITE_STAGING_PROXY_APPROVED=true \
+pnpm deploy:cloudflare:staging-proxy -- --apply
+```
 
 After pricing and production deployment approval, deploy from a clean checkout
 of the pinned candidate:

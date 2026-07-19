@@ -1,0 +1,15 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "monarchic-website-staging-proxy",
+  "main": "staging-proxy.mjs",
+  "compatibility_date": "2026-07-19",
+  "routes": [
+    {
+      "pattern": "staging.monarchic.io/*",
+      "zone_name": "monarchic.io"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
