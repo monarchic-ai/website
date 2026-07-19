@@ -269,20 +269,6 @@
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-verified",
-    "displayName": "Verified Patch",
-    "tagline": "Internal bounded patch execution",
-    "description": "Verified Patch is an internal Monarchic execution capability for high-risk and unattended code changes. It is not sold as a standalone MCP or included with public usage plans.",
-    "featureBullets": [
-      "Bounded write scopes and preflight policy checks",
-      "Test, rollback, and repository-state receipts",
-      "Isolated asynchronous sandbox execution"
-    ],
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
     "slug": "mcp-outreachconnectors",
     "displayName": "OutreachConnectors MCP",
     "tagline": "Outbound delivery connector layer",
@@ -302,7 +288,7 @@
     "tagline": "Repo intelligence, memory, browser checks, and terminal evidence",
     "description": "A capability grouping for developer-agent workflows. These routes are included under usage-plan credits rather than sold as a separate checkout bundle.",
     "featureBullets": [
-      "RepoIntel, ExplicitMem, BrowserOps, PTY, and Verified workflow coverage",
+      "RepoIntel, ExplicitMem, BrowserOps, PTY, and ReleaseOps workflow coverage",
       "Usage-based access through account credits",
       "Useful for coding agents, UI review, and release checks"
     ],

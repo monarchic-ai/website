@@ -150,20 +150,6 @@ export const productDetails: Record<string, ProductDetail> = {
     proof: "Feature-complete for deterministic SEO workflows.",
     accessModel: "Hosted on Monarchic-managed infrastructure",
   },
-  "mcp-verified": {
-    slug: "mcp-verified",
-    category: "Patch Verification",
-    buyer: "Internal Monarchic workflows running high-risk or unattended code changes.",
-    useCase: "Plan bounded patches through an isolated sandbox, with validation, rollback, and receipt verification.",
-    outcomes: [
-      "Constrain patch scope before mutation",
-      "Capture test results as verifier-friendly evidence",
-      "Keep rollback and drift checks close to the patch",
-    ],
-    workflows: ["Plan patch", "Apply bounded change", "Run validation", "Emit proof receipt"],
-    proof: "Version 0.3.0 passes 40 tests and has matching isolated sandbox evidence in dev, staging, and production; direct hosted mutation remains denied.",
-    accessModel: "Internal Monarchic capability; not sold as a standalone MCP",
-  },
   "mcp-outreachconnectors": {
     slug: "mcp-outreachconnectors",
     category: "Governed Outreach",

@@ -70,7 +70,11 @@ export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   );
 const availablePlanSlugs = new Set(availablePlans.map((plan) => plan.slug));
 export const comingSoonPlans: CatalogPlan[] = nonGeneratedPlans
-  .filter((plan) => !availablePlanSlugs.has(plan.slug));
+  .filter(
+    (plan) =>
+      !retiredPublicPlanSlugs.has(plan.slug) &&
+      !availablePlanSlugs.has(plan.slug),
+  );
 export const allPlans: CatalogPlan[] = [...availablePlans, ...comingSoonPlans];
 
 export function findPlanBySlug(slug: string): CatalogPlan | null {
