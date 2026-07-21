@@ -34,11 +34,15 @@ checkFileIncludes("src/pages/products/index.astro", [
   "Hosted MCP Routes",
   "Hosted capabilities included through usage-plan credits.",
   "No self-serve checkout claim until account onboarding is live.",
+  "WaitlistForm",
+  'id="waitlist"',
+  "Tell us which hosted routes you need.",
 ]);
 
 checkFileIncludes("webcomposer/site-map.contract.json", [
   "stripe_backed_prices",
   "pricing_previews",
+  '"stripe_backed_prices", "pricing_previews", "primary_cta"',
   "prices not present in the synchronized product catalog",
   "checkout promises for unavailable products",
 ]);

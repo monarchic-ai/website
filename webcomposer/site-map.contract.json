@@ -66,7 +66,7 @@
           "id": "product_matrix",
           "template": "catalog.product_matrix",
           "purpose": "Display usage tiers, included MCP routes, bundles, and coming-soon products with clear buyer fit.",
-          "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "primary_cta"],
+          "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "pricing_previews", "primary_cta"],
           "allowedComponents": ["ProductCard", "AnchorNav", "Badge", "FeatureList", "Button"],
           "layoutGuidance": ["Avoid products/research tab swapping; use direct page links instead."]
         },
