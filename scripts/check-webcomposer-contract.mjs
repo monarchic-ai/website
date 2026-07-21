@@ -61,19 +61,31 @@ checkFileIncludes("src/pages/sitemap.xml.ts", [
 ]);
 
 checkFileIncludes("src/pages/products/index.astro", [
-  "Usage tiers are the only public paid products.",
-  "Measured Pricing, Gated Onboarding",
+  "Usage tiers are the current public paid products.",
+  "Synchronized Pricing, Account Checkout",
   "Hosted MCP Routes",
   "Hosted capabilities included through usage-plan credits.",
-  "No self-serve checkout claim until account onboarding is live.",
+  "Available plans continue in the secure Monarchic web app.",
+  "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
+  "findPlanPrice",
+  "Choose plan",
   "WaitlistForm",
   'id="waitlist"',
   "Tell us which hosted routes you need.",
 ]);
 
+checkFileIncludes("src/pages/products/[slug].astro", [
+  "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
+  "isPurchasable",
+  "annualPrice",
+  "Choose plan",
+  "lg:sticky lg:top-6",
+]);
+
 checkFileIncludes("webcomposer/site-map.contract.json", [
   "stripe_backed_prices",
   "pricing_previews",
+  "purchase_link_for_available_plans",
   "prices not present in the synchronized product catalog",
   "checkout promises for unavailable products",
 ]);

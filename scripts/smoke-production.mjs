@@ -8,6 +8,11 @@ const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
 const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`;
+const expectedAppBaseUrl = withoutTrailingSlash(
+  process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
+    process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
+    "https://app.monarchic.io",
+);
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || process.env.CHROMIUM || undefined;
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
 const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 4);
@@ -101,17 +106,23 @@ try {
   }, "home route");
 
   await checkPage(page, `${baseUrl}/products`, async () => {
-    await page.getByRole("heading", { name: "Hosted MCP Catalog" }).waitFor();
-    await page.getByText("Measured Pricing, Gated Onboarding").waitFor();
+    await page.getByRole("heading", { name: "Hosted MCP Routes" }).first().waitFor();
+    await page.getByText("Synchronized Pricing, Account Checkout").waitFor();
     await page.getByText("200 one-time credits").first().waitFor();
     await page.getByText("Paid Plans").waitFor();
     await page.getByText("MCP Routes").first().waitFor();
-    await page.getByRole("link", { name: "Hosted MCP Routes" }).waitFor();
-    await page.getByRole("link", { name: "Developer Workflow Pack" }).waitFor();
-    await page.getByRole("link", { name: "RepoIntel MCP" }).waitFor();
+    await page.getByRole("link", { name: "MCP routes", exact: true }).waitFor();
+    await page.getByRole("heading", { name: "Developer Workflow Pack" }).waitFor();
+    await page.getByRole("heading", { name: "RepoIntel MCP" }).waitFor();
     const developerCard = page.locator('[data-plan-card="usage-developer"]');
-    await developerCard.getByText("$59", { exact: false }).waitFor();
+    await developerCard.getByText("$59 /mo", { exact: true }).waitFor();
     await developerCard.getByText("Preview", { exact: true }).waitFor();
+    const individualCard = page.locator('[data-plan-card="usage-individual"]');
+    await individualCard.getByText("Annual $290/yr", { exact: false }).waitFor();
+    await expectHref(
+      individualCard.getByRole("link", { name: "Choose plan" }),
+      `${expectedAppBaseUrl}/products/usage-individual`,
+    );
     const businessCard = page.locator('[data-plan-card="usage-business"]');
     await businessCard.getByText("Contact sales", { exact: false }).first().waitFor();
     const repoIntelCardText = await page.locator('[data-plan-card="mcp-repointel"]').textContent();
@@ -119,9 +130,32 @@ try {
       throw new Error("RepoIntel must not advertise a standalone price");
     }
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
-    await expectNoExternalAppLinks(page);
     await expectNoHorizontalOverflow(page);
   }, "products route");
+
+  await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
+    await page.getByRole("heading", { name: "Individual" }).waitFor();
+    await page.getByText("Annual $290/yr", { exact: false }).waitFor();
+    await expectHref(
+      page.getByRole("link", { name: "Choose plan" }),
+      `${expectedAppBaseUrl}/products/usage-individual`,
+    );
+    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/usage-individual`);
+    await expectNoHorizontalOverflow(page);
+  }, "Individual product route");
+
+  await page.setViewportSize({ width: 320, height: 900 });
+  await checkPage(page, `${baseUrl}/products`, async () => {
+    await page.getByRole("heading", { name: "Hosted MCP Routes" }).first().waitFor();
+    await page.getByRole("link", { name: "Choose plan" }).first().waitFor();
+    await expectNoHorizontalOverflow(page);
+  }, "products route at 320px");
+  await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
+    await page.getByRole("heading", { name: "Individual" }).waitFor();
+    await page.getByRole("link", { name: "Choose plan" }).waitFor();
+    await expectNoHorizontalOverflow(page);
+  }, "Individual product route at 320px");
+  await page.setViewportSize({ width: 1280, height: 900 });
 
   await checkPage(page, `${baseUrl}/waitlist`, async () => {
     await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
@@ -485,6 +519,14 @@ async function expectNoHorizontalOverflow(page) {
   }));
   if (overflow.scrollWidth > overflow.clientWidth + 1 || overflow.bodyScrollWidth > overflow.clientWidth + 1) {
     throw new Error(`Horizontal overflow detected: ${JSON.stringify(overflow)}`);
+  }
+}
+
+async function expectHref(locator, expectedHref) {
+  await locator.waitFor();
+  const href = await locator.getAttribute("href");
+  if (href !== expectedHref) {
+    throw new Error(`Expected href ${expectedHref}, got ${href}`);
   }
 }
 

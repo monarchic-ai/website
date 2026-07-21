@@ -14,11 +14,11 @@
     {
       "route": "/products",
       "title": "Products",
-      "purpose": "Let buyers compare usage tiers, included MCP routes, coming-soon plans, and the future Monarchic AI platform.",
+      "purpose": "Let buyers compare usage tiers, included MCP routes, coming-soon plans, and the future Monarchic AI platform, then continue eligible plans in the account web app.",
       "audience": ["buyers", "agent builders", "founders", "engineering teams"],
-      "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "pricing_previews", "primary_cta", "waitlist_offer"],
+      "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "pricing_previews", "purchase_link_for_available_plans", "primary_cta", "waitlist_offer"],
       "forbiddenContent": ["prices not present in the synchronized product catalog", "checkout promises for unavailable products", "private catalog metadata", "debug labels"],
-      "primaryActions": ["inspect_product", "join_waitlist", "view_research"]
+      "primaryActions": ["inspect_product", "open_purchase_flow_when_available", "join_waitlist", "view_research"]
     },
     {
       "route": "/products/mcp-explicitmem",
@@ -34,9 +34,9 @@
       "title": "Product Detail",
       "purpose": "Describe one synchronized catalog product with its buyer fit, capabilities, availability, pricing state, and evidence links without inventing product claims.",
       "audience": ["buyers", "agent builders", "engineering teams"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "purchase_link_when_available", "primary_cta"],
       "forbiddenContent": ["prices not present in the synchronized product catalog", "checkout promises for unavailable products", "private catalog metadata", "unsupported proof claims"],
-      "primaryActions": ["join_waitlist", "return_to_catalog", "read_research_when_available"]
+      "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_gated", "return_to_catalog", "read_research_when_available"]
     },
     {
       "route": "/research",

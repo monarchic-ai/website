@@ -46,11 +46,11 @@
       },
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level website routes." },
-        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce the hosted catalog and gated onboarding state." },
+        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce synchronized hosted pricing and the account-based purchase boundary." },
         { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize evaluation credits, plans, routes, and checkout state." },
         { "id": "platform_status", "template": "split.asymmetric", "purpose": "Separate the future Monarchic platform from the current MCP launch focus." },
         { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for the major catalog groups." },
-        { "id": "usage_tiers", "template": "pricing.tiers", "purpose": "Place evaluation and paid usage capacity before the route catalog so buyers can understand cost without traversing every MCP." },
+        { "id": "usage_tiers", "template": "pricing.tiers", "purpose": "Place monthly and annual usage capacity before the route catalog, linking eligible plans to the webapp while keeping preview tiers non-purchasable." },
         { "id": "mcp_routes", "template": "integrations.catalog", "purpose": "Render one compact row or tile per hosted MCP with its name, category, availability, one-sentence summary, Details link, and optional Research link; do not repeat full capability, best-fit, or inclusion lists in the index." },
         { "id": "workflow_packs", "template": "grid.product_cards", "purpose": "Present workflow bundles as related product cards." },
         { "id": "coming_soon", "template": "grid.product_cards", "purpose": "Keep unavailable products visibly separate from purchasable plans." },
@@ -84,9 +84,9 @@
       },
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, tutorial, and research navigation available." },
-        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capability summary beside synchronized availability and price state." },
+        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capability summary beside synchronized monthly and annual price state and an eligibility-aware webapp purchase link." },
         { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities and buyer-fit guidance without repeating the entire catalog index." },
-        { "id": "access", "template": "cta.banner", "purpose": "Route demand to the gated waitlist, catalog, and research evidence when available." },
+        { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to webapp purchase, gated products to the waitlist, and all products back to catalog or research evidence." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with catalog, tutorial, research, and company navigation." }
       ]
     },

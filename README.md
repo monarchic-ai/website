@@ -111,13 +111,16 @@ live deployment checklist and current smoke evidence.
   requires this provenance so deployment evidence can tie the public site back
   to the exact catalog artifact set.
 - `vercel.json` defines the expected static deployment settings. Set
-  `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` and `PUBLIC_MONARCHIC_API_BASE_URL` from
+  `PUBLIC_MONARCHIC_WEBSITE_BASE_URL`, `PUBLIC_MONARCHIC_API_BASE_URL`, and
+  `PUBLIC_MONARCHIC_WEBAPP_BASE_URL` from
   `env.example` in Vercel before deploying.
 - Set `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` when building non-production
   environments that need canonical URLs, Open Graph URLs, robots output, and
   sitemap entries to point somewhere other than `https://monarchic.io`.
 - Set `PUBLIC_MONARCHIC_API_BASE_URL` when the website waitlist should submit
   somewhere other than `https://api.monarchic.io`.
+- Set `PUBLIC_MONARCHIC_WEBAPP_BASE_URL` when available-plan purchase links
+  should open somewhere other than `https://app.monarchic.io`.
 - `pnpm smoke:local` builds the static site, starts `astro preview` on
   `127.0.0.1:4332`, runs the production smoke assertions against that local
   preview, and stops the server. Override the port with

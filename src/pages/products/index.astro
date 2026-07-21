@@ -9,6 +9,7 @@ import {
   allPlans,
   cadenceLabel,
   creditAllowanceLabel,
+  findPlanPrice,
   formatPriceUSD,
   planStatusLabel,
   resolveDisplayPrice,
@@ -22,6 +23,7 @@ import {
 import { getProductDetail } from "../../lib/productDetails";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
+const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
 const bundleOrder = ["bundle-developer", "bundle-go-to-market", "bundle-startup", "bundle-all-mcps"];
 const rank = (order: string[], slug: string) => {
@@ -91,13 +93,13 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
             Hosted capabilities included through usage-plan credits.
           </p>
           <p class="mx-auto mt-2 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Choose a monthly credit allowance for your workload.
+            Choose monthly or annual capacity for your workload.
           </p>
           <p class="mx-auto mt-4 max-w-3xl text-xs font-bold uppercase tracking-[0.24em] text-white/54">
-            Measured Pricing, Gated Onboarding
+            Synchronized Pricing, Account Checkout
           </p>
-          <a href="#waitlist" class="mt-8 inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-cyan-200">
-            Join Waitlist
+          <a href="#usage-tiers" class="mt-8 inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-cyan-200">
+            Compare Plans
           </a>
         </section>
 
@@ -116,8 +118,8 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
           </div>
           <div class="p-5">
             <p class="text-xs font-bold uppercase tracking-[0.22em] text-white/52">Checkout</p>
-            <p class="mt-3 text-2xl font-extrabold uppercase">Waitlist</p>
-            <p class="mt-2 text-sm leading-6 text-white/66">No self-serve checkout claim until account onboarding is live.</p>
+            <p class="mt-3 text-2xl font-extrabold uppercase">Account required</p>
+            <p class="mt-2 text-sm leading-6 text-white/66">Available plans continue in the secure Monarchic web app.</p>
           </div>
         </section>
 
@@ -150,15 +152,18 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
         <section id="usage-tiers" class="mb-16 scroll-mt-8">
           <div class="mb-6 max-w-3xl">
             <p class="text-xs font-bold uppercase tracking-[0.34em] text-cyan-200">01 / Usage tiers</p>
-            <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Monthly capacity</h2>
-            <p class="mt-4 text-sm leading-7 text-white/70">Usage tiers are the only public paid products.</p>
-            <p class="text-sm leading-7 text-white/70">pricing previews have no checkout IDs</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Usage capacity</h2>
+            <p class="mt-4 text-sm leading-7 text-white/70">Usage tiers are the current public paid products.</p>
+            <p class="text-sm leading-7 text-white/70">Available plans continue to account checkout; preview prices cannot be purchased yet.</p>
           </div>
           <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {usagePlans.map((plan) => {
               const displayPrice = resolveDisplayPrice(plan, "monthly");
+              const monthlyPrice = findPlanPrice(plan, "monthly");
+              const annualPrice = findPlanPrice(plan, "annual");
+              const isPurchasable = plan.status === "available" && Boolean(monthlyPrice?.priceId || annualPrice?.priceId);
               return (
-                <article class={`flex min-h-[320px] flex-col border-2 bg-black/74 p-5 ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
+                <article data-plan-card={plan.slug} class={`flex min-h-[320px] flex-col border-2 bg-black/74 p-5 ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
                   <div class="flex flex-wrap items-center justify-between gap-2">
                     <span class="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-white/58">Usage tier</span>
                     <span class="border border-white/60 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.16em]">{planStatusLabel(plan.status)}</span>
@@ -166,14 +171,26 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
                   <h3 class="mt-5 text-2xl font-extrabold uppercase">{displayName(plan)}</h3>
                   <p class="mt-2 text-sm leading-6 text-white/66">{publicCatalogTagline(plan.slug, plan.tagline)}</p>
                   {displayPrice?.price.priceCents != null && (
-                    <p class="mt-6 text-3xl font-extrabold">
-                      {formatPriceUSD(displayPrice.price.priceCents)}
-                      <span class="ml-1 text-sm text-white/52">{cadenceLabel(displayPrice.cadence)}</span>
-                    </p>
+                    <div class="mt-6">
+                      <p class="text-3xl font-extrabold">
+                        {formatPriceUSD(displayPrice.price.priceCents)}
+                        <span class="ml-1 text-sm text-white/52">{cadenceLabel(displayPrice.cadence)}</span>
+                      </p>
+                      {annualPrice?.priceCents != null && (
+                        <p class="mt-2 text-xs font-bold uppercase text-white/58">
+                          Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")}
+                        </p>
+                      )}
+                    </div>
                   )}
                   <p class="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">{creditAllowanceLabel(plan)}</p>
                   <div class="flex-1"></div>
-                  <a href={`/products/${plan.slug}`} class="mt-6 inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black">Details</a>
+                  <div class="mt-6 grid gap-2">
+                    {isPurchasable && (
+                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-3 py-3 text-xs font-bold uppercase text-black transition hover:bg-black hover:text-cyan-200">Choose plan</a>
+                    )}
+                    <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase transition hover:bg-white hover:text-black">Details</a>
+                  </div>
                 </article>
               );
             })}
@@ -185,7 +202,7 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Hosted MCP Routes</h2>
           <div class="mt-6 border-t-2 border-white">
             {mcpRoutes.map((plan) => (
-              <article class="grid gap-4 border-b border-white/44 bg-black/58 p-4 sm:p-5 lg:grid-cols-[1fr_2fr_auto] lg:items-center">
+              <article data-plan-card={plan.slug} class="grid gap-4 border-b border-white/44 bg-black/58 p-4 sm:p-5 lg:grid-cols-[1fr_2fr_auto] lg:items-center">
                 <div>
                   <p class="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-emerald-200">{getProductDetail(plan.slug)?.category ?? "Hosted MCP"} · {planStatusLabel(plan.status)}</p>
                   <h3 class="mt-2 text-xl font-extrabold uppercase">{displayName(plan)}</h3>

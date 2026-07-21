@@ -9,6 +9,7 @@ import {
   availablePlans,
   cadenceLabel,
   creditAllowanceLabel,
+  findPlanPrice,
   formatPriceUSD,
   planStatusLabel,
   resolveDisplayPrice,
@@ -35,6 +36,7 @@ if (!plan) {
 
 const isComingSoon = plan.status === "coming_soon";
 const isContactSales = plan.status === "contact_sales";
+const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 
 const bundlesIncluding = plan.kind === "single-mcp"
   ? availablePlans
@@ -98,6 +100,9 @@ const productDetail = getProductDetail(plan.slug);
 const publicDisplayName = publicCatalogDisplayName(plan.slug, plan.displayName);
 const publicTagline = publicCatalogTagline(plan.slug, plan.tagline);
 const displayPrice = resolveDisplayPrice(plan, "monthly");
+const monthlyPrice = findPlanPrice(plan, "monthly");
+const annualPrice = findPlanPrice(plan, "annual");
+const isPurchasable = plan.status === "available" && Boolean(monthlyPrice?.priceId || annualPrice?.priceId);
 
 function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
   if (plan.kind !== "usage-plan") return plan.featureBullets;
@@ -307,8 +312,8 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
             )}
           </div>
 
-          <aside class="h-fit border-2 border-white bg-black/74 p-5">
-            <p class="text-xs font-bold uppercase tracking-[0.28em] text-white/54">Launch Access</p>
+          <aside class="h-fit border-2 border-white bg-black/74 p-5 lg:sticky lg:top-6">
+            <p class="text-xs font-bold uppercase text-white/54">{isPurchasable ? "Purchase" : "Launch access"}</p>
             {isContactSales ? (
               <>
                 <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">Contact sales</p>
@@ -322,12 +327,19 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
                   {formatPriceUSD(displayPrice.price.priceCents)}
                   <span class="ml-1 text-sm font-bold text-white/54">{cadenceLabel(displayPrice.cadence)}</span>
                 </p>
+                {annualPrice?.priceCents != null && (
+                  <p class="mt-2 text-xs font-bold uppercase text-white/58">
+                    Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")}
+                  </p>
+                )}
                 <p class="mt-4 text-sm leading-6 text-white/66">
                   {plan.status === "coming_soon"
                     ? "This is a non-checkout pricing preview. Join the waitlist for activation updates."
+                    : isPurchasable
+                    ? "Continue to the Monarchic web app to choose monthly or annual billing and review checkout."
                     : plan.kind === "single-mcp"
                     ? "Route-level access for teams that want one hosted MCP before committing to the full usage catalog."
-                    : "Join the waitlist and we'll notify you when checkout and account access open."}
+                    : "Join the waitlist and we'll notify you when account access opens."}
                 </p>
               </>
             ) : isComingSoon || plan.kind === "usage-plan" ? (
@@ -347,7 +359,11 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
               </>
             )}
             <div class="mt-6 grid gap-3">
-              {isContactSales && plan.salesContactUrl ? (
+              {isPurchasable ? (
+                <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-4 py-3 text-xs font-bold uppercase text-black transition hover:bg-black hover:text-cyan-200">
+                  Choose plan
+                </a>
+              ) : isContactSales && plan.salesContactUrl ? (
                 <a href={plan.salesContactUrl} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300 px-4 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-cyan-200">
                   Contact Sales
                 </a>
