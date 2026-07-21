@@ -70,7 +70,7 @@
   <button
     type="submit"
     disabled={submitting}
-    class="inline-flex h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-5 text-xs font-bold uppercase text-black transition hover:bg-black hover:text-cyan-200 focus:outline-none focus:ring-2 focus:ring-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
+    class="inline-flex h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-5 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
   >
     {submitting ? "Submitting" : submitLabel}
   </button>

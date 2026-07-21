@@ -5,8 +5,10 @@ interface Props {
 
 const { active } = Astro.props;
 const navClass = (current: boolean) => [
-  "border-2 border-white px-3 py-2 text-center text-[0.65rem] font-semibold uppercase transition sm:px-4 sm:text-xs",
-  current ? "bg-white text-black" : "hover:bg-white hover:text-black focus-visible:bg-white focus-visible:text-black",
+  "border-2 px-3 py-2 text-center text-[0.65rem] font-semibold uppercase transition sm:px-4 sm:text-xs",
+  current
+    ? "border-cyan-300 bg-cyan-300/10 text-cyan-100"
+    : "border-white/50 text-white/72 hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100 focus-visible:border-cyan-300 focus-visible:bg-cyan-300/10 focus-visible:text-cyan-100",
 ].join(" ");
 ---
 

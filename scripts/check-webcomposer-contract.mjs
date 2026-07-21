@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = process.cwd();
@@ -102,6 +102,7 @@ checkFileIncludes("webcomposer/page-maps.json", [
 
 checkContractSeparation();
 checkMissing("webcomposer/section-catalog.json");
+checkBrightSurfacePolicy("src");
 
 checkForbidden("src/pages/index.astro", [
   "sk_live_",
@@ -167,6 +168,27 @@ function checkMissing(path) {
   } else {
     checks.push(`${path}: absent as required`);
   }
+}
+
+function checkBrightSurfacePolicy(directory) {
+  const brightFill = /\bbg-(?:white|cyan-(?:200|300)|amber-300|emerald-300|red-(?:300|400|500))(?![\/\w-])/;
+  for (const path of walk(directory)) {
+    if (!/\.(?:astro|svelte)$/.test(path)) continue;
+    for (const [index, line] of read(path).split("\n").entries()) {
+      if (!brightFill.test(line)) continue;
+      const logoTile = /<img\b/.test(line);
+      const tinyMarker = /\bh-(?:1\.5|2)\b/.test(line) && /\bw-(?:1\.5|2)\b/.test(line);
+      if (!logoTile && !tinyMarker) failures.push({ path, line: index + 1, forbidden: "solid bright surface" });
+    }
+  }
+  checks.push("src: solid bright surfaces limited to logos and tiny markers");
+}
+
+function walk(directory) {
+  return readdirSync(resolve(root, directory), { withFileTypes: true }).flatMap((entry) => {
+    const path = `${directory}/${entry.name}`;
+    return entry.isDirectory() ? walk(path) : [path];
+  });
 }
 
 function read(path) {

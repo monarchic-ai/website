@@ -98,7 +98,7 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
           <p class="mx-auto mt-4 max-w-3xl text-xs font-bold uppercase tracking-[0.24em] text-white/54">
             Synchronized Pricing, Account Checkout
           </p>
-          <a href="#usage-tiers" class="mt-8 inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-black transition hover:bg-black hover:text-cyan-200">
+          <a href="#usage-tiers" class="mt-8 inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
             Compare Plans
           </a>
         </section>
@@ -136,7 +136,7 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
           </div>
           {monarchicAi && (
             <div class="flex items-center">
-              <a href={`/products/${monarchicAi.slug}`} class="inline-flex w-full items-center justify-center border-2 border-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-black">View status</a>
+              <a href={`/products/${monarchicAi.slug}`} class="inline-flex w-full items-center justify-center border-2 border-white/50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">View status</a>
             </div>
           )}
         </section>
@@ -187,9 +187,9 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
                   <div class="flex-1"></div>
                   <div class="mt-6 grid gap-2">
                     {isPurchasable && (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-200 px-3 py-3 text-xs font-bold uppercase text-black transition hover:bg-black hover:text-cyan-200">Choose plan</a>
+                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 py-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Choose plan</a>
                     )}
-                    <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white px-3 py-3 text-xs font-bold uppercase transition hover:bg-white hover:text-black">Details</a>
+                    <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white/50 px-3 py-3 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
                   </div>
                 </article>
               );
@@ -209,9 +209,9 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
                 </div>
                 <p class="text-sm leading-6 text-white/70">{description(plan)}</p>
                 <div class="flex flex-wrap gap-2 lg:justify-end">
-                  <a href={`/products/${plan.slug}`} class="border border-white px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] hover:bg-white hover:text-black">Details</a>
+                  <a href={`/products/${plan.slug}`} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
                   {researchByPlanSlug[plan.slug] && (
-                    <a href={researchByPlanSlug[plan.slug]} class="border border-white px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] hover:bg-white hover:text-black">Research</a>
+                    <a href={researchByPlanSlug[plan.slug]} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Research</a>
                   )}
                 </div>
               </article>
@@ -228,7 +228,7 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
                 <p class="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-cyan-200">Workflow pack · {planStatusLabel(plan.status)}</p>
                 <h3 class="mt-4 text-2xl font-extrabold uppercase">{displayName(plan)}</h3>
                 <p class="mt-3 text-sm leading-7 text-white/70">{description(plan)}</p>
-                <a href={`/products/${plan.slug}`} class="mt-6 inline-flex w-fit border border-white px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] hover:bg-white hover:text-black">Details</a>
+                <a href={`/products/${plan.slug}`} class="mt-6 inline-flex w-fit border border-white/50 px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
               </article>
             ))}
           </div>
@@ -243,7 +243,7 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
                 <p class="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-amber-200">Coming soon</p>
                 <h3 class="mt-4 text-xl font-extrabold uppercase">{displayName(plan)}</h3>
                 <p class="mt-3 text-sm leading-6 text-white/66">{description(plan)}</p>
-                <a href={`/products/${plan.slug}`} class="mt-5 inline-flex border border-white/70 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] hover:bg-white hover:text-black">View status</a>
+                <a href={`/products/${plan.slug}`} class="mt-5 inline-flex border border-white/50 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">View status</a>
               </article>
             ))}
           </div>
