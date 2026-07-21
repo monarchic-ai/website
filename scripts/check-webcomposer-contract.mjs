@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = process.cwd();
@@ -42,17 +42,20 @@ checkFileIncludes("src/pages/products/index.astro", [
 checkFileIncludes("webcomposer/site-map.contract.json", [
   "stripe_backed_prices",
   "pricing_previews",
-  '"stripe_backed_prices", "pricing_previews", "primary_cta"',
   "prices not present in the synchronized product catalog",
   "checkout promises for unavailable products",
 ]);
 
-checkFileIncludes("webcomposer/section-catalog.json", [
-  "Only usage plans may expose generated Stripe checkout prices.",
-  "MCP routes consume usage-plan credits and must not advertise standalone prices.",
-  "Preview prices require a synchronized coming-soon catalog entry with null Stripe price and lookup identifiers.",
-  "Do not invent prices outside the synchronized product catalog or attach checkout promises to preview prices.",
+checkFileIncludes("webcomposer/page-maps.json", [
+  '"template": "integrations.catalog"',
+  '"template": "pricing.tiers"',
+  '"template": "dashboard.metric_grid"',
+  '"template": "docs.toc_content"',
+  '"template": "form.inline"',
 ]);
+
+checkContractSeparation();
+checkMissing("webcomposer/section-catalog.json");
 
 checkForbidden("src/pages/index.astro", [
   "sk_live_",
@@ -90,6 +93,33 @@ function checkForbidden(path, markers) {
     } else {
       checks.push(`${path}: forbidden ${marker}`);
     }
+  }
+}
+
+function checkContractSeparation() {
+  const siteMap = JSON.parse(read("webcomposer/site-map.contract.json"));
+  const pageMaps = JSON.parse(read("webcomposer/page-maps.json"));
+  const siteRoutes = siteMap.pages.map((page) => page.route).sort();
+  const mappedRoutes = pageMaps.pages.map((page) => page.route).sort();
+
+  if (siteMap.pages.some((page) => Object.hasOwn(page, "sections"))) {
+    failures.push({ path: "webcomposer/site-map.contract.json", forbidden: "page layout sections" });
+  } else {
+    checks.push("webcomposer/site-map.contract.json: content-only pages");
+  }
+
+  if (JSON.stringify(siteRoutes) !== JSON.stringify(mappedRoutes)) {
+    failures.push({ path: "webcomposer/page-maps.json", mismatch: { siteRoutes, mappedRoutes } });
+  } else {
+    checks.push("webcomposer/page-maps.json: route coverage matches sitemap");
+  }
+}
+
+function checkMissing(path) {
+  if (existsSync(resolve(root, path))) {
+    failures.push({ path, forbidden: "site-local section template catalog" });
+  } else {
+    checks.push(`${path}: absent as required`);
   }
 }
 

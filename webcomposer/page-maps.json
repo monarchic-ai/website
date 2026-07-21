@@ -1,0 +1,135 @@
+{
+  "pages": [
+    {
+      "route": "/",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "hero.split", "dashboard.metric_grid", "form.inline"],
+        "exactTemplateCounts": {
+          "nav.horizontal": 1,
+          "hero.split": 1,
+          "dashboard.metric_grid": 1,
+          "form.inline": 1
+        },
+        "mustStartWith": ["nav.horizontal"],
+        "mustAppearBefore": [
+          { "before": "hero.split", "after": "dashboard.metric_grid" },
+          { "before": "dashboard.metric_grid", "after": "form.inline" }
+        ]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose the primary product, tutorial, and research routes." },
+        { "id": "introduction", "template": "hero.split", "purpose": "Place the hosted MCP offer beside a compact route catalog in the first viewport." },
+        { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Keep scoped quality and hosted latency metrics easy to scan." },
+        { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain usage pricing beside route and capacity decisions." },
+        { "id": "waitlist", "template": "form.inline", "purpose": "Capture gated-access demand with one email field and a clear action." }
+      ]
+    },
+    {
+      "route": "/products",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "stats.strip", "integrations.catalog", "pricing.tiers", "form.inline"],
+        "exactTemplateCounts": {
+          "nav.horizontal": 1,
+          "stats.strip": 1,
+          "integrations.catalog": 1,
+          "pricing.tiers": 1,
+          "form.inline": 1
+        },
+        "mustStartWith": ["nav.horizontal"],
+        "mustAppearBefore": [
+          { "before": "integrations.catalog", "after": "pricing.tiers" },
+          { "before": "pricing.tiers", "after": "form.inline" }
+        ]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level website routes." },
+        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce the hosted catalog and gated onboarding state." },
+        { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize evaluation credits, plans, routes, and checkout state." },
+        { "id": "platform_status", "template": "split.asymmetric", "purpose": "Separate the future Monarchic platform from the current MCP launch focus." },
+        { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for the major catalog groups." },
+        { "id": "mcp_routes", "template": "integrations.catalog", "purpose": "Arrange hosted MCP routes as a browsable compatibility catalog." },
+        { "id": "usage_tiers", "template": "pricing.tiers", "purpose": "Compare evaluation and paid usage capacity without unsupported checkout claims." },
+        { "id": "workflow_packs", "template": "grid.product_cards", "purpose": "Present workflow bundles as related product cards." },
+        { "id": "coming_soon", "template": "grid.product_cards", "purpose": "Keep unavailable products visibly separate from purchasable plans." },
+        { "id": "waitlist", "template": "form.inline", "purpose": "Capture route-specific onboarding demand before the page ends." }
+      ]
+    },
+    {
+      "route": "/products/mcp-explicitmem",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "stats.strip", "feature.grid", "cta.banner"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["cta.banner"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, tutorial, and research navigation available." },
+        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product capability and evidence beside availability and access state." },
+        { "id": "proof_summary", "template": "stats.strip", "purpose": "Show benchmark metrics with compact source boundaries." },
+        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange capabilities, use cases, and outcomes for comparison." },
+        { "id": "research_bridge", "template": "proof.metric_story", "purpose": "Connect the strongest measured result to methodology and limitations." },
+        { "id": "access", "template": "cta.banner", "purpose": "Route gated demand to the waitlist and research evidence." }
+      ]
+    },
+    {
+      "route": "/research",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "hero.split", "grid.card_responsive"],
+        "mustStartWith": ["nav.horizontal"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose the primary website routes." },
+        { "id": "research_intro", "template": "hero.split", "purpose": "Frame product research beside the current catalog state." },
+        { "id": "evidence_index", "template": "grid.card_responsive", "purpose": "Present equally weighted research summaries with direct evidence links." },
+        { "id": "scope_boundary", "template": "split.asymmetric", "purpose": "Keep measurement limits adjacent to the results they qualify." }
+      ]
+    },
+    {
+      "route": "/tutorial",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "hero.split", "process.stepper", "docs.toc_content", "cta.banner"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["cta.banner"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose the primary website routes." },
+        { "id": "tutorial_intro", "template": "hero.split", "purpose": "State prerequisites and hosted delivery before configuration details." },
+        { "id": "setup_sequence", "template": "process.stepper", "purpose": "Present the bounded setup workflow in order." },
+        { "id": "quickstart", "template": "docs.toc_content", "purpose": "Arrange configuration, first workflow, validation, and limitations as a reference guide." },
+        { "id": "access", "template": "cta.banner", "purpose": "Connect tutorial readers to products, evidence, and gated access." }
+      ]
+    },
+    {
+      "route": "/research/explicitmem",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "header.detail_status", "dashboard.kpi_chart_table", "article.prose_aside", "cta.banner"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["cta.banner"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product and research navigation available." },
+        { "id": "report_header", "template": "header.detail_status", "purpose": "Identify the benchmark, environment, and evidence status." },
+        { "id": "benchmark_results", "template": "dashboard.kpi_chart_table", "purpose": "Keep headline metrics and tabular results in one evidence surface." },
+        { "id": "methodology", "template": "feature.grid", "purpose": "Separate methodology, environment, and limitations into readable blocks." },
+        { "id": "sources", "template": "article.prose_aside", "purpose": "Present source links beside scope and interpretation notes." },
+        { "id": "product_bridge", "template": "cta.banner", "purpose": "Connect the report to the ExplicitMem product and waitlist." }
+      ]
+    },
+    {
+      "route": "/waitlist",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "hero.split", "form.inline"],
+        "exactTemplateCounts": {
+          "nav.horizontal": 1,
+          "hero.split": 1,
+          "form.inline": 1
+        },
+        "mustStartWith": ["nav.horizontal"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, tutorial, and research routes available." },
+        { "id": "waitlist_intro", "template": "hero.split", "purpose": "Place gated-access context beside the conversion control." },
+        { "id": "waitlist_form", "template": "form.inline", "purpose": "Capture one email address with success, error, and privacy states." }
+      ]
+    }
+  ]
+}

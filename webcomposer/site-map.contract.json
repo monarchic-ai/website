@@ -1,6 +1,6 @@
 {
   "name": "Monarchic Public Website",
-  "description": "Content and composition contract for the public Monarchic marketing, product, research, and waitlist website.",
+  "description": "Content-only contract for the public Monarchic marketing, product, research, tutorial, and waitlist routes.",
   "pages": [
     {
       "route": "/",
@@ -9,41 +9,7 @@
       "audience": ["founders", "engineering leaders", "agent builders", "AI infrastructure buyers"],
       "requiredContent": ["platform_positioning", "current_offer", "primary_cta", "proof_points", "measurement_scope", "waitlist_offer"],
       "forbiddenContent": ["secret names", "private API URLs", "unsupported launch claims", "debug labels", "agent prompt text"],
-      "primaryActions": ["view_products", "view_research", "join_waitlist"],
-      "sections": [
-        {
-          "id": "hero",
-          "template": "hero.platform_statement",
-          "purpose": "Show the autonomous engineering platform vision and identify the MCP catalog as the first commercial surface.",
-          "requiredContent": ["platform_positioning", "current_offer", "primary_cta"],
-          "allowedComponents": ["Hero", "Badge", "Button", "StatusPanel"],
-          "layoutGuidance": ["Align the hero block and platform direction panel in the first viewport."]
-        },
-        {
-          "id": "proof",
-          "template": "proof.metric_grid",
-          "purpose": "Demonstrate product capability with ExplicitMem quality and hosted route latency proof.",
-          "requiredContent": ["proof_points", "measurement_scope", "caveats"],
-          "allowedComponents": ["MetricGrid", "Table", "Callout"],
-          "layoutGuidance": ["Keep ExplicitMem quality metrics separate from hosted staging MCP latency."]
-        },
-        {
-          "id": "catalog_preview",
-          "template": "catalog.product_matrix",
-          "purpose": "Preview the MCP catalog and connect each primary product to a deeper product page.",
-          "requiredContent": ["product_names", "availability", "buyer_fit", "primary_cta"],
-          "allowedComponents": ["ProductCard", "Badge", "Button"],
-          "layoutGuidance": ["Feature ExplicitMem, RepoIntel, and BrowserOps without hiding the larger Monarchic platform direction."]
-        },
-        {
-          "id": "waitlist",
-          "template": "conversion.waitlist_form",
-          "purpose": "Capture demand for gated product access.",
-          "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary"],
-          "allowedComponents": ["Form", "Input", "Button", "StatusMessage"],
-          "layoutGuidance": ["The join waitlist interaction must visibly submit or show an error."]
-        }
-      ]
+      "primaryActions": ["view_products", "view_research", "join_waitlist"]
     },
     {
       "route": "/products",
@@ -52,33 +18,7 @@
       "audience": ["buyers", "agent builders", "founders", "engineering teams"],
       "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "pricing_previews", "primary_cta", "waitlist_offer"],
       "forbiddenContent": ["prices not present in the synchronized product catalog", "checkout promises for unavailable products", "private catalog metadata", "debug labels"],
-      "primaryActions": ["inspect_product", "join_waitlist", "view_research"],
-      "sections": [
-        {
-          "id": "catalog_hero",
-          "template": "hero.platform_statement",
-          "purpose": "Explain that the MCP catalog is live directionally while access remains gated.",
-          "requiredContent": ["platform_positioning", "current_offer", "primary_cta"],
-          "allowedComponents": ["Hero", "Badge", "Button"],
-          "layoutGuidance": ["Use catalog-specific copy, not the homepage headline repeated verbatim."]
-        },
-        {
-          "id": "product_matrix",
-          "template": "catalog.product_matrix",
-          "purpose": "Display usage tiers, included MCP routes, bundles, and coming-soon products with clear buyer fit.",
-          "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "pricing_previews", "primary_cta"],
-          "allowedComponents": ["ProductCard", "AnchorNav", "Badge", "FeatureList", "Button"],
-          "layoutGuidance": ["Avoid products/research tab swapping; use direct page links instead."]
-        },
-        {
-          "id": "waitlist",
-          "template": "conversion.waitlist_form",
-          "purpose": "Route non-purchasable product demand to waitlist capture while checkout-backed usage plans retain clear pricing.",
-          "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary"],
-          "allowedComponents": ["Form", "Input", "Button", "StatusMessage"],
-          "layoutGuidance": ["Make access state and waitlist action visible before the page ends."]
-        }
-      ]
+      "primaryActions": ["inspect_product", "join_waitlist", "view_research"]
     },
     {
       "route": "/products/mcp-explicitmem",
@@ -87,25 +27,7 @@
       "audience": ["agent builders", "AI platform teams", "engineering leaders"],
       "requiredContent": ["product_name", "buyer_fit", "capabilities", "proof_points", "availability", "primary_cta"],
       "forbiddenContent": ["unsupported latency claims", "secret environment names", "private benchmark records"],
-      "primaryActions": ["join_waitlist", "read_research"],
-      "sections": [
-        {
-          "id": "product_detail",
-          "template": "detail.product_proof",
-          "purpose": "Explain ExplicitMem capability, buyer fit, and current availability.",
-          "requiredContent": ["product_name", "buyer_fit", "capabilities", "proof_points", "availability", "primary_cta"],
-          "allowedComponents": ["Hero", "FeatureList", "MetricGrid", "Button"],
-          "layoutGuidance": ["Make durable memory and receipt-backed retrieval the first product signal."]
-        },
-        {
-          "id": "evidence",
-          "template": "proof.metric_grid",
-          "purpose": "Show local benchmark quality and hosted staging route latency with boundaries.",
-          "requiredContent": ["proof_points", "measurement_scope", "caveats"],
-          "allowedComponents": ["MetricGrid", "Table", "Callout", "Link"],
-          "layoutGuidance": ["Link to /research/explicitmem for methodology."]
-        }
-      ]
+      "primaryActions": ["join_waitlist", "read_research"]
     },
     {
       "route": "/research",
@@ -114,25 +36,7 @@
       "audience": ["technical buyers", "agent builders", "release reviewers"],
       "requiredContent": ["research_subjects", "headline_metrics", "evidence_boundary", "primary_cta"],
       "forbiddenContent": ["unreviewed roadmap claims", "unscoped benchmark rankings", "private data"],
-      "primaryActions": ["open_research", "open_product"],
-      "sections": [
-        {
-          "id": "research_hero",
-          "template": "hero.platform_statement",
-          "purpose": "Frame Monarchic research as proof for production agent tools.",
-          "requiredContent": ["platform_positioning", "current_offer", "primary_cta"],
-          "allowedComponents": ["Hero", "Badge", "Button"],
-          "layoutGuidance": ["Use research-specific language and keep product links close."]
-        },
-        {
-          "id": "research_cards",
-          "template": "research.evidence_cards",
-          "purpose": "Show ExplicitMem, RepoIntel, and BrowserOps benchmark summaries.",
-          "requiredContent": ["research_subjects", "headline_metrics", "evidence_boundary"],
-          "allowedComponents": ["ResearchCard", "MetricBadge", "ScopeNote", "Link"],
-          "layoutGuidance": ["Each card must link to both research and product surfaces."]
-        }
-      ]
+      "primaryActions": ["open_research", "open_product"]
     },
     {
       "route": "/tutorial",
@@ -141,25 +45,7 @@
       "audience": ["agent builders", "engineering teams", "technical buyers", "release reviewers"],
       "requiredContent": ["account_prerequisites", "delivery_model", "client_config", "first_workflow", "validation_steps", "limitations", "primary_cta"],
       "forbiddenContent": ["secret values", "private API URLs", "public binary download CTA", "instant access promises", "unsupported client claims", "checkout promises"],
-      "primaryActions": ["view_products", "join_waitlist", "read_research"],
-      "sections": [
-        {
-          "id": "tutorial_hero",
-          "template": "hero.platform_statement",
-          "purpose": "Frame the tutorial as a gated-access setup guide for MCP-aware clients.",
-          "requiredContent": ["platform_positioning", "current_offer", "account_prerequisites", "primary_cta"],
-          "allowedComponents": ["Hero", "Badge", "Button", "Callout"],
-          "layoutGuidance": ["Make the gated-access requirement visible in the first viewport."]
-        },
-        {
-          "id": "quickstart",
-          "template": "guide.mcp_quickstart",
-          "purpose": "Show the setup sequence, configuration shape, first workflow, and validation boundary.",
-          "requiredContent": ["account_prerequisites", "delivery_model", "client_config", "first_workflow", "validation_steps", "limitations"],
-          "allowedComponents": ["StepList", "CodeBlock", "Callout", "Link", "Badge"],
-          "layoutGuidance": ["Keep snippets generic and credential-free; explain hosted execution before adapter config; link to product and research pages for product-specific evidence."]
-        }
-      ]
+      "primaryActions": ["view_products", "join_waitlist", "read_research"]
     },
     {
       "route": "/research/explicitmem",
@@ -168,25 +54,7 @@
       "audience": ["technical buyers", "memory system builders", "release reviewers"],
       "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
       "forbiddenContent": ["secret values", "private tenant IDs", "unscoped competitive claims"],
-      "primaryActions": ["view_product", "join_waitlist"],
-      "sections": [
-        {
-          "id": "benchmark_report",
-          "template": "research.benchmark_report",
-          "purpose": "Present the LongMemEval quality benchmark and hosted MCP latency smoke as separate evidence.",
-          "requiredContent": ["methodology", "result_table", "environment", "limitations"],
-          "allowedComponents": ["Table", "DefinitionList", "MetricGrid", "Callout"],
-          "layoutGuidance": ["Call out the June 26, 2026 hosted staging route scope where latency is used."]
-        },
-        {
-          "id": "product_bridge",
-          "template": "detail.product_proof",
-          "purpose": "Connect the research back to the ExplicitMem product decision.",
-          "requiredContent": ["product_name", "buyer_fit", "capabilities", "proof_points", "availability"],
-          "allowedComponents": ["FeatureList", "Button", "Callout"],
-          "layoutGuidance": ["Do not let product copy replace benchmark methodology."]
-        }
-      ]
+      "primaryActions": ["view_product", "join_waitlist"]
     },
     {
       "route": "/waitlist",
@@ -195,25 +63,7 @@
       "audience": ["prospects", "buyers", "agent builders"],
       "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "current_offer"],
       "forbiddenContent": ["instant access promises", "unsupported launch dates", "private CRM labels"],
-      "primaryActions": ["join_waitlist"],
-      "sections": [
-        {
-          "id": "waitlist_hero",
-          "template": "hero.platform_statement",
-          "purpose": "Explain what users are joining and why access is gated.",
-          "requiredContent": ["platform_positioning", "current_offer", "primary_cta"],
-          "allowedComponents": ["Hero", "Badge", "Button"],
-          "layoutGuidance": ["Keep the form visible without forcing a long scroll."]
-        },
-        {
-          "id": "waitlist_form",
-          "template": "conversion.waitlist_form",
-          "purpose": "Collect email interest and show visible submit feedback.",
-          "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary"],
-          "allowedComponents": ["Form", "Input", "Button", "StatusMessage"],
-          "layoutGuidance": ["Preserve the working API-backed waitlist behavior."]
-        }
-      ]
+      "primaryActions": ["join_waitlist"]
     }
   ]
 }
