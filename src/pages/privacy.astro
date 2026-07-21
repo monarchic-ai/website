@@ -1,0 +1,116 @@
+---
+import LegalPageLayout from "../layouts/LegalPageLayout.astro";
+
+const sectionClass = "grid gap-5 border-t border-white/35 py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1fr)]";
+const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
+---
+
+<LegalPageLayout
+  title="Privacy Notice | Monarchic LLC"
+  description="How Monarchic handles account, billing, hosted MCP, telemetry, waitlist, and support data."
+  path="/privacy"
+  eyebrow="Legal / Data handling"
+  heading="Privacy Notice"
+  introduction="This notice explains what Monarchic handles when you visit the site, create an account, buy capacity, or send work through a hosted MCP route."
+  effectiveDate="July 21, 2026"
+  documentId="privacy-notice"
+  contactId="privacy-contact"
+>
+  <a slot="toc" href="#scope" class="hover:text-cyan-200">01 / Scope</a>
+  <a slot="toc" href="#data" class="hover:text-cyan-200">02 / Data</a>
+  <a slot="toc" href="#use" class="hover:text-cyan-200">03 / Use</a>
+  <a slot="toc" href="#providers" class="hover:text-cyan-200">04 / Providers</a>
+  <a slot="toc" href="#retention" class="hover:text-cyan-200">05 / Retention</a>
+  <a slot="toc" href="#rights" class="hover:text-cyan-200">06 / Rights</a>
+  <a slot="toc" href="#security" class="hover:text-cyan-200">07 / Security</a>
+
+  <section id="scope" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">01</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Scope</h2>
+      <div class={copyClass}>
+        <p>This notice covers the Monarchic public website, web app, account and billing surfaces, hosted MCP routes, agent runs, support, and waitlist.</p>
+        <p>Monarchic LLC is responsible for the processing described here. A customer may also control personal data it sends through the service. In that case, the customer decides why the data is processed and Monarchic processes it to provide the service.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="data" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">02</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Data we handle</h2>
+      <div class={copyClass}>
+        <p><strong class="text-white">Account and contact data.</strong> Email address, identity-provider identifiers, profile details, organization or tenant membership, roles, support messages, and waitlist interests.</p>
+        <p><strong class="text-white">Billing data.</strong> Plan, subscription, invoice, payment status, usage allowance, and related transaction identifiers. Stripe handles payment-card details; Monarchic does not need the full card number.</p>
+        <p><strong class="text-white">Service content.</strong> Tool arguments, prompts, repository or browser context, terminal input, generated output, artifacts, and evidence receipts that you ask a route or agent run to process.</p>
+        <p><strong class="text-white">Operational data.</strong> MCP server and tool names, timestamps, duration, request and response sizes, credit usage, errors, audit events, and request context such as IP address or user agent when needed for security and operations.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="use" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">03</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Why we use it</h2>
+      <div class={copyClass}>
+        <p>We use data to authenticate accounts, deliver requested MCP and agent work, store requested artifacts, meter usage, administer subscriptions, respond to support, prevent abuse, diagnose failures, and improve reliability.</p>
+        <p>Waitlist email is used for access and product-availability updates. You can ask us to stop those messages at any time.</p>
+        <p>Do not submit secrets, regulated data, or sensitive personal data unless the product documentation and your agreement expressly support that use.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="providers" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">04</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Providers and disclosure</h2>
+      <div class={copyClass}>
+        <p>Monarchic uses service providers for cloud infrastructure and storage, identity, billing, frontend delivery, monitoring, and support. Current core providers include AWS, Auth0, Stripe, and Vercel. A hosted tool may use another provider when its documented operation requires one.</p>
+        <p>We disclose data to providers only for their work on the service, to comply with law, protect users or systems, or complete a corporate transaction. We do not sell personal data or use service content for behavioral advertising.</p>
+        <p>Providers may process data in the United States or another country where they operate. Legal protections may differ by location.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="retention" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">05</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Retention</h2>
+      <div class={copyClass}>
+        <p>Retention depends on the record and product. Account and subscription records are kept while the account is active and as needed for billing, security, dispute handling, and legal obligations. Operational logs and usage records are kept for service and security needs. Requested artifacts remain until deleted under the applicable product controls or retention process.</p>
+        <p>Waitlist records remain until you withdraw, receive access, or the list is no longer needed. Backups and records required by law may remain for a limited period after deletion.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="rights" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">06</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Your choices and rights</h2>
+      <div class={copyClass}>
+        <p>Depending on where you live, you may ask to access, correct, delete, restrict, object to, or export personal data. You may also withdraw consent for optional messages. We may need to verify your identity and may retain records when the law or a valid business need requires it.</p>
+        <p>Send requests to <a class="font-bold text-cyan-200 hover:text-white" href="mailto:support@monarchic.io?subject=Privacy%20request">support@monarchic.io</a>. You may also contact your local data-protection authority where that right applies.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="security" class={sectionClass}>
+    <span class="font-mono text-xs text-cyan-200">07</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Security and changes</h2>
+      <div class={copyClass}>
+        <p>Monarchic uses measures such as encrypted transport, tenant scoping, role and API-key controls, restricted infrastructure access, and operational monitoring. No internet service can promise absolute security.</p>
+        <p>The service is intended for adults and business use, not children. We may update this notice when products or data practices change. The effective date at the top identifies the current version.</p>
+      </div>
+    </div>
+  </section>
+
+  <div slot="contact">
+    <p class="text-xs font-bold uppercase text-black/55">Privacy requests</p>
+    <h2 class="mt-2 text-2xl font-extrabold uppercase">Ask what we hold or request a change.</h2>
+  </div>
+  <div slot="contact" class="flex flex-wrap gap-3">
+    <a href="mailto:support@monarchic.io?subject=Privacy%20request" class="border-2 border-black bg-black px-5 py-3 text-xs font-bold uppercase text-white hover:bg-white hover:text-black">Contact support</a>
+    <a href="/terms" class="border-2 border-black px-5 py-3 text-xs font-bold uppercase hover:bg-black hover:text-white">Read terms</a>
+  </div>
+</LegalPageLayout>

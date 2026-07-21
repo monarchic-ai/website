@@ -190,6 +190,34 @@
         { "id": "waitlist_form", "template": "form.inline", "purpose": "Capture one email address with success, error, and privacy states." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
       ]
+    },
+    {
+      "route": "/privacy",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["footer.multi_column"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, tutorial, research, and access routes available." },
+        { "id": "privacy_notice", "template": "docs.toc_content", "purpose": "Present data categories, purposes, providers, retention, rights, security boundaries, and effective date as a readable policy document." },
+        { "id": "privacy_contact", "template": "cta.banner", "purpose": "Provide a direct privacy contact and a route to the service terms." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, research, access, privacy, and terms navigation." }
+      ]
+    },
+    {
+      "route": "/terms",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["footer.multi_column"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, tutorial, research, and access routes available." },
+        { "id": "service_terms", "template": "docs.toc_content", "purpose": "Present account, usage, billing, content, acceptable-use, availability, and liability boundaries as readable service terms." },
+        { "id": "terms_contact", "template": "cta.banner", "purpose": "Provide a support contact and a route to the privacy notice." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, research, access, privacy, and terms navigation." }
+      ]
     }
   ]
 }

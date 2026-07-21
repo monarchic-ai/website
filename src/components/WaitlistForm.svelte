@@ -76,11 +76,11 @@
   </button>
 </form>
 {#if successMessage}
-  <p class="mt-3 text-sm leading-6 text-emerald-200">{successMessage}</p>
+  <p class="mt-3 text-sm leading-6 text-emerald-200" role="status" aria-live="polite">{successMessage}</p>
 {/if}
 {#if errorMessage}
-  <p class="mt-3 text-sm leading-6 text-amber-100">{errorMessage}</p>
+  <p class="mt-3 text-sm leading-6 text-amber-100" role="alert">{errorMessage}</p>
 {/if}
 <p class="mt-3 text-xs leading-5 text-white/48">
-  We use this email for Monarchic access updates only.
+  We use this email for Monarchic access updates only. <a class="text-cyan-200 hover:text-white" href="/privacy">Privacy notice</a>.
 </p>

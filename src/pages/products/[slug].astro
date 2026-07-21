@@ -2,6 +2,7 @@
 import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
 import "../../styles/global.css";
 import {
   allPlans,
@@ -124,17 +125,7 @@ function publicFeatureBulletsFor(plan: CatalogPlan): string[] {
       <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.94))]"></div>
 
       <section class="relative z-10 mx-auto max-w-6xl px-6 py-8 sm:py-12">
-        <header class="flex flex-wrap items-center justify-between gap-5 border-b-2 border-white pb-6">
-          <a href="/" class="inline-flex items-center gap-3">
-            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.36em] text-white/72">Monarchic LLC</span>
-          </a>
-          <nav class="flex flex-wrap items-center gap-2">
-            <a href="/products" class="border-2 border-white bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-black">Products</a>
-            <a href="/tutorial" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Tutorial</a>
-            <a href="/research" class="border-2 border-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] transition hover:bg-white hover:text-black">Research</a>
-          </nav>
-        </header>
+        <SiteHeader active="products" />
 
         <p class="mt-10 text-xs font-semibold uppercase tracking-[0.32em] text-white/54">
           <a href="/products" class="hover:text-white">Products</a> / {publicDisplayName}

@@ -1,0 +1,95 @@
+---
+import SeoHead from "../components/SeoHead.astro";
+import Shader14 from "../components/Shader14.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  eyebrow: string;
+  heading: string;
+  introduction: string;
+  effectiveDate: string;
+  documentId: string;
+  contactId: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  eyebrow,
+  heading,
+  introduction,
+  effectiveDate,
+  documentId,
+  contactId,
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <SeoHead title={title} description={description} path={path} />
+  </head>
+  <body class="min-h-screen bg-black text-white">
+    <main class="relative min-h-screen overflow-hidden">
+      <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-45" />
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.76),_rgba(0,0,0,0.98))]"></div>
+
+      <div class="relative z-10 mx-auto max-w-6xl px-5 py-6 sm:px-6 sm:py-10">
+        <SiteHeader />
+
+        <section class="grid gap-8 border-b-2 border-white py-10 lg:grid-cols-[1fr_18rem] lg:items-end lg:py-14">
+          <div>
+            <p class="text-xs font-bold uppercase text-cyan-200">{eyebrow}</p>
+            <h1 class="mt-5 max-w-4xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl [text-shadow:6px_6px_0_rgba(255,255,255,0.12)]">
+              {heading}
+            </h1>
+            <p class="mt-6 max-w-3xl text-base leading-8 text-white/76 sm:text-lg">{introduction}</p>
+          </div>
+          <dl class="border-2 border-white bg-black/72 text-xs uppercase">
+            <div class="flex items-center justify-between gap-4 border-b border-white/35 px-4 py-3">
+              <dt class="text-white/48">Effective</dt>
+              <dd class="font-bold text-white">{effectiveDate}</dd>
+            </div>
+            <div class="flex items-center justify-between gap-4 border-b border-white/35 px-4 py-3">
+              <dt class="text-white/48">Entity</dt>
+              <dd class="font-bold text-white">Monarchic LLC</dd>
+            </div>
+            <div class="flex items-center justify-between gap-4 px-4 py-3">
+              <dt class="text-white/48">Contact</dt>
+              <dd><a class="font-bold text-cyan-200 hover:text-white" href="mailto:support@monarchic.io">Support</a></dd>
+            </div>
+          </dl>
+        </section>
+
+        <section id={documentId} class="grid gap-10 py-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:py-14">
+          <aside class="lg:sticky lg:top-8 lg:self-start">
+            <p class="text-xs font-bold uppercase text-white/48">On this page</p>
+            <nav aria-label="Document sections" class="mt-4 grid gap-2 text-xs font-bold uppercase text-white/72">
+              <slot name="toc" />
+            </nav>
+          </aside>
+          <article class="min-w-0">
+            <slot />
+          </article>
+        </section>
+
+        <section id={contactId} class="grid gap-6 border-y-2 border-white bg-white px-5 py-7 text-black sm:grid-cols-[1fr_auto] sm:items-center sm:px-7">
+          <slot name="contact" />
+        </section>
+
+        <SiteFooter />
+      </div>
+    </main>
+  </body>
+</html>

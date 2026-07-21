@@ -1,6 +1,6 @@
 {
   "name": "Monarchic Public Website",
-  "description": "Content-only contract for the public Monarchic marketing, product, research, tutorial, and waitlist routes.",
+  "description": "Content-only contract for the public Monarchic marketing, product, research, tutorial, waitlist, privacy, and service-terms routes.",
   "pages": [
     {
       "route": "/",
@@ -91,6 +91,24 @@
       "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "current_offer"],
       "forbiddenContent": ["instant access promises", "unsupported launch dates", "private CRM labels"],
       "primaryActions": ["join_waitlist"]
+    },
+    {
+      "route": "/privacy",
+      "title": "Privacy Notice",
+      "purpose": "Explain Monarchic's current data handling for the website, accounts, billing, hosted MCP requests, operational telemetry, and support contacts in clear bounded language.",
+      "audience": ["website visitors", "account holders", "buyers", "agent builders"],
+      "requiredContent": ["effective_date", "controller_identity", "data_categories", "processing_purposes", "service_providers", "retention_boundary", "privacy_rights", "security_boundary", "contact_path"],
+      "forbiddenContent": ["unsupported compliance certifications", "guaranteed security claims", "secret values", "private customer data", "retention periods not backed by current operations"],
+      "primaryActions": ["contact_privacy", "read_terms"]
+    },
+    {
+      "route": "/terms",
+      "title": "Service Terms",
+      "purpose": "State the operating terms for Monarchic accounts, hosted MCP routes, usage metering, billing, customer content, acceptable use, and service availability.",
+      "audience": ["account holders", "buyers", "agent builders", "billing owners"],
+      "requiredContent": ["effective_date", "agreement_scope", "account_terms", "usage_metering", "acceptable_use", "customer_content", "third_party_services", "payment_terms", "suspension_boundary", "warranty_boundary", "liability_boundary", "change_notice", "contact_path"],
+      "forbiddenContent": ["unsupported uptime commitments", "unpublished pricing promises", "secret values", "private customer data", "automatic compliance claims"],
+      "primaryActions": ["contact_support", "read_privacy"]
     }
   ]
 }

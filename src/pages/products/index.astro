@@ -2,6 +2,7 @@
 import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
 import WaitlistForm from "../../components/WaitlistForm.svelte";
 import "../../styles/global.css";
 import {
@@ -79,17 +80,7 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
       <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.94))]"></div>
 
       <div class="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
-        <header id="navigation" class="flex flex-col gap-5 border-b-2 border-white pb-6 sm:flex-row sm:items-center sm:justify-between">
-          <a href="/" class="inline-flex items-center gap-3">
-            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-            <span class="text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-white/72">Monarchic LLC</span>
-          </a>
-          <nav aria-label="Primary" class="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
-            <a aria-current="page" href="/products" class="border-2 border-white bg-white px-3 py-2 text-center text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-black sm:px-4 sm:text-xs sm:tracking-[0.24em]">Products</a>
-            <a href="/tutorial" class="border-2 border-white px-3 py-2 text-center text-[0.65rem] font-semibold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black sm:px-4 sm:text-xs sm:tracking-[0.24em]">Tutorial</a>
-            <a href="/research" class="border-2 border-white px-3 py-2 text-center text-[0.65rem] font-semibold uppercase tracking-[0.18em] transition hover:bg-white hover:text-black sm:px-4 sm:text-xs sm:tracking-[0.24em]">Research</a>
-          </nav>
-        </header>
+        <SiteHeader active="products" />
 
         <section id="catalog-intro" class="py-12 text-center sm:py-16">
           <p class="text-xs font-semibold uppercase tracking-[0.36em] text-white/64">Products</p>

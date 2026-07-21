@@ -26,6 +26,38 @@ checkFileIncludes("src/components/WaitlistForm.svelte", [
   "Thanks. You're on the waitlist.",
   "Could not join the waitlist. Try again.",
   "We use this email for Monarchic access updates only.",
+  'href="/privacy"',
+]);
+
+checkFileIncludes("src/components/SiteHeader.astro", [
+  'id="navigation"',
+  'aria-label="Primary navigation"',
+  'aria-current={active === "products" ? "page" : undefined}',
+]);
+
+checkFileIncludes("src/components/SiteFooter.astro", [
+  'href="/privacy"',
+  'href="/terms"',
+  "support@monarchic.io",
+]);
+
+checkFileIncludes("src/pages/privacy.astro", [
+  'path="/privacy"',
+  'documentId="privacy-notice"',
+  "Data we handle",
+  "Your choices and rights",
+]);
+
+checkFileIncludes("src/pages/terms.astro", [
+  'path="/terms"',
+  'documentId="service-terms"',
+  "Acceptable use",
+  "Warranty and liability boundary",
+]);
+
+checkFileIncludes("src/pages/sitemap.xml.ts", [
+  '"/privacy"',
+  '"/terms"',
 ]);
 
 checkFileIncludes("src/pages/products/index.astro", [

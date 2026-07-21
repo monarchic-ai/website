@@ -7,6 +7,8 @@ const staticPaths = [
   "/products",
   "/tutorial",
   "/waitlist",
+  "/privacy",
+  "/terms",
   "/research",
   "/research/browserops",
   "/research/explicitmem",

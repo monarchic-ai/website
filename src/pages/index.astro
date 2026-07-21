@@ -2,6 +2,7 @@
 import Shader14 from "../components/Shader14.astro";
 import SeoHead from "../components/SeoHead.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
 import "../styles/global.css";
 
@@ -67,17 +68,7 @@ const proofPoints = [
       <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(90deg,_rgba(0,0,0,0.9),_rgba(0,0,0,0.38)_48%,_rgba(0,0,0,0.82))]"></div>
 
       <div class="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-12">
-        <header id="navigation" class="flex flex-col gap-5 border-b-2 border-white/88 pb-6 sm:flex-row sm:items-center sm:justify-between">
-          <a href="/" class="inline-flex items-center gap-3">
-            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-            <span class="text-[0.7rem] font-semibold uppercase text-white/72">Monarchic LLC</span>
-          </a>
-          <nav aria-label="Primary" class="grid grid-cols-3 gap-2 text-xs font-semibold uppercase sm:flex sm:flex-wrap">
-            <a href="/products" class="border-2 border-white/82 px-3 py-2 text-center transition hover:bg-white hover:text-black sm:px-4">Products</a>
-            <a href="/tutorial" class="border-2 border-white/82 px-3 py-2 text-center transition hover:bg-white hover:text-black sm:px-4">Tutorial</a>
-            <a href="/research" class="border-2 border-white/82 px-3 py-2 text-center transition hover:bg-white hover:text-black sm:px-4">Research</a>
-          </nav>
-        </header>
+        <SiteHeader />
 
         <section id="introduction" class="grid min-h-[calc(100vh-112px)] gap-8 py-10 lg:min-h-[640px] lg:grid-cols-[1fr_0.82fr] lg:items-center">
           <div>

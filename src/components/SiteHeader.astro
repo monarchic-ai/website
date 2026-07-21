@@ -1,0 +1,23 @@
+---
+interface Props {
+  active?: "products" | "tutorial" | "research";
+}
+
+const { active } = Astro.props;
+const navClass = (current: boolean) => [
+  "border-2 border-white px-3 py-2 text-center text-[0.65rem] font-semibold uppercase transition sm:px-4 sm:text-xs",
+  current ? "bg-white text-black" : "hover:bg-white hover:text-black focus-visible:bg-white focus-visible:text-black",
+].join(" ");
+---
+
+<header id="navigation" class="flex flex-col gap-5 border-b-2 border-white pb-6 sm:flex-row sm:items-center sm:justify-between">
+  <a href="/" class="inline-flex items-center gap-3">
+    <img src="/favicon.svg" alt="" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
+    <span class="text-[0.7rem] font-semibold uppercase text-white/72">Monarchic LLC</span>
+  </a>
+  <nav aria-label="Primary navigation" class="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
+    <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
+    <a aria-current={active === "tutorial" ? "page" : undefined} href="/tutorial" class={navClass(active === "tutorial")}>Tutorial</a>
+    <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
+  </nav>
+</header>

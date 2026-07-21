@@ -2,6 +2,7 @@
 import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
 import "../../styles/global.css";
 
 const researchCards = [
@@ -62,17 +63,7 @@ const researchCards = [
       <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(90deg,_rgba(0,0,0,0.88),_rgba(0,0,0,0.38)_55%,_rgba(0,0,0,0.82))]"></div>
 
       <div class="relative z-10 mx-auto max-w-7xl px-5 py-6 sm:px-6 sm:py-10">
-        <header class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-white pb-5">
-          <a href="/" class="inline-flex items-center gap-3">
-            <img src="/favicon.svg" alt="Monarchic LLC logo" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-            <span class="text-[0.7rem] font-semibold uppercase text-white/72">Monarchic LLC</span>
-          </a>
-          <nav aria-label="Primary navigation" class="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase">
-            <a href="/products" class="border-2 border-white px-4 py-2 transition hover:bg-white hover:text-black focus-visible:bg-white focus-visible:text-black">Products</a>
-            <a href="/tutorial" class="border-2 border-white px-4 py-2 transition hover:bg-white hover:text-black focus-visible:bg-white focus-visible:text-black">Tutorial</a>
-            <a href="/research" aria-current="page" class="border-2 border-white bg-white px-4 py-2 text-black">Research</a>
-          </nav>
-        </header>
+        <SiteHeader active="research" />
 
         <section class="grid gap-7 border-b-2 border-white py-9 lg:min-h-[540px] lg:grid-cols-[1.35fr_0.65fr] lg:items-center lg:py-10">
           <div>
