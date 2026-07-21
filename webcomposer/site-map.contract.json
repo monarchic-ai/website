@@ -30,6 +30,15 @@
       "primaryActions": ["join_waitlist", "read_research"]
     },
     {
+      "route": "/products/[slug]",
+      "title": "Product Detail",
+      "purpose": "Describe one synchronized catalog product with its buyer fit, capabilities, availability, pricing state, and evidence links without inventing product claims.",
+      "audience": ["buyers", "agent builders", "engineering teams"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "primary_cta"],
+      "forbiddenContent": ["prices not present in the synchronized product catalog", "checkout promises for unavailable products", "private catalog metadata", "unsupported proof claims"],
+      "primaryActions": ["join_waitlist", "return_to_catalog", "read_research_when_available"]
+    },
+    {
       "route": "/research",
       "title": "Research",
       "purpose": "Index benchmark notes and receipts for the MCP products without overstating scope.",
@@ -54,6 +63,24 @@
       "audience": ["technical buyers", "memory system builders", "release reviewers"],
       "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
       "forbiddenContent": ["secret values", "private tenant IDs", "unscoped competitive claims"],
+      "primaryActions": ["view_product", "join_waitlist"]
+    },
+    {
+      "route": "/research/browserops",
+      "title": "BrowserOps Research",
+      "purpose": "Document BrowserOps verification scenarios, observed browser evidence, and the safety boundaries on those measurements.",
+      "audience": ["technical buyers", "browser automation teams", "release reviewers"],
+      "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
+      "forbiddenContent": ["secret values", "private target URLs", "CAPTCHA bypass claims", "unbounded automation claims"],
+      "primaryActions": ["view_product", "join_waitlist"]
+    },
+    {
+      "route": "/research/repointel",
+      "title": "RepoIntel Research",
+      "purpose": "Document repository indexing and grounded-answer evidence with explicit corpus, revision, and interpretation boundaries.",
+      "audience": ["technical buyers", "developer tooling teams", "release reviewers"],
+      "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
+      "forbiddenContent": ["private repository content", "secret values", "unscoped codebase claims"],
       "primaryActions": ["view_product", "join_waitlist"]
     },
     {
