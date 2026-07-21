@@ -7,6 +7,8 @@ const root = process.cwd();
 const checks = [];
 const failures = [];
 
+checkFileIncludes("astro.config.mjs", ["devToolbar: { enabled: false }"]);
+
 checkFileIncludes("src/pages/index.astro", [
   "Agent tools that leave evidence.",
   'href="/products"',
