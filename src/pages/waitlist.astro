@@ -1,6 +1,7 @@
 ---
 import Shader14 from "../components/Shader14.astro";
 import SeoHead from "../components/SeoHead.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
 import "../styles/global.css";
 
@@ -73,6 +74,7 @@ const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api
             </p>
           </div>
         </section>
+        <SiteFooter />
       </section>
     </main>
   </body>
