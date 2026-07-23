@@ -3,7 +3,6 @@ import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
-import WaitlistForm from "../../components/WaitlistForm.svelte";
 import "../../styles/global.css";
 import {
   allPlans,
@@ -15,17 +14,10 @@ import {
   resolveDisplayPrice,
   type CatalogPlan,
 } from "../../lib/pricing";
-import {
-  publicCatalogDescription,
-  publicCatalogDisplayName,
-  publicCatalogTagline,
-} from "../../lib/publicCatalogCopy";
 import { getProductDetail } from "../../lib/productDetails";
 
-const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
-const bundleOrder = ["bundle-developer", "bundle-go-to-market", "bundle-startup", "bundle-all-mcps"];
 const rank = (order: string[], slug: string) => {
   const index = order.indexOf(slug);
   return index === -1 ? order.length : index;
@@ -34,32 +26,26 @@ const rank = (order: string[], slug: string) => {
 const usagePlans = allPlans
   .filter((plan) => plan.kind === "usage-plan")
   .sort((a, b) => rank(usageOrder, a.slug) - rank(usageOrder, b.slug));
-const paidUsagePlans = usagePlans.filter((plan) => plan.slug !== "usage-evaluation");
-const evaluationPlan = usagePlans.find((plan) => plan.slug === "usage-evaluation") ?? null;
-const mcpRoutes = allPlans
+
+const mcpProducts = allPlans
   .filter((plan) => plan.kind === "single-mcp")
-  .sort((a, b) => a.displayName.localeCompare(b.displayName));
-const workflowPacks = allPlans
-  .filter((plan) => plan.kind === "bundle")
-  .sort((a, b) => rank(bundleOrder, a.slug) - rank(bundleOrder, b.slug));
-const monarchicAi = allPlans.find((plan) => plan.slug === "monarchic-ai") ?? null;
-const comingSoon = allPlans.filter(
-  (plan) =>
-    plan.status !== "available" &&
-    plan.kind !== "usage-plan" &&
-    plan.kind !== "single-mcp" &&
-    plan.kind !== "bundle" &&
-    plan.slug !== "monarchic-ai",
-);
+  .sort((a, b) => {
+    const availabilityOrder = (plan: CatalogPlan) => plan.status === "available" ? 0 : 1;
+    return availabilityOrder(a) - availabilityOrder(b) || a.displayName.localeCompare(b.displayName);
+  });
+
+const availableMcpCount = mcpProducts.filter((plan) => plan.status === "available").length;
+const wipMcpCount = mcpProducts.length - availableMcpCount;
 
 const researchByPlanSlug: Record<string, string> = {
-  "mcp-browserops": "/research/browserops",
   "mcp-explicitmem": "/research/explicitmem",
-  "mcp-repointel": "/research/repointel",
 };
 
-const displayName = (plan: CatalogPlan) => publicCatalogDisplayName(plan.slug, plan.displayName);
-const description = (plan: CatalogPlan) => publicCatalogDescription(plan.description);
+function statusClasses(plan: CatalogPlan): string {
+  if (plan.status === "available") return "border-emerald-300 text-emerald-200";
+  if (plan.status === "contact_sales") return "border-cyan-300 text-cyan-200";
+  return "border-amber-300 text-amber-200";
+}
 ---
 
 <html lang="en">
@@ -69,107 +55,93 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
     <SeoHead
       title="Products | Monarchic"
-      description="Monarchic hosted MCP routes, usage tiers, workflow packs, and gated launch access."
+      description="Compare Monarchic credit plans and the complete catalog of available and work-in-progress MCPs."
       path="/products"
     />
   </head>
   <body class="min-h-screen bg-black text-white">
     <main class="relative min-h-screen overflow-hidden">
       <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-70" />
-      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.94))]"></div>
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.68),_rgba(0,0,0,0.95))]"></div>
 
       <div class="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
         <SiteHeader active="products" />
 
-        <section id="catalog-intro" class="py-12 text-center sm:py-16">
-          <p class="text-xs font-semibold uppercase tracking-[0.36em] text-white/64">Products</p>
+        <section class="py-14 text-center sm:py-20">
+          <p class="text-xs font-semibold uppercase text-cyan-200">Products</p>
           <h1 class="mx-auto mt-5 max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
-            Hosted MCP Routes
+            Plans and MCPs
           </h1>
           <p class="mx-auto mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Hosted capabilities included through usage-plan credits.
+            Choose a monthly or annual plan. Its shared credit allowance works
+            across every MCP marked Available.
           </p>
-          <p class="mx-auto mt-2 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Choose monthly or annual capacity for your workload.
-          </p>
-          <p class="mx-auto mt-4 max-w-3xl text-xs font-bold uppercase tracking-[0.24em] text-white/54">
-            Synchronized Pricing, Account Checkout
-          </p>
-          <a href="#usage-tiers" class="mt-8 inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-6 py-3 text-xs font-bold uppercase tracking-[0.22em] text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
-            Compare Plans
-          </a>
+          <div class="mt-8 flex flex-col justify-center gap-3 min-[440px]:flex-row">
+            <a href="#plans" class="inline-flex min-h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-6 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+              Compare plans
+            </a>
+            <a href="#mcp-catalog" class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-6 text-xs font-bold uppercase text-white transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">
+              Browse all MCPs
+            </a>
+          </div>
         </section>
 
-        <section id="catalog-summary" aria-label="Catalog summary" class="mb-10 grid border-2 border-white bg-black/70 sm:grid-cols-2 lg:grid-cols-4">
+        <section aria-label="Catalog summary" class="mb-12 grid border-2 border-white bg-black/70 sm:grid-cols-2 lg:grid-cols-4">
           <div class="border-b border-white/36 p-5 sm:border-r lg:border-b-0">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-white/52">Evaluation</p>
-            <p class="mt-3 text-2xl font-extrabold uppercase">{evaluationPlan ? creditAllowanceLabel(evaluationPlan) : "Preview"}</p>
+            <p class="text-xs font-bold uppercase text-white/52">Plans</p>
+            <p class="mt-3 text-3xl font-extrabold">{usagePlans.length}</p>
+            <p class="mt-2 text-sm text-white/62">Evaluation through business</p>
           </div>
           <div class="border-b border-white/36 p-5 lg:border-b-0 lg:border-r">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-white/52">Paid plans</p>
-            <p class="mt-3 text-2xl font-extrabold uppercase">{paidUsagePlans.length}</p>
+            <p class="text-xs font-bold uppercase text-white/52">MCP catalog</p>
+            <p class="mt-3 text-3xl font-extrabold">{mcpProducts.length}</p>
+            <p class="mt-2 text-sm text-white/62">Every current public product</p>
           </div>
           <div class="border-b border-white/36 p-5 sm:border-b-0 sm:border-r">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-white/52">MCP routes</p>
-            <p class="mt-3 text-2xl font-extrabold uppercase">{mcpRoutes.length}</p>
+            <p class="text-xs font-bold uppercase text-white/52">Available now</p>
+            <p class="mt-3 text-3xl font-extrabold">{availableMcpCount}</p>
+            <p class="mt-2 text-sm text-white/62">Ready to use with an active plan</p>
           </div>
           <div class="p-5">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-white/52">Checkout</p>
-            <p class="mt-3 text-2xl font-extrabold uppercase">Account required</p>
-            <p class="mt-2 text-sm leading-6 text-white/66">Available plans continue in the secure Monarchic web app.</p>
+            <p class="text-xs font-bold uppercase text-white/52">In progress</p>
+            <p class="mt-3 text-3xl font-extrabold">{wipMcpCount}</p>
+            <p class="mt-2 text-sm text-white/62">Listed for visibility and marked WIP</p>
           </div>
         </section>
 
-        <section id="platform-status" class="mb-10 grid gap-6 border-2 border-amber-300 bg-black/78 p-5 sm:p-6 lg:grid-cols-[1.5fr_0.8fr]">
-          <div>
-            <p class="text-xs font-bold uppercase tracking-[0.28em] text-amber-200">Future platform</p>
-            <h2 class="mt-4 text-3xl font-extrabold uppercase sm:text-5xl">
-              {monarchicAi ? displayName(monarchicAi) : "Monarchic AI"}
-            </h2>
-            <p class="mt-4 max-w-3xl text-sm leading-7 text-white/76">
-              {monarchicAi ? description(monarchicAi) : "The larger Monarchic platform follows the hosted MCP launch."}
-            </p>
-            <p class="mt-3 max-w-3xl text-sm leading-7 text-amber-100/80">The current launch focus is hosted MCP access.</p>
-          </div>
-          {monarchicAi && (
-            <div class="flex items-center">
-              <a href={`/products/${monarchicAi.slug}`} class="inline-flex w-full items-center justify-center border-2 border-white/50 px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">View status</a>
-            </div>
-          )}
-        </section>
-
-        <nav id="catalog-navigation" aria-label="Product catalog" class="mb-12 flex flex-wrap gap-2 border-y border-white/40 py-4">
-          <span class="mr-2 self-center text-[0.65rem] font-bold uppercase tracking-[0.24em] text-white/46">Products /</span>
-          <a href="#usage-tiers" class="border border-white/56 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/72 hover:border-white hover:text-white">Usage tiers</a>
-          <a href="#mcp-routes" class="border border-white/56 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/72 hover:border-white hover:text-white">MCP routes</a>
-          <a href="#workflow-packs" class="border border-white/56 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/72 hover:border-white hover:text-white">Workflow packs</a>
-          <a href="#coming-soon" class="border border-white/56 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white/72 hover:border-white hover:text-white">Coming soon</a>
+        <nav aria-label="Product sections" class="mb-14 flex flex-wrap gap-2 border-y border-white/40 py-4">
+          <span class="mr-2 self-center text-[0.65rem] font-bold uppercase text-white/46">Jump to /</span>
+          <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Plans</a>
+          <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">All MCPs</a>
+          <a href="#how-credits-work" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Credits</a>
         </nav>
 
-        <section id="usage-tiers" class="mb-16 scroll-mt-8">
-          <div class="mb-6 max-w-3xl">
-            <p class="text-xs font-bold uppercase tracking-[0.34em] text-cyan-200">01 / Usage tiers</p>
-            <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Usage capacity</h2>
-            <p class="mt-4 text-sm leading-7 text-white/70">Usage tiers are the current public paid products.</p>
-            <p class="text-sm leading-7 text-white/70">Available plans continue to account checkout; preview prices cannot be purchased yet.</p>
-          </div>
-          <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <section id="plans" class="mb-20 scroll-mt-8">
+          <p class="text-xs font-bold uppercase text-cyan-200">01 / Plans</p>
+          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
+          <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
+            Each plan includes an account-level credit allowance. Available MCPs
+            draw from that shared allowance according to their credit weight.
+          </p>
+          <div class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {usagePlans.map((plan) => {
               const displayPrice = resolveDisplayPrice(plan, "monthly");
               const monthlyPrice = findPlanPrice(plan, "monthly");
               const annualPrice = findPlanPrice(plan, "annual");
               const isPurchasable = plan.status === "available" && Boolean(monthlyPrice?.priceId || annualPrice?.priceId);
               return (
-                <article data-plan-card={plan.slug} class={`flex min-h-[320px] flex-col border-2 bg-black/74 p-5 ${plan.highlighted ? "border-cyan-300" : "border-white"}`}>
-                  <div class="flex flex-wrap items-center justify-between gap-2">
-                    <span class="text-[0.65rem] font-bold uppercase tracking-[0.22em] text-white/58">Usage tier</span>
-                    <span class="border border-white/60 px-2 py-1 text-[0.62rem] font-bold uppercase tracking-[0.16em]">{planStatusLabel(plan.status)}</span>
+                <article
+                  data-plan-card={plan.slug}
+                  class={`flex min-h-[330px] flex-col border-2 bg-black/74 p-5 transition duration-200 hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-300/[0.06] focus-within:-translate-y-1 focus-within:border-cyan-300 ${plan.highlighted ? "border-cyan-300" : "border-white/70"}`}
+                >
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <span class="text-[0.65rem] font-bold uppercase text-white/58">Credit plan</span>
+                    <span class={`border px-2 py-1 text-[0.62rem] font-bold uppercase ${statusClasses(plan)}`}>{planStatusLabel(plan.status)}</span>
                   </div>
-                  <h3 class="mt-5 text-2xl font-extrabold uppercase">{displayName(plan)}</h3>
-                  <p class="mt-2 text-sm leading-6 text-white/66">{publicCatalogTagline(plan.slug, plan.tagline)}</p>
+                  <h3 class="mt-5 text-2xl font-extrabold uppercase">{plan.displayName}</h3>
+                  <p class="mt-2 text-sm leading-6 text-white/66">{plan.tagline}</p>
                   {displayPrice?.price.priceCents != null && (
                     <div class="mt-6">
                       <p class="text-3xl font-extrabold">
@@ -183,13 +155,21 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
                       )}
                     </div>
                   )}
-                  <p class="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">{creditAllowanceLabel(plan)}</p>
+                  {creditAllowanceLabel(plan) && (
+                    <p class="mt-4 border-l-2 border-cyan-300 pl-3 text-xs font-bold uppercase text-cyan-100">
+                      {creditAllowanceLabel(plan)}
+                    </p>
+                  )}
                   <div class="flex-1"></div>
-                  <div class="mt-6 grid gap-2">
-                    {isPurchasable && (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 py-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Choose plan</a>
+                  <div class="mt-7 grid gap-2">
+                    {isPurchasable ? (
+                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Choose plan</a>
+                    ) : plan.status === "contact_sales" && plan.salesContactUrl ? (
+                      <a href={plan.salesContactUrl} class="inline-flex min-h-11 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Contact sales</a>
+                    ) : (
+                      <a href="/waitlist" class="inline-flex min-h-11 items-center justify-center border-2 border-amber-300/80 px-3 text-xs font-bold uppercase text-amber-100 transition hover:bg-amber-300/10 hover:text-white">Join waitlist</a>
                     )}
-                    <a href={`/products/${plan.slug}`} class="inline-flex items-center justify-center border border-white/50 px-3 py-3 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
+                    <a href={`/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Plan details</a>
                   </div>
                 </article>
               );
@@ -197,67 +177,67 @@ const description = (plan: CatalogPlan) => publicCatalogDescription(plan.descrip
           </div>
         </section>
 
-        <section id="mcp-routes" class="mb-16 scroll-mt-8">
-          <p class="text-xs font-bold uppercase tracking-[0.34em] text-emerald-200">02 / Hosted catalog</p>
-          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Hosted MCP Routes</h2>
-          <div class="mt-6 border-t-2 border-white">
-            {mcpRoutes.map((plan) => (
-              <article data-plan-card={plan.slug} class="grid gap-4 border-b border-white/44 bg-black/58 p-4 sm:p-5 lg:grid-cols-[1fr_2fr_auto] lg:items-center">
-                <div>
-                  <p class="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-emerald-200">{getProductDetail(plan.slug)?.category ?? "Hosted MCP"} · {planStatusLabel(plan.status)}</p>
-                  <h3 class="mt-2 text-xl font-extrabold uppercase">{displayName(plan)}</h3>
-                </div>
-                <p class="text-sm leading-6 text-white/70">{description(plan)}</p>
-                <div class="flex flex-wrap gap-2 lg:justify-end">
-                  <a href={`/products/${plan.slug}`} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
-                  {researchByPlanSlug[plan.slug] && (
-                    <a href={researchByPlanSlug[plan.slug]} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Research</a>
-                  )}
-                </div>
-              </article>
-            ))}
+        <section id="mcp-catalog" class="mb-20 scroll-mt-8">
+          <p class="text-xs font-bold uppercase text-emerald-200">02 / MCP catalog</p>
+          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">All Monarchic MCPs</h2>
+          <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
+            Every current product is listed here. Products that are not ready
+            for public use are clearly marked WIP.
+          </p>
+          <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {mcpProducts.map((plan) => {
+              const detail = getProductDetail(plan.slug);
+              return (
+                <article
+                  data-plan-card={plan.slug}
+                  class="group flex min-h-[285px] flex-col border border-white/45 bg-black/66 p-5 transition duration-200 hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-300/[0.06] focus-within:-translate-y-1 focus-within:border-cyan-300"
+                >
+                  <div class="flex flex-wrap items-start justify-between gap-3">
+                    <span class="text-[0.62rem] font-bold uppercase text-white/48">{detail?.category ?? "MCP"}</span>
+                    <span class={`border px-2 py-1 text-[0.6rem] font-bold uppercase ${statusClasses(plan)}`}>{planStatusLabel(plan.status)}</span>
+                  </div>
+                  <h3 class="mt-5 text-xl font-extrabold uppercase">{plan.displayName}</h3>
+                  <p class="mt-3 text-sm leading-6 text-white/68">{plan.tagline}</p>
+                  <p class="mt-4 text-xs font-bold uppercase text-white/46">
+                    {plan.status === "available" ? "Uses shared plan credits" : "Shared plan credits when available"}
+                  </p>
+                  <div class="flex-1"></div>
+                  <div class="mt-6 flex flex-wrap gap-2">
+                    <a href={`/products/${plan.slug}`} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
+                    {researchByPlanSlug[plan.slug] && (
+                      <a href={researchByPlanSlug[plan.slug]} class="border border-cyan-300/70 px-3 py-2 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/10 hover:text-white">Benchmark</a>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        <section id="workflow-packs" class="mb-16 scroll-mt-8">
-          <p class="text-xs font-bold uppercase tracking-[0.34em] text-cyan-200">03 / Workflow packs</p>
-          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Related route bundles</h2>
-          <div class="mt-6 grid gap-5 md:grid-cols-2">
-            {workflowPacks.map((plan) => (
-              <article class="flex flex-col border-2 border-white bg-black/74 p-5">
-                <p class="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-cyan-200">Workflow pack · {planStatusLabel(plan.status)}</p>
-                <h3 class="mt-4 text-2xl font-extrabold uppercase">{displayName(plan)}</h3>
-                <p class="mt-3 text-sm leading-7 text-white/70">{description(plan)}</p>
-                <a href={`/products/${plan.slug}`} class="mt-6 inline-flex w-fit border border-white/50 px-3 py-3 text-xs font-bold uppercase tracking-[0.18em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="coming-soon" class="mb-16 scroll-mt-8">
-          <p class="text-xs font-bold uppercase tracking-[0.34em] text-amber-200">04 / Coming soon</p>
-          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Future products</h2>
-          <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {comingSoon.map((plan) => (
-              <article class="border border-white/50 bg-black/58 p-5">
-                <p class="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-amber-200">Coming soon</p>
-                <h3 class="mt-4 text-xl font-extrabold uppercase">{displayName(plan)}</h3>
-                <p class="mt-3 text-sm leading-6 text-white/66">{description(plan)}</p>
-                <a href={`/products/${plan.slug}`} class="mt-5 inline-flex border border-white/50 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">View status</a>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="waitlist" class="grid scroll-mt-8 gap-6 border-t-2 border-white py-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <section id="how-credits-work" class="mb-20 grid scroll-mt-8 gap-8 border-2 border-white bg-black/76 p-6 lg:grid-cols-[1.1fr_0.9fr] lg:p-8">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.3em] text-white/54">Access</p>
-            <h2 class="mt-3 max-w-2xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">Tell us which hosted routes you need.</h2>
-            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">Join the waitlist for route availability and account onboarding updates.</p>
+            <p class="text-xs font-bold uppercase text-cyan-200">03 / Credits</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, available MCPs</h2>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
+              The plan controls the account allowance. Standard operations use
+              fewer credits; browser sessions, terminal sessions, provider calls,
+              and other compute-heavy work use more.
+            </p>
           </div>
-          <div class="border-2 border-white bg-black p-5 sm:p-6">
-            <WaitlistForm client:load apiBaseUrl={apiBaseUrl} slug="monarchic-ai" submitLabel="Join Waitlist" />
+          <div class="grid gap-3 text-sm leading-6 text-white/72">
+            <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
+            <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">Review usage and credit impact from your account.</span></div>
+            <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Individual starts with overage disabled; larger plans publish their overage terms.</span></div>
           </div>
+        </section>
+
+        <section class="mb-16 grid gap-6 border-t-2 border-white py-10 sm:grid-cols-[1fr_auto] sm:items-center">
+          <div>
+            <p class="text-xs font-bold uppercase text-white/54">Set up a client</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase">From account to first tool call</h2>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-white/70">The webapp docs cover access, API keys, client setup, verification, and troubleshooting.</p>
+          </div>
+          <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-6 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Open docs</a>
         </section>
 
         <SiteFooter />

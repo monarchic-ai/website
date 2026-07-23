@@ -41,10 +41,10 @@ if (socialSvg.includes('viewBox="0 0 1200 630"')) {
 
 for (const marker of [
   "Hosted MCPs for",
-  "production agents",
+  "agent workflows",
   "RepoIntel",
   "ExplicitMem",
-  "BrowserOps",
+  "IncidentOps",
 ]) {
   if (socialSvg.includes(marker)) {
     ok(`social-card.svg includes ${marker}`);
@@ -60,7 +60,7 @@ if (sha256(socialSvg) !== sha256(favicon)) {
 }
 
 for (const marker of [
-  "/social-card.png?v=1",
+  "/social-card.png?v=2",
   "summary_large_image",
   'og:image:width" content="1200"',
   'og:image:height" content="630"',
@@ -73,10 +73,10 @@ for (const marker of [
   }
 }
 
-if (buildInfo.includes('socialImage: "/social-card.png?v=1"')) {
+if (buildInfo.includes('socialImage: "/social-card.png?v=2"')) {
   ok("build-info exposes social-card.png marker");
 } else {
-  fail("build-info must expose /social-card.png?v=1");
+  fail("build-info must expose /social-card.png?v=2");
 }
 
 if (failed) {

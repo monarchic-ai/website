@@ -5,14 +5,11 @@ const siteUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBSITE_BASE_URL ?? "https://m
 const staticPaths = [
   "/",
   "/products",
-  "/tutorial",
   "/waitlist",
   "/privacy",
   "/terms",
   "/research",
-  "/research/browserops",
   "/research/explicitmem",
-  "/research/repointel",
 ];
 
 function urlEntry(path: string): string {
@@ -23,7 +20,9 @@ function urlEntry(path: string): string {
 export function GET() {
   const paths = [
     ...staticPaths,
-    ...allPlans.map((plan) => `/products/${plan.slug}`),
+    ...allPlans
+      .filter((plan) => plan.kind === "usage-plan" || plan.kind === "single-mcp")
+      .map((plan) => `/products/${plan.slug}`),
   ];
 
   return new Response(

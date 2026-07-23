@@ -1,111 +1,84 @@
 {
   "name": "Monarchic Public Website",
-  "description": "Content-only contract for the public Monarchic marketing, product, research, tutorial, waitlist, privacy, and service-terms routes.",
+  "description": "Content-only contract for Monarchic's public home, product, benchmark, waitlist, privacy, and service-terms routes.",
   "pages": [
     {
       "route": "/",
       "title": "Home",
-      "purpose": "Introduce Monarchic as autonomous engineering as a service while making the current MCP catalog and proof-backed direction clear.",
-      "audience": ["founders", "engineering leaders", "agent builders", "AI infrastructure buyers"],
-      "requiredContent": ["platform_positioning", "current_offer", "primary_cta", "proof_points", "measurement_scope", "waitlist_offer"],
-      "forbiddenContent": ["secret names", "private API URLs", "unsupported launch claims", "debug labels", "agent prompt text"],
-      "primaryActions": ["view_products", "view_research", "join_waitlist"]
+      "purpose": "Introduce the Monarchic MCP catalog, shared credit model, product availability, and current benchmark evidence.",
+      "audience": ["buyers", "engineering teams", "agent users"],
+      "requiredContent": ["catalog_positioning", "available_and_wip_scope", "shared_credit_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
+      "forbiddenContent": ["secret names", "private API URLs", "unsupported availability claims", "internal test output", "website implementation details"],
+      "primaryActions": ["view_products", "read_docs", "view_research", "join_waitlist"]
     },
     {
       "route": "/products",
       "title": "Products",
-      "purpose": "Let buyers compare usage tiers, included MCP routes, coming-soon plans, and the future Monarchic AI platform, then continue eligible plans in the account web app.",
-      "audience": ["buyers", "agent builders", "founders", "engineering teams"],
-      "requiredContent": ["product_names", "availability", "buyer_fit", "stripe_backed_prices", "pricing_previews", "purchase_link_for_available_plans", "primary_cta", "waitlist_offer"],
-      "forbiddenContent": ["prices not present in the synchronized product catalog", "checkout promises for unavailable products", "private catalog metadata", "debug labels"],
-      "primaryActions": ["inspect_product", "open_purchase_flow_when_available", "join_waitlist", "view_research"]
+      "purpose": "Let buyers compare five shared-credit plans and inspect all fifteen current MCP products with clear Available or WIP status.",
+      "audience": ["buyers", "engineering teams", "agent users"],
+      "requiredContent": ["five_credit_plans", "fifteen_mcp_products", "availability", "wip_markers", "shared_credit_model", "catalog_prices", "purchase_link_for_available_plans", "docs_link"],
+      "forbiddenContent": ["retired MCPs", "workflow bundles", "platform promotion", "standalone MCP subscriptions", "prices absent from the catalog", "checkout promises for WIP products", "website implementation details"],
+      "primaryActions": ["compare_plans", "inspect_product", "open_purchase_flow_when_available", "read_docs"]
     },
     {
       "route": "/products/mcp-explicitmem",
       "title": "ExplicitMem Product",
-      "purpose": "Position ExplicitMem as the strongest memory product and connect buyer needs to benchmark evidence.",
-      "audience": ["agent builders", "AI platform teams", "engineering leaders"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "proof_points", "availability", "primary_cta"],
-      "forbiddenContent": ["unsupported latency claims", "secret environment names", "private benchmark records"],
-      "primaryActions": ["join_waitlist", "read_research"]
+      "purpose": "Explain ExplicitMem's buyer fit, shared-credit access, capabilities, status, and qualifying benchmark.",
+      "audience": ["agent users", "AI platform teams", "engineering leaders"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_credit_access", "benchmark_link", "primary_cta"],
+      "forbiddenContent": ["unsupported latency claims", "private benchmark records", "internal test output", "standalone MCP price"],
+      "primaryActions": ["compare_plans", "read_benchmark", "return_to_catalog"]
     },
     {
       "route": "/products/[slug]",
       "title": "Product Detail",
-      "purpose": "Describe one synchronized catalog product with its buyer fit, capabilities, availability, pricing state, and evidence links without inventing product claims.",
-      "audience": ["buyers", "agent builders", "engineering teams"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "purchase_link_when_available", "primary_cta"],
-      "forbiddenContent": ["prices not present in the synchronized product catalog", "checkout promises for unavailable products", "private catalog metadata", "unsupported proof claims"],
-      "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_gated", "return_to_catalog", "read_research_when_available"]
+      "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-credit access, and eligible next action.",
+      "audience": ["buyers", "engineering teams", "agent users"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_credit_access", "purchase_link_when_available", "primary_cta"],
+      "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for WIP products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
+      "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_wip", "return_to_catalog", "read_benchmark_when_available"]
     },
     {
       "route": "/research",
       "title": "Research",
-      "purpose": "Index benchmark notes and receipts for the MCP products without overstating scope.",
-      "audience": ["technical buyers", "agent builders", "release reviewers"],
-      "requiredContent": ["research_subjects", "headline_metrics", "evidence_boundary", "primary_cta"],
-      "forbiddenContent": ["unreviewed roadmap claims", "unscoped benchmark rankings", "private data"],
-      "primaryActions": ["open_research", "open_product"]
-    },
-    {
-      "route": "/tutorial",
-      "title": "MCP Tutorial",
-      "purpose": "Teach prospects and gated account holders how Monarchic MCP routes connect to client tools, what prerequisites are needed, and how to validate a first workflow.",
-      "audience": ["agent builders", "engineering teams", "technical buyers", "release reviewers"],
-      "requiredContent": ["account_prerequisites", "delivery_model", "client_config", "first_workflow", "validation_steps", "limitations", "primary_cta"],
-      "forbiddenContent": ["secret values", "private API URLs", "public binary download CTA", "instant access promises", "unsupported client claims", "checkout promises"],
-      "primaryActions": ["view_products", "join_waitlist", "read_research"]
+      "purpose": "Index only public benchmarks that meet the stated publication bar and keep limitations beside headline results.",
+      "audience": ["technical buyers", "agent users", "research readers"],
+      "requiredContent": ["publication_criteria", "explicitmem_benchmark", "headline_metrics", "methodology_link", "limitations"],
+      "forbiddenContent": ["raw internal test output", "MCP hooks", "deployment checks", "unscoped benchmark rankings", "private data"],
+      "primaryActions": ["open_explicitmem_benchmark", "open_explicitmem_product"]
     },
     {
       "route": "/research/explicitmem",
       "title": "ExplicitMem Research",
-      "purpose": "Document ExplicitMem benchmark results, hosted latency smoke data, and the limits of those measurements.",
-      "audience": ["technical buyers", "memory system builders", "release reviewers"],
-      "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
-      "forbiddenContent": ["secret values", "private tenant IDs", "unscoped competitive claims"],
-      "primaryActions": ["view_product", "join_waitlist"]
-    },
-    {
-      "route": "/research/browserops",
-      "title": "BrowserOps Research",
-      "purpose": "Document BrowserOps verification scenarios, observed browser evidence, and the safety boundaries on those measurements.",
-      "audience": ["technical buyers", "browser automation teams", "release reviewers"],
-      "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
-      "forbiddenContent": ["secret values", "private target URLs", "CAPTCHA bypass claims", "unbounded automation claims"],
-      "primaryActions": ["view_product", "join_waitlist"]
-    },
-    {
-      "route": "/research/repointel",
-      "title": "RepoIntel Research",
-      "purpose": "Document repository indexing and grounded-answer evidence with explicit corpus, revision, and interpretation boundaries.",
-      "audience": ["technical buyers", "developer tooling teams", "release reviewers"],
-      "requiredContent": ["methodology", "result_table", "environment", "limitations", "proof_points"],
-      "forbiddenContent": ["private repository content", "secret values", "unscoped codebase claims"],
-      "primaryActions": ["view_product", "join_waitlist"]
+      "purpose": "Publish the dated 500-question LongMemEval-S result, fixed method, question-type breakdown, failures, and interpretation limits.",
+      "audience": ["technical buyers", "memory system builders", "research readers"],
+      "requiredContent": ["run_date", "sample_size", "methodology", "headline_results", "question_type_results", "failures", "quality_gate_status", "limitations", "source_link"],
+      "forbiddenContent": ["hosted latency claims", "private tenant data", "deployment configuration", "MCP hooks", "unscoped competitive claims"],
+      "primaryActions": ["view_product", "view_source"]
     },
     {
       "route": "/waitlist",
       "title": "Waitlist",
-      "purpose": "Provide a dedicated conversion route for gated Monarchic and MCP access.",
-      "audience": ["prospects", "buyers", "agent builders"],
-      "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "current_offer"],
-      "forbiddenContent": ["instant access promises", "unsupported launch dates", "private CRM labels"],
+      "purpose": "Collect an email address for WIP product availability and account-access updates.",
+      "audience": ["prospects", "buyers", "agent users"],
+      "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "wip_scope"],
+      "forbiddenContent": ["instant access promises", "unsupported launch dates", "private CRM labels", "website release status"],
       "primaryActions": ["join_waitlist"]
     },
     {
       "route": "/privacy",
       "title": "Privacy Notice",
-      "purpose": "Explain Monarchic's current data handling for the website, accounts, billing, hosted MCP requests, operational telemetry, and support contacts in clear bounded language.",
-      "audience": ["website visitors", "account holders", "buyers", "agent builders"],
+      "purpose": "Explain Monarchic's current data handling for the website, accounts, billing, hosted MCP requests, operational telemetry, and support contacts.",
+      "audience": ["website visitors", "account holders", "buyers", "agent users"],
       "requiredContent": ["effective_date", "controller_identity", "data_categories", "processing_purposes", "service_providers", "retention_boundary", "privacy_rights", "security_boundary", "contact_path"],
-      "forbiddenContent": ["unsupported compliance certifications", "guaranteed security claims", "secret values", "private customer data", "retention periods not backed by current operations"],
+      "forbiddenContent": ["unsupported compliance certifications", "guaranteed security claims", "secret values", "private customer data", "unsupported retention periods"],
       "primaryActions": ["contact_privacy", "read_terms"]
     },
     {
       "route": "/terms",
       "title": "Service Terms",
-      "purpose": "State the operating terms for Monarchic accounts, hosted MCP routes, usage metering, billing, customer content, acceptable use, and service availability.",
-      "audience": ["account holders", "buyers", "agent builders", "billing owners"],
+      "purpose": "State the operating terms for Monarchic accounts, hosted MCPs, credit metering, billing, customer content, acceptable use, and service availability.",
+      "audience": ["account holders", "buyers", "agent users", "billing owners"],
       "requiredContent": ["effective_date", "agreement_scope", "account_terms", "usage_metering", "acceptable_use", "customer_content", "third_party_services", "payment_terms", "suspension_boundary", "warranty_boundary", "liability_boundary", "change_notice", "contact_path"],
       "forbiddenContent": ["unsupported uptime commitments", "unpublished pricing promises", "secret values", "private customer data", "automatic compliance claims"],
       "primaryActions": ["contact_support", "read_privacy"]

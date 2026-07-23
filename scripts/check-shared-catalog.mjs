@@ -131,32 +131,48 @@ async function checkBuildInfoDigestMarker(label, projectDir) {
   const requiredMarkers = [
     "catalogManifest",
     "manifestDigest: catalogManifest.artifactDigest",
-    "artifactSource: catalogManifest.source",
-    "artifactGenerated: catalogManifest.generatedArtifact",
-    "artifactGeneratedBy: catalogManifest.generatedBy",
-    "artifactDeployableCopies: catalogManifest.deployableCopies",
     "artifactDigest: await catalogArtifactDigest()",
-    "artifactFiles",
-    "artifactFileHashes",
     "deployment",
     "VERCEL_GIT_COMMIT_SHA",
-    "VERCEL_GIT_COMMIT_REF",
-    "VERCEL_GIT_REPO_OWNER",
-    "VERCEL_GIT_REPO_SLUG",
-    "VERCEL_ENV",
-    "VERCEL_URL",
+    "totalPlans: allPlans.length",
+    "planSlugs: sortedSlugs(allPlans)",
+    '"X-Robots-Tag": "noindex, nofollow"',
     '"pricing.ts"',
     '"pricing.generated.json"',
     '"pricing.coming-soon.json"',
     '"productDetails.ts"',
   ];
   const missing = requiredMarkers.filter((marker) => !buildInfo.includes(marker));
-  if (missing.length === 0) {
-    console.log(`ok     ${label} build-info catalog digest markers`);
+  const forbiddenMarkers = [
+    "generatedAt:",
+    "routes:",
+    "artifactSource:",
+    "artifactGenerated:",
+    "artifactGeneratedBy:",
+    "artifactDeployableCopies:",
+    "artifactFiles:",
+    "artifactFileHashes:",
+    "VERCEL_GIT_COMMIT_REF",
+    "VERCEL_GIT_REPO_OWNER",
+    "VERCEL_GIT_REPO_SLUG",
+    "VERCEL_ENV",
+    "VERCEL_URL",
+    "availablePlans:",
+    "comingSoonPlans:",
+    "requiredCatalogSlugs",
+  ];
+  const exposed = forbiddenMarkers.filter((marker) => buildInfo.includes(marker));
+  if (missing.length === 0 && exposed.length === 0) {
+    console.log(`ok     ${label} build-info minimal catalog digest markers`);
     return;
   }
   failed = true;
-  console.error(`missing ${label} build-info catalog digest markers: ${missing.join(", ")}`);
+  if (missing.length > 0) {
+    console.error(`missing ${label} build-info catalog digest markers: ${missing.join(", ")}`);
+  }
+  if (exposed.length > 0) {
+    console.error(`exposed ${label} build-info internal markers: ${exposed.join(", ")}`);
+  }
 }
 
 function digest(buffer) {

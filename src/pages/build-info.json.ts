@@ -1,21 +1,10 @@
-import { allPlans, availablePlans, comingSoonPlans } from "../lib/pricing";
+import { allPlans } from "../lib/pricing";
 import generatedPlans from "../lib/pricing.generated.json" with { type: "json" };
 import comingSoonPlansJson from "../lib/pricing.coming-soon.json" with { type: "json" };
 import catalogManifest from "../lib/catalog.manifest.json" with { type: "json" };
 import { productDetails } from "../lib/productDetails";
 
 export const prerender = true;
-
-const requiredCatalogSlugs = [
-  "usage-individual",
-  "usage-developer",
-  "usage-team",
-  "usage-business",
-  "mcp-browserops",
-  "mcp-explicitmem",
-  "mcp-repointel",
-  "monarchic-ai",
-];
 
 function sortedSlugs(plans: { slug: string }[]): string[] {
   return plans.map((plan) => plan.slug).sort();
@@ -59,48 +48,21 @@ export async function GET() {
     JSON.stringify({
       app: "website",
       deployment: {
-        generatedAt: new Date().toISOString(),
-        vercelEnv: envString(import.meta.env.VERCEL_ENV),
-        vercelUrl: envString(import.meta.env.VERCEL_URL),
         commitSha: envString(import.meta.env.VERCEL_GIT_COMMIT_SHA),
-        commitRef: envString(import.meta.env.VERCEL_GIT_COMMIT_REF),
-        repoOwner: envString(import.meta.env.VERCEL_GIT_REPO_OWNER),
-        repoSlug: envString(import.meta.env.VERCEL_GIT_REPO_SLUG),
       },
-      routes: [
-        "/",
-        "/products",
-        "/tutorial",
-        "/waitlist",
-        "/research",
-        "/robots.txt",
-        "/sitemap.xml",
-      ],
       catalog: {
         totalPlans: allPlans.length,
-        availablePlans: sortedSlugs(availablePlans),
-        comingSoonPlans: sortedSlugs(comingSoonPlans),
-        artifactSource: catalogManifest.source,
-        artifactGenerated: catalogManifest.generatedArtifact,
-        artifactGeneratedBy: catalogManifest.generatedBy,
-        artifactDeployableCopies: catalogManifest.deployableCopies,
+        planSlugs: sortedSlugs(allPlans),
         manifestDigest: catalogManifest.artifactDigest,
         artifactDigest: await catalogArtifactDigest(),
-        artifactFiles: [
-          "pricing.ts",
-          "pricing.generated.json",
-          "pricing.coming-soon.json",
-          "productDetails.ts",
-        ],
-        artifactFileHashes: catalogManifest.files,
       },
-      requiredCatalogSlugs,
-      socialImage: "/social-card.png?v=1",
+      socialImage: "/social-card.png?v=2",
     }),
     {
       headers: {
         "Cache-Control": "public, max-age=0, must-revalidate",
         "Content-Type": "application/json; charset=utf-8",
+        "X-Robots-Tag": "noindex, nofollow",
       },
     },
   );

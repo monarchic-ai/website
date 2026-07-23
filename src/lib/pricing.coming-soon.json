@@ -2,13 +2,13 @@
   {
     "kind": "ai",
     "slug": "monarchic-ai",
-    "displayName": "Monarchic AI",
-    "tagline": "Autonomous development platform, coming later",
-    "description": "The full Monarchic agent system on top of the hosted MCP stack. Autonomous, observable, infrastructure-backed agent runs with the entire Monarchic toolchain wired in. Join the waitlist and we will reach out when launch access opens.",
+    "displayName": "Monarchic",
+    "tagline": "Long-running agent workflows, in development",
+    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. The individual MCP catalog is available separately.",
     "featureBullets": [
-      "Hosted agent runs with the Monarchic MCP stack wired in",
-      "Infrastructure-backed execution with receipts and review artifacts",
-      "Account controls, billing, and launch access managed through Monarchic"
+      "Long-running, observable agent workflows",
+      "Reviewable run artifacts and account controls",
+      "Built around the hosted Monarchic MCP catalog"
     ],
     "status": "coming_soon",
     "prices": []
@@ -18,16 +18,16 @@
     "slug": "usage-evaluation",
     "displayName": "Evaluation",
     "tagline": "A bounded first run through the hosted MCP catalog",
-    "description": "Evaluate hosted Monarchic MCP routes with a one-time credit allowance and a hard usage cap before choosing a paid plan.",
+    "description": "Try available hosted Monarchic MCPs with a one-time trial allowance and a hard usage cap before choosing a paid plan.",
     "featureBullets": [
-      "200 one-time evaluation credits",
+      "200 one-time trial credits",
       "Verified email required",
       "No card and no overage"
     ],
     "includedCredits": 200,
-    "creditAllowanceLabel": "200 one-time credits",
+    "creditAllowanceLabel": "200 one-time trial credits",
     "overageLabel": "No overage",
-    "usageSummary": "Metadata and configuration calls are free. Standard hosted operations use one credit; stateful and infrastructure-backed work uses more.",
+    "usageSummary": "Trial credits can be used across available hosted MCPs. More expensive operations use more credits.",
     "status": "coming_soon",
     "prices": []
   },
@@ -35,17 +35,18 @@
     "kind": "usage-plan",
     "slug": "usage-developer",
     "displayName": "Developer",
-    "tagline": "Production capacity for one active developer",
-    "description": "For one developer using hosted MCPs across local agents, CI checks, and recurring production workflows.",
+    "tagline": "Capacity for one active developer",
+    "description": "For one developer using available hosted MCPs across local agents, CI checks, and recurring workflows.",
     "featureBullets": [
       "4,000 included credits each month",
-      "Usage access across hosted MCP routes",
+      "One shared allowance across available hosted MCPs",
       "$0.025 per additional credit after the allowance",
       "Scoped API keys and account usage controls"
     ],
     "includedCredits": 4000,
+    "creditAllowanceLabel": "4,000 included credits/mo",
     "overageLabel": "$0.025/credit overage",
-    "usageSummary": "Metadata and configuration calls are free. Standard hosted operations use one credit; stateful analysis starts at three credits, and browser or provider-backed work follows measured usage.",
+    "usageSummary": "Standard hosted operations use one credit. Stateful analysis starts at three credits, while browser and provider-backed work follows measured usage.",
     "highlighted": true,
     "status": "coming_soon",
     "prices": [
@@ -69,16 +70,16 @@
     "kind": "usage-plan",
     "slug": "usage-business",
     "displayName": "Business",
-    "tagline": "Contract capacity for sustained hosted workloads",
+    "tagline": "Capacity and support for sustained hosted workloads",
     "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
     "featureBullets": [
       "75,000-credit monthly capacity starting point",
+      "One shared allowance across available hosted MCPs",
       "Volume and overage terms based on measured workload",
-      "Support and service objectives defined in the agreement",
-      "Security and deployment review before activation"
+      "Support and service objectives defined in the agreement"
     ],
     "includedCredits": 75000,
-    "creditAllowanceLabel": "75,000+ credits/mo",
+    "creditAllowanceLabel": "75,000+ included credits/mo",
     "overageLabel": "Contract terms",
     "usageSummary": "Business pricing is quoted from expected route mix, external-provider exposure, concurrency, support, and service requirements.",
     "status": "contact_sales",
@@ -87,15 +88,35 @@
   },
   {
     "kind": "single-mcp",
+    "slug": "mcp-cicd",
+    "displayName": "CI/CD MCP",
+    "tagline": "Pipeline diagnostics, release gates, and workflow analysis",
+    "description": "CI/CD MCP diagnoses delivery pipelines, evaluates release gates, and exports pipeline architecture. Public access is still a work in progress.",
+    "featureBullets": [
+      "Diagnose failed and slow pipeline runs",
+      "Evaluate release readiness from provider evidence",
+      "Export pipeline graphs for architecture analysis"
+    ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Its operations will use the shared account allowance when access opens.",
+    "lifecycle": "production",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
     "slug": "mcp-browserops",
     "displayName": "BrowserOps MCP",
     "tagline": "Browser evidence and UI verification",
-    "description": "BrowserOps MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "description": "BrowserOps MCP captures screenshots, console failures, network failures, and visible-page assertions. Public hosted access remains a work in progress.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Capture browser evidence for UI reviews",
+      "Check visible content, console output, and network failures",
+      "Package screenshots and observations for handoff"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "WIP products are not available for checkout. Browser-backed operations will use the shared account credit model when access opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
@@ -103,13 +124,16 @@
     "kind": "single-mcp",
     "slug": "mcp-businessmodel",
     "displayName": "BusinessModel MCP",
-    "tagline": "Business model design and analysis tools",
-    "description": "BusinessModel MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Business-model research and execution gates",
+    "description": "BusinessModel MCP turns company research into a reviewable business model and can gate engineering work until that model is approved.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Produce reviewable company synthesis reports",
+      "Keep business evidence attached to decisions",
+      "Gate downstream execution until approval"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
@@ -117,13 +141,16 @@
     "kind": "single-mcp",
     "slug": "mcp-create-project",
     "displayName": "Create Project MCP",
-    "tagline": "Project scaffolding from structured intent",
-    "description": "Create Project MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Governed project creation from structured intent",
+    "description": "Create Project MCP turns structured project intent into a known scaffold instead of asking agents to improvise repository setup.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Select from maintained project templates",
+      "Return structured project-creation results",
+      "Report setup failures without hiding them"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
@@ -131,69 +158,67 @@
     "kind": "single-mcp",
     "slug": "mcp-explicitmem",
     "displayName": "ExplicitMem MCP",
-    "tagline": "Durable agent memory",
-    "description": "ExplicitMem MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Durable, inspectable memory for long-running agents",
+    "description": "ExplicitMem MCP stores and retrieves explicit memory across agent sessions while keeping the remembered objects and retrieval evidence inspectable.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Persist facts, preferences, goals, and working context",
+      "Retrieve bounded context with evidence",
+      "Audit memory objects and changes"
     ],
-    "status": "coming_soon",
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "status": "available",
     "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-incidentops",
     "displayName": "IncidentOps MCP",
-    "tagline": "Incident response evidence and coordination",
-    "description": "IncidentOps MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits rather than being sold as a separate fixed-price subscription.",
+    "tagline": "Incident evidence, triage, and response coordination",
+    "description": "IncidentOps MCP combines operational evidence into timelines, triage, response packets, rollback plans, and guarded provider updates.",
     "featureBullets": [
-      "Build evidence-backed incident timelines and response packets",
-      "Prepare guarded provider updates with dry-run controls",
-      "Use the authenticated hosted route through account credits"
+      "Build incident timelines from multiple evidence sources",
+      "Create response packets and recovery checks",
+      "Keep external updates guarded and reviewable"
     ],
-    "status": "coming_soon",
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "status": "available",
     "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-infraprofiler",
     "displayName": "InfraProfiler MCP",
-    "tagline": "Infrastructure and pipeline performance intelligence",
-    "description": "InfraProfiler MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits rather than being sold as a separate fixed-price subscription.",
+    "tagline": "Infrastructure, cost, and pipeline intelligence",
+    "description": "InfraProfiler MCP connects infrastructure and delivery evidence so teams can rank cost, reliability, saturation, and deployment bottlenecks.",
     "featureBullets": [
-      "Rank infrastructure, CI/CD, cost, reliability, and delivery hotspots",
-      "Build merged architecture graphs and CodeGraph Studio exports",
-      "Use guarded hosted provider access through account credits"
+      "Rank infrastructure and delivery hotspots",
+      "Trace cost, reliability, and latency signals",
+      "Export architecture graphs and optimization plans"
     ],
-    "status": "coming_soon",
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "status": "available",
     "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-leadgenerator",
     "displayName": "LeadGenerator MCP",
-    "tagline": "Outbound lead discovery and enrichment",
-    "description": "LeadGenerator MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Evidence-backed lead targeting and buyer research",
+    "description": "LeadGenerator MCP turns an approved business model and validated enrichment into ranked organizations, buyer personas, people, and outreach angles.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Build ranked target-account lists",
+      "Connect buyer research to source evidence",
+      "Prepare practical outreach angles"
     ],
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-monarchic",
-    "displayName": "Monarchic MCP",
-    "tagline": "Monarchic orchestration interface",
-    "description": "Monarchic MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
-    "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
-    ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
@@ -201,13 +226,16 @@
     "kind": "single-mcp",
     "slug": "mcp-pty",
     "displayName": "PTY MCP",
-    "tagline": "Hosted terminal execution bridge",
-    "description": "PTY MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Observable terminal sessions for agents",
+    "description": "PTY MCP gives agents a structured way to start terminal sessions, send input, read output, and close sessions.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Run interactive terminal sessions through MCP",
+      "Keep command output visible for review",
+      "Use one consistent terminal interface across clients"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
@@ -215,27 +243,33 @@
     "kind": "single-mcp",
     "slug": "mcp-releaseops",
     "displayName": "ReleaseOps MCP",
-    "tagline": "Release workflow automation",
-    "description": "ReleaseOps MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Release readiness, evidence, and handoff",
+    "description": "ReleaseOps MCP turns release readiness into structured checks, manifests, changelog scope, and reviewer-friendly evidence packs.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Evaluate release readiness",
+      "Catch missing documentation and artifacts",
+      "Export a reviewable release pack"
     ],
-    "status": "coming_soon",
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "status": "available",
     "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-repo-fleet",
     "displayName": "Repo Fleet MCP",
-    "tagline": "Multi-repository fleet inventory",
-    "description": "Repo Fleet MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Multi-repository inventory and coordinated operations",
+    "description": "Repo Fleet MCP gives organizations a consistent inventory and operating surface across many repositories.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Inventory repositories and their state",
+      "Coordinate bounded fleet-wide operations",
+      "Return machine-readable results and failures"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
@@ -243,81 +277,67 @@
     "kind": "single-mcp",
     "slug": "mcp-repointel",
     "displayName": "RepoIntel MCP",
-    "tagline": "Code-base intelligence as a hosted MCP",
-    "description": "RepoIntel MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Repository maps, documentation, and targeted code intelligence",
+    "description": "RepoIntel MCP gives agents repository maps, generated documentation, workflow context, and targeted evidence for large codebases.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Orient agents in unfamiliar repositories",
+      "Query generated architecture and workflow context",
+      "Ground plans in indexed repository evidence"
     ],
-    "status": "coming_soon",
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "status": "available",
     "prices": []
   },
   {
     "kind": "single-mcp",
     "slug": "mcp-seo",
     "displayName": "SEO MCP",
-    "tagline": "Deterministic SEO workflow tools",
-    "description": "SEO MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "tagline": "Deterministic SEO inspection and planning",
+    "description": "SEO MCP discovers routes, inspects live pages, plans internal links, and runs repeatable ranking-pipeline checks.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Discover and inspect public routes",
+      "Plan internal links from site evidence",
+      "Run repeatable ranking checks"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-outreachconnectors",
-    "displayName": "OutreachConnectors MCP",
-    "tagline": "Outbound delivery connector layer",
-    "description": "OutreachConnectors MCP is part of the hosted Monarchic MCP catalog. Access is included through usage-plan credits as the route opens, instead of being sold as a separate fixed-price subscription.",
+    "slug": "mcp-webcomposer",
+    "displayName": "WebComposer MCP",
+    "tagline": "Website structure and composition constraints",
+    "description": "WebComposer MCP defines site content, page structure, and layout constraints before implementation begins.",
     "featureBullets": [
-      "Hosted MCP route under the Monarchic API",
-      "Scoped API-key access through the dashboard",
-      "Usage counted through the account credit pool"
+      "Separate content requirements from page geometry",
+      "Plan ordered page sections from reusable templates",
+      "Check content coverage before implementation"
     ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   },
   {
-    "kind": "bundle",
-    "slug": "bundle-developer",
-    "displayName": "Developer Workflow Pack",
-    "tagline": "Repo intelligence, memory, browser checks, and terminal evidence",
-    "description": "A capability grouping for developer-agent workflows. These routes are included under usage-plan credits rather than sold as a separate checkout bundle.",
+    "kind": "single-mcp",
+    "slug": "mcp-webimplementer",
+    "displayName": "WebImplementer MCP",
+    "tagline": "Bounded implementation from validated web specifications",
+    "description": "WebImplementer MCP turns a validated WebComposer plan into a bounded repository patch and a BrowserOps-ready review loop.",
     "featureBullets": [
-      "RepoIntel, ExplicitMem, BrowserOps, PTY, and ReleaseOps workflow coverage",
-      "Usage-based access through account credits",
-      "Useful for coding agents, UI review, and release checks"
+      "Bind page intent to an existing repository",
+      "Keep generated changes inside an explicit write scope",
+      "Prepare rendered checks before applying a patch"
     ],
-    "includedMcpSlugs": [
-      "mcp-repointel",
-      "mcp-explicitmem",
-      "mcp-browserops",
-      "mcp-pty"
-    ],
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "bundle",
-    "slug": "bundle-go-to-market",
-    "displayName": "Go-To-Market Workflow Pack",
-    "tagline": "Business modeling, lead generation, SEO, and outreach preparation",
-    "description": "A capability grouping for market research and revenue workflows. It maps to the same usage-plan credit pool as the rest of the hosted catalog.",
-    "featureBullets": [
-      "BusinessModel, LeadGenerator, SEO, and OutreachConnectors coverage",
-      "Usage-based access through account credits",
-      "Useful for research, positioning, lists, and campaign preparation"
-    ],
-    "includedMcpSlugs": [
-      "mcp-businessmodel",
-      "mcp-leadgenerator",
-      "mcp-seo",
-      "mcp-outreachconnectors"
-    ],
+    "creditAllowanceLabel": "Shared plan credits",
+    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account credit model when it opens.",
+    "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
   }

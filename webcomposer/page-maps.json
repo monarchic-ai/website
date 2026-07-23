@@ -18,61 +18,61 @@
         ]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose the primary product, tutorial, and research routes." },
-        { "id": "introduction", "template": "hero.split", "purpose": "Place the hosted MCP offer beside a compact route catalog in the first viewport." },
-        { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Keep scoped quality and hosted latency metrics easy to scan." },
-        { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain usage pricing beside route and capacity decisions." },
-        { "id": "waitlist", "template": "form.inline", "purpose": "Capture gated-access demand with one email field and a clear action." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose products, app documentation, and research." },
+        { "id": "introduction", "template": "hero.split", "purpose": "Introduce the catalog beside a short selection of available MCPs." },
+        { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Show the four current ExplicitMem benchmark metrics with their scope." },
+        { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain the shared credit model and routes into the product catalog." },
+        { "id": "waitlist", "template": "form.inline", "purpose": "Collect interest in MCPs currently marked WIP." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
       "route": "/products",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "stats.strip", "integrations.catalog", "pricing.tiers", "form.inline", "footer.multi_column"],
+        "requiredTemplates": ["nav.horizontal", "hero.centered", "stats.strip", "pricing.tiers", "integrations.catalog", "split.asymmetric", "cta.banner", "footer.multi_column"],
         "exactTemplateCounts": {
           "nav.horizontal": 1,
+          "hero.centered": 1,
           "stats.strip": 1,
-          "integrations.catalog": 1,
           "pricing.tiers": 1,
-          "form.inline": 1
+          "integrations.catalog": 1,
+          "split.asymmetric": 1,
+          "cta.banner": 1
         },
         "mustStartWith": ["nav.horizontal"],
         "mustEndWith": ["footer.multi_column"],
         "mustAppearBefore": [
           { "before": "pricing.tiers", "after": "integrations.catalog" },
-          { "before": "pricing.tiers", "after": "form.inline" }
+          { "before": "integrations.catalog", "after": "split.asymmetric" },
+          { "before": "split.asymmetric", "after": "cta.banner" }
         ]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level website routes." },
-        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce synchronized hosted pricing and the account-based purchase boundary." },
-        { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize evaluation credits, plans, routes, and checkout state." },
-        { "id": "platform_status", "template": "split.asymmetric", "purpose": "Separate the future Monarchic platform from the current MCP launch focus." },
-        { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for the major catalog groups." },
-        { "id": "usage_tiers", "template": "pricing.tiers", "purpose": "Place monthly and annual usage capacity before the route catalog, linking eligible plans to the webapp while keeping preview tiers non-purchasable." },
-        { "id": "mcp_routes", "template": "integrations.catalog", "purpose": "Render one compact row or tile per hosted MCP with its name, category, availability, one-sentence summary, Details link, and optional Research link; do not repeat full capability, best-fit, or inclusion lists in the index." },
-        { "id": "workflow_packs", "template": "grid.product_cards", "purpose": "Present workflow bundles as related product cards." },
-        { "id": "coming_soon", "template": "grid.product_cards", "purpose": "Keep unavailable products visibly separate from purchasable plans." },
-        { "id": "waitlist", "template": "form.inline", "purpose": "Capture route-specific onboarding demand before the page ends." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level public routes and app documentation." },
+        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce plans and MCPs under one shared credit allowance." },
+        { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize five plans, fifteen MCPs, and clear Available or WIP status." },
+        { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and the credit model." },
+        { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual credit plans and show an eligible next action." },
+        { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Render all fifteen current MCPs with category, Available or WIP status, summary, details, and a benchmark link only for ExplicitMem." },
+        { "id": "how-credits-work", "template": "split.asymmetric", "purpose": "Explain how one account allowance covers every available MCP." },
+        { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
       "route": "/products/mcp-explicitmem",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "stats.strip", "feature.grid", "cta.banner", "footer.multi_column"],
+        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "feature.grid", "proof.metric_story", "cta.banner", "footer.multi_column"],
         "mustStartWith": ["nav.horizontal"],
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, tutorial, and research navigation available." },
-        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product capability and evidence beside availability and access state." },
-        { "id": "proof_summary", "template": "stats.strip", "purpose": "Show benchmark metrics with compact source boundaries." },
-        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange capabilities, use cases, and outcomes for comparison." },
-        { "id": "research_bridge", "template": "proof.metric_story", "purpose": "Connect the strongest measured result to methodology and limitations." },
-        { "id": "access", "template": "cta.banner", "purpose": "Route gated demand to the waitlist and research evidence." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
+        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place ExplicitMem positioning and capabilities beside its shared-credit access state." },
+        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange capabilities, buyer fit, outcomes, and workflows." },
+        { "id": "benchmark", "template": "proof.metric_story", "purpose": "Link the qualifying LongMemEval-S result with its method and limitations." },
+        { "id": "access", "template": "cta.banner", "purpose": "Route buyers to plans, the benchmark, and the catalog." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
@@ -83,42 +83,26 @@
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, tutorial, and research navigation available." },
-        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capability summary beside synchronized monthly and annual price state and an eligibility-aware webapp purchase link." },
-        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities and buyer-fit guidance without repeating the entire catalog index." },
-        { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to webapp purchase, gated products to the waitlist, and all products back to catalog or research evidence." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with catalog, tutorial, research, and company navigation." }
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
+        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capabilities beside its price or access status." },
+        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities, buyer fit, outcomes, and workflows." },
+        { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to purchase, available MCPs to plans, WIP products to the waitlist, and all products back to the catalog." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
       "route": "/research",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "hero.split", "grid.card_responsive", "footer.multi_column"],
+        "requiredTemplates": ["nav.horizontal", "hero.split", "grid.card_responsive", "split.asymmetric", "footer.multi_column"],
         "mustStartWith": ["nav.horizontal"],
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose the primary website routes." },
-        { "id": "research_intro", "template": "hero.split", "purpose": "Frame product research beside the current catalog state." },
-        { "id": "evidence_index", "template": "grid.card_responsive", "purpose": "Present equally weighted research summaries with direct evidence links." },
-        { "id": "scope_boundary", "template": "split.asymmetric", "purpose": "Keep measurement limits adjacent to the results they qualify." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
-      ]
-    },
-    {
-      "route": "/tutorial",
-      "constraints": {
-        "requiredTemplates": ["nav.horizontal", "hero.split", "process.stepper", "docs.toc_content", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
-      },
-      "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose the primary website routes." },
-        { "id": "tutorial_intro", "template": "hero.split", "purpose": "State prerequisites and hosted delivery before configuration details." },
-        { "id": "setup_sequence", "template": "process.stepper", "purpose": "Present the bounded setup workflow in order." },
-        { "id": "quickstart", "template": "docs.toc_content", "purpose": "Arrange configuration, first workflow, validation, and limitations as a reference guide." },
-        { "id": "access", "template": "cta.banner", "purpose": "Connect tutorial readers to products, evidence, and gated access." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose products, app documentation, and research." },
+        { "id": "research_intro", "template": "hero.split", "purpose": "State the publication bar beside the research introduction." },
+        { "id": "published-benchmarks", "template": "grid.card_responsive", "purpose": "Present the one qualifying ExplicitMem benchmark with its metrics, gate status, and direct links." },
+        { "id": "scope_boundary", "template": "split.asymmetric", "purpose": "Explain why BrowserOps and RepoIntel do not yet meet the public benchmark bar." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
@@ -129,47 +113,13 @@
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product and research navigation available." },
-        { "id": "report_header", "template": "header.detail_status", "purpose": "Identify the benchmark, environment, and evidence status." },
-        { "id": "benchmark_results", "template": "dashboard.kpi_chart_table", "purpose": "Keep headline metrics and tabular results in one evidence surface." },
-        { "id": "methodology", "template": "feature.grid", "purpose": "Separate methodology, environment, and limitations into readable blocks." },
-        { "id": "sources", "template": "article.prose_aside", "purpose": "Present source links beside scope and interpretation notes." },
-        { "id": "product_bridge", "template": "cta.banner", "purpose": "Connect the report to the ExplicitMem product and waitlist." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
-      ]
-    },
-    {
-      "route": "/research/browserops",
-      "constraints": {
-        "requiredTemplates": ["nav.horizontal", "header.detail_status", "dashboard.kpi_chart_table", "article.prose_aside", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
-      },
-      "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product and research navigation available." },
-        { "id": "report_header", "template": "header.detail_status", "purpose": "Identify the BrowserOps verification scope, environment, and evidence status." },
-        { "id": "verification_results", "template": "dashboard.kpi_chart_table", "purpose": "Keep scenario outcomes and receipt-backed browser observations in one evidence surface." },
-        { "id": "methodology", "template": "feature.grid", "purpose": "Separate method, environment, safety boundaries, and limitations." },
-        { "id": "sources", "template": "article.prose_aside", "purpose": "Present source references beside scope and interpretation notes." },
-        { "id": "product_bridge", "template": "cta.banner", "purpose": "Connect the report to BrowserOps product access." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with catalog, tutorial, research, and company navigation." }
-      ]
-    },
-    {
-      "route": "/research/repointel",
-      "constraints": {
-        "requiredTemplates": ["nav.horizontal", "header.detail_status", "dashboard.kpi_chart_table", "article.prose_aside", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
-      },
-      "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product and research navigation available." },
-        { "id": "report_header", "template": "header.detail_status", "purpose": "Identify the RepoIntel corpus, revision boundary, and evidence status." },
-        { "id": "benchmark_results", "template": "dashboard.kpi_chart_table", "purpose": "Keep retrieval and grounded-answer results beside their tabular evidence." },
-        { "id": "methodology", "template": "feature.grid", "purpose": "Separate method, corpus, environment, and limitations." },
-        { "id": "sources", "template": "article.prose_aside", "purpose": "Present source references beside scope and interpretation notes." },
-        { "id": "product_bridge", "template": "cta.banner", "purpose": "Connect the report to RepoIntel product access." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with catalog, tutorial, research, and company navigation." }
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
+        { "id": "report_header", "template": "header.detail_status", "purpose": "Identify the dataset, sample, run status, and benchmark boundary." },
+        { "id": "results", "template": "dashboard.kpi_chart_table", "purpose": "Keep headline metrics and question-type results in one evidence surface." },
+        { "id": "methodology", "template": "feature.grid", "purpose": "Separate the fixed method, observed failures, and comparison boundary." },
+        { "id": "run_configuration", "template": "article.prose_aside", "purpose": "Present the reproducible configuration beside source and interpretation notes." },
+        { "id": "product_bridge", "template": "cta.banner", "purpose": "Connect the report to the ExplicitMem product." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
@@ -185,10 +135,10 @@
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, tutorial, and research routes available." },
-        { "id": "waitlist_intro", "template": "hero.split", "purpose": "Place gated-access context beside the conversion control." },
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research routes available." },
+        { "id": "waitlist_intro", "template": "hero.split", "purpose": "Explain that the form is for WIP product availability and account-access updates." },
         { "id": "waitlist_form", "template": "form.inline", "purpose": "Capture one email address with success, error, and privacy states." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with products, tutorial, research, access, and legal company context." }
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
@@ -199,10 +149,10 @@
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, tutorial, research, and access routes available." },
-        { "id": "privacy_notice", "template": "docs.toc_content", "purpose": "Present data categories, purposes, providers, retention, rights, security boundaries, and effective date as a readable policy document." },
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
+        { "id": "privacy_notice", "template": "docs.toc_content", "purpose": "Present data categories, purposes, providers, retention, rights, security boundaries, and effective date." },
         { "id": "privacy_contact", "template": "cta.banner", "purpose": "Provide a direct privacy contact and a route to the service terms." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, research, access, privacy, and terms navigation." }
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, privacy, and terms navigation." }
       ]
     },
     {
@@ -213,10 +163,10 @@
         "mustEndWith": ["footer.multi_column"]
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, tutorial, research, and access routes available." },
-        { "id": "service_terms", "template": "docs.toc_content", "purpose": "Present account, usage, billing, content, acceptable-use, availability, and liability boundaries as readable service terms." },
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
+        { "id": "service_terms", "template": "docs.toc_content", "purpose": "Present account, usage, billing, content, acceptable-use, availability, and liability boundaries." },
         { "id": "terms_contact", "template": "cta.banner", "purpose": "Provide a support contact and a route to the privacy notice." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, research, access, privacy, and terms navigation." }
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, privacy, and terms navigation." }
       ]
     }
   ]

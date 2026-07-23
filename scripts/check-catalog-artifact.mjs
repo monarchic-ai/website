@@ -13,6 +13,7 @@ const catalogFiles = [
 const libDir = resolve(process.cwd(), "src/lib");
 const manifestPath = resolve(libDir, "catalog.manifest.json");
 const buildInfoPath = resolve(process.cwd(), "src/pages/build-info.json.ts");
+const vercelConfigPath = resolve(process.cwd(), "vercel.json");
 
 let failed = false;
 
@@ -64,20 +65,12 @@ const buildInfo = await readFile(buildInfoPath, "utf8");
 for (const marker of [
   "catalogManifest",
   "manifestDigest: catalogManifest.artifactDigest",
-  "artifactSource: catalogManifest.source",
-  "artifactGenerated: catalogManifest.generatedArtifact",
-  "artifactGeneratedBy: catalogManifest.generatedBy",
-  "artifactDeployableCopies: catalogManifest.deployableCopies",
   "artifactDigest: await catalogArtifactDigest()",
-  "artifactFiles",
-  "artifactFileHashes",
   "deployment",
   "VERCEL_GIT_COMMIT_SHA",
-  "VERCEL_GIT_COMMIT_REF",
-  "VERCEL_GIT_REPO_OWNER",
-  "VERCEL_GIT_REPO_SLUG",
-  "VERCEL_ENV",
-  "VERCEL_URL",
+  "totalPlans: allPlans.length",
+  "planSlugs: sortedSlugs(allPlans)",
+  '"X-Robots-Tag": "noindex, nofollow"',
   '"pricing.ts"',
   '"pricing.generated.json"',
   '"pricing.coming-soon.json"',
@@ -88,6 +81,47 @@ for (const marker of [
   } else {
     fail(`build-info missing ${marker}`);
   }
+}
+
+for (const marker of [
+  "generatedAt:",
+  "routes:",
+  "artifactSource:",
+  "artifactGenerated:",
+  "artifactGeneratedBy:",
+  "artifactDeployableCopies:",
+  "artifactFiles:",
+  "artifactFileHashes:",
+  "VERCEL_GIT_COMMIT_REF",
+  "VERCEL_GIT_REPO_OWNER",
+  "VERCEL_GIT_REPO_SLUG",
+  "VERCEL_ENV",
+  "VERCEL_URL",
+  "availablePlans:",
+  "comingSoonPlans:",
+  "requiredCatalogSlugs",
+]) {
+  if (buildInfo.includes(marker)) {
+    fail(`build-info must not expose ${marker}`);
+  } else {
+    ok(`build-info omits ${marker}`);
+  }
+}
+
+const vercelConfig = await readJson(vercelConfigPath);
+const buildInfoNoindexPolicy = vercelConfig.headers?.find(
+  (entry) =>
+    entry?.source === "/build-info.json"
+    && entry.headers?.some(
+      (header) =>
+        header?.key?.toLowerCase() === "x-robots-tag"
+        && header.value === "noindex, nofollow",
+    ),
+);
+if (buildInfoNoindexPolicy) {
+  ok("vercel.json marks /build-info.json noindex, nofollow");
+} else {
+  fail("vercel.json must mark /build-info.json noindex, nofollow");
 }
 
 if (failed) {

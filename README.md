@@ -11,7 +11,8 @@ research surface. It currently owns:
 - the public products catalog at `/products`
 - individual product detail pages at `/products/[slug]`
 - the research index at `/research`
-- research pages for BrowserOps, ExplicitMem, and RepoIntel
+- the substantive ExplicitMem research page at `/research/explicitmem`
+- legacy BrowserOps and RepoIntel research URLs, which redirect to their product pages
 - generated `robots.txt` and `sitemap.xml` endpoints
 
 The authenticated product experience, cart, account pages, API-key management,
@@ -106,10 +107,11 @@ live deployment checklist and current smoke evidence.
   artifacts against `../shared/product-catalog` when the sibling workspace is
   present. In a standalone website checkout it skips cleanly so Vercel and
   GitHub can still build the deployable artifact copy.
-- `/build-info.json` exposes a `catalog.artifactDigest` and
-  `catalog.artifactFileHashes` for those generated artifacts. The live smoke
-  requires this provenance so deployment evidence can tie the public site back
-  to the exact catalog artifact set.
+- `/build-info.json` exposes one sorted `catalog.planSlugs` inventory plus
+  aggregate `catalog.manifestDigest` and `catalog.artifactDigest` values for
+  generated artifacts. The live smoke verifies that shape and both digests
+  without publishing internal file names or per-file hashes. The endpoint is
+  marked `noindex, nofollow`.
 - `vercel.json` defines the expected static deployment settings. Set
   `PUBLIC_MONARCHIC_WEBSITE_BASE_URL`, `PUBLIC_MONARCHIC_API_BASE_URL`, and
   `PUBLIC_MONARCHIC_WEBAPP_BASE_URL` from

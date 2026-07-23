@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Monarchic AI social preview</title>
-  <desc id="desc">A branded Monarchic AI preview card for hosted MCPs for production agents.</desc>
+  <title id="title">Monarchic social preview</title>
+  <desc id="desc">A branded Monarchic preview card for the hosted MCP catalog.</desc>
   <defs>
     <linearGradient id="panel" x1="120" y1="80" x2="1080" y2="560" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#151515"/>
@@ -31,18 +31,18 @@
       <path fill="#050505" d="M64.5 79.6c-3.4 2.8-8.3.4-8.3-4.1V44c0-4.4 5-6.9 8.4-4l22.2 19.2c2.7 2.3 2.7 6.6-.1 8.9L64.5 79.6Z"/>
       <path fill="#050505" d="M34 33.4c0-4.5 5.1-6.9 8.5-4l32.8 27.8c2.9 2.4 2.8 6.8-.1 9.1L42.4 91.1c-3.4 2.6-8.4.2-8.4-4.1V33.4Z" opacity=".72"/>
     </g>
-    <text x="270" y="145" fill="#f8f8f8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" font-weight="700" letter-spacing="0">MONARCHIC AI</text>
+    <text x="270" y="145" fill="#f8f8f8" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34" font-weight="700" letter-spacing="0">MONARCHIC</text>
     <text x="116" y="310" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="78" font-weight="760" letter-spacing="0">Hosted MCPs for</text>
-    <text x="116" y="398" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="78" font-weight="760" letter-spacing="0">production agents</text>
-    <text x="118" y="454" fill="#d7d7d7" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="27" font-weight="500" letter-spacing="0">RepoIntel, ExplicitMem, BrowserOps, and release-grade</text>
-    <text x="118" y="490" fill="#d7d7d7" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="27" font-weight="500" letter-spacing="0">context systems for launch teams.</text>
+    <text x="116" y="398" fill="#ffffff" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="78" font-weight="760" letter-spacing="0">agent workflows</text>
+    <text x="118" y="454" fill="#d7d7d7" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="27" font-weight="500" letter-spacing="0">Memory, repository intelligence, delivery, infrastructure,</text>
+    <text x="118" y="490" fill="#d7d7d7" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="27" font-weight="500" letter-spacing="0">and incident response under one shared plan.</text>
     <g fill="none" stroke="#ffffff" stroke-opacity="0.22" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="650" letter-spacing="0">
       <rect x="116" y="520" width="154" height="48" rx="24"/>
       <text x="144" y="552" fill="#ffffff" stroke="none">RepoIntel</text>
       <rect x="288" y="520" width="178" height="48" rx="24"/>
       <text x="316" y="552" fill="#ffffff" stroke="none">ExplicitMem</text>
-      <rect x="484" y="520" width="174" height="48" rx="24"/>
-      <text x="512" y="552" fill="#ffffff" stroke="none">BrowserOps</text>
+      <rect x="484" y="520" width="178" height="48" rx="24"/>
+      <text x="512" y="552" fill="#ffffff" stroke="none">IncidentOps</text>
     </g>
   </g>
 </svg>

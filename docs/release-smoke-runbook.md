@@ -211,7 +211,9 @@ For the current website smoke blockers, use Vercel MCP to confirm:
 
 - `monarchic.io` is routed to the `monarchic-ai/website` project
 - the production deployment serves the explicitly approved commit
-- `/build-info.json` reports the current commit and catalog digest
+- `/build-info.json` reports the current commit, a sorted `catalog.planSlugs`
+  inventory, and the catalog digest, and returns
+  `X-Robots-Tag: noindex, nofollow`
 - `/robots.txt` and `/sitemap.xml` are served by the same deployment without
   connect timeouts
 - `staging.monarchic.io` routes through `monarchic-website-staging-proxy` to

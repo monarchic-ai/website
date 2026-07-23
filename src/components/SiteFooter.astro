@@ -1,3 +1,7 @@
+---
+const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
+---
+
 <footer id="footer" class="grid gap-8 border-t-2 border-white py-8 sm:grid-cols-[1fr_auto] sm:items-end">
   <div>
     <a href="/" class="inline-flex items-center gap-3">
@@ -5,12 +9,12 @@
       <span class="text-xs font-extrabold uppercase">Monarchic</span>
     </a>
     <p class="mt-4 max-w-xl text-sm leading-6 text-white/58">
-      Hosted MCP routes for proof-backed agent engineering.
+      Hosted MCPs for software delivery, operations, research, and agent workflows.
     </p>
   </div>
   <nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-3 text-xs font-bold uppercase text-white/70 sm:justify-end">
     <a href="/products" class="hover:text-white">Products</a>
-    <a href="/tutorial" class="hover:text-white">Tutorial</a>
+    <a href={`${appBaseUrl}/docs`} class="hover:text-white">Docs</a>
     <a href="/research" class="hover:text-white">Research</a>
     <a href="/waitlist" class="hover:text-white">Access</a>
     <a href="/privacy" class="hover:text-white">Privacy</a>

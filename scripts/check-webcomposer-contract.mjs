@@ -10,18 +10,27 @@ const failures = [];
 checkFileIncludes("astro.config.mjs", ["devToolbar: { enabled: false }"]);
 
 checkFileIncludes("src/pages/index.astro", [
-  "Agent tools that leave evidence.",
+  "Better tools for production agents.",
   'href="/products"',
   'href="/research"',
+  'href={`${appBaseUrl}/docs`}',
   'href="#waitlist"',
+  "97.8%",
   "99.8%",
   "100%",
+  "63.3 ms",
+  "These results cover one local benchmark configuration.",
+  "One plan covers every available MCP.",
+  "Inspect all 15 available and WIP products",
+  "/research/explicitmem",
+]);
+checkForbidden("src/pages/index.astro", [
+  "Agent tools that leave evidence.",
+  "Hosted staging MCP route",
   "3.45s",
   "3.28s",
-  "Quality metrics come from the ExplicitMem benchmark.",
-  "Hosted",
-  "latency comes from staging MCP route smoke data.",
-  "/research/explicitmem",
+  "release checks",
+  "website proof",
 ]);
 
 checkFileIncludes("src/components/WaitlistForm.svelte", [
@@ -35,10 +44,12 @@ checkFileIncludes("src/components/SiteHeader.astro", [
   'id="navigation"',
   'aria-label="Primary navigation"',
   'aria-current={active === "products" ? "page" : undefined}',
+  'href={`${appBaseUrl}/docs`}',
   ">Monarchic</span>",
 ]);
 
 checkFileIncludes("src/components/SiteFooter.astro", [
+  'href={`${appBaseUrl}/docs`}',
   'href="/privacy"',
   'href="/terms"',
   "support@monarchic.io",
@@ -74,20 +85,51 @@ checkFileIncludes("src/pages/terms.astro", [
 checkFileIncludes("src/pages/sitemap.xml.ts", [
   '"/privacy"',
   '"/terms"',
+  '"/research/explicitmem"',
+  'plan.kind === "usage-plan" || plan.kind === "single-mcp"',
+]);
+checkForbidden("src/pages/sitemap.xml.ts", [
+  '"/tutorial"',
+  '"/research/browserops"',
+  '"/research/repointel"',
+]);
+
+checkFileIncludes("src/pages/tutorial.astro", [
+  "Astro.redirect",
+  "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
+  "https://app.monarchic.io",
+  "301",
+]);
+checkFileIncludes("src/pages/research/browserops.astro", [
+  'Astro.redirect("/products/mcp-browserops", 301)',
+]);
+checkFileIncludes("src/pages/research/repointel.astro", [
+  'Astro.redirect("/products/mcp-repointel", 301)',
 ]);
 
 checkFileIncludes("src/pages/products/index.astro", [
-  "Usage tiers are the current public paid products.",
-  "Synchronized Pricing, Account Checkout",
-  "Hosted MCP Routes",
-  "Hosted capabilities included through usage-plan credits.",
-  "Available plans continue in the secure Monarchic web app.",
+  "Plans and MCPs",
+  "Shared usage capacity",
+  "All Monarchic MCPs",
+  "One allowance, available MCPs",
+  "Every current public product",
+  "Listed for visibility and marked WIP",
+  "draw from that shared allowance according to their credit weight",
   "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
   "findPlanPrice",
   "Choose plan",
-  "WaitlistForm",
-  'id="waitlist"',
-  "Tell us which hosted routes you need.",
+  'id="plans"',
+  'id="mcp-catalog"',
+  'id="how-credits-work"',
+  'href={`${appBaseUrl}/docs`}',
+]);
+checkForbidden("src/pages/products/index.astro", [
+  "Synchronized Pricing, Account Checkout",
+  "Developer Workflow Pack",
+  "Monarchic AI",
+  "workflow_packs",
+  "platform_status",
+  "release checks",
 ]);
 
 checkFileIncludes("src/pages/products/[slug].astro", [
@@ -95,15 +137,21 @@ checkFileIncludes("src/pages/products/[slug].astro", [
   "isPurchasable",
   "annualPrice",
   "Choose plan",
+  "Included with an active credit plan",
+  "Public access is WIP",
+  "Calls draw from the included credits on your active plan.",
+  "Read benchmark",
   "lg:sticky lg:top-6",
 ]);
 
 checkFileIncludes("webcomposer/site-map.contract.json", [
-  "stripe_backed_prices",
-  "pricing_previews",
+  "five_credit_plans",
+  "fifteen_mcp_products",
+  "shared_credit_model",
   "purchase_link_for_available_plans",
-  "prices not present in the synchronized product catalog",
-  "checkout promises for unavailable products",
+  "checkout promises for WIP products",
+  "raw internal test output",
+  "500-question LongMemEval-S",
 ]);
 
 checkFileIncludes("webcomposer/page-maps.json", [
@@ -112,8 +160,48 @@ checkFileIncludes("webcomposer/page-maps.json", [
   '"template": "dashboard.metric_grid"',
   '"template": "docs.toc_content"',
   '"template": "form.inline"',
+  '"template": "cta.banner"',
 ]);
 
+checkFileIncludes("src/pages/research/index.astro", [
+  "Benchmarks and methodology.",
+  "ExplicitMem on LongMemEval-S",
+  "97.8%",
+  "99.8%",
+  "100%",
+  "63.3 ms",
+]);
+checkForbidden("src/pages/research/index.astro", [
+  'href="/research/browserops"',
+  'href="/research/repointel"',
+  "Hosted write p50",
+  "MCP hooks",
+]);
+
+checkFileIncludes("src/pages/research/explicitmem.astro", [
+  "Memory benchmark",
+  "500-question run",
+  "97.8%",
+  "99.8%",
+  "100%",
+  "63.3 ms",
+  "Run summary",
+  "500 questions",
+  "Temporal reasoning led the misses",
+  "No cross-system comparison",
+]);
+checkForbidden("src/pages/research/explicitmem.astro", [
+  "Hosted write p50",
+  "Hosted read p50",
+  "3.45s",
+  "3.28s",
+  "staging infrastructure smoke",
+  "MCP hooks",
+  "Gate not passed",
+  "internal gate",
+]);
+
+checkPublicCatalogComposition();
 checkContractSeparation();
 checkMissing("webcomposer/section-catalog.json");
 checkBrightSurfacePolicy("src");
@@ -173,6 +261,104 @@ function checkContractSeparation() {
     failures.push({ path: "webcomposer/page-maps.json", mismatch: { siteRoutes, mappedRoutes } });
   } else {
     checks.push("webcomposer/page-maps.json: route coverage matches sitemap");
+  }
+
+  for (const retiredRoute of [
+    "/tutorial",
+    "/research/browserops",
+    "/research/repointel",
+  ]) {
+    if (siteRoutes.includes(retiredRoute) || mappedRoutes.includes(retiredRoute)) {
+      failures.push({ path: "webcomposer", forbiddenRoute: retiredRoute });
+    } else {
+      checks.push(`webcomposer: redirect route omitted ${retiredRoute}`);
+    }
+  }
+}
+
+function checkPublicCatalogComposition() {
+  const generatedPlans = JSON.parse(read("src/lib/pricing.generated.json"));
+  const overlayPlans = JSON.parse(read("src/lib/pricing.coming-soon.json"));
+  const retiredSlugs = new Set([
+    "mcp-monarchic",
+    "mcp-outreachconnectors",
+    "mcp-verified",
+  ]);
+  const previewSlugs = new Set(["usage-developer", "usage-business"]);
+  const generatedPublicPlans = generatedPlans.filter(
+    (plan) =>
+      plan.kind === "usage-plan" &&
+      !retiredSlugs.has(plan.slug) &&
+      !previewSlugs.has(plan.slug),
+  );
+  const generatedPublicSlugs = new Set(generatedPublicPlans.map((plan) => plan.slug));
+  const catalog = [
+    ...generatedPublicPlans,
+    ...overlayPlans.filter(
+      (plan) =>
+        !retiredSlugs.has(plan.slug) &&
+        !generatedPublicSlugs.has(plan.slug),
+    ),
+  ];
+  const usageSlugs = catalog
+    .filter((plan) => plan.kind === "usage-plan")
+    .map((plan) => plan.slug)
+    .sort();
+  const mcpSlugs = catalog
+    .filter((plan) => plan.kind === "single-mcp")
+    .map((plan) => plan.slug)
+    .sort();
+  const expectedUsageSlugs = [
+    "usage-business",
+    "usage-developer",
+    "usage-evaluation",
+    "usage-individual",
+    "usage-team",
+  ];
+  const expectedMcpSlugs = [
+    "mcp-browserops",
+    "mcp-businessmodel",
+    "mcp-cicd",
+    "mcp-create-project",
+    "mcp-explicitmem",
+    "mcp-incidentops",
+    "mcp-infraprofiler",
+    "mcp-leadgenerator",
+    "mcp-pty",
+    "mcp-releaseops",
+    "mcp-repo-fleet",
+    "mcp-repointel",
+    "mcp-seo",
+    "mcp-webcomposer",
+    "mcp-webimplementer",
+  ];
+
+  if (JSON.stringify(usageSlugs) !== JSON.stringify(expectedUsageSlugs)) {
+    failures.push({
+      path: "src/lib/pricing",
+      expectedUsageSlugs,
+      actualUsageSlugs: usageSlugs,
+    });
+  } else {
+    checks.push("public catalog: exactly five credit plans");
+  }
+
+  if (JSON.stringify(mcpSlugs) !== JSON.stringify(expectedMcpSlugs)) {
+    failures.push({
+      path: "src/lib/pricing",
+      expectedMcpSlugs,
+      actualMcpSlugs: mcpSlugs,
+    });
+  } else {
+    checks.push("public catalog: exactly fifteen current MCPs");
+  }
+
+  for (const slug of retiredSlugs) {
+    if (mcpSlugs.includes(slug)) {
+      failures.push({ path: "src/lib/pricing", forbiddenPublicSlug: slug });
+    } else {
+      checks.push(`public catalog: retired slug omitted ${slug}`);
+    }
   }
 }
 

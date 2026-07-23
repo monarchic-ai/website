@@ -7,7 +7,7 @@ const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? 
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
-const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=1`;
+const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=2`;
 const expectedAppBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
     process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
@@ -20,11 +20,31 @@ const staticOnly = boolEnv(process.env.MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY);
 
 const checks = [];
 const requiredCatalogSlugs = [
+  "usage-evaluation",
+  "usage-individual",
+  "usage-developer",
+  "usage-team",
+  "usage-business",
   "mcp-browserops",
+  "mcp-businessmodel",
+  "mcp-cicd",
+  "mcp-create-project",
   "mcp-explicitmem",
+  "mcp-incidentops",
+  "mcp-infraprofiler",
+  "mcp-leadgenerator",
+  "mcp-pty",
+  "mcp-releaseops",
+  "mcp-repo-fleet",
   "mcp-repointel",
-  "bundle-developer",
-  "monarchic-ai",
+  "mcp-seo",
+  "mcp-webcomposer",
+  "mcp-webimplementer",
+];
+const forbiddenCatalogSlugs = [
+  "mcp-monarchic",
+  "mcp-outreachconnectors",
+  "mcp-verified",
 ];
 
 try {
@@ -36,189 +56,239 @@ try {
 }
 
 async function runSmoke() {
-await checkHttp(`${baseUrl}/`);
-await checkBuildInfo(`${baseUrl}/build-info.json`, {
-  app: "website",
-  requiredCatalogSlugs,
-});
-await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
-await checkText(`${baseUrl}/sitemap.xml`, "<urlset", "sitemap.xml");
-await checkTextIncludes(`${baseUrl}/tutorial`, [
-  "@monarchic-ai/repointel-mcp",
-  "MONARCHIC_API_BASE_URL",
-  "MONARCHIC_API_KEY",
-  "S3 is not the public MCP binary download path",
-], "tutorial static contract");
-
-if (staticOnly) {
-  checks.push({
-    name: "browser route checks",
-    status: "skipped",
-    reason: "MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY",
+  await checkHttp(`${baseUrl}/`);
+  await checkBuildInfo(`${baseUrl}/build-info.json`, {
+    app: "website",
+    requiredCatalogSlugs,
+    forbiddenCatalogSlugs,
   });
-  return;
-}
+  await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
+  await checkTextIncludes(`${baseUrl}/sitemap.xml`, [
+    "<urlset",
+    "/research/explicitmem",
+    "/products/mcp-cicd",
+    "/products/mcp-webcomposer",
+    "/products/mcp-webimplementer",
+  ], "sitemap.xml");
+  await checkTextExcludes(`${baseUrl}/sitemap.xml`, [
+    "/tutorial",
+    "/research/browserops",
+    "/research/repointel",
+    "/products/monarchic-ai",
+    "/products/mcp-monarchic",
+    "/products/mcp-outreachconnectors",
+    "/products/mcp-verified",
+  ], "sitemap.xml retired routes");
+  await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/docs`, "tutorial redirect");
+  await checkRedirect(
+    `${baseUrl}/research/browserops`,
+    `${baseUrl}/products/mcp-browserops`,
+    "BrowserOps research redirect",
+  );
+  await checkRedirect(
+    `${baseUrl}/research/repointel`,
+    `${baseUrl}/products/mcp-repointel`,
+    "RepoIntel research redirect",
+  );
 
-const browser = await chromium.launch({
-  headless: true,
-  executablePath,
-});
-
-try {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
-  let waitlistRequests = 0;
-  await page.route("**/v1/marketplace/waitlist", async (route) => {
-    waitlistRequests += 1;
-    const body = route.request().postDataJSON();
-    if (body.email !== "smoke+website@monarchic.ai") {
-      throw new Error(`unexpected waitlist email: ${body.email}`);
-    }
-    if (body.slug !== "monarchic-ai") {
-      throw new Error(`unexpected waitlist slug: ${body.slug}`);
-    }
-    await route.fulfill({
-      status: 200,
-      contentType: "application/json",
-      body: JSON.stringify({ accepted: true, alreadyOnWaitlist: false }),
+  if (staticOnly) {
+    checks.push({
+      name: "browser route checks",
+      status: "skipped",
+      reason: "MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY",
     });
+    return;
+  }
+
+  const browser = await chromium.launch({
+    headless: true,
+    executablePath,
   });
 
-  await checkPage(page, `${baseUrl}/`, async () => {
-    await page.getByRole("heading", { name: "Agent tools that leave evidence.", exact: true }).waitFor();
-    await page.getByRole("heading", { name: "MCP routes under one usage plan" }).waitFor();
-    await page.getByRole("link", { name: "View products" }).first().waitFor();
-    await page.getByRole("link", { name: "Research" }).first().waitFor();
-    await page.getByRole("link", { name: "Use the MCPs" }).first().waitFor();
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-    await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent engineering");
-    await expectMeta(page, "og:site_name", "Monarchic");
-    await expectMeta(page, "og:image", expectedSocialImageUrl);
-    await expectMeta(page, "og:image:width", "1200");
-    await expectMeta(page, "og:image:height", "630");
-    await expectMeta(page, "twitter:card", "summary_large_image");
-    await page.getByRole("link", { name: "Join waitlist" }).first().waitFor();
-    await page.getByText("Usage credits").first().waitFor();
-    await page.getByText("99.8%").first().waitFor();
-    await page.getByText("Hosted staging MCP route").first().waitFor();
-    await page.getByText("Quality metrics come from the ExplicitMem benchmark.").waitFor();
-    await page.getByText("One usage plan covers the hosted MCP catalog.").waitFor();
-    await expectNoExternalAppLinks(page);
-    await expectNoHorizontalOverflow(page);
-  }, "home route");
+  try {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    let waitlistRequests = 0;
+    await page.route("**/v1/marketplace/waitlist", async (route) => {
+      waitlistRequests += 1;
+      const body = route.request().postDataJSON();
+      if (body.email !== "smoke+website@monarchic.ai") {
+        throw new Error(`unexpected waitlist email: ${body.email}`);
+      }
+      if (body.slug !== "mcp-browserops") {
+        throw new Error(`unexpected waitlist slug: ${body.slug}`);
+      }
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ accepted: true, alreadyOnWaitlist: false }),
+      });
+    });
 
-  await checkPage(page, `${baseUrl}/products`, async () => {
-    await page.getByRole("heading", { name: "Hosted MCP Routes" }).first().waitFor();
-    await page.getByText("Synchronized Pricing, Account Checkout").waitFor();
-    await page.getByText("200 one-time credits").first().waitFor();
-    await page.getByText("Paid Plans").waitFor();
-    await page.getByText("MCP Routes").first().waitFor();
-    await page.getByRole("link", { name: "MCP routes", exact: true }).waitFor();
-    await page.getByRole("heading", { name: "Developer Workflow Pack" }).waitFor();
-    await page.getByRole("heading", { name: "RepoIntel MCP" }).waitFor();
-    const developerCard = page.locator('[data-plan-card="usage-developer"]');
-    await developerCard.getByText("$59 /mo", { exact: true }).waitFor();
-    await developerCard.getByText("Preview", { exact: true }).waitFor();
-    const individualCard = page.locator('[data-plan-card="usage-individual"]');
-    await individualCard.getByText("Annual $290/yr", { exact: false }).waitFor();
-    await expectHref(
-      individualCard.getByRole("link", { name: "Choose plan" }),
-      `${expectedAppBaseUrl}/products/usage-individual`,
-    );
-    const businessCard = page.locator('[data-plan-card="usage-business"]');
-    await businessCard.getByText("Contact sales", { exact: false }).first().waitFor();
-    const repoIntelCardText = await page.locator('[data-plan-card="mcp-repointel"]').textContent();
-    if (repoIntelCardText?.includes("$29") || repoIntelCardText?.includes("$49")) {
-      throw new Error("RepoIntel must not advertise a standalone price");
-    }
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
-    await expectNoHorizontalOverflow(page);
-  }, "products route");
+    await checkPage(page, `${baseUrl}/`, async () => {
+      await page.getByRole("heading", { name: "Better tools for production agents.", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Available MCPs, one shared allowance" }).waitFor();
+      await page.getByRole("link", { name: "View products" }).first().waitFor();
+      await page.getByRole("link", { name: "Research" }).first().waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Read the docs" }),
+        `${expectedAppBaseUrl}/docs`,
+      );
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
+      await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent workflows");
+      await expectMeta(page, "og:site_name", "Monarchic");
+      await expectMeta(page, "og:image", expectedSocialImageUrl);
+      await expectMeta(page, "og:image:width", "1200");
+      await expectMeta(page, "og:image:height", "630");
+      await expectMeta(page, "twitter:card", "summary_large_image");
+      await page.getByRole("link", { name: "Join waitlist" }).first().waitFor();
+      for (const metric of ["97.8%", "99.8%", "100%", "63.3 ms"]) {
+        await page.getByText(metric, { exact: true }).first().waitFor();
+      }
+      await page.getByText("One plan covers every available MCP.").waitFor();
+      await expectTextAbsent(page, [
+        "Hosted staging MCP route",
+        "3.45s",
+        "3.28s",
+        "Agent tools that leave evidence.",
+      ]);
+      await expectNoHorizontalOverflow(page);
+    }, "home route");
 
-  await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
-    await page.getByRole("heading", { name: "Individual" }).waitFor();
-    await page.getByText("Annual $290/yr", { exact: false }).waitFor();
-    await expectHref(
-      page.getByRole("link", { name: "Choose plan" }),
-      `${expectedAppBaseUrl}/products/usage-individual`,
-    );
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/usage-individual`);
-    await expectNoHorizontalOverflow(page);
-  }, "Individual product route");
+    await checkPage(page, `${baseUrl}/products`, async () => {
+      await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
+      await page.getByRole("heading", { name: "All Monarchic MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "One allowance, available MCPs" }).waitFor();
 
-  await page.setViewportSize({ width: 320, height: 900 });
-  await checkPage(page, `${baseUrl}/products`, async () => {
-    await page.getByRole("heading", { name: "Hosted MCP Routes" }).first().waitFor();
-    await page.getByRole("link", { name: "Choose plan" }).first().waitFor();
-    await expectNoHorizontalOverflow(page);
-  }, "products route at 320px");
-  await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
-    await page.getByRole("heading", { name: "Individual" }).waitFor();
-    await page.getByRole("link", { name: "Choose plan" }).waitFor();
-    await expectNoHorizontalOverflow(page);
-  }, "Individual product route at 320px");
-  await page.setViewportSize({ width: 1280, height: 900 });
+      const usageCards = page.locator('[data-plan-card^="usage-"]');
+      const usageCardCount = await usageCards.count();
+      if (usageCardCount !== 5) {
+        throw new Error(`Expected 5 credit plan cards, got ${usageCardCount}`);
+      }
+      const mcpCards = page.locator('[data-plan-card^="mcp-"]');
+      const mcpCardCount = await mcpCards.count();
+      if (mcpCardCount !== 15) {
+        throw new Error(`Expected 15 MCP cards, got ${mcpCardCount}`);
+      }
 
-  await checkPage(page, `${baseUrl}/waitlist`, async () => {
-    await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
-    await page.getByLabel("Email").fill("smoke+website@monarchic.ai");
-    await page.getByRole("button", { name: "Join waitlist" }).click();
-    await page.getByText("Thanks. You're on the waitlist.").waitFor();
-    if (waitlistRequests !== 1) {
-      throw new Error(`expected one waitlist request, got ${waitlistRequests}`);
-    }
-    await expectNoExternalAppLinks(page);
-    await expectNoHorizontalOverflow(page);
-  }, "waitlist route");
+      for (const slug of ["mcp-cicd", "mcp-webcomposer", "mcp-webimplementer"]) {
+        await page.locator(`[data-plan-card="${slug}"]`).waitFor();
+      }
+      for (const slug of forbiddenCatalogSlugs) {
+        if (await page.locator(`[data-plan-card="${slug}"]`).count() !== 0) {
+          throw new Error(`Retired MCP card must be absent: ${slug}`);
+        }
+      }
 
-  await checkPage(page, `${baseUrl}/tutorial`, async () => {
-    await page.getByRole("heading", { name: "Connect A Client" }).waitFor();
-    await page.getByText("@monarchic-ai/repointel-mcp").first().waitFor();
-    await page.getByText("MONARCHIC_API_BASE_URL").first().waitFor();
-    await page.getByText("MONARCHIC_API_KEY").first().waitFor();
-    await page.getByText("Codex TOML").waitFor();
-    await page.getByText("S3 is not the public MCP binary download path").waitFor();
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/tutorial`);
-    await expectNoExternalAppLinks(page);
-    await expectNoHorizontalOverflow(page);
-  }, "tutorial route");
+      const individualCard = page.locator('[data-plan-card="usage-individual"]');
+      await individualCard.getByText("Annual $290/yr", { exact: false }).waitFor();
+      await expectHref(
+        individualCard.getByRole("link", { name: "Choose plan" }),
+        `${expectedAppBaseUrl}/products/usage-individual`,
+      );
+      const businessCard = page.locator('[data-plan-card="usage-business"]');
+      await businessCard.getByText("Contact sales", { exact: false }).first().waitFor();
+      const repoIntelCardText = await page.locator('[data-plan-card="mcp-repointel"]').textContent();
+      if (repoIntelCardText?.includes("$29") || repoIntelCardText?.includes("$49")) {
+        throw new Error("RepoIntel must not advertise a standalone price");
+      }
+      await expectHref(
+        page.getByRole("link", { name: "Open docs" }),
+        `${expectedAppBaseUrl}/docs`,
+      );
+      await expectTextAbsent(page, [
+        "Developer Workflow Pack",
+        "Monarchic AI",
+        "Synchronized Pricing, Account Checkout",
+      ]);
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
+      await expectNoHorizontalOverflow(page);
+    }, "products route");
 
-  await checkPage(page, `${baseUrl}/products/mcp-browserops`, async () => {
-    await page.getByRole("heading", { name: "BrowserOps MCP" }).waitFor();
-    await page.getByText("Browser QA").first().waitFor();
-    await page.getByRole("link", { name: "Open Research" }).waitFor();
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/mcp-browserops`);
-    await page.getByRole("link", { name: "View Catalog" }).waitFor();
-    await expectNoExternalAppLinks(page);
-  }, "BrowserOps product route");
+    await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
+      await page.getByRole("heading", { name: "Individual" }).waitFor();
+      await page.getByText("Annual $290/yr", { exact: false }).waitFor();
+      await page.getByText("Every available MCP", { exact: true }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Choose plan" }),
+        `${expectedAppBaseUrl}/products/usage-individual`,
+      );
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/usage-individual`);
+      await expectNoHorizontalOverflow(page);
+    }, "Individual product route");
 
-  await checkPage(page, `${baseUrl}/research`, async () => {
-    await page
-      .getByRole("heading", { name: "Research receipts for production agent tools." })
-      .waitFor();
-    await page.getByRole("link", { name: "Open Research" }).first().waitFor();
-    await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
-    await expectNoExternalAppLinks(page);
-  }, "research route");
+    await checkPage(page, `${baseUrl}/products/mcp-browserops`, async () => {
+      await page.getByRole("heading", { name: "BrowserOps MCP" }).waitFor();
+      await page.getByText("Browser QA").first().waitFor();
+      await page.getByRole("heading", { name: "Public access is WIP" }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Join waitlist" }),
+        "/waitlist?product=mcp-browserops",
+      );
+      await page.getByRole("link", { name: "View all products" }).waitFor();
+      if (await page.getByRole("link", { name: "Read benchmark" }).count() !== 0) {
+        throw new Error("BrowserOps must not link to a public benchmark");
+      }
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/mcp-browserops`);
+      await expectNoHorizontalOverflow(page);
+    }, "BrowserOps product route");
 
-  await checkPage(page, `${baseUrl}/research/repointel`, async () => {
-    await page.getByRole("heading", { name: "Repository Intelligence Bench" }).waitFor();
-    await page.getByText("Overall score").waitFor();
-    await expectMeta(page, "og:type", "article");
-    await expectNoExternalAppLinks(page);
-  }, "RepoIntel research route");
+    await page.setViewportSize({ width: 320, height: 900 });
+    await checkPage(page, `${baseUrl}/products`, async () => {
+      await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
+      await page.getByRole("link", { name: "Choose plan" }).first().waitFor();
+      await expectNoHorizontalOverflow(page);
+    }, "products route at 320px");
+    await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
+      await page.getByRole("heading", { name: "Individual" }).waitFor();
+      await page.getByRole("link", { name: "Choose plan" }).waitFor();
+      await expectNoHorizontalOverflow(page);
+    }, "Individual product route at 320px");
+    await page.setViewportSize({ width: 1280, height: 900 });
 
-  await checkPage(page, `${baseUrl}/research/explicitmem`, async () => {
-    await page.getByRole("heading", { name: "Auditable Memory Benchmarks" }).waitFor();
-    await page.getByText("Hosted write p50").first().waitFor();
-    await page.getByText("3.45s").first().waitFor();
-    await page.getByText("Hosted route latency is a staging infrastructure smoke").waitFor();
-    await expectMeta(page, "og:type", "article");
-    await expectNoExternalAppLinks(page);
-  }, "ExplicitMem research route");
-} finally {
-  await browser.close();
-}
+    await checkPage(page, `${baseUrl}/waitlist`, async () => {
+      await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
+      await page.getByLabel("Product interest").selectOption("mcp-browserops");
+      await page.getByLabel("Email").fill("smoke+website@monarchic.ai");
+      await page.getByRole("button", { name: "Join waitlist" }).click();
+      await page.getByText("Thanks. You're on the waitlist.").waitFor();
+      if (waitlistRequests !== 1) {
+        throw new Error(`expected one waitlist request, got ${waitlistRequests}`);
+      }
+      await expectNoHorizontalOverflow(page);
+    }, "waitlist route");
+
+    await checkPage(page, `${baseUrl}/research`, async () => {
+      await page.getByRole("heading", { name: "Benchmarks and methodology." }).waitFor();
+      await page.getByRole("heading", { name: "ExplicitMem on LongMemEval-S" }).waitFor();
+      await page.getByRole("link", { name: "Method and results" }).waitFor();
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
+      await expectNoHorizontalOverflow(page);
+    }, "research route");
+
+    await checkPage(page, `${baseUrl}/research/explicitmem`, async () => {
+      await page.getByRole("heading", { name: "Memory benchmark" }).waitFor();
+      await page.getByText("500 questions", { exact: true }).waitFor();
+      await page.getByText("Answer accuracy", { exact: true }).first().waitFor();
+      for (const metric of ["97.8%", "99.8%", "100%", "63.3 ms"]) {
+        await page.getByText(metric, { exact: true }).first().waitFor();
+      }
+      await page.getByRole("heading", { name: "Temporal reasoning led the misses" }).waitFor();
+      await page.getByRole("heading", { name: "No cross-system comparison" }).waitFor();
+      await expectTextAbsent(page, [
+        "Hosted write p50",
+        "Hosted read p50",
+        "3.45s",
+        "3.28s",
+        "staging infrastructure smoke",
+      ]);
+      await expectMeta(page, "og:type", "article");
+      await expectNoHorizontalOverflow(page);
+    }, "ExplicitMem research route");
+  } finally {
+    await browser.close();
+  }
 }
 
 async function printReport(status, error) {
@@ -273,37 +343,97 @@ async function checkTextIncludes(url, expectedStrings, name) {
   checks.push({ name, status: "ok", expected: expectedStrings.length });
 }
 
-async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
+async function checkTextExcludes(url, forbiddenStrings, name) {
+  const response = await fetchOrThrow(url, undefined, name);
+  if (!response.ok) {
+    throw new Error(`${name} smoke failed for ${url}: ${response.status} ${response.statusText}`);
+  }
+  const body = await response.text();
+  const present = forbiddenStrings.filter((forbidden) => body.includes(forbidden));
+  if (present.length > 0) {
+    throw new Error(`${name} included retired text: ${present.join(", ")}`);
+  }
+  checks.push({ name, status: "ok", forbidden: forbiddenStrings.length });
+}
+
+async function checkRedirect(url, expectedTarget, name) {
+  const response = await fetchOrThrow(url, { redirect: "manual" }, name);
+  const normalizedExpectedTarget = new URL(expectedTarget, url);
+
+  if (response.status === 200) {
+    const body = await response.text();
+    const expectedRepresentations = [normalizedExpectedTarget.toString()];
+    if (normalizedExpectedTarget.origin === new URL(url).origin) {
+      expectedRepresentations.push(
+        `${normalizedExpectedTarget.pathname}${normalizedExpectedTarget.search}${normalizedExpectedTarget.hash}`,
+      );
+    }
+    if (
+      !body.includes('http-equiv="refresh"') ||
+      !body.includes('name="robots" content="noindex"') ||
+      !expectedRepresentations.some((target) => body.includes(target))
+    ) {
+      throw new Error(`${name} did not return a valid static redirect document`);
+    }
+    checks.push({
+      name,
+      status: "static",
+      target: normalizedExpectedTarget.toString(),
+    });
+    return;
+  }
+
+  if (![301, 302, 307, 308].includes(response.status)) {
+    throw new Error(`${name} expected a redirect from ${url}, got ${response.status}`);
+  }
+  const location = response.headers.get("location");
+  if (!location) {
+    throw new Error(`${name} did not return a Location header`);
+  }
+  const actualTarget = new URL(location, url).toString();
+  if (actualTarget !== normalizedExpectedTarget.toString()) {
+    throw new Error(`${name} expected ${normalizedExpectedTarget}, got ${actualTarget}`);
+  }
+  checks.push({ name, status: response.status, target: actualTarget });
+}
+
+async function checkBuildInfo(url, {
+  app,
+  requiredCatalogSlugs,
+  forbiddenCatalogSlugs,
+}) {
   const response = await fetchOrThrow(url, undefined, "build-info");
   if (!response.ok) {
     const body = await safeResponseText(response);
     throw new Error(
       [
         `build-info smoke failed for ${url}: ${response.status} ${response.statusText}`,
-        "The live deployment is missing the build marker required by release smoke.",
-        "Check that Vercel deployed the current main commit and that the domain points at that project.",
+        "The live site is missing its public build marker.",
         `Response headers: ${JSON.stringify(selectedResponseHeaders(response))}`,
         body ? `Response body preview: ${body.slice(0, 240)}` : null,
       ].filter(Boolean).join("\n"),
     );
   }
+  assertBuildInfoRobotsPolicy(response, url);
 
   const payload = await response.json();
   if (payload.app !== app) {
     throw new Error(`build-info app expected ${app}, got ${payload.app}`);
   }
 
-  const catalogSlugs = new Set([
-    ...arrayOrEmpty(payload.catalog?.availablePlans),
-    ...arrayOrEmpty(payload.catalog?.comingSoonPlans),
-  ]);
+  const catalogSlugs = validatedCatalogSlugSet(payload);
   for (const slug of requiredCatalogSlugs) {
     if (!catalogSlugs.has(slug)) {
       throw new Error(`build-info missing required catalog slug: ${slug}`);
     }
   }
+  for (const slug of forbiddenCatalogSlugs) {
+    if (catalogSlugs.has(slug)) {
+      throw new Error(`build-info included retired catalog slug: ${slug}`);
+    }
+  }
 
-  if (payload.socialImage !== "/social-card.png?v=1") {
+  if (payload.socialImage !== "/social-card.png?v=2") {
     throw new Error(`build-info socialImage mismatch: ${payload.socialImage}`);
   }
 
@@ -312,8 +442,6 @@ async function checkBuildInfo(url, { app, requiredCatalogSlugs }) {
     status: "ok",
     app: payload.app,
     totalPlans: payload.catalog?.totalPlans,
-    catalogArtifactDigest: requireCatalogDigest(payload),
-    deployment: summarizeDeployment(payload.deployment),
   });
 }
 
@@ -323,6 +451,7 @@ function selectedResponseHeaders(response) {
     "cache-control",
     "content-type",
     "server",
+    "x-robots-tag",
     "x-matched-path",
     "x-vercel-cache",
     "x-vercel-id",
@@ -333,59 +462,69 @@ function selectedResponseHeaders(response) {
   return selected;
 }
 
-function summarizeDeployment(value) {
-  if (!value || typeof value !== "object") return undefined;
-  return {
-    generatedAt: stringOrUndefined(value.generatedAt),
-    vercelEnv: stringOrUndefined(value.vercelEnv),
-    vercelUrl: stringOrUndefined(value.vercelUrl),
-    commitSha: stringOrUndefined(value.commitSha),
-    commitRef: stringOrUndefined(value.commitRef),
-    repoOwner: stringOrUndefined(value.repoOwner),
-    repoSlug: stringOrUndefined(value.repoSlug),
-  };
+function assertBuildInfoRobotsPolicy(response, url) {
+  if (isLoopbackHostname(new URL(url).hostname)) return;
+
+  const directives = new Set(
+    (response.headers.get("x-robots-tag") ?? "")
+      .toLowerCase()
+      .split(",")
+      .map((value) => value.trim())
+      .filter(Boolean),
+  );
+  if (!directives.has("noindex") || !directives.has("nofollow")) {
+    throw new Error(
+      `build-info X-Robots-Tag expected noindex, nofollow, got ${
+        response.headers.get("x-robots-tag") ?? "missing"
+      }`,
+    );
+  }
 }
 
-function stringOrUndefined(value) {
-  return typeof value === "string" && value.length > 0 ? value : undefined;
+function isLoopbackHostname(hostname) {
+  return hostname === "localhost"
+    || hostname === "::1"
+    || hostname === "[::1]"
+    || hostname === "0.0.0.0"
+    || hostname.startsWith("127.");
 }
 
-function requireCatalogDigest(payload) {
-  if (payload.catalog?.artifactSource !== "shared/product-catalog") {
-    throw new Error(`build-info catalog artifactSource mismatch: ${payload.catalog?.artifactSource}`);
+function validatedCatalogSlugSet(payload) {
+  const catalog = payload.catalog;
+  if (!catalog || typeof catalog !== "object" || !Array.isArray(catalog.planSlugs)) {
+    throw new Error("build-info catalog.planSlugs must be an array");
   }
-  const manifestDigest = payload.catalog?.manifestDigest;
-  if (typeof manifestDigest !== "string" || !/^sha256:[a-f0-9]{64}$/.test(manifestDigest)) {
-    throw new Error(`build-info catalog manifestDigest is missing or invalid: ${manifestDigest}`);
+  if (
+    Object.hasOwn(catalog, "availablePlans")
+    || Object.hasOwn(catalog, "comingSoonPlans")
+    || Object.hasOwn(payload, "requiredCatalogSlugs")
+  ) {
+    throw new Error("build-info exposes a retired catalog slug bucket");
   }
-  const digest = payload.catalog?.artifactDigest;
-  if (typeof digest !== "string" || !/^sha256:[a-f0-9]{64}$/.test(digest)) {
-    throw new Error(`build-info catalog artifactDigest is missing or invalid: ${digest}`);
+
+  const planSlugs = arrayOrEmpty(catalog.planSlugs);
+  if (planSlugs.some((slug) => typeof slug !== "string" || slug.length === 0)) {
+    throw new Error("build-info catalog.planSlugs must contain non-empty strings");
   }
-  const files = payload.catalog?.artifactFiles;
-  const fileHashes = payload.catalog?.artifactFileHashes;
-  for (const fileName of [
-    "pricing.ts",
-    "pricing.generated.json",
-    "pricing.coming-soon.json",
-    "productDetails.ts",
-  ]) {
-    if (!Array.isArray(files) || !files.includes(fileName)) {
-      throw new Error(`build-info catalog artifactFiles missing ${fileName}`);
-    }
-    const fileHash = Array.isArray(fileHashes)
-      ? fileHashes.find((entry) => entry?.name === fileName)?.sha256
-      : null;
-    if (typeof fileHash !== "string" || !/^[a-f0-9]{64}$/.test(fileHash)) {
-      throw new Error(`build-info catalog artifactFileHashes missing ${fileName}`);
-    }
+  if (JSON.stringify(planSlugs) !== JSON.stringify([...planSlugs].sort())) {
+    throw new Error("build-info catalog.planSlugs must be sorted");
   }
-  return digest;
+
+  const catalogSlugs = new Set(planSlugs);
+  if (catalogSlugs.size !== planSlugs.length) {
+    throw new Error("build-info catalog.planSlugs must not contain duplicates");
+  }
+  if (catalog.totalPlans !== planSlugs.length) {
+    throw new Error(
+      `build-info catalog totalPlans expected ${planSlugs.length}, got ${catalog.totalPlans}`,
+    );
+  }
+  return catalogSlugs;
 }
 
 function classifyFailure(message) {
   if (/DNS smoke failed/i.test(message)) return "dns";
-  if (/build-info smoke failed|missing the build marker|deployment commit expected/i.test(message)) {
+  if (/build-info smoke failed|missing its public build marker/i.test(message)) {
     return "deployment-marker";
   }
   if (/browserType\.launch|error while loading shared libraries|libglib-2\.0\.so\.0/i.test(message)) {
@@ -395,6 +534,7 @@ function classifyFailure(message) {
     return "static-asset-connectivity";
   }
   if (/waitlist|alreadyOnWaitlist/i.test(message)) return "waitlist";
+  if (/redirect/i.test(message)) return "redirect";
   return "unknown";
 }
 
@@ -512,6 +652,14 @@ async function expectMeta(page, key, expected) {
   }
 }
 
+async function expectTextAbsent(page, forbiddenStrings) {
+  const body = await page.locator("body").innerText();
+  const present = forbiddenStrings.filter((forbidden) => body.includes(forbidden));
+  if (present.length > 0) {
+    throw new Error(`Page included retired text: ${present.join(", ")}`);
+  }
+}
+
 async function expectNoHorizontalOverflow(page) {
   const overflow = await page.evaluate(() => ({
     clientWidth: document.documentElement.clientWidth,
@@ -528,17 +676,6 @@ async function expectHref(locator, expectedHref) {
   const href = await locator.getAttribute("href");
   if (href !== expectedHref) {
     throw new Error(`Expected href ${expectedHref}, got ${href}`);
-  }
-}
-
-async function expectNoExternalAppLinks(page) {
-  const appHrefs = await page.locator("a[href]").evaluateAll((anchors) =>
-    anchors
-      .map((node) => node instanceof HTMLAnchorElement ? node.href : "")
-      .filter((href) => /(^|\/\/)app\.monarchic\.io\/|monarchic-webapp/i.test(href)),
-  );
-  if (appHrefs.length > 0) {
-    throw new Error(`Unexpected website links to webapp: ${appHrefs.join(", ")}`);
   }
 }
 

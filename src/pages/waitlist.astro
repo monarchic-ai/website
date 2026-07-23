@@ -4,9 +4,13 @@ import SeoHead from "../components/SeoHead.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
+import { allPlans } from "../lib/pricing";
 import "../styles/global.css";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
+const wipProducts = allPlans
+  .filter((plan) => plan.kind === "single-mcp" && plan.status === "coming_soon")
+  .map((plan) => ({ slug: plan.slug, label: plan.displayName }));
 ---
 
 <html lang="en">
@@ -16,7 +20,6 @@ const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
     <SeoHead
       title="Waitlist | Monarchic"
       description="Join the Monarchic MCP catalog waitlist for coming-soon access updates."
@@ -40,28 +43,28 @@ const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api
               Get Access<br />Updates
             </h1>
             <p class="mt-7 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
-              Join for updates on hosted MCP access, account controls, and the
-              products moving through research and release checks.
+              Choose a WIP MCP and join for an email when public access opens.
             </p>
           </div>
 
           <div class="border-2 border-white bg-black/76 p-5 sm:p-6">
             <p class="text-xs font-bold uppercase tracking-[0.32em] text-cyan-200">Join the waitlist</p>
             <p class="mt-4 text-sm leading-7 text-white/74">
-              We will use this list for account access, release checks, and MCP
-              route availability updates.
+              We will use this list for product availability and account access
+              updates.
             </p>
             <div class="mt-6">
               <WaitlistForm
                 client:load
                 apiBaseUrl={apiBaseUrl}
-                slug="monarchic-ai"
+                slug={wipProducts[0]?.slug ?? "monarchic-ai"}
+                products={wipProducts}
                 submitLabel="Join waitlist"
               />
             </div>
             <p class="mt-5 text-xs leading-5 text-white/50">
-              No checkout is available from the website. Access opens after the
-              hosted routes and account controls pass release checks.
+              Products marked Available can be used through an active plan.
+              WIP products cannot be purchased yet.
             </p>
           </div>
         </section>

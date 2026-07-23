@@ -5,6 +5,7 @@
 export type PlanKind = "usage-plan" | "single-mcp" | "bundle" | "ai";
 export type PlanCadence = "monthly" | "annual";
 export type PlanStatus = "available" | "coming_soon" | "contact_sales";
+export type ProductLifecycle = "production" | "wip";
 
 // Annual subscriptions are always priced at this multiple of the monthly
 // amount. Centralizing the constant keeps Stripe seeding, the UI, and the
@@ -38,6 +39,7 @@ export interface CatalogPlan {
   creditAllowanceLabel?: string;
   overageLabel?: string;
   usageSummary?: string;
+  lifecycle?: ProductLifecycle;
   highlighted?: boolean;
   status: PlanStatus;
   prices: PlanPrice[];
@@ -51,7 +53,11 @@ import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json"
 // Stripe may retain retired products for historical subscription records. Keep
 // them out of the public catalog even if a future sync sees an active legacy
 // Price.
-export const retiredPublicPlanSlugs = new Set(["mcp-verified"]);
+export const retiredPublicPlanSlugs = new Set([
+  "mcp-monarchic",
+  "mcp-outreachconnectors",
+  "mcp-verified",
+]);
 
 // These plans have updated public terms but do not have matching live Stripe
 // prices yet. Keep the generated records available for historical subscription
@@ -137,11 +143,15 @@ export function cadenceFromQueryString(value: string | null | undefined): PlanCa
 export function creditAllowanceLabel(plan: CatalogPlan): string | null {
   if (plan.creditAllowanceLabel) return plan.creditAllowanceLabel;
   if (plan.includedCredits === undefined) return null;
-  return `${plan.includedCredits.toLocaleString("en-US")} credits/mo`;
+  return `${plan.includedCredits.toLocaleString("en-US")} included credits/mo`;
 }
 
 export function planStatusLabel(status: PlanStatus): string {
   if (status === "available") return "Available";
   if (status === "contact_sales") return "Contact sales";
-  return "Preview";
+  return "WIP";
+}
+
+export function catalogStatusLabel(plan: CatalogPlan): string {
+  return planStatusLabel(plan.status);
 }

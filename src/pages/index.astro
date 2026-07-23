@@ -4,16 +4,21 @@ import SeoHead from "../components/SeoHead.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
+import { allPlans } from "../lib/pricing";
 import "../styles/global.css";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
+const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
+const wipProducts = allPlans
+  .filter((plan) => plan.kind === "single-mcp" && plan.status === "coming_soon")
+  .map((plan) => ({ slug: plan.slug, label: plan.displayName }));
 
 const featuredRoutes = [
   {
     slug: "mcp-explicitmem",
     label: "ExplicitMem",
     href: "/products/mcp-explicitmem",
-    proof: "99.8% memory benchmark accuracy",
+    proof: "97.8% accuracy on the 500-question LongMemEval-S run",
     role: "Durable memory",
   },
   {
@@ -24,26 +29,26 @@ const featuredRoutes = [
     role: "Codebase context",
   },
   {
-    slug: "mcp-browserops",
-    label: "BrowserOps",
-    href: "/products/mcp-browserops",
-    proof: "Screenshots, console logs, and receipts",
-    role: "Browser evidence",
+    slug: "mcp-incidentops",
+    label: "IncidentOps",
+    href: "/products/mcp-incidentops",
+    proof: "Timelines, triage, response packets, and guarded updates",
+    role: "Incident response",
   },
   {
-    slug: "mcp-releaseops",
-    label: "ReleaseOps",
-    href: "/products/mcp-releaseops",
-    proof: "Release readiness and artifact manifests",
-    role: "Release evidence",
+    slug: "mcp-infraprofiler",
+    label: "InfraProfiler",
+    href: "/products/mcp-infraprofiler",
+    proof: "Cost, reliability, latency, and pipeline hotspot analysis",
+    role: "Infrastructure intelligence",
   },
 ];
 
 const proofPoints = [
-  ["Accuracy", "99.8%", "ExplicitMem local benchmark quality"],
+  ["Accuracy", "97.8%", "LongMemEval-S answer accuracy"],
+  ["Faithfulness", "99.8%", "LongMemEval-S answer faithfulness"],
   ["Recall@K", "100%", "ExplicitMem retrieval coverage"],
-  ["Write p50", "3.45s", "Hosted staging MCP route"],
-  ["Search p50", "3.28s", "Hosted staging MCP route"],
+  ["Local latency", "63.3 ms", "Average benchmark evaluation time"],
 ];
 ---
 
@@ -54,10 +59,9 @@ const proofPoints = [
     <meta name="theme-color" content="#000000" />
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
     <SeoHead
-      title="Monarchic | Hosted MCPs for agent engineering"
-      description="Monarchic sells hosted MCP routes for durable memory, repository intelligence, browser evidence, and proof-backed agent workflows."
+      title="Monarchic | Hosted MCPs for agent workflows"
+      description="Hosted MCPs for repository intelligence, memory, delivery, infrastructure, incident response, and agent workflows."
       path="/"
     />
   </head>
@@ -73,13 +77,14 @@ const proofPoints = [
         <section id="introduction" class="grid min-h-[calc(100vh-112px)] gap-8 py-10 lg:min-h-[640px] lg:grid-cols-[1fr_0.82fr] lg:items-center">
           <div>
             <p class="mb-5 inline-flex border border-white/46 bg-black/48 px-3 py-2 text-xs font-bold uppercase text-white/68">
-              Hosted MCP infrastructure
+              Hosted MCP catalog
             </p>
             <h1 class="max-w-5xl text-5xl font-extrabold uppercase leading-[0.88] text-white sm:text-7xl lg:text-8xl [text-shadow:8px_8px_0_rgba(255,255,255,0.11)]">
-              Agent tools that leave evidence.
+              Better tools for production agents.
             </h1>
             <p class="mt-7 max-w-2xl text-base leading-8 text-white/76 sm:text-lg">
-              Hosted MCP routes for memory, repository context, browser checks, and proof-backed handoffs.
+              One catalog for repository context, durable memory, delivery,
+              infrastructure, incident response, and more.
             </p>
             <div class="mt-8 flex flex-wrap gap-3 text-xs font-bold uppercase">
               <a href="/products" class="inline-flex items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-5 py-3 text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
@@ -88,8 +93,8 @@ const proofPoints = [
               <a href="/research" class="inline-flex items-center justify-center border-2 border-white/50 px-5 py-3 text-white transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">
                 Research
               </a>
-              <a href="/tutorial" class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-cyan-200 transition hover:bg-cyan-300/10 hover:text-cyan-100">
-                Use the MCPs
+              <a href={`${appBaseUrl}/docs`} class="inline-flex items-center justify-center border-2 border-cyan-300 px-5 py-3 text-cyan-200 transition hover:bg-cyan-300/10 hover:text-cyan-100">
+                Read the docs
               </a>
               <a href="#waitlist" class="inline-flex items-center justify-center border-2 border-white/50 px-5 py-3 text-white transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">
                 Join waitlist
@@ -100,7 +105,7 @@ const proofPoints = [
           <aside class="border-2 border-white bg-black/72 shadow-[12px_12px_0_rgba(255,255,255,0.1)]">
             <div class="border-b-2 border-white px-5 py-4">
               <p class="text-xs font-bold uppercase text-white/58">Hosted catalog</p>
-              <h2 class="mt-2 text-3xl font-extrabold uppercase leading-none">MCP routes under one usage plan</h2>
+              <h2 class="mt-2 text-3xl font-extrabold uppercase leading-none">Available MCPs, one shared allowance</h2>
             </div>
             <div class="divide-y divide-white/24">
               {featuredRoutes.map((route) => (
@@ -110,8 +115,8 @@ const proofPoints = [
                     <p class="mt-1 text-xs font-bold uppercase text-white/48 group-hover:text-cyan-100/70">{route.role}</p>
                     <p class="mt-3 text-sm leading-6 text-white/70 group-hover:text-white/80">{route.proof}</p>
                   </div>
-                  <p class="self-start border border-white/50 px-3 py-2 text-xs font-extrabold uppercase group-hover:border-black/50">
-                    Usage credits
+                  <p class="self-start border border-white/50 px-3 py-2 text-xs font-extrabold uppercase transition group-hover:border-cyan-300 group-hover:text-cyan-100">
+                    Available
                   </p>
                 </a>
               ))}
@@ -122,14 +127,14 @@ const proofPoints = [
         <section id="proof" class="border-t-2 border-white py-10">
           <div class="grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
             <div>
-              <p class="text-xs font-bold uppercase text-white/54">Proof boundary</p>
+              <p class="text-xs font-bold uppercase text-cyan-200">ExplicitMem benchmark</p>
               <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                The homepage proof is deliberately scoped.
+                500 LongMemEval-S questions under one fixed protocol.
               </h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
-                Quality metrics come from the ExplicitMem benchmark. Hosted
-                latency comes from staging MCP route smoke data. They are not
-                blended into one universal ranking.
+                These results cover one local benchmark configuration. The
+                report includes the method, question-type breakdown, failed
+                cases, and limits beside the headline metrics.
               </p>
               <a href="/research/explicitmem" class="mt-5 inline-flex border border-white/50 px-4 py-3 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">
                 Read methodology
@@ -137,7 +142,7 @@ const proofPoints = [
             </div>
             <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {proofPoints.map(([label, value, scope]) => (
-                <div class="border border-white/46 bg-black/64 p-5">
+                <div class="border border-white/46 bg-black/64 p-5 transition hover:border-cyan-300 hover:bg-cyan-300/[0.06]">
                   <p class="text-[0.68rem] font-bold uppercase text-white/46">{label}</p>
                   <p class="mt-3 text-3xl font-extrabold leading-none text-white">{value}</p>
                   <p class="mt-3 text-xs font-semibold uppercase leading-5 text-white/56">{scope}</p>
@@ -152,12 +157,12 @@ const proofPoints = [
             <div class="border-2 border-cyan-300/60 bg-zinc-950 p-6 text-white">
               <p class="text-xs font-bold uppercase text-cyan-200">Pricing model</p>
               <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                One usage plan covers the hosted MCP catalog.
+                One plan covers every available MCP.
               </h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-                Choose a monthly credit allowance for your workload. Metadata
-                calls are free, standard operations use one credit, and heavier
-                infrastructure-backed work uses measured classes.
+                Choose a monthly credit allowance for your workload. Standard
+                operations use fewer credits, while browser sessions, terminal
+                sessions, and provider-backed work use more.
               </p>
               <a href="/products" class="mt-6 inline-flex border-2 border-cyan-300 bg-cyan-300/10 px-5 py-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
                 Compare plans
@@ -165,13 +170,13 @@ const proofPoints = [
             </div>
 
             <div class="grid gap-3 sm:grid-cols-2">
-              <a href="/products/mcp-repointel" class="group border border-white/46 bg-black/64 p-5 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-white">
-                <p class="text-sm font-extrabold uppercase">Choose a route</p>
-                <p class="mt-2 text-sm leading-6 text-white/68 group-hover:text-white/80">Inspect RepoIntel, ExplicitMem, BrowserOps, and the rest of the hosted catalog before selecting a plan.</p>
+              <a href="/products#mcp-catalog" class="group border border-white/46 bg-black/64 p-5 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-white">
+                <p class="text-sm font-extrabold uppercase">Choose an MCP</p>
+                <p class="mt-2 text-sm leading-6 text-white/68 group-hover:text-white/80">Inspect all 15 available and WIP products before selecting a plan.</p>
               </a>
-              <a href="/products/usage-developer" class="group border border-white/46 bg-black/64 p-5 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-white">
+              <a href="/products#plans" class="group border border-white/46 bg-black/64 p-5 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-white">
                 <p class="text-sm font-extrabold uppercase">Choose capacity</p>
-                <p class="mt-2 text-sm leading-6 text-white/68 group-hover:text-white/80">Start with evaluation or Individual, then move to Developer or Team as hosted calls grow.</p>
+                <p class="mt-2 text-sm leading-6 text-white/68 group-hover:text-white/80">Compare Evaluation, Individual, Developer, Team, and Business allowances in one place.</p>
               </a>
             </div>
           </div>
@@ -182,16 +187,22 @@ const proofPoints = [
             <div>
               <p class="text-xs font-bold uppercase text-white/54">Next step</p>
               <h2 class="mt-3 max-w-3xl text-3xl font-extrabold uppercase leading-tight sm:text-4xl">
-                Use the catalog, then tell us which route should be opened for your account.
+                Tell us which WIP product matters to your team.
               </h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/70">
-                Access is still gated while account controls and route
-                availability finish release checks. The product pages show the
-                current pricing and proof boundary for each MCP.
+                Available MCPs work with the shared plan allowance. Products
+                marked WIP are not available for checkout; choose one below to
+                get an access update.
               </p>
             </div>
             <div class="border-2 border-white bg-black p-6 shadow-[10px_10px_0_rgba(255,255,255,0.12)]">
-              <WaitlistForm client:load apiBaseUrl={apiBaseUrl} slug="monarchic-ai" submitLabel="Join waitlist" />
+              <WaitlistForm
+                client:load
+                apiBaseUrl={apiBaseUrl}
+                slug={wipProducts[0]?.slug ?? "monarchic-ai"}
+                products={wipProducts}
+                submitLabel="Join waitlist"
+              />
             </div>
           </div>
         </section>
