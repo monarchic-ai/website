@@ -90,7 +90,8 @@ try {
     await page.getByRole("link", { name: "Research" }).first().waitFor();
     await page.getByRole("link", { name: "Use the MCPs" }).first().waitFor();
     await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-    await expectMeta(page, "og:title", "Monarchic LLC | Hosted MCPs for agent engineering");
+    await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent engineering");
+    await expectMeta(page, "og:site_name", "Monarchic");
     await expectMeta(page, "og:image", expectedSocialImageUrl);
     await expectMeta(page, "og:image:width", "1200");
     await expectMeta(page, "og:image:height", "630");

@@ -1,6 +1,6 @@
 # website
 
-Public company website for Monarchic LLC.
+Public website for Monarchic.
 
 ## Current Scope
 

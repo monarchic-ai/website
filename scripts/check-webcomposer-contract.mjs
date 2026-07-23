@@ -35,13 +35,27 @@ checkFileIncludes("src/components/SiteHeader.astro", [
   'id="navigation"',
   'aria-label="Primary navigation"',
   'aria-current={active === "products" ? "page" : undefined}',
+  ">Monarchic</span>",
 ]);
 
 checkFileIncludes("src/components/SiteFooter.astro", [
   'href="/privacy"',
   'href="/terms"',
   "support@monarchic.io",
+  ">Monarchic</span>",
 ]);
+
+checkFileIncludes("src/components/SeoHead.astro", [
+  'property="og:site_name" content="Monarchic"',
+]);
+
+for (const path of [
+  "src/components/SiteHeader.astro",
+  "src/components/SiteFooter.astro",
+  "src/components/SeoHead.astro",
+]) {
+  checkForbidden(path, ["Monarchic LLC"]);
+}
 
 checkFileIncludes("src/pages/privacy.astro", [
   'path="/privacy"',
