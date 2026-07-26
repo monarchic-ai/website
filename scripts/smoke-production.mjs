@@ -166,26 +166,26 @@ async function runBrowserSmoke() {
     });
 
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Better tools for production agents.", exact: true }).waitFor();
-      await page.getByRole("heading", { name: "Available MCPs, one shared allowance" }).waitFor();
-      await page.getByRole("link", { name: "View products" }).first().waitFor();
+      await page.getByRole("heading", { name: "Monarchic", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Harden checkout recovery and prove every release condition." }).waitFor();
+      await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
       await expectHref(
-        page.getByRole("link", { name: "Read the docs" }),
+        page.getByRole("link", { name: "Docs", exact: true }).first(),
         `${expectedAppBaseUrl}/docs`,
       );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-      await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent workflows");
+      await expectMeta(page, "og:title", "Monarchic | Control plane for autonomous engineering");
       await expectMeta(page, "og:site_name", "Monarchic");
       await expectMeta(page, "og:image", expectedSocialImageUrl);
       await expectMeta(page, "og:image:width", "1200");
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
-      await page.getByRole("link", { name: "Join waitlist" }).first().waitFor();
+      await page.getByRole("link", { name: "WIP access" }).waitFor();
       for (const metric of ["97.8%", "99.8%", "100%", "63.3 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
-      await page.getByText("One plan covers every available MCP.").waitFor();
+      await page.getByText("One allowance covers every available MCP.").waitFor();
       await expectTextAbsent(page, [
         "Hosted staging MCP route",
         "3.45s",

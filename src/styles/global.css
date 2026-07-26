@@ -25,3 +25,16 @@
     color: #000;
   }
 }
+
+.paper-shell {
+  color-scheme: light;
+  background-color: #f2f0e8;
+  background-image:
+    linear-gradient(rgba(8, 8, 8, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8, 8, 8, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.paper-shell :focus-visible {
+  outline-color: #080808;
+}

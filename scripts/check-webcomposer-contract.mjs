@@ -10,7 +10,8 @@ const failures = [];
 checkFileIncludes("astro.config.mjs", ["devToolbar: { enabled: false }"]);
 
 checkFileIncludes("src/pages/index.astro", [
-  "Better tools for production agents.",
+  "Autonomous engineering, with receipts",
+  "Run ambitious engineering work through a control plane",
   'href="/products"',
   'href="/research"',
   'href={`${appBaseUrl}/docs`}',
@@ -19,9 +20,9 @@ checkFileIncludes("src/pages/index.astro", [
   "99.8%",
   "100%",
   "63.3 ms",
-  "These results cover one local benchmark configuration.",
-  "One plan covers every available MCP.",
-  "Inspect all 15 available and WIP products",
+  "The full report sits beside the headline.",
+  "One allowance covers every available MCP.",
+  "Products marked WIP",
   "/research/explicitmem",
 ]);
 checkForbidden("src/pages/index.astro", [

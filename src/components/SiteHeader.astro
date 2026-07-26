@@ -1,26 +1,53 @@
 ---
 interface Props {
   active?: "products" | "research";
+  tone?: "dark" | "paper";
 }
 
-const { active } = Astro.props;
+const { active, tone = "dark" } = Astro.props;
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const navClass = (current: boolean) => [
-  "border-2 px-3 py-2 text-center text-[0.65rem] font-semibold uppercase transition sm:px-4 sm:text-xs",
-  current
-    ? "border-cyan-300 bg-cyan-300/10 text-cyan-100"
-    : "border-white/50 text-white/72 hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100 focus-visible:border-cyan-300 focus-visible:bg-cyan-300/10 focus-visible:text-cyan-100",
+  "inline-flex min-h-10 items-center justify-center border px-3 py-2 text-center text-[0.65rem] font-bold uppercase transition sm:px-4 sm:text-xs",
+  tone === "paper"
+    ? current
+      ? "border-black bg-black text-white"
+      : "border-transparent text-black/62 hover:border-black hover:bg-[#f0bd46] hover:text-black"
+    : current
+      ? "border-cyan-300 bg-cyan-300/10 text-cyan-100"
+      : "border-white/50 text-white/72 hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100 focus-visible:border-cyan-300 focus-visible:bg-cyan-300/10 focus-visible:text-cyan-100",
 ].join(" ");
 ---
 
-<header id="navigation" class="flex flex-col gap-5 border-b-2 border-white pb-6 sm:flex-row sm:items-center sm:justify-between">
-  <a href="/" class="inline-flex items-center gap-3">
-    <img src="/favicon.svg" alt="" class="h-9 w-9 bg-white object-cover p-1" width="36" height="36" />
-    <span class="text-[0.7rem] font-semibold uppercase text-white/72">Monarchic</span>
+<header
+  id="navigation"
+  class:list={[
+    "flex min-h-16 items-center justify-between gap-3 border-b px-3 sm:px-5",
+    tone === "paper" ? "border-black bg-[#f2f0e8] text-black" : "border-white text-white",
+  ]}
+>
+  <a href="/" class="inline-flex shrink-0 items-center gap-3">
+    <span class:list={[
+      "inline-flex h-9 w-9 items-center justify-center",
+      tone === "paper" ? "bg-black" : "bg-[#fff]",
+    ]}>
+      <img src="/favicon.svg" alt="" class:list={["h-7 w-7 object-cover p-0.5", tone === "paper" && "invert"]} width="28" height="28" />
+    </span>
+    <span class="hidden text-[0.7rem] font-black uppercase sm:inline">Monarchic</span>
   </a>
-  <nav aria-label="Primary navigation" class="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
+  <nav aria-label="Primary navigation" class="flex min-w-0 items-center justify-end gap-1 sm:gap-2">
     <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
     <a href={`${appBaseUrl}/docs`} class={navClass(false)}>Docs</a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
+    <a
+      href={appBaseUrl}
+      class:list={[
+        "hidden min-h-10 items-center border px-4 text-xs font-black uppercase transition sm:inline-flex",
+        tone === "paper"
+          ? "border-black bg-black text-white hover:bg-[#f0bd46] hover:text-black"
+          : "border-cyan-300 bg-cyan-300/10 text-cyan-100 hover:bg-cyan-300/20 hover:text-white",
+      ]}
+    >
+      Open app
+    </a>
   </nav>
 </header>
