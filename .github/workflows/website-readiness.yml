@@ -6,6 +6,8 @@ on:
       - ".github/workflows/website-readiness.yml"
       - "package.json"
       - "pnpm-lock.yaml"
+      - "flake.nix"
+      - "flake.lock"
       - "astro.config.mjs"
       - "src/**"
       - "scripts/**"
@@ -21,6 +23,8 @@ on:
       - ".github/workflows/website-readiness.yml"
       - "package.json"
       - "pnpm-lock.yaml"
+      - "flake.nix"
+      - "flake.lock"
       - "astro.config.mjs"
       - "src/**"
       - "scripts/**"
@@ -49,46 +53,46 @@ jobs:
     name: Diagnostics and build
     runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') }}
     timeout-minutes: 15
+    env:
+      NIX_CONFIG: |
+        experimental-features = nix-command flakes
+        accept-flake-config = true
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
         with:
-          version: "10.8.1"
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: nix develop --command pnpm install --frozen-lockfile
 
       - name: Run Astro diagnostics
-        run: pnpm check
+        run: nix develop --command pnpm check
 
       - name: Check WebComposer contract
-        run: pnpm check:webcomposer
+        run: nix develop --command pnpm check:webcomposer
 
       - name: Check catalog artifact provenance
-        run: pnpm check:catalog-artifact
+        run: nix develop --command pnpm check:catalog-artifact
 
       - name: Check shared catalog drift
-        run: pnpm check:shared-catalog
+        run: nix develop --command pnpm check:shared-catalog
 
       - name: Check release workflow coverage
-        run: pnpm check:release-workflow
+        run: nix develop --command pnpm check:release-workflow
 
       - name: Check social preview asset
-        run: pnpm check:social-preview
+        run: nix develop --command pnpm check:social-preview
 
       - name: Build website
-        run: pnpm build
+        run: nix develop --command pnpm build
 
   smoke:
     name: Local website smoke
@@ -96,28 +100,25 @@ jobs:
     timeout-minutes: 20
     needs: check
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_smoke)
+    env:
+      NIX_CONFIG: |
+        experimental-features = nix-command flakes
+        accept-flake-config = true
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
         with:
-          version: "10.8.1"
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            accept-flake-config = true
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Playwright Chromium
-        run: pnpm exec playwright install --with-deps chromium
+        run: nix develop --command pnpm install --frozen-lockfile
 
       - name: Run local website smoke
-        run: pnpm smoke:local
+        run: nix develop --command pnpm smoke:local

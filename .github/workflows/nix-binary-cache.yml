@@ -61,7 +61,7 @@ jobs:
             missing+=(nixpkgs#gawk)
           fi
           if [ "${#missing[@]}" -gt 0 ]; then
-            nix profile install "${missing[@]}"
+            nix --extra-experimental-features "nix-command flakes" profile install "${missing[@]}"
             echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
           fi
 
