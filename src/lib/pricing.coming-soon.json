@@ -28,7 +28,7 @@
     "creditAllowanceLabel": "200 one-time trial credits",
     "overageLabel": "No overage",
     "usageSummary": "Trial credits can be used across available hosted MCPs. More expensive operations use more credits.",
-    "status": "coming_soon",
+    "status": "available",
     "prices": []
   },
   {
@@ -231,10 +231,11 @@
     "featureBullets": [
       "Run interactive terminal sessions through MCP",
       "Keep command output visible for review",
-      "Use one consistent terminal interface across clients"
+      "Use one consistent terminal interface across clients",
+      "One base credit per session with measured settlement at close"
     ],
     "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "usageSummary": "When access opens, PTY sessions will start at 1 shared credit. Terminal controls and bounded transcript reads will be included; unusually expensive sessions will settle additional measured credits at close.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []

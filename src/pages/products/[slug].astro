@@ -34,6 +34,7 @@ const displayPrice = resolveDisplayPrice(plan, "monthly");
 const monthlyPrice = findPlanPrice(plan, "monthly");
 const annualPrice = findPlanPrice(plan, "annual");
 const isPurchasable = plan.kind === "usage-plan" && plan.status === "available" && Boolean(monthlyPrice?.priceId || annualPrice?.priceId);
+const isEvaluation = plan.slug === "usage-evaluation";
 
 const researchByPlanSlug: Record<string, { href: string; label: string; summary: string }> = {
   "mcp-explicitmem": {
@@ -205,7 +206,16 @@ function statusClasses(plan: CatalogPlan): string {
           </div>
 
           <aside id="waitlist" class="h-fit scroll-mt-6 border-2 border-white bg-black/78 p-5 lg:sticky lg:top-6">
-            {isPurchasable ? (
+            {isEvaluation ? (
+              <>
+                <p class="text-xs font-bold uppercase text-cyan-200">Start Evaluation</p>
+                <p class="mt-4 text-2xl font-extrabold uppercase">200 one-time credits</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">Sign in with a verified email in the Monarchic webapp. No card, automatic billing, overage, or rollover.</p>
+                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-4 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+                  Claim 200 credits
+                </a>
+              </>
+            ) : isPurchasable ? (
               <>
                 <p class="text-xs font-bold uppercase text-white/54">Plan price</p>
                 {displayPrice?.price.priceCents != null && (

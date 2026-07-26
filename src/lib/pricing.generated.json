@@ -46,7 +46,7 @@
     ],
     "includedCredits": 4000,
     "overageLabel": "$0.025/credit overage",
-    "usageSummary": "Standard MCP calls use 1 credit. Heavy calls such as BrowserOps evidence capture, PTY sessions, SEO ranking runs, lead generation, and project creation are expected to cost 3-10 credits.",
+    "usageSummary": "Standard MCP calls use 1 credit. PTY sessions start at 1 credit with controls included and measured settlement at close. BrowserOps evidence, SEO ranking, lead generation, and project creation can use higher measured tiers.",
     "highlighted": true,
     "status": "available",
     "prices": [
@@ -80,7 +80,7 @@
     ],
     "includedCredits": 1000,
     "overageLabel": "Overage disabled at launch",
-    "usageSummary": "Basic auth, list, config, and read calls are free or near-free. Standard MCP calls use 1 credit; heavy browser, terminal, SEO, lead, and project-generation calls use more.",
+    "usageSummary": "Basic auth, list, config, and read calls are free or near-free. Standard MCP calls use 1 credit. PTY controls are included in a session; browser, SEO, lead, and project-generation work can use more based on measured cost.",
     "status": "available",
     "prices": [
       {
@@ -113,7 +113,7 @@
     ],
     "includedCredits": 15000,
     "overageLabel": "$0.02/credit overage",
-    "usageSummary": "The shared allowance covers normal hosted MCP usage while preserving cost visibility for heavier browser, terminal, and data-intensive workflows.",
+    "usageSummary": "The shared allowance covers normal hosted MCP usage. PTY controls are included in a session, while browser, provider-backed, and data-intensive work follows measured cost.",
     "status": "available",
     "prices": [
       {
@@ -358,11 +358,11 @@
     "description": "Route-level hosted access for teams that need observable terminal sessions through MCP.",
     "featureBullets": [
       "Single hosted MCP route access",
-      "Start, write, read, and close governed PTY sessions",
-      "Priced from heavier terminal-session telemetry",
+      "Start, control, review, and close governed PTY sessions",
+      "One base credit per session with measured settlement at close",
       "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
     ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
+    "usageSummary": "PTY sessions start at 1 credit. Terminal controls and bounded transcript reads are included; unusually expensive sessions settle additional measured credits at close.",
     "status": "available",
     "prices": [
       {

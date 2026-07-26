@@ -64,8 +64,55 @@ export const retiredPublicPlanSlugs = new Set([
 // lookup while the public catalog uses non-checkout preview entries.
 export const previewPublicPlanSlugs = new Set(["usage-developer", "usage-business"]);
 
-const generatedCatalogPlans = (generatedPlans as CatalogPlan[]) ?? [];
-const nonGeneratedPlans = (comingSoonPlansJson as CatalogPlan[]) ?? [];
+const PREPAID_HARD_CAP_LABEL = "No overage; hard monthly cap";
+const PREPAID_HARD_CAP_BULLET =
+  "No overage; hosted calls pause at the prepaid credit limit";
+const SINGLE_MCP_MONTHLY_CREDITS = 1_000;
+
+function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
+  if (plan.kind !== "usage-plan" && plan.kind !== "single-mcp") {
+    return plan;
+  }
+  const isEvaluation = plan.slug === "usage-evaluation";
+  const hardCapBullet = isEvaluation
+    ? "No overage; hosted calls pause at the trial credit limit"
+    : PREPAID_HARD_CAP_BULLET;
+  const featureBullets = plan.featureBullets.filter(
+    (bullet) =>
+      !/overage|additional credit|before metered usage/i.test(
+        bullet,
+      ),
+  );
+  if (!featureBullets.includes(hardCapBullet)) {
+    featureBullets.push(hardCapBullet);
+  }
+  return {
+    ...plan,
+    description: plan.description.replace(
+      /before metered usage begins/gi,
+      "with a predictable hard monthly cap",
+    ),
+    featureBullets,
+    includedCredits:
+      plan.kind === "single-mcp"
+        ? plan.includedCredits ?? SINGLE_MCP_MONTHLY_CREDITS
+        : plan.includedCredits,
+    creditAllowanceLabel:
+      plan.kind === "single-mcp"
+        ? "1,000 route-bound prepaid credits/mo"
+        : plan.creditAllowanceLabel,
+    overageLabel: isEvaluation
+      ? "No overage; hard trial cap"
+      : PREPAID_HARD_CAP_LABEL,
+  };
+}
+
+const generatedCatalogPlans = (
+  (generatedPlans as CatalogPlan[]) ?? []
+).map(applyPrepaidCatalogPolicy);
+const nonGeneratedPlans = (
+  (comingSoonPlansJson as CatalogPlan[]) ?? []
+).map(applyPrepaidCatalogPolicy);
 
 export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   .filter(
