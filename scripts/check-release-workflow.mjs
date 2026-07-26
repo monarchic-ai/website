@@ -10,6 +10,7 @@ const deployScript = await readFile(resolve(process.cwd(), "scripts/deploy-verce
 const stagingProxyDeployScript = await readFile(resolve(process.cwd(), "scripts/deploy-cloudflare-staging-proxy.mjs"), "utf8");
 const stagingProxyConfig = await readFile(resolve(process.cwd(), "cloudflare/wrangler.staging.jsonc"), "utf8");
 const stagingProxyWorker = await readFile(resolve(process.cwd(), "cloudflare/staging-proxy.mjs"), "utf8");
+const smokeScript = await readFile(resolve(process.cwd(), "scripts/smoke-production.mjs"), "utf8");
 const runbook = await readFile(resolve(process.cwd(), "docs/release-smoke-runbook.md"), "utf8");
 
 const requiredText = [
@@ -49,6 +50,7 @@ for (const [label, source, expected] of [
   ["wrangler.staging.jsonc", stagingProxyConfig, '"pattern": "staging.monarchic.io/*"'],
   ["staging-proxy.mjs", stagingProxyWorker, 'const UPSTREAM_ORIGIN = "https://website-staging-lac.vercel.app"'],
   ["staging-proxy.mjs", stagingProxyWorker, 'headers.set("X-Robots-Tag", "noindex, nofollow")'],
+  ["smoke-production.mjs", smokeScript, '"--no-zygote"'],
   ["release-smoke-runbook.md", runbook, "Vercel Git integration is disconnected"],
 ]) {
   if (source.includes(expected)) {

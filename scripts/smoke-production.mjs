@@ -17,7 +17,9 @@ const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || proces
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
 const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 4);
 const staticOnly = boolEnv(process.env.MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY);
+// Hardened runners block capset; bypass Chromium's zygote capability setup.
 const browserArgs = [
+  "--no-zygote",
   "--disable-gpu",
   "--disable-gpu-compositing",
   "--renderer-process-limit=2",
