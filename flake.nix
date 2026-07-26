@@ -21,6 +21,7 @@
               pkgs.chromium
               pkgs.nodejs_22
               pkgs.pnpm
+              pkgs.util-linux
             ];
 
             PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";

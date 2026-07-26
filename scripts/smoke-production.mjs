@@ -17,6 +17,11 @@ const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || proces
 const reportPath = process.env.MONARCHIC_WEBSITE_SMOKE_REPORT;
 const fetchAttempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS, 4);
 const staticOnly = boolEnv(process.env.MONARCHIC_WEBSITE_SMOKE_STATIC_ONLY);
+const browserArgs = [
+  "--disable-gpu",
+  "--disable-gpu-compositing",
+  "--renderer-process-limit=2",
+];
 
 const checks = [];
 const requiredCatalogSlugs = [
@@ -100,9 +105,43 @@ async function runSmoke() {
     return;
   }
 
+  await runBrowserSmokeWithRetries();
+}
+
+async function runBrowserSmokeWithRetries() {
+  const attempts = positiveIntEnv(process.env.MONARCHIC_WEBSITE_SMOKE_BROWSER_ATTEMPTS, 2);
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const checkCountBeforeAttempt = checks.length;
+    try {
+      await runBrowserSmoke();
+      return;
+    } catch (error) {
+      if (attempt >= attempts || !isBrowserClosedError(error)) {
+        throw error;
+      }
+      checks.splice(checkCountBeforeAttempt);
+      checks.push({
+        name: "browser smoke retry",
+        status: "retrying",
+        attempt,
+        reason: error.message,
+      });
+      await sleep(750 * attempt);
+    }
+  }
+}
+
+function isBrowserClosedError(error) {
+  return /Target page, context or browser has been closed|Browser has been closed/i.test(
+    error?.message ?? "",
+  );
+}
+
+async function runBrowserSmoke() {
   const browser = await chromium.launch({
     headless: true,
     executablePath,
+    args: browserArgs,
   });
 
   try {

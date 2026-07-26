@@ -121,4 +121,4 @@ jobs:
         run: nix develop --command pnpm install --frozen-lockfile
 
       - name: Run local website smoke
-        run: nix develop --command pnpm smoke:local
+        run: nix develop --command flock --wait 600 /tmp/monarchic-frontend-browser-smoke.lock pnpm smoke:local
