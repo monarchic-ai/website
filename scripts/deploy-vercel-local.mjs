@@ -86,7 +86,11 @@ const gitEnv = {
 run(["vercel", "--", "pull", "--yes", "--environment=production"], gitEnv);
 run(["vercel", "--", "build", "--prod"], gitEnv);
 run(["vercel", "--", "deploy", "--prebuilt", "--prod", "--archive=tgz"], gitEnv);
-run(["vercel", "--", "promote", project.productionAlias, "--yes"], gitEnv);
+run(
+  ["vercel", "--", "promote", project.productionAlias, "--yes"],
+  gitEnv,
+  { allowAlreadyCurrent: true },
+);
 
 function git(args) {
   const result = spawnSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
@@ -94,14 +98,28 @@ function git(args) {
   return result.stdout.trim();
 }
 
-function run(args, extraEnv) {
+function run(args, extraEnv, options = {}) {
   console.log(`[deploy-vercel-local] pnpm ${args.join(" ")}`);
+  const captureOutput = options.allowAlreadyCurrent === true;
   const result = spawnSync("pnpm", args, {
     cwd: process.cwd(),
     env: { ...process.env, ...extraEnv },
-    stdio: "inherit",
+    encoding: captureOutput ? "utf8" : undefined,
+    stdio: captureOutput ? ["ignore", "pipe", "pipe"] : "inherit",
     shell: false,
   });
+  if (captureOutput) {
+    if (result.stdout) process.stdout.write(result.stdout);
+    if (result.stderr) process.stderr.write(result.stderr);
+  }
   if (result.error) console.error(result.error.message);
-  if (result.status !== 0 || result.error) process.exit(result.status ?? 1);
+  if (result.status !== 0 || result.error) {
+    const output = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
+    if (options.allowAlreadyCurrent === true
+      && output.includes("already the current production deployment")) {
+      console.log("[deploy-vercel-local] deployment is already current");
+      return;
+    }
+    process.exit(result.status ?? 1);
+  }
 }

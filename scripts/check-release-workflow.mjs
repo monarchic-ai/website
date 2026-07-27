@@ -51,6 +51,7 @@ for (const [label, source, expected] of [
   ["deploy-vercel-local.mjs", deployScript, "PUBLIC_MONARCHIC_WEBAPP_BASE_URL"],
   ["deploy-vercel-local.mjs", deployScript, '"promote"'],
   ["deploy-vercel-local.mjs", deployScript, '["dist", ".vercel/output"]'],
+  ["deploy-vercel-local.mjs", deployScript, "already the current production deployment"],
   ["deploy-cloudflare-staging-proxy.mjs", stagingProxyDeployScript, "MONARCHIC_WEBSITE_STAGING_PROXY_APPROVED"],
   ["wrangler.staging.jsonc", stagingProxyConfig, '"pattern": "staging.monarchic.io/*"'],
   ["staging-proxy.mjs", stagingProxyWorker, 'const UPSTREAM_ORIGIN = "https://website-staging-lac.vercel.app"'],
