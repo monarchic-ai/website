@@ -6,11 +6,19 @@ const projects = {
     project: "website",
     projectId: "prj_uvlSntyUhQQLRpG08KwpGqccIJEp",
     url: "www.monarchic.io",
+    canonicalUrl: "https://monarchic.io",
+    apiBaseUrl: "https://api.monarchic.io",
+    webappBaseUrl: "https://app.monarchic.io",
+    productionAlias: "website-monarchic.vercel.app",
   },
   staging: {
     project: "website-staging",
     projectId: "prj_2fPB376hEAE3blFj67hsA3jc1Tme",
     url: "staging.monarchic.io",
+    canonicalUrl: "https://staging.monarchic.io",
+    apiBaseUrl: "https://staging-api.monarchic.io",
+    webappBaseUrl: "https://staging-app.monarchic.io",
+    productionAlias: "website-staging-monarchic.vercel.app",
   },
 };
 
@@ -38,6 +46,9 @@ const plan = {
   commitSha: sha,
   commitRef: ref,
   gitIntegration: "disconnected",
+  canonicalUrl: project.canonicalUrl,
+  apiBaseUrl: project.apiBaseUrl,
+  webappBaseUrl: project.webappBaseUrl,
 };
 console.log(JSON.stringify(plan, null, 2));
 
@@ -61,11 +72,15 @@ const gitEnv = {
   VERCEL_GIT_COMMIT_REF: ref,
   VERCEL_GIT_REPO_OWNER: process.env.VERCEL_GIT_REPO_OWNER ?? "monarchic-ai",
   VERCEL_GIT_REPO_SLUG: process.env.VERCEL_GIT_REPO_SLUG ?? "website",
+  PUBLIC_MONARCHIC_WEBSITE_BASE_URL: project.canonicalUrl,
+  PUBLIC_MONARCHIC_API_BASE_URL: project.apiBaseUrl,
+  PUBLIC_MONARCHIC_WEBAPP_BASE_URL: project.webappBaseUrl,
 };
 
 run(["vercel", "--", "pull", "--yes", "--environment=production"], gitEnv);
 run(["vercel", "--", "build", "--prod"], gitEnv);
 run(["vercel", "--", "deploy", "--prebuilt", "--prod", "--archive=tgz"], gitEnv);
+run(["vercel", "--", "promote", project.productionAlias, "--yes"], gitEnv);
 
 function git(args) {
   const result = spawnSync("git", args, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
