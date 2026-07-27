@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
+import { rmSync } from "node:fs";
+import { resolve } from "node:path";
 
 const projects = {
   production: {
@@ -61,6 +63,10 @@ if (target === "production" && process.env.MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_A
 }
 if (git(["status", "--porcelain"])) {
   throw new Error(`${target} deploy requires a clean Git checkout`);
+}
+
+for (const path of ["dist", ".vercel/output"]) {
+  rmSync(resolve(process.cwd(), path), { recursive: true, force: true });
 }
 
 const gitEnv = {
