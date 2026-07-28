@@ -11,10 +11,10 @@ const navClass = (current: boolean) => [
   tone === "paper"
     ? current
       ? "border-black bg-black text-white"
-      : "border-transparent text-black/62 hover:border-black hover:bg-[#f0bd46] hover:text-black"
+      : "border-transparent text-black/62 hover:border-black hover:bg-signal hover:text-black"
     : current
-      ? "border-cyan-300 bg-cyan-300/10 text-cyan-100"
-      : "border-white/50 text-white/72 hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100 focus-visible:border-cyan-300 focus-visible:bg-cyan-300/10 focus-visible:text-cyan-100",
+      ? "border-signal bg-signal text-black"
+      : "border-white/50 text-white/72 hover:border-signal hover:bg-signal hover:text-black focus-visible:border-signal focus-visible:bg-signal focus-visible:text-black",
 ].join(" ");
 ---
 
@@ -22,13 +22,13 @@ const navClass = (current: boolean) => [
   id="navigation"
   class:list={[
     "flex min-h-16 items-center justify-between gap-3 border-b px-3 sm:px-5",
-    tone === "paper" ? "border-black bg-[#f2f0e8] text-black" : "border-white text-white",
+    tone === "paper" ? "border-black bg-paper text-black" : "border-white text-white",
   ]}
 >
   <a href="/" class="inline-flex shrink-0 items-center gap-3">
     <span class:list={[
       "inline-flex h-9 w-9 items-center justify-center",
-      tone === "paper" ? "bg-black" : "bg-[#fff]",
+      tone === "paper" ? "bg-black" : "bg-paper",
     ]}>
       <img src="/favicon.svg" alt="" class:list={["h-7 w-7 object-cover p-0.5", tone === "paper" && "invert"]} width="28" height="28" />
     </span>
@@ -43,8 +43,8 @@ const navClass = (current: boolean) => [
       class:list={[
         "hidden min-h-10 items-center border px-4 text-xs font-black uppercase transition sm:inline-flex",
         tone === "paper"
-          ? "border-black bg-black text-white hover:bg-[#f0bd46] hover:text-black"
-          : "border-cyan-300 bg-cyan-300/10 text-cyan-100 hover:bg-cyan-300/20 hover:text-white",
+          ? "border-black bg-black text-white hover:bg-signal hover:text-black"
+          : "border-signal bg-signal text-black hover:bg-signal-soft",
       ]}
     >
       Open app

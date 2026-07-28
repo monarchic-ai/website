@@ -76,8 +76,8 @@ const proofPoints = [
       path="/"
     />
   </head>
-  <body class="paper-shell min-h-screen text-[#080808]">
-    <main class="mx-auto min-h-screen max-w-[1480px] border-x border-black bg-[#f2f0e8]">
+  <body class="paper-shell min-h-screen text-ink">
+    <main class="mx-auto min-h-screen max-w-[1480px] border-x border-black bg-paper">
       <SiteHeader tone="paper" />
 
       <section id="introduction" aria-labelledby="home-title">
@@ -107,12 +107,12 @@ const proofPoints = [
               validation, infrastructure, incident response, and delivery.
             </p>
             <div class="grid gap-2">
-              <a href={appBaseUrl} class="inline-flex min-h-12 items-center justify-between border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-[#f0bd46] hover:text-black">
+              <a href={appBaseUrl} class="inline-flex min-h-12 items-center justify-between border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-signal hover:text-black">
                 Open Monarchic <span aria-hidden="true">↗</span>
               </a>
               <div class="grid grid-cols-2 gap-2">
-                <a href="/products" class="inline-flex min-h-11 items-center justify-center border border-black px-3 text-xs font-black uppercase transition hover:bg-[#f0bd46]">Products</a>
-                <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-11 items-center justify-center border border-black px-3 text-xs font-black uppercase transition hover:bg-[#f0bd46]">Docs</a>
+                <a href="/products" class="inline-flex min-h-11 items-center justify-center border border-black px-3 text-xs font-black uppercase transition hover:bg-signal">Products</a>
+                <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-11 items-center justify-center border border-black px-3 text-xs font-black uppercase transition hover:bg-signal">Docs</a>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@ const proofPoints = [
 
         <RunSignalScene />
 
-        <div class="grid border-b border-black bg-[#f0bd46] font-mono text-[0.65rem] font-bold uppercase sm:grid-cols-3">
+        <div class="grid border-b border-black bg-signal font-mono text-[0.65rem] font-bold uppercase sm:grid-cols-3">
           <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Command completed ≠ goal completed</p>
           <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Required phases / 08</p>
           <p class="px-4 py-3 sm:px-6">Final claim / receipt gated</p>
@@ -162,7 +162,7 @@ const proofPoints = [
         </div>
       </section>
 
-      <section id="proof" aria-labelledby="proof-title" class="border-b border-black bg-[#f0bd46]">
+      <section id="proof" aria-labelledby="proof-title" class="border-b border-black bg-signal">
         <div class="grid min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
           <header class="min-w-0 border-b border-black p-5 sm:p-7 lg:border-b-0 lg:border-r">
             <p class="font-mono text-[0.65rem] font-bold uppercase">Research record / 03</p>
@@ -173,7 +173,7 @@ const proofPoints = [
               ExplicitMem was evaluated against 500 LongMemEval-S questions under
               one fixed local protocol. The full report sits beside the headline.
             </p>
-            <a href="/research/explicitmem" class="mt-6 inline-flex min-h-11 items-center border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-[#f2f0e8] hover:text-black">
+            <a href="/research/explicitmem" class="mt-6 inline-flex min-h-11 items-center border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-paper hover:text-black">
               Read methodology
             </a>
           </header>
@@ -209,9 +209,9 @@ const proofPoints = [
               remain visible without being presented as purchasable.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <a href="/products" class="inline-flex min-h-11 items-center border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-[#f0bd46] hover:text-black">Full catalog</a>
-              <a href="/research" class="inline-flex min-h-11 items-center border border-black px-4 text-xs font-black uppercase transition hover:bg-[#f0bd46]">Research</a>
-              <a href="#waitlist" class="inline-flex min-h-11 items-center border border-black px-4 text-xs font-black uppercase transition hover:bg-[#f0bd46]">WIP access</a>
+              <a href="/products" class="inline-flex min-h-11 items-center border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-signal hover:text-black">Full catalog</a>
+              <a href="/research" class="inline-flex min-h-11 items-center border border-black px-4 text-xs font-black uppercase transition hover:bg-signal">Research</a>
+              <a href="#waitlist" class="inline-flex min-h-11 items-center border border-black px-4 text-xs font-black uppercase transition hover:bg-signal">WIP access</a>
             </div>
           </div>
         </header>
@@ -228,16 +228,16 @@ const proofPoints = [
                 <p class="mt-1 font-mono text-[0.62rem] font-bold uppercase opacity-52">{route.role}</p>
               </div>
               <p class="max-w-2xl text-sm leading-6 opacity-64">{route.proof}</p>
-              <span class="font-mono text-[0.62rem] font-bold uppercase text-emerald-700 group-hover:text-[#7fffc6]">{route.signal}</span>
+              <span class="font-mono text-[0.62rem] font-bold uppercase text-black/70 group-hover:text-signal">{route.signal}</span>
             </a>
           ))}
         </div>
       </section>
 
-      <section id="pricing_model" aria-labelledby="pricing-title" class="border-b border-black bg-[#080808] text-white">
+      <section id="pricing_model" aria-labelledby="pricing-title" class="border-b border-black bg-ink text-white">
         <div class="grid lg:grid-cols-[minmax(0,1fr)_22rem]">
           <div class="p-5 sm:p-8 lg:p-10">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-[#7fffc6]">Shared credit model / 05</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Shared credit model / 05</p>
             <h2 id="pricing-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
               One allowance covers every available MCP.
             </h2>
@@ -253,7 +253,7 @@ const proofPoints = [
               <p>Available MCPs included</p>
               <p>Usage visible by account</p>
             </div>
-            <a href="/products#plans" class="mt-8 inline-flex min-h-12 items-center justify-between border border-[#f0bd46] bg-[#f0bd46] px-4 text-xs font-black uppercase text-black transition hover:bg-[#fff]">
+            <a href="/products#plans" class="mt-8 inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-paper">
               Compare plans <span aria-hidden="true">↗</span>
             </a>
           </div>
@@ -272,7 +272,7 @@ const proofPoints = [
               Nothing marked WIP is available for checkout.
             </p>
           </div>
-          <div class="bg-[#080808] p-5 text-white sm:p-7 lg:p-10">
+          <div class="bg-ink p-5 text-white sm:p-7 lg:p-10">
             <p class="mb-5 font-mono text-[0.65rem] font-bold uppercase text-white/46">Register interest</p>
             <WaitlistForm
               client:load
