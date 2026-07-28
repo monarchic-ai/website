@@ -25,7 +25,9 @@
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-signal);
+  outline-color: #f0bd46 !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
   outline-offset: 3px;
 }
 
@@ -44,5 +46,5 @@
 }
 
 .paper-shell :focus-visible {
-  outline-color: var(--color-ink);
+  outline-color: #080808 !important;
 }
