@@ -226,10 +226,10 @@ function statusClasses(plan: CatalogPlan): string {
                 )}
                 {annualPrice?.priceCents != null && (
                   <p class="mt-2 text-xs font-bold uppercase text-white/58">
-                    Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")}
+                    Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")} · two months included
                   </p>
                 )}
-                <p class="mt-4 text-sm leading-6 text-white/66">Choose monthly or annual billing in the Monarchic webapp.</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">Choose monthly or annual billing in the Monarchic webapp. Both are prepaid with no overage.</p>
                 <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Choose plan
                 </a>

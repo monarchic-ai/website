@@ -123,7 +123,8 @@ function statusClasses(plan: CatalogPlan): string {
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Each plan includes an account-level credit allowance. Available MCPs
-            draw from that shared allowance according to their credit weight.
+            draw from that shared allowance. Paid plans are prepaid, have no
+            overage, and stop hosted calls when the allowance is empty.
           </p>
           <div class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {usagePlans.map((plan) => {
@@ -151,7 +152,7 @@ function statusClasses(plan: CatalogPlan): string {
                       </p>
                       {annualPrice?.priceCents != null && (
                         <p class="mt-2 text-xs font-bold uppercase text-white/58">
-                          Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")}
+                          Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")} · two months included
                         </p>
                       )}
                     </div>
@@ -159,6 +160,11 @@ function statusClasses(plan: CatalogPlan): string {
                   {creditAllowanceLabel(plan) && (
                     <p class="mt-4 border-l-2 border-signal pl-3 text-xs font-bold uppercase text-signal-soft">
                       {creditAllowanceLabel(plan)}
+                    </p>
+                  )}
+                  {!isEvaluation && (
+                    <p class="mt-3 text-[0.65rem] font-bold uppercase text-white/48">
+                      Prepaid · no overage
                     </p>
                   )}
                   <div class="flex-1"></div>
@@ -217,21 +223,44 @@ function statusClasses(plan: CatalogPlan): string {
           </div>
         </section>
 
-        <section id="how-credits-work" class="mb-20 grid scroll-mt-8 gap-8 border-2 border-white bg-black/76 p-6 lg:grid-cols-[1.1fr_0.9fr] lg:p-8">
-          <div>
-            <p class="text-xs font-bold uppercase text-signal">03 / Credits</p>
-            <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, available MCPs</h2>
-            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-              The plan controls the account allowance. Standard operations use
-              fewer credits. PTY sessions start at one credit with terminal
-              controls included; browser, provider-backed, and other
-              compute-heavy work follows measured cost.
-            </p>
+        <section id="how-credits-work" class="mb-20 scroll-mt-8 border-2 border-white bg-black/76 p-6 lg:p-8">
+          <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div>
+              <p class="text-xs font-bold uppercase text-signal">03 / Credits</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, four clear weights</h2>
+              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
+                Credits track the kind of work a tool call performs. The same
+                weights apply across available MCPs, so a plan is comparable
+                before you buy it and usage stays readable afterward.
+              </p>
+            </div>
+            <div class="grid gap-3 text-sm leading-6 text-white/72">
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">Review usage and credit impact from your account.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Paid plans are prepaid and hard-capped; hosted calls pause at the credit limit.</span></div>
+            </div>
           </div>
-          <div class="grid gap-3 text-sm leading-6 text-white/72">
-            <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
-            <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">Review usage and credit impact from your account.</span></div>
-            <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Paid plans are prepaid and hard-capped; hosted calls pause at the credit limit.</span></div>
+          <div class="mt-8 grid border-t border-white/36 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="border-b border-white/36 p-4 sm:border-r lg:border-b-0">
+              <p class="font-mono text-3xl font-extrabold text-signal">0</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Metadata</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Status, health, schema, and similar discovery calls.</p>
+            </div>
+            <div class="border-b border-white/36 p-4 lg:border-b-0 lg:border-r">
+              <p class="font-mono text-3xl font-extrabold text-signal">1</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Standard</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Normal hosted tool calls without heavier analysis or providers.</p>
+            </div>
+            <div class="border-b border-white/36 p-4 sm:border-b-0 sm:border-r">
+              <p class="font-mono text-3xl font-extrabold text-signal">3</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Stateful analysis</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Analysis, indexing, search, synthesis, and related work.</p>
+            </div>
+            <div class="p-4">
+              <p class="font-mono text-3xl font-extrabold text-signal">10</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Provider-backed</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Browser, terminal, and external-provider work by default.</p>
+            </div>
           </div>
         </section>
 

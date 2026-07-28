@@ -68,6 +68,10 @@ const PREPAID_HARD_CAP_LABEL = "No overage; hard monthly cap";
 const PREPAID_HARD_CAP_BULLET =
   "No overage; hosted calls pause at the prepaid credit limit";
 const SINGLE_MCP_MONTHLY_CREDITS = 1_000;
+const PREPAID_CREDIT_USAGE_SUMMARY =
+  "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.";
+const PREPAID_PTY_USAGE_SUMMARY =
+  "PTY metadata operations use 0 credits. Provider-backed terminal work uses 10 credits by default.";
 
 function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
   if (plan.kind !== "usage-plan" && plan.kind !== "single-mcp") {
@@ -77,12 +81,18 @@ function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
   const hardCapBullet = isEvaluation
     ? "No overage; hosted calls pause at the trial credit limit"
     : PREPAID_HARD_CAP_BULLET;
-  const featureBullets = plan.featureBullets.filter(
-    (bullet) =>
-      !/overage|additional credit|before metered usage/i.test(
-        bullet,
-      ),
-  );
+  const featureBullets = plan.featureBullets
+    .filter(
+      (bullet) =>
+        !/overage|additional credit|before metered usage/i.test(
+          bullet,
+        ),
+    )
+    .map((bullet) =>
+      plan.slug === "mcp-pty" && /one base credit|measured settlement/i.test(bullet)
+        ? "Metadata calls use 0 credits; provider-backed terminal work uses 10 by default"
+        : bullet,
+    );
   if (!featureBullets.includes(hardCapBullet)) {
     featureBullets.push(hardCapBullet);
   }
@@ -93,6 +103,12 @@ function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
       "with a predictable hard monthly cap",
     ),
     featureBullets,
+    usageSummary:
+      plan.kind === "usage-plan"
+        ? PREPAID_CREDIT_USAGE_SUMMARY
+        : plan.slug === "mcp-pty"
+          ? PREPAID_PTY_USAGE_SUMMARY
+        : plan.usageSummary,
     includedCredits:
       plan.kind === "single-mcp"
         ? plan.includedCredits ?? SINGLE_MCP_MONTHLY_CREDITS

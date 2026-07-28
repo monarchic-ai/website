@@ -168,6 +168,8 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
       await page.getByRole("heading", { name: "Map this repository and return source-cited architecture." }).waitFor();
+      await page.getByText("5/15", { exact: true }).waitFor();
+      await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
       await expectHref(
@@ -201,7 +203,10 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "All Monarchic MCPs" }).waitFor();
-      await page.getByRole("heading", { name: "One allowance, available MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "One allowance, four clear weights" }).waitFor();
+      for (const creditWeight of ["0", "1", "3", "10"]) {
+        await page.getByText(creditWeight, { exact: true }).first().waitFor();
+      }
 
       const usageCards = page.locator('[data-plan-card^="usage-"]');
       const usageCardCount = await usageCards.count();
