@@ -77,7 +77,7 @@
       name="product"
       bind:value={selectedSlug}
       disabled={submitting}
-      class="h-12 min-w-0 border-2 border-white bg-black px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-200 disabled:opacity-60"
+      class="h-12 min-w-0 border-2 border-white bg-black px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-signal disabled:opacity-60"
     >
       {#each products as product}
         <option value={product.slug}>{product.label}</option>
@@ -94,22 +94,22 @@
     placeholder={placeholder}
     bind:value={email}
     disabled={submitting}
-    class="h-12 border-2 border-white bg-black px-3 text-sm text-white placeholder:text-white/42 focus:outline-none focus:ring-2 focus:ring-cyan-200 disabled:opacity-60"
+    class="h-12 border-2 border-white bg-black px-3 text-sm text-white placeholder:text-white/42 focus:outline-none focus:ring-2 focus:ring-signal disabled:opacity-60"
   />
   <button
     type="submit"
     disabled={submitting}
-    class="inline-flex h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-5 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-200 disabled:cursor-not-allowed disabled:opacity-60"
+    class="inline-flex h-12 items-center justify-center border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft focus:outline-none focus:ring-2 focus:ring-signal disabled:cursor-not-allowed disabled:opacity-60"
   >
     {submitting ? "Submitting" : submitLabel}
   </button>
 </form>
 {#if successMessage}
-  <p class="mt-3 text-sm leading-6 text-emerald-200" role="status" aria-live="polite">{successMessage}</p>
+  <p class="mt-3 text-sm leading-6 text-signal" role="status" aria-live="polite">{successMessage}</p>
 {/if}
 {#if errorMessage}
-  <p class="mt-3 text-sm leading-6 text-amber-100" role="alert">{errorMessage}</p>
+  <p class="mt-3 text-sm leading-6 text-signal-soft" role="alert">{errorMessage}</p>
 {/if}
 <p class="mt-3 text-xs leading-5 text-white/48">
-  We use this email for Monarchic access updates only. <a class="text-cyan-200 hover:text-white" href="/privacy">Privacy notice</a>.
+  We use this email for Monarchic access updates only. <a class="text-signal hover:text-white" href="/privacy">Privacy notice</a>.
 </p>

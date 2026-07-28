@@ -56,9 +56,9 @@ function statusLabel(plan: CatalogPlan): string {
 }
 
 function statusClasses(plan: CatalogPlan): string {
-  if (plan.status === "available") return "border-emerald-300 text-emerald-200";
-  if (plan.status === "contact_sales") return "border-cyan-300 text-cyan-200";
-  return "border-amber-300 text-amber-200";
+  if (plan.status === "available") return "border-signal bg-signal text-black";
+  if (plan.status === "contact_sales") return "border-white/70 text-white";
+  return "border-white/35 text-white/58";
 }
 ---
 
@@ -84,7 +84,7 @@ function statusClasses(plan: CatalogPlan): string {
         <SiteHeader active="products" />
 
         <p class="mt-10 text-xs font-semibold uppercase text-white/54">
-          <a href="/products" class="transition hover:text-cyan-100">Products</a> / {plan.displayName}
+          <a href="/products" class="transition hover:text-signal-soft">Products</a> / {plan.displayName}
         </p>
 
         <section class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -105,11 +105,11 @@ function statusClasses(plan: CatalogPlan): string {
 
             {productDetail !== null && (
               <section class="mt-8 grid gap-3 sm:grid-cols-2">
-                <div class="border border-white/36 bg-black/60 p-4 transition hover:border-cyan-300">
+                <div class="border border-white/36 bg-black/60 p-4 transition hover:border-signal">
                   <p class="text-[0.65rem] font-bold uppercase text-white/48">Category</p>
                   <p class="mt-2 text-sm font-bold uppercase leading-5">{productDetail.category}</p>
                 </div>
-                <div class="border border-white/36 bg-black/60 p-4 transition hover:border-cyan-300">
+                <div class="border border-white/36 bg-black/60 p-4 transition hover:border-signal">
                   <p class="text-[0.65rem] font-bold uppercase text-white/48">Best for</p>
                   <p class="mt-2 text-sm leading-6 text-white/74">{productDetail.buyer}</p>
                 </div>
@@ -118,7 +118,7 @@ function statusClasses(plan: CatalogPlan): string {
 
             {plan.kind === "usage-plan" && (
               <section class="mt-10 border-2 border-white bg-black/68 p-5">
-                <p class="text-xs font-bold uppercase text-cyan-200">Credit allowance</p>
+                <p class="text-xs font-bold uppercase text-signal">Credit allowance</p>
                 <div class="mt-4 grid gap-3 sm:grid-cols-3">
                   {creditAllowanceLabel(plan) !== null && (
                     <div class="border border-white/36 bg-black/54 p-4">
@@ -143,7 +143,7 @@ function statusClasses(plan: CatalogPlan): string {
 
             {plan.kind === "single-mcp" && (
               <section class="mt-10 border-2 border-white bg-black/68 p-5">
-                <p class="text-xs font-bold uppercase text-cyan-200">Access and credits</p>
+                <p class="text-xs font-bold uppercase text-signal">Access and credits</p>
                 <h2 class="mt-3 text-2xl font-extrabold uppercase">
                   {plan.status === "available" ? "Included with an active credit plan" : "Public access is WIP"}
                 </h2>
@@ -158,8 +158,8 @@ function statusClasses(plan: CatalogPlan): string {
                 <h2 class="text-xs font-bold uppercase text-white/54">What you get</h2>
                 <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74 sm:grid-cols-2">
                   {plan.featureBullets.map((bullet) => (
-                    <li class="flex gap-3 border border-white/30 bg-black/54 p-4 transition hover:border-cyan-300 hover:bg-cyan-300/[0.06]">
-                      <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-cyan-300"></span>
+                    <li class="flex gap-3 border border-white/30 bg-black/54 p-4 transition hover:border-signal hover:bg-signal/[0.06]">
+                      <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-signal"></span>
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -175,8 +175,8 @@ function statusClasses(plan: CatalogPlan): string {
                 <h2 class="mt-10 text-xs font-bold uppercase text-white/54">Outcomes</h2>
                 <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74 sm:grid-cols-2">
                   {productDetail.outcomes.map((outcome) => (
-                    <li class="flex gap-3 border border-white/30 bg-black/50 p-4 transition hover:border-cyan-300 hover:bg-cyan-300/[0.06]">
-                      <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-cyan-300"></span>
+                    <li class="flex gap-3 border border-white/30 bg-black/50 p-4 transition hover:border-signal hover:bg-signal/[0.06]">
+                      <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-signal"></span>
                       <span>{outcome}</span>
                     </li>
                   ))}
@@ -194,11 +194,11 @@ function statusClasses(plan: CatalogPlan): string {
             )}
 
             {planResearch !== null && (
-              <section class="mt-10 border-2 border-cyan-300/70 bg-black/68 p-5">
-                <p class="text-xs font-bold uppercase text-cyan-200">Benchmark</p>
+              <section class="mt-10 border-2 border-signal/70 bg-black/68 p-5">
+                <p class="text-xs font-bold uppercase text-signal">Benchmark</p>
                 <h2 class="mt-3 text-2xl font-extrabold uppercase">{planResearch.label}</h2>
                 <p class="mt-3 max-w-2xl text-sm leading-7 text-white/72">{planResearch.summary}</p>
-                <a href={planResearch.href} class="mt-5 inline-flex min-h-11 items-center justify-center border border-cyan-300 px-4 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/10 hover:text-white">
+                <a href={planResearch.href} class="mt-5 inline-flex min-h-11 items-center justify-center border border-signal px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">
                   Read benchmark
                 </a>
               </section>
@@ -208,10 +208,10 @@ function statusClasses(plan: CatalogPlan): string {
           <aside id="waitlist" class="h-fit scroll-mt-6 border-2 border-white bg-black/78 p-5 lg:sticky lg:top-6">
             {isEvaluation ? (
               <>
-                <p class="text-xs font-bold uppercase text-cyan-200">Start Evaluation</p>
+                <p class="text-xs font-bold uppercase text-signal">Start Evaluation</p>
                 <p class="mt-4 text-2xl font-extrabold uppercase">200 one-time credits</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Sign in with a verified email in the Monarchic webapp. No card, automatic billing, overage, or rollover.</p>
-                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-4 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Claim 200 credits
                 </a>
               </>
@@ -230,7 +230,7 @@ function statusClasses(plan: CatalogPlan): string {
                   </p>
                 )}
                 <p class="mt-4 text-sm leading-6 text-white/66">Choose monthly or annual billing in the Monarchic webapp.</p>
-                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-4 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Choose plan
                 </a>
               </>
@@ -239,30 +239,30 @@ function statusClasses(plan: CatalogPlan): string {
                 <p class="text-xs font-bold uppercase text-white/54">Business plan</p>
                 <p class="mt-4 text-2xl font-extrabold uppercase">Contact sales</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Capacity, support, and service terms are based on the expected workload.</p>
-                <a href={plan.salesContactUrl} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-4 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+                <a href={plan.salesContactUrl} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Contact sales
                 </a>
               </>
             ) : plan.kind === "single-mcp" && plan.status === "available" ? (
               <>
-                <p class="text-xs font-bold uppercase text-emerald-200">Available</p>
+                <p class="text-xs font-bold uppercase text-signal">Available</p>
                 <p class="mt-4 text-2xl font-extrabold uppercase">Use it with a credit plan</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Calls draw from the included credits on your active plan.</p>
-                <a href="/products#plans" class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-4 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+                <a href="/products#plans" class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Compare plans
                 </a>
               </>
             ) : (
               <>
-                <p class="text-xs font-bold uppercase text-amber-200">{statusLabel(plan)}</p>
+                <p class="text-xs font-bold uppercase text-signal">{statusLabel(plan)}</p>
                 <p class="mt-4 text-2xl font-extrabold uppercase">Not available for checkout</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Join the waitlist for an update when public access opens.</p>
-                <a href={`/waitlist?product=${encodeURIComponent(plan.slug)}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-amber-300/80 px-4 text-xs font-bold uppercase text-amber-100 transition hover:bg-amber-300/10 hover:text-white">
+                <a href={`/waitlist?product=${encodeURIComponent(plan.slug)}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal/80 px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">
                   Join waitlist
                 </a>
               </>
             )}
-            <a href="/products" class="mt-3 inline-flex min-h-11 w-full items-center justify-center border border-white/50 px-4 text-xs font-bold uppercase text-white transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">
+            <a href="/products" class="mt-3 inline-flex min-h-11 w-full items-center justify-center border border-white/50 px-4 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
               View all products
             </a>
           </aside>

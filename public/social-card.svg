@@ -9,7 +9,7 @@
     </linearGradient>
     <radialGradient id="signal" cx="0" cy="0" r="1" gradientTransform="translate(954 122) rotate(135) scale(520 360)" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
-      <stop offset="0.38" stop-color="#d6ff7a" stop-opacity="0.12"/>
+      <stop offset="0.38" stop-color="#f0bd46" stop-opacity="0.12"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
     <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
@@ -25,7 +25,7 @@
     <rect x="54" y="48" width="1092" height="534" rx="34" fill="url(#grid)"/>
     <rect x="54" y="48" width="1092" height="534" rx="34" fill="url(#signal)"/>
     <path d="M98 496C232 440 330 466 442 502C573 545 690 548 815 500C936 454 1012 442 1103 476" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
-    <path d="M96 526C246 482 345 503 463 531C603 564 725 563 846 522C967 481 1030 480 1103 514" fill="none" stroke="#d6ff7a" stroke-opacity="0.28" stroke-width="3"/>
+    <path d="M96 526C246 482 345 503 463 531C603 564 725 563 846 522C967 481 1030 480 1103 514" fill="none" stroke="#f0bd46" stroke-opacity="0.28" stroke-width="3"/>
     <g transform="translate(116 106)">
       <rect x="0" y="0" width="118" height="118" rx="26" fill="#ffffff"/>
       <path fill="#050505" d="M64.5 79.6c-3.4 2.8-8.3.4-8.3-4.1V44c0-4.4 5-6.9 8.4-4l22.2 19.2c2.7 2.3 2.7 6.6-.1 8.9L64.5 79.6Z"/>

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-ink: #080808;
+  --color-paper: #f2f0e8;
+  --color-signal: #f0bd46;
+  --color-signal-soft: #fff1bd;
+}
+
 @layer base {
   :root {
     color-scheme: only dark;
@@ -15,26 +22,27 @@
     letter-spacing: 0 !important;
   }
 
-  :focus-visible {
-    outline: 2px solid #67e8f9;
-    outline-offset: 3px;
-  }
+}
 
-  ::selection {
-    background: #67e8f9;
-    color: #000;
-  }
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-ink);
 }
 
 .paper-shell {
   color-scheme: light;
-  background-color: #f2f0e8;
+  background-color: var(--color-paper);
   background-image:
-    linear-gradient(rgba(8, 8, 8, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(8, 8, 8, 0.035) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--color-ink) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 3.5%, transparent) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .paper-shell :focus-visible {
-  outline-color: #080808;
+  outline-color: var(--color-ink);
 }

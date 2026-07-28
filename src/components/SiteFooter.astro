@@ -11,12 +11,12 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
   id="footer"
   class:list={[
     "grid gap-8 border-t px-4 py-8 sm:grid-cols-[1fr_auto] sm:items-end sm:px-6",
-    tone === "paper" ? "border-black bg-[#f2f0e8] text-black" : "border-white text-white",
+    tone === "paper" ? "border-black bg-paper text-black" : "border-white text-white",
   ]}
 >
   <div>
     <a href="/" class="inline-flex items-center gap-3">
-      <span class:list={["inline-flex h-8 w-8 items-center justify-center", tone === "paper" ? "bg-black" : "bg-[#fff]"]}>
+      <span class:list={["inline-flex h-8 w-8 items-center justify-center", tone === "paper" ? "bg-black" : "bg-paper"]}>
         <img src="/favicon.svg" alt="" class:list={["h-6 w-6 object-cover p-0.5", tone === "paper" && "invert"]} width="24" height="24" />
       </span>
       <span class="text-xs font-extrabold uppercase">Monarchic</span>

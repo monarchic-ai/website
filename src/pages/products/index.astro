@@ -42,9 +42,9 @@ const researchByPlanSlug: Record<string, string> = {
 };
 
 function statusClasses(plan: CatalogPlan): string {
-  if (plan.status === "available") return "border-emerald-300 text-emerald-200";
-  if (plan.status === "contact_sales") return "border-cyan-300 text-cyan-200";
-  return "border-amber-300 text-amber-200";
+  if (plan.status === "available") return "border-signal bg-signal text-black";
+  if (plan.status === "contact_sales") return "border-white/70 text-white";
+  return "border-white/35 text-white/58";
 }
 ---
 
@@ -70,7 +70,7 @@ function statusClasses(plan: CatalogPlan): string {
         <SiteHeader active="products" />
 
         <section class="py-14 text-center sm:py-20">
-          <p class="text-xs font-semibold uppercase text-cyan-200">Products</p>
+          <p class="text-xs font-semibold uppercase text-signal">Products</p>
           <h1 class="mx-auto mt-5 max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
             Plans and MCPs
           </h1>
@@ -79,10 +79,10 @@ function statusClasses(plan: CatalogPlan): string {
             across every MCP marked Available.
           </p>
           <div class="mt-8 flex flex-col justify-center gap-3 min-[440px]:flex-row">
-            <a href="#plans" class="inline-flex min-h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-6 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">
+            <a href="#plans" class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-6 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
               Compare plans
             </a>
-            <a href="#mcp-catalog" class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-6 text-xs font-bold uppercase text-white transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">
+            <a href="#mcp-catalog" class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-6 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
               Browse all MCPs
             </a>
           </div>
@@ -113,13 +113,13 @@ function statusClasses(plan: CatalogPlan): string {
 
         <nav aria-label="Product sections" class="mb-14 flex flex-wrap gap-2 border-y border-white/40 py-4">
           <span class="mr-2 self-center text-[0.65rem] font-bold uppercase text-white/46">Jump to /</span>
-          <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Plans</a>
-          <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">All MCPs</a>
-          <a href="#how-credits-work" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Credits</a>
+          <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plans</a>
+          <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">All MCPs</a>
+          <a href="#how-credits-work" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Credits</a>
         </nav>
 
         <section id="plans" class="mb-20 scroll-mt-8">
-          <p class="text-xs font-bold uppercase text-cyan-200">01 / Plans</p>
+          <p class="text-xs font-bold uppercase text-signal">01 / Plans</p>
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Each plan includes an account-level credit allowance. Available MCPs
@@ -135,7 +135,7 @@ function statusClasses(plan: CatalogPlan): string {
               return (
                 <article
                   data-plan-card={plan.slug}
-                  class={`flex min-h-[330px] flex-col border-2 bg-black/74 p-5 transition duration-200 hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-300/[0.06] focus-within:-translate-y-1 focus-within:border-cyan-300 ${plan.highlighted ? "border-cyan-300" : "border-white/70"}`}
+                  class={`flex min-h-[330px] flex-col border-2 bg-black/74 p-5 transition duration-200 hover:-translate-y-1 hover:border-signal hover:bg-signal/[0.06] focus-within:-translate-y-1 focus-within:border-signal ${plan.highlighted ? "border-signal" : "border-white/70"}`}
                 >
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <span class="text-[0.65rem] font-bold uppercase text-white/58">Credit plan</span>
@@ -157,22 +157,22 @@ function statusClasses(plan: CatalogPlan): string {
                     </div>
                   )}
                   {creditAllowanceLabel(plan) && (
-                    <p class="mt-4 border-l-2 border-cyan-300 pl-3 text-xs font-bold uppercase text-cyan-100">
+                    <p class="mt-4 border-l-2 border-signal pl-3 text-xs font-bold uppercase text-signal-soft">
                       {creditAllowanceLabel(plan)}
                     </p>
                   )}
                   <div class="flex-1"></div>
                   <div class="mt-7 grid gap-2">
                     {isEvaluation ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Claim 200 credits</a>
+                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Claim 200 credits</a>
                     ) : isPurchasable ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Choose plan</a>
+                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Choose plan</a>
                     ) : plan.status === "contact_sales" && plan.salesContactUrl ? (
-                      <a href={plan.salesContactUrl} class="inline-flex min-h-11 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-3 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Contact sales</a>
+                      <a href={plan.salesContactUrl} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact sales</a>
                     ) : (
-                      <a href="/waitlist" class="inline-flex min-h-11 items-center justify-center border-2 border-amber-300/80 px-3 text-xs font-bold uppercase text-amber-100 transition hover:bg-amber-300/10 hover:text-white">Join waitlist</a>
+                      <a href="/waitlist" class="inline-flex min-h-11 items-center justify-center border-2 border-signal/80 px-3 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">Join waitlist</a>
                     )}
-                    <a href={`/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Plan details</a>
+                    <a href={`/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plan details</a>
                   </div>
                 </article>
               );
@@ -181,7 +181,7 @@ function statusClasses(plan: CatalogPlan): string {
         </section>
 
         <section id="mcp-catalog" class="mb-20 scroll-mt-8">
-          <p class="text-xs font-bold uppercase text-emerald-200">02 / MCP catalog</p>
+          <p class="text-xs font-bold uppercase text-signal">02 / MCP catalog</p>
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">All Monarchic MCPs</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Every current product is listed here. Products that are not ready
@@ -193,7 +193,7 @@ function statusClasses(plan: CatalogPlan): string {
               return (
                 <article
                   data-plan-card={plan.slug}
-                  class="group flex min-h-[285px] flex-col border border-white/45 bg-black/66 p-5 transition duration-200 hover:-translate-y-1 hover:border-cyan-300 hover:bg-cyan-300/[0.06] focus-within:-translate-y-1 focus-within:border-cyan-300"
+                  class="group flex min-h-[285px] flex-col border border-white/45 bg-black/66 p-5 transition duration-200 hover:-translate-y-1 hover:border-signal hover:bg-signal/[0.06] focus-within:-translate-y-1 focus-within:border-signal"
                 >
                   <div class="flex flex-wrap items-start justify-between gap-3">
                     <span class="text-[0.62rem] font-bold uppercase text-white/48">{detail?.category ?? "MCP"}</span>
@@ -206,9 +206,9 @@ function statusClasses(plan: CatalogPlan): string {
                   </p>
                   <div class="flex-1"></div>
                   <div class="mt-6 flex flex-wrap gap-2">
-                    <a href={`/products/${plan.slug}`} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase transition hover:border-cyan-300 hover:bg-cyan-300/10 hover:text-cyan-100">Details</a>
+                    <a href={`/products/${plan.slug}`} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Details</a>
                     {researchByPlanSlug[plan.slug] && (
-                      <a href={researchByPlanSlug[plan.slug]} class="border border-cyan-300/70 px-3 py-2 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/10 hover:text-white">Benchmark</a>
+                      <a href={researchByPlanSlug[plan.slug]} class="border border-signal/70 px-3 py-2 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">Benchmark</a>
                     )}
                   </div>
                 </article>
@@ -219,7 +219,7 @@ function statusClasses(plan: CatalogPlan): string {
 
         <section id="how-credits-work" class="mb-20 grid scroll-mt-8 gap-8 border-2 border-white bg-black/76 p-6 lg:grid-cols-[1.1fr_0.9fr] lg:p-8">
           <div>
-            <p class="text-xs font-bold uppercase text-cyan-200">03 / Credits</p>
+            <p class="text-xs font-bold uppercase text-signal">03 / Credits</p>
             <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, available MCPs</h2>
             <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
               The plan controls the account allowance. Standard operations use
@@ -241,7 +241,7 @@ function statusClasses(plan: CatalogPlan): string {
             <h2 class="mt-3 text-3xl font-extrabold uppercase">From account to first tool call</h2>
             <p class="mt-3 max-w-2xl text-sm leading-7 text-white/70">The webapp docs cover access, API keys, client setup, verification, and troubleshooting.</p>
           </div>
-          <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-12 items-center justify-center border-2 border-cyan-300 bg-cyan-300/10 px-6 text-xs font-bold uppercase text-cyan-100 transition hover:bg-cyan-300/20 hover:text-white">Open docs</a>
+          <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-6 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Open docs</a>
         </section>
 
         <SiteFooter />
