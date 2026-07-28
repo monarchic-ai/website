@@ -1,5 +1,5 @@
 ---
-import RunSignalScene from "../components/RunSignalScene.astro";
+import HostedMcpScene from "../components/HostedMcpScene.astro";
 import SeoHead from "../components/SeoHead.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
@@ -13,15 +13,11 @@ const wipProducts = allPlans
   .filter((plan) => plan.kind === "single-mcp" && plan.status === "coming_soon")
   .map((plan) => ({ slug: plan.slug, label: plan.displayName }));
 
-const phases = [
-  ["01", "Product", "Turn the request into a bounded, testable outcome."],
-  ["02", "Architecture", "Map constraints, interfaces, and ownership before edits."],
-  ["03", "Implementation", "Delegate and execute work against the real repository."],
-  ["04", "Validation", "Require tests, build checks, and reproducible receipts."],
-  ["05", "UI smoke", "Inspect visible behavior at production viewports."],
-  ["06", "Domain checks", "Apply product-specific and infrastructure guardrails."],
-  ["07", "Export", "Package artifacts and record the exact source state."],
-  ["08", "Critique + repair", "Challenge the result before completion can be claimed."],
+const connectionSteps = [
+  ["01", "Choose", "Compare each current MCP by job and public availability."],
+  ["02", "Plan", "Use one prepaid credit allowance across available MCPs."],
+  ["03", "Connect", "Create a scoped key and copy a client-ready configuration."],
+  ["04", "Call", "Run tools from your MCP client and inspect the credit impact."],
 ];
 
 const featuredRoutes = [
@@ -71,8 +67,8 @@ const proofPoints = [
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
     <SeoHead
-      title="Monarchic | Control plane for autonomous engineering"
-      description="Run autonomous engineering campaigns through bounded phases, verifiable evidence, and production-grade MCPs."
+      title="Monarchic | Hosted MCPs for agent workflows"
+      description="Connect MCPs for repository context, durable memory, incident response, and infrastructure analysis through one account."
       path="/"
     />
   </head>
@@ -83,74 +79,75 @@ const proofPoints = [
       <section id="introduction" aria-labelledby="home-title">
         <div class="grid border-b border-white/20 lg:grid-cols-[11rem_minmax(0,1fr)_20rem]">
           <div class="hidden border-r border-white/20 p-5 lg:flex lg:flex-col lg:justify-between">
-            <p class="font-mono text-[0.65rem] font-bold uppercase">Control plane / 01</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase">MCP catalog / 01</p>
             <p class="font-mono text-[0.65rem] uppercase leading-5 text-white/46">
-              Bounded execution<br />
-              Verified receipts<br />
-              Governed completion
+              Choose<br />
+              Connect<br />
+              Call<br />
+              Measure
             </p>
           </div>
 
           <div class="min-w-0 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
-            <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Autonomous engineering, with receipts</p>
-            <h1 id="home-title" class="mt-3 text-[2.55rem] font-black uppercase leading-[0.78] min-[360px]:text-[3.15rem] min-[420px]:text-[3.6rem] sm:text-8xl lg:text-[7.5rem] xl:text-[8rem]">
-              Monarchic
+            <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Purpose-built tools for MCP clients</p>
+            <h1 id="home-title" class="mt-3 max-w-5xl text-[2.45rem] font-black uppercase leading-[0.82] min-[360px]:text-[3rem] min-[420px]:text-[3.45rem] sm:text-7xl lg:text-[5.2rem] xl:text-[5.2rem]">
+              Hosted MCPs. <br />One account.
             </h1>
             <p class="mt-6 max-w-3xl text-xl font-medium leading-8 sm:text-2xl">
-              Run ambitious engineering work through a control plane that can prove what happened.
+              Connect repository context, durable memory, incident response, and infrastructure analysis from the clients your agents already use.
             </p>
           </div>
 
           <div class="grid content-between gap-8 border-t border-white/20 p-5 lg:border-l lg:border-t-0">
             <p class="text-sm leading-6 text-white/64">
-              One system for repository context, durable memory, implementation,
-              validation, infrastructure, incident response, and delivery.
+              Choose an available MCP, create a scoped key, and see credit impact
+              from the same account.
             </p>
             <div class="grid gap-2">
-              <a href={appBaseUrl} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
-                Open Monarchic <span aria-hidden="true">↗</span>
+              <a href="/products#mcp-catalog" class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
+                Browse MCP catalog <span aria-hidden="true">↗</span>
               </a>
               <div class="grid grid-cols-2 gap-2">
-                <a href="/products" class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Products</a>
+                <a href={appBaseUrl} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Open webapp</a>
                 <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Docs</a>
               </div>
             </div>
           </div>
         </div>
 
-        <RunSignalScene />
+        <HostedMcpScene />
 
         <div class="grid border-b border-black bg-signal font-mono text-[0.65rem] font-bold uppercase text-black sm:grid-cols-3">
-          <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Command completed ≠ goal completed</p>
-          <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Required phases / 08</p>
-          <p class="px-4 py-3 sm:px-6">Final claim / receipt gated</p>
+          <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Scoped key / client ready</p>
+          <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Usage / account visible</p>
+          <p class="px-4 py-3 sm:px-6">Catalog / Available + WIP</p>
         </div>
       </section>
 
-      <section id="campaign-model" aria-labelledby="campaign-title" class="border-b border-white/20">
+      <section id="connection-model" aria-labelledby="connection-title" class="border-b border-white/20">
         <div class="grid lg:grid-cols-[22rem_minmax(0,1fr)]">
           <header class="border-b border-white/20 p-5 lg:border-b-0 lg:border-r lg:p-7">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Execution model / 02</p>
-            <h2 id="campaign-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">
-              One run.<br />Eight required phases.
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Connect / 02</p>
+            <h2 id="connection-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">
+              From catalog to first tool call.
             </h2>
             <p class="mt-5 text-sm leading-6 text-white/58">
-              Monarchic distinguishes activity from completion. Every mandatory
-              phase must produce evidence before the operator goal can pass.
+              Start with one tool. Add others to the same account when the work
+              calls for them.
             </p>
           </header>
 
           <ol class="grid sm:grid-cols-2">
-            {phases.map(([id, label, detail], index) => (
+            {connectionSteps.map(([id, label, detail], index) => (
               <li class:list={[
-                "grid min-h-40 content-between gap-5 border-white/20 p-5 sm:p-6",
+                "grid min-h-44 content-between gap-5 border-white/20 p-5 sm:p-6",
                 index % 2 === 0 && "sm:border-r",
-                index < phases.length - 2 && "border-b",
-                index === phases.length - 2 && "border-b sm:border-b-0",
+                index < 2 && "border-b",
+                index === 2 && "border-b sm:border-b-0",
               ]}>
                 <div class="flex items-center justify-between gap-4 font-mono text-[0.65rem] font-bold uppercase">
                   <span>{id}</span>
-                  <span class="text-white/34">Receipt required</span>
+                  <span class="text-white/34">Account flow</span>
                 </div>
                 <div>
                   <h3 class="text-xl font-black uppercase">{label}</h3>
@@ -167,7 +164,7 @@ const proofPoints = [
           <header class="min-w-0 border-b border-black p-5 sm:p-7 lg:border-b-0 lg:border-r">
             <p class="font-mono text-[0.65rem] font-bold uppercase">Research record / 03</p>
             <h2 id="proof-title" class="mt-4 max-w-2xl text-4xl font-black uppercase leading-[0.94] sm:text-5xl">
-              Benchmarks include the method, failures, and limits.
+              The benchmark includes the method, failures, and limits.
             </h2>
             <p class="mt-5 max-w-2xl text-sm leading-7 text-black/68">
               ExplicitMem was evaluated against 500 LongMemEval-S questions under
@@ -200,13 +197,13 @@ const proofPoints = [
           <div class="p-5 sm:p-7">
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Hosted tool layer / 04</p>
             <h2 id="catalog-title" class="mt-4 text-4xl font-black uppercase leading-none sm:text-5xl">
-              Better context in.<br />Better work out.
+              Four MCPs<br />available now.
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
             <p class="max-w-2xl text-base leading-7 text-white/62">
-              Available MCPs share one account allowance. Products marked WIP
-              remain visible without being presented as purchasable.
+              The public catalog lists 15 MCPs. Four are available today. The
+              rest are marked WIP and cannot be checked out.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <a href="/products" class="inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">Full catalog</a>

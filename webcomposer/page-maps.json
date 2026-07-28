@@ -19,7 +19,7 @@
       },
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose products, app documentation, and research." },
-        { "id": "introduction", "template": "hero.split", "purpose": "Introduce the catalog beside a short selection of available MCPs." },
+        { "id": "introduction", "template": "hero.split", "purpose": "Lead with the hosted MCP catalog and show an example request across the four currently available MCPs." },
         { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Show the four current ExplicitMem benchmark metrics with their scope." },
         { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain the shared credit model and routes into the product catalog." },
         { "id": "waitlist", "template": "form.inline", "purpose": "Collect interest in MCPs currently marked WIP." },

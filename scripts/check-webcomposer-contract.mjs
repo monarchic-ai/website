@@ -10,8 +10,14 @@ const failures = [];
 checkFileIncludes("astro.config.mjs", ["devToolbar: { enabled: false }"]);
 
 checkFileIncludes("src/pages/index.astro", [
-  "Autonomous engineering, with receipts",
-  "Run ambitious engineering work through a control plane",
+  "Hosted MCPs.",
+  "One account.",
+  "Purpose-built tools for MCP clients",
+  "Connect repository context, durable memory, incident response, and infrastructure analysis",
+  "Browse MCP catalog",
+  "From catalog to first tool call.",
+  "Four MCPs",
+  "available now.",
   'href="/products"',
   'href="/research"',
   'href={`${appBaseUrl}/docs`}',
@@ -22,16 +28,40 @@ checkFileIncludes("src/pages/index.astro", [
   "63.3 ms",
   "The full report sits beside the headline.",
   "One allowance covers every available MCP.",
-  "Products marked WIP",
+  "cannot be checked out.",
   "/research/explicitmem",
 ]);
 checkForbidden("src/pages/index.astro", [
+  "Autonomous engineering",
+  "autonomous engineering",
+  "control plane",
+  "campaign-model",
   "Agent tools that leave evidence.",
   "Hosted staging MCP route",
   "3.45s",
   "3.28s",
   "release checks",
   "website proof",
+]);
+
+checkFileIncludes("src/components/HostedMcpScene.astro", [
+  "Example hosted MCP request",
+  "4 available MCPs",
+  "MCP request",
+  "RepoIntel",
+  "ExplicitMem",
+  "IncidentOps",
+  "InfraProfiler",
+  "4/15",
+  "Available today",
+  "Prepaid",
+  "Account visible",
+]);
+checkForbidden("src/components/HostedMcpScene.astro", [
+  "Campaign",
+  "workers",
+  "Completion gate",
+  "Goal not claimable",
 ]);
 
 checkFileIncludes("src/components/WaitlistForm.svelte", [
@@ -55,7 +85,9 @@ checkFileIncludes("src/components/SiteFooter.astro", [
   'href="/terms"',
   "support@monarchic.io",
   ">Monarchic</span>",
+  "Purpose-built MCPs, one account, and clear usage.",
 ]);
+checkForbidden("src/components/SiteFooter.astro", ["autonomous engineering"]);
 
 checkFileIncludes("src/components/SeoHead.astro", [
   'property="og:site_name" content="Monarchic"',
