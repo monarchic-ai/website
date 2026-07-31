@@ -44,7 +44,7 @@ concurrency:
 jobs:
   production-smoke:
     name: External website gates
-    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS || '["ubuntu-latest"]') }}
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS) }}
     timeout-minutes: 25
 
     env:

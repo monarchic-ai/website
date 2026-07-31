@@ -1,0 +1,17 @@
+name: Nix CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  nix-ci:
+    uses: monarchic-meta/.github/.github/workflows/nix-ci.yml@main
+    with:
+      publish_cache: false
+    secrets: inherit
