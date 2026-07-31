@@ -26,8 +26,8 @@
     ],
     "includedCredits": 200,
     "creditAllowanceLabel": "200 one-time trial credits",
-    "overageLabel": "No overage",
-    "usageSummary": "Trial credits can be used across available hosted MCPs. More expensive operations use more credits.",
+    "overageLabel": "No overage; hard one-time cap",
+    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
     "status": "available",
     "prices": []
   },
@@ -40,13 +40,13 @@
     "featureBullets": [
       "4,000 included credits each month",
       "One shared allowance across available hosted MCPs",
-      "$0.025 per additional credit after the allowance",
+      "No overage; hosted calls pause at the prepaid credit limit",
       "Scoped API keys and account usage controls"
     ],
     "includedCredits": 4000,
     "creditAllowanceLabel": "4,000 included credits/mo",
-    "overageLabel": "$0.025/credit overage",
-    "usageSummary": "Standard hosted operations use one credit. Stateful analysis starts at three credits, while browser and provider-backed work follows measured usage.",
+    "overageLabel": "No overage; hard monthly cap",
+    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
     "highlighted": true,
     "status": "coming_soon",
     "prices": [
@@ -68,6 +68,40 @@
   },
   {
     "kind": "usage-plan",
+    "slug": "usage-team",
+    "displayName": "Team",
+    "tagline": "Shared hosted MCP capacity for small teams",
+    "description": "For small teams standardizing agent access to hosted Monarchic infrastructure across development, QA, research, and go-to-market workflows.",
+    "featureBullets": [
+      "20,000 included credits each month",
+      "Shared usage pool for team workflows",
+      "Designed for multiple API keys and repeat production usage",
+      "No overage; hosted calls pause at the prepaid credit limit"
+    ],
+    "includedCredits": 20000,
+    "creditAllowanceLabel": "20,000 included credits/mo",
+    "overageLabel": "No overage; hard monthly cap",
+    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 24900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 249000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "usage-plan",
     "slug": "usage-business",
     "displayName": "Business",
     "tagline": "Capacity and support for sustained hosted workloads",
@@ -75,13 +109,13 @@
     "featureBullets": [
       "75,000-credit monthly capacity starting point",
       "One shared allowance across available hosted MCPs",
-      "Volume and overage terms based on measured workload",
+      "No overage; usage pauses at the contracted prepaid limit",
       "Support and service objectives defined in the agreement"
     ],
     "includedCredits": 75000,
     "creditAllowanceLabel": "75,000+ included credits/mo",
-    "overageLabel": "Contract terms",
-    "usageSummary": "Business pricing is quoted from expected route mix, external-provider exposure, concurrency, support, and service requirements.",
+    "overageLabel": "No overage; contracted hard cap",
+    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
     "status": "contact_sales",
     "prices": [],
     "salesContactUrl": "mailto:sales@monarchic.io?subject=Monarchic%20Business"
@@ -232,10 +266,10 @@
       "Run interactive terminal sessions through MCP",
       "Keep command output visible for review",
       "Use one consistent terminal interface across clients",
-      "One base credit per session with measured settlement at close"
+      "PTY metadata uses 0 credits; provider-backed terminal work uses 10 by default"
     ],
     "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "When access opens, PTY sessions will start at 1 shared credit. Terminal controls and bounded transcript reads will be included; unusually expensive sessions will settle additional measured credits at close.",
+    "usageSummary": "PTY metadata operations use 0 credits. Provider-backed terminal work uses 10 credits by default.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []

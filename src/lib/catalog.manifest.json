@@ -2,16 +2,16 @@
   "schemaVersion": 3,
   "source": "shared/product-catalog",
   "generatedArtifact": true,
-  "generatedBy": "monarchic-webapp/scripts/sync-shared-catalog.mjs",
+  "generatedBy": "monarchic-webapp/scripts/sync-shared-catalog.ts",
   "deployableCopies": [
     "monarchic-webapp/src/lib",
     "website/src/lib"
   ],
-  "artifactDigest": "sha256:ca55f8737a87af56c555d3a5de09d21a429316d93c358f38bf9cee7f29cc2dac",
+  "artifactDigest": "sha256:d07b0aab2f274abffa7752075e32f414a9b800fa5622f380ed1f76acb90b2124",
   "files": [
     {
       "name": "pricing.ts",
-      "sha256": "7cbeb2ed3011aa9f76934c4a97686401432b58c8fbba3a6294743b852d257628"
+      "sha256": "a6188e884cda672101bda92715ab6d7c88890f87f3120f9dff2744655a52a7aa"
     },
     {
       "name": "pricing.generated.json",
@@ -19,7 +19,7 @@
     },
     {
       "name": "pricing.coming-soon.json",
-      "sha256": "440ddc4fb455a453782cba3b2c55c4e6060c4c0efd3f952dfa19b696f3f5bd6d"
+      "sha256": "0b05b17ed376220e899a8f272654bdc971c742eeb3481ee7cd2284164e8405cf"
     },
     {
       "name": "productDetails.ts",

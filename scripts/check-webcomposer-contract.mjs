@@ -322,7 +322,11 @@ function checkPublicCatalogComposition() {
     "mcp-outreachconnectors",
     "mcp-verified",
   ]);
-  const previewSlugs = new Set(["usage-developer", "usage-business"]);
+  const previewSlugs = new Set([
+    "usage-developer",
+    "usage-team",
+    "usage-business",
+  ]);
   const generatedPublicPlans = generatedPlans.filter(
     (plan) =>
       plan.kind === "usage-plan" &&

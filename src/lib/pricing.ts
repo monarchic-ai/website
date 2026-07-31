@@ -62,7 +62,11 @@ export const retiredPublicPlanSlugs = new Set([
 // These plans have updated public terms but do not have matching live Stripe
 // prices yet. Keep the generated records available for historical subscription
 // lookup while the public catalog uses non-checkout preview entries.
-export const previewPublicPlanSlugs = new Set(["usage-developer", "usage-business"]);
+export const previewPublicPlanSlugs = new Set([
+  "usage-developer",
+  "usage-team",
+  "usage-business",
+]);
 
 const PREPAID_HARD_CAP_LABEL = "No overage; hard monthly cap";
 const PREPAID_HARD_CAP_BULLET =

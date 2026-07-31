@@ -29,7 +29,7 @@ const expectedManifest = {
   schemaVersion: 3,
   source: "shared/product-catalog",
   generatedArtifact: true,
-  generatedBy: "monarchic-webapp/scripts/sync-shared-catalog.mjs",
+  generatedBy: "monarchic-webapp/scripts/sync-shared-catalog.ts",
   deployableCopies: [
     "monarchic-webapp/src/lib",
     "website/src/lib",
