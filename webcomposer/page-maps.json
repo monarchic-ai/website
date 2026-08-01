@@ -53,8 +53,8 @@
         { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize five plans, fifteen MCPs, and clear Available or WIP status." },
         { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and the credit model." },
         { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual credit plans and show an eligible next action." },
-        { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Render all fifteen current MCPs with category, Available or WIP status, summary, details, and a benchmark link only for ExplicitMem." },
-        { "id": "how-credits-work", "template": "split.asymmetric", "purpose": "Explain how one account allowance covers every available MCP." },
+        { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with five available MCPs, then place ten WIP products in a collapsed Coming next disclosure." },
+        { "id": "how-credits-work", "template": "split.asymmetric", "purpose": "Explain how one account allowance covers every available MCP and translate 1,000 credits into recognizable call equivalents." },
         { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
@@ -72,13 +72,14 @@
         { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange capabilities, buyer fit, outcomes, and workflows." },
         { "id": "benchmark", "template": "proof.metric_story", "purpose": "Link the qualifying LongMemEval-S result with its method and limitations." },
         { "id": "access", "template": "cta.banner", "purpose": "Route buyers to plans, the benchmark, and the catalog." },
+        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "Show one write-and-retrieve workflow with exact payloads, representative provenance output, required access, current boundary, and six-credit total." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
     {
       "route": "/products/[slug]",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "feature.grid", "cta.banner", "footer.multi_column"],
+        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "proof.metric_story", "feature.grid", "cta.banner", "footer.multi_column"],
         "mustStartWith": ["nav.horizontal"],
         "mustEndWith": ["footer.multi_column"]
       },
@@ -87,6 +88,7 @@
         { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capabilities beside its price or access status." },
         { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities, buyer fit, outcomes, and workflows." },
         { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to purchase, available MCPs to plans, WIP products to the waitlist, and all products back to the catalog." },
+        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "For each available MCP, show one request, exact tool payload, representative or exact output, required access, current boundary, and numeric credit cost." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
@@ -153,6 +155,34 @@
         { "id": "privacy_notice", "template": "docs.toc_content", "purpose": "Present data categories, purposes, providers, retention, rights, security boundaries, and effective date." },
         { "id": "privacy_contact", "template": "cta.banner", "purpose": "Provide a direct privacy contact and a route to the service terms." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, privacy, and terms navigation." }
+      ]
+    },
+    {
+      "route": "/security",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["footer.multi_column"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
+        { "id": "security_posture", "template": "docs.toc_content", "purpose": "Separate verified control-plane controls from product content boundaries, providers, retention, and claims that are not yet made." },
+        { "id": "security_contact", "template": "cta.banner", "purpose": "Provide a direct incident and security-question contact beside the privacy notice." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, company, security, privacy, terms, and access navigation." }
+      ]
+    },
+    {
+      "route": "/about",
+      "constraints": {
+        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
+        "mustStartWith": ["nav.horizontal"],
+        "mustEndWith": ["footer.multi_column"]
+      },
+      "sections": [
+        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
+        { "id": "company_profile", "template": "docs.toc_content", "purpose": "Identify Monarchic LLC, list available products, explain hosted value, and state the current accountability path without invented biographies." },
+        { "id": "company_contact", "template": "cta.banner", "purpose": "Provide a direct company contact and a route to the product catalog." },
+        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, company, security, privacy, terms, and access navigation." }
       ]
     },
     {

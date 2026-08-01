@@ -14,7 +14,7 @@ checkFileIncludes("src/pages/index.astro", [
   "One account.",
   "Purpose-built tools for MCP clients",
   "Connect repository context, durable memory, incident response, and infrastructure analysis",
-  "Browse MCP catalog",
+  "Claim 200 free credits",
   "From catalog to first tool call.",
   "availableMcpCount",
   "available now.",
@@ -84,6 +84,8 @@ checkFileIncludes("src/components/SiteFooter.astro", [
   'href={`${appBaseUrl}/docs`}',
   'href="/privacy"',
   'href="/terms"',
+  'href="/security"',
+  'href="/about"',
   "support@monarchic.io",
   ">Monarchic</span>",
   "Purpose-built MCPs, one account, and clear usage.",
@@ -109,9 +111,28 @@ checkFileIncludes("src/pages/privacy.astro", [
   "Your choices and rights",
 ]);
 
+checkFileIncludes("src/pages/security.astro", [
+  'path="/security"',
+  'documentId="security-posture"',
+  "Hosted MCP content boundary",
+  "No universal encryption-at-rest claim",
+  "does not yet publish a broader",
+  "Security contact",
+]);
+
+checkFileIncludes("src/pages/about.astro", [
+  'path="/about"',
+  'documentId="company-profile"',
+  "Monarchic LLC",
+  "Why pay for hosted",
+  "Five MCPs are currently marked Available",
+]);
+
 checkFileIncludes("src/pages/terms.astro", [
   'path="/terms"',
   'documentId="service-terms"',
+  "Control-plane identity, account, and entitlement access is tenant-scoped",
+  'href="/security"',
   "Acceptable use",
   "Warranty and liability boundary",
 ]);
@@ -119,6 +140,8 @@ checkFileIncludes("src/pages/terms.astro", [
 checkFileIncludes("src/pages/sitemap.xml.ts", [
   '"/privacy"',
   '"/terms"',
+  '"/security"',
+  '"/about"',
   '"/research/explicitmem"',
   'plan.kind === "usage-plan" || plan.kind === "single-mcp"',
 ]);
@@ -144,7 +167,8 @@ checkFileIncludes("src/pages/research/repointel.astro", [
 checkFileIncludes("src/pages/products/index.astro", [
   "Plans and MCPs",
   "Shared usage capacity",
-  "All Monarchic MCPs",
+  "Available MCPs",
+  "Coming next / {wipMcpCount} MCPs",
   "One allowance, four clear weights",
   "Every current public product",
   "Listed for visibility and marked WIP",
@@ -152,6 +176,8 @@ checkFileIncludes("src/pages/products/index.astro", [
   "Metadata",
   "Stateful analysis",
   "Provider-backed",
+  "Individual plan / 1,000 credits",
+  "≈333",
   "two months included",
   "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
   "findPlanPrice",
@@ -180,6 +206,41 @@ checkFileIncludes("src/pages/products/[slug].astro", [
   "Calls draw from the included credits on your active plan.",
   "Read benchmark",
   "lg:sticky lg:top-6",
+  "ProductWorkflowProof",
+  "getProductWorkflowProof",
+]);
+
+checkFileIncludes("src/components/ProductWorkflowProof.astro", [
+  "Concrete workflow / priced call",
+  "01 / Request",
+  "02 / Execution",
+  "03 / Evidence + output",
+  "04 / Credit cost",
+  "Required access",
+  "Current boundary",
+  "data-workflow-proof",
+]);
+
+checkFileIncludes("src/lib/productWorkflowProofs.ts", [
+  '"mcp-explicitmem"',
+  '"mcp-incidentops"',
+  '"mcp-infraprofiler"',
+  '"mcp-releaseops"',
+  '"mcp-repointel"',
+  "memory.retrieve_context",
+  "build_incident_response_packet",
+  "profile_pipeline",
+  "releaseops_verify_tag_pack",
+  "get_repository_summary",
+]);
+
+checkFileIncludes("vercel.json", [
+  "Content-Security-Policy",
+  "X-Content-Type-Options",
+  "Referrer-Policy",
+  "Permissions-Policy",
+  "X-Frame-Options",
+  "Strict-Transport-Security",
 ]);
 
 checkFileIncludes("webcomposer/site-map.contract.json", [

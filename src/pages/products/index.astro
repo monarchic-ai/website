@@ -1,5 +1,6 @@
 ---
 import Shader14 from "../../components/Shader14.astro";
+import ProductCatalogCard from "../../components/ProductCatalogCard.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
@@ -14,7 +15,6 @@ import {
   resolveDisplayPrice,
   type CatalogPlan,
 } from "../../lib/pricing";
-import { getProductDetail } from "../../lib/productDetails";
 
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
@@ -34,8 +34,10 @@ const mcpProducts = allPlans
     return availabilityOrder(a) - availabilityOrder(b) || a.displayName.localeCompare(b.displayName);
   });
 
-const availableMcpCount = mcpProducts.filter((plan) => plan.status === "available").length;
-const wipMcpCount = mcpProducts.length - availableMcpCount;
+const availableMcpProducts = mcpProducts.filter((plan) => plan.status === "available");
+const wipMcpProducts = mcpProducts.filter((plan) => plan.status !== "available");
+const availableMcpCount = availableMcpProducts.length;
+const wipMcpCount = wipMcpProducts.length;
 
 const researchByPlanSlug: Record<string, string> = {
   "mcp-explicitmem": "/research/explicitmem",
@@ -114,7 +116,7 @@ function statusClasses(plan: CatalogPlan): string {
         <nav aria-label="Product sections" class="mb-14 flex flex-wrap gap-2 border-y border-white/40 py-4">
           <span class="mr-2 self-center text-[0.65rem] font-bold uppercase text-white/46">Jump to /</span>
           <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plans</a>
-          <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">All MCPs</a>
+          <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Available MCPs</a>
           <a href="#how-credits-work" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Credits</a>
         </nav>
 
@@ -188,39 +190,38 @@ function statusClasses(plan: CatalogPlan): string {
 
         <section id="mcp-catalog" class="mb-20 scroll-mt-8">
           <p class="text-xs font-bold uppercase text-signal">02 / MCP catalog</p>
-          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">All Monarchic MCPs</h2>
+          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Available MCPs</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            Every current product is listed here. Products that are not ready
-            for public use are clearly marked WIP.
+            These five products are ready for public use with one shared credit
+            plan. Open a product to inspect a real tool call, its evidence, and
+            the default credit cost.
           </p>
           <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {mcpProducts.map((plan) => {
-              const detail = getProductDetail(plan.slug);
-              return (
-                <article
-                  data-plan-card={plan.slug}
-                  class="group flex min-h-[285px] flex-col border border-white/45 bg-black/66 p-5 transition duration-200 hover:-translate-y-1 hover:border-signal hover:bg-signal/[0.06] focus-within:-translate-y-1 focus-within:border-signal"
-                >
-                  <div class="flex flex-wrap items-start justify-between gap-3">
-                    <span class="text-[0.62rem] font-bold uppercase text-white/48">{detail?.category ?? "MCP"}</span>
-                    <span class={`border px-2 py-1 text-[0.6rem] font-bold uppercase ${statusClasses(plan)}`}>{planStatusLabel(plan.status)}</span>
-                  </div>
-                  <h3 class="mt-5 text-xl font-extrabold uppercase">{plan.displayName}</h3>
-                  <p class="mt-3 text-sm leading-6 text-white/68">{plan.tagline}</p>
-                  <p class="mt-4 text-xs font-bold uppercase text-white/46">
-                    {plan.status === "available" ? "Uses shared plan credits" : "Shared plan credits when available"}
-                  </p>
-                  <div class="flex-1"></div>
-                  <div class="mt-6 flex flex-wrap gap-2">
-                    <a href={`/products/${plan.slug}`} class="border border-white/50 px-3 py-2 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Details</a>
-                    {researchByPlanSlug[plan.slug] && (
-                      <a href={researchByPlanSlug[plan.slug]} class="border border-signal/70 px-3 py-2 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">Benchmark</a>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
+            {availableMcpProducts.map((plan) => (
+              <ProductCatalogCard plan={plan} researchHref={researchByPlanSlug[plan.slug]} />
+            ))}
           </div>
+
+          <details data-coming-next class="group mt-10 border-2 border-white/55 bg-black/72">
+            <summary class="flex min-h-20 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 transition hover:bg-signal hover:text-black focus-visible:bg-signal focus-visible:text-black [&::-webkit-details-marker]:hidden">
+              <span>
+                <span class="block text-[0.65rem] font-bold uppercase opacity-56">Roadmap</span>
+                <span class="mt-1 block text-lg font-extrabold uppercase">Coming next / {wipMcpCount} MCPs</span>
+              </span>
+              <span aria-hidden="true" class="text-3xl font-light leading-none transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div class="border-t border-white/35 p-4 sm:p-5">
+              <p class="max-w-3xl text-sm leading-7 text-white/62">
+                These products are visible for roadmap context but are not open
+                for checkout. Expand only when you want to inspect what is in progress.
+              </p>
+              <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {wipMcpProducts.map((plan) => (
+                  <ProductCatalogCard plan={plan} researchHref={researchByPlanSlug[plan.slug]} />
+                ))}
+              </div>
+            </div>
+          </details>
         </section>
 
         <section id="how-credits-work" class="mb-20 scroll-mt-8 border-2 border-white bg-black/76 p-6 lg:p-8">
@@ -261,6 +262,26 @@ function statusClasses(plan: CatalogPlan): string {
               <p class="mt-3 text-xs font-bold uppercase text-white">Provider-backed</p>
               <p class="mt-2 text-sm leading-6 text-white/58">Browser, terminal, and external-provider work by default.</p>
             </div>
+          </div>
+          <div class="mt-8 border border-signal/70 bg-signal/[0.06] p-5 sm:p-6">
+            <p class="text-[0.65rem] font-bold uppercase text-signal">Individual plan / 1,000 credits</p>
+            <div class="mt-5 grid gap-5 sm:grid-cols-3">
+              <div>
+                <p class="font-mono text-2xl font-extrabold">1,000</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">standard one-credit calls</p>
+              </div>
+              <div>
+                <p class="font-mono text-2xl font-extrabold">≈333</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">stateful analysis, indexing, or memory calls at three credits</p>
+              </div>
+              <div>
+                <p class="font-mono text-2xl font-extrabold">100</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">provider-backed calls at the default ten-credit weight</p>
+              </div>
+            </div>
+            <p class="mt-5 text-xs leading-6 text-white/48">
+              These are single-call equivalents. A workflow that invokes several tools uses the sum of their receipts.
+            </p>
           </div>
         </section>
 

@@ -77,6 +77,8 @@ async function runSmoke() {
   await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
   await checkTextIncludes(`${baseUrl}/sitemap.xml`, [
     "<urlset",
+    "/about",
+    "/security",
     "/research/explicitmem",
     "/products/mcp-cicd",
     "/products/mcp-webcomposer",
@@ -178,6 +180,10 @@ async function runBrowserSmoke() {
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
       await expectHref(
+        page.getByRole("link", { name: "Claim 200 free credits" }),
+        `${expectedAppBaseUrl}/products/usage-evaluation`,
+      );
+      await expectHref(
         page.getByRole("link", { name: "Docs", exact: true }).first(),
         `${expectedAppBaseUrl}/docs`,
       );
@@ -207,8 +213,10 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/products`, async () => {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
-      await page.getByRole("heading", { name: "All Monarchic MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
       await page.getByRole("heading", { name: "One allowance, four clear weights" }).waitFor();
+      await page.getByText("Individual plan / 1,000 credits", { exact: true }).waitFor();
+      await page.getByText("≈333", { exact: true }).waitFor();
       for (const creditWeight of ["0", "1", "3", "10"]) {
         await page.getByText(creditWeight, { exact: true }).first().waitFor();
       }
@@ -224,6 +232,9 @@ async function runBrowserSmoke() {
         throw new Error(`Expected 15 MCP cards, got ${mcpCardCount}`);
       }
 
+      const comingNext = page.locator("details[data-coming-next]");
+      await comingNext.waitFor();
+      await comingNext.locator("summary").click();
       for (const slug of ["mcp-cicd", "mcp-webcomposer", "mcp-webimplementer"]) {
         await page.locator(`[data-plan-card="${slug}"]`).waitFor();
       }
@@ -286,6 +297,41 @@ async function runBrowserSmoke() {
       await expectNoHorizontalOverflow(page);
     }, "BrowserOps product route");
 
+    for (const proof of [
+      { slug: "mcp-explicitmem", tool: "memory.retrieve_context", credits: "6" },
+      { slug: "mcp-incidentops", tool: "build_incident_response_packet", credits: "1" },
+      { slug: "mcp-infraprofiler", tool: "profile_pipeline", credits: "1" },
+      { slug: "mcp-releaseops", tool: "releaseops_verify_tag_pack", credits: "1" },
+      { slug: "mcp-repointel", tool: "get_repository_summary", credits: "3" },
+    ]) {
+      await checkPage(page, `${baseUrl}/products/${proof.slug}`, async () => {
+        const workflow = page.locator(`[data-workflow-proof="${proof.slug}"]`);
+        await workflow.waitFor();
+        await workflow.getByText("Concrete workflow / priced call", { exact: true }).waitFor();
+        await workflow.getByText(proof.tool, { exact: false }).first().waitFor();
+        await workflow.getByText(proof.credits, { exact: true }).waitFor();
+        await workflow.getByText("Required access", { exact: true }).waitFor();
+        await workflow.getByText("Current boundary", { exact: true }).waitFor();
+        await expectNoHorizontalOverflow(page);
+      }, `${proof.slug} workflow proof`);
+    }
+
+    await checkPage(page, `${baseUrl}/security`, async () => {
+      await page.getByRole("heading", { name: "Security, without hand-waving." }).waitFor();
+      await page.getByRole("heading", { name: "Hosted MCP content boundary" }).waitFor();
+      await page.getByText("No universal encryption-at-rest claim is made here.", { exact: false }).waitFor();
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/security`);
+      await expectNoHorizontalOverflow(page);
+    }, "security route");
+
+    await checkPage(page, `${baseUrl}/about`, async () => {
+      await page.getByRole("heading", { name: "The company behind the routes." }).waitFor();
+      await page.getByRole("heading", { name: "Why pay for hosted" }).waitFor();
+      await page.getByText("Monarchic LLC", { exact: false }).first().waitFor();
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/about`);
+      await expectNoHorizontalOverflow(page);
+    }, "company route");
+
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/products`, async () => {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
@@ -297,6 +343,22 @@ async function runBrowserSmoke() {
       await page.getByRole("link", { name: "Choose plan" }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "Individual product route at 320px");
+    await checkPage(page, `${baseUrl}/products/mcp-repointel`, async () => {
+      await page.locator('[data-workflow-proof="mcp-repointel"]').waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Compare credit plans" }),
+        "/products#plans",
+      );
+      await expectNoHorizontalOverflow(page);
+    }, "RepoIntel workflow proof at 320px");
+    await checkPage(page, `${baseUrl}/security`, async () => {
+      await page.getByRole("heading", { name: "Security, without hand-waving." }).waitFor();
+      await expectNoHorizontalOverflow(page);
+    }, "security route at 320px");
+    await checkPage(page, `${baseUrl}/about`, async () => {
+      await page.getByRole("heading", { name: "The company behind the routes." }).waitFor();
+      await expectNoHorizontalOverflow(page);
+    }, "company route at 320px");
     await page.setViewportSize({ width: 1280, height: 900 });
 
     await checkPage(page, `${baseUrl}/waitlist`, async () => {
@@ -368,7 +430,45 @@ async function checkHttp(url) {
   if (!response.ok) {
     throw new Error(`HTTP smoke failed for ${url}: ${response.status} ${response.statusText}`);
   }
+  assertSecurityHeaders(response, url);
   checks.push({ name: "HTTP HEAD", status: response.status });
+}
+
+function assertSecurityHeaders(response, url) {
+  if (isLoopbackHostname(new URL(url).hostname)) return;
+
+  const required = {
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-frame-options": "DENY",
+    "cross-origin-opener-policy": "same-origin",
+  };
+  for (const [name, expected] of Object.entries(required)) {
+    const actual = response.headers.get(name);
+    if (actual !== expected) {
+      throw new Error(`Security header ${name} expected ${expected}, got ${actual ?? "missing"}`);
+    }
+  }
+
+  const permissions = response.headers.get("permissions-policy") ?? "";
+  for (const directive of ["camera=()", "microphone=()", "geolocation=()", "payment=()", "usb=()"] ) {
+    if (!permissions.includes(directive)) {
+      throw new Error(`Permissions-Policy missing ${directive}`);
+    }
+  }
+
+  const csp = response.headers.get("content-security-policy") ?? "";
+  for (const directive of ["default-src 'self'", "frame-ancestors 'none'", "object-src 'none'", "script-src-attr 'none'"]) {
+    if (!csp.includes(directive)) {
+      throw new Error(`Content-Security-Policy missing ${directive}`);
+    }
+  }
+
+  const hsts = response.headers.get("strict-transport-security") ?? "";
+  if (!hsts.includes("max-age=")) {
+    throw new Error("Strict-Transport-Security missing max-age");
+  }
+  checks.push({ name: "security headers", status: "ok" });
 }
 
 async function checkText(url, expected, name) {
@@ -503,6 +603,9 @@ function selectedResponseHeaders(response) {
   for (const name of [
     "cache-control",
     "content-type",
+    "content-security-policy",
+    "permissions-policy",
+    "referrer-policy",
     "server",
     "x-robots-tag",
     "x-matched-path",

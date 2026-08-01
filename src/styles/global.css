@@ -1,3 +1,4 @@
+@import "@fontsource-variable/space-grotesk";
 @import "tailwindcss";
 
 @theme {
@@ -5,6 +6,8 @@
   --color-paper: #f2f0e8;
   --color-signal: #f0bd46;
   --color-signal-soft: #fff1bd;
+  --font-weight-extrabold: 700;
+  --font-weight-black: 700;
 }
 
 @layer base {
@@ -13,7 +16,7 @@
   }
 
   body {
-    font-family: "Space Grotesk", "Sora", "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-family: "Space Grotesk Variable", "Space Grotesk", system-ui, -apple-system, sans-serif;
     letter-spacing: 0;
     background: #000;
   }

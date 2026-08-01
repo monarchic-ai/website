@@ -18,13 +18,15 @@ const requiredText = [
   "include_staging",
   "staging_website_url",
   "staging_expected_canonical_url",
+  "staging_webapp_url",
+  "https://staging-app.monarchic.io",
   "pnpm smoke:production",
   "https://www.monarchic.io",
   "website-production-smoke-report.json",
   "website-staging-smoke-report.json",
   "MONARCHIC_WEBSITE_SMOKE_URL",
   "MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL",
-  "MONARCHIC_WEBAPP_SMOKE_URL",
+  "MONARCHIC_WEBSITE_EXPECTED_APP_URL",
 ];
 
 let failed = false;

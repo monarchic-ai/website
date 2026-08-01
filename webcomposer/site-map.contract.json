@@ -1,6 +1,6 @@
 {
   "name": "Monarchic Public Website",
-  "description": "Content-only contract for Monarchic's public home, product, benchmark, waitlist, privacy, and service-terms routes.",
+  "description": "Content-only contract for Monarchic's public home, product, benchmark, waitlist, trust, company, privacy, and service-terms routes.",
   "pages": [
     {
       "route": "/",
@@ -9,32 +9,32 @@
       "audience": ["buyers", "engineering teams", "agent users"],
       "requiredContent": ["catalog_positioning", "available_and_wip_scope", "shared_credit_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
       "forbiddenContent": ["secret names", "private API URLs", "unsupported availability claims", "internal test output", "website implementation details"],
-      "primaryActions": ["view_products", "read_docs", "view_research", "join_waitlist"]
+      "primaryActions": ["claim_evaluation_credits", "view_products", "read_docs", "view_research", "join_waitlist"]
     },
     {
       "route": "/products",
       "title": "Products",
-      "purpose": "Let buyers compare five shared-credit plans and inspect all fifteen current MCP products with clear Available or WIP status.",
+      "purpose": "Let buyers compare five shared-credit plans, lead with the five available MCPs, and inspect ten WIP products under a collapsed roadmap.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["five_credit_plans", "fifteen_mcp_products", "availability", "wip_markers", "shared_credit_model", "catalog_prices", "purchase_link_for_available_plans", "docs_link"],
+      "requiredContent": ["five_credit_plans", "fifteen_mcp_products", "five_available_mcps_first", "collapsed_wip_roadmap", "availability", "wip_markers", "shared_credit_model", "catalog_prices", "recognizable_credit_examples", "purchase_link_for_available_plans", "docs_link"],
       "forbiddenContent": ["retired MCPs", "workflow bundles", "platform promotion", "standalone MCP subscriptions", "prices absent from the catalog", "checkout promises for WIP products", "website implementation details"],
       "primaryActions": ["compare_plans", "inspect_product", "open_purchase_flow_when_available", "read_docs"]
     },
     {
       "route": "/products/mcp-explicitmem",
       "title": "ExplicitMem Product",
-      "purpose": "Explain ExplicitMem's buyer fit, shared-credit access, capabilities, status, and qualifying benchmark.",
+      "purpose": "Explain ExplicitMem's buyer fit, shared-credit access, capabilities, status, concrete priced workflow, current content boundary, and qualifying benchmark.",
       "audience": ["agent users", "AI platform teams", "engineering leaders"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_credit_access", "benchmark_link", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_credit_access", "request_execution_output_credit_workflow", "required_access_and_boundary", "benchmark_link", "primary_cta"],
       "forbiddenContent": ["unsupported latency claims", "private benchmark records", "internal test output", "standalone MCP price"],
       "primaryActions": ["compare_plans", "read_benchmark", "return_to_catalog"]
     },
     {
       "route": "/products/[slug]",
       "title": "Product Detail",
-      "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-credit access, and eligible next action.",
+      "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-credit access, and eligible next action; available MCPs also show one priced tool workflow and its current boundary.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_credit_access", "purchase_link_when_available", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_credit_access", "request_execution_output_credit_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
       "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for WIP products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
       "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_wip", "return_to_catalog", "read_benchmark_when_available"]
     },
@@ -73,6 +73,24 @@
       "requiredContent": ["effective_date", "controller_identity", "data_categories", "processing_purposes", "service_providers", "retention_boundary", "privacy_rights", "security_boundary", "contact_path"],
       "forbiddenContent": ["unsupported compliance certifications", "guaranteed security claims", "secret values", "private customer data", "unsupported retention periods"],
       "primaryActions": ["contact_privacy", "read_terms"]
+    },
+    {
+      "route": "/security",
+      "title": "Security and Trust",
+      "purpose": "State the current, evidence-backed service boundary for transport, control-plane access, hosted MCP content, providers, secrets, retention, telemetry, training policy, and incident contact.",
+      "audience": ["security reviewers", "technical buyers", "account holders"],
+      "requiredContent": ["effective_date", "public_transport", "stored_data_claim_boundary", "control_plane_scope", "hosted_mcp_content_boundary", "permissions_and_keys", "providers_and_subprocesses", "secret_handling", "retention_and_deletion", "usage_receipts", "training_policy_boundary", "certification_boundary", "security_contact"],
+      "forbiddenContent": ["blanket tenant isolation claim", "unverified encryption-at-rest claim", "unsupported training promise", "unsupported compliance certification", "guaranteed deletion timeline", "secret values"],
+      "primaryActions": ["contact_security", "read_privacy"]
+    },
+    {
+      "route": "/about",
+      "title": "Company",
+      "purpose": "Identify Monarchic LLC as the service operator, show what is available now, explain the hosted value, and give buyers a direct accountability path.",
+      "audience": ["buyers", "partners", "account holders"],
+      "requiredContent": ["operator_identity", "direct_contact", "available_products", "hosted_value", "accountability_links"],
+      "forbiddenContent": ["invented founder identity", "invented biography", "unsupported location", "unsupported company history"],
+      "primaryActions": ["contact_company", "view_products", "read_security"]
     },
     {
       "route": "/terms",

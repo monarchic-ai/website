@@ -104,7 +104,7 @@ When a staging website domain exists, run:
 ```bash
 MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io \
 MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://staging.monarchic.io \
-MONARCHIC_WEBAPP_SMOKE_URL=https://staging-app.monarchic.io \
+MONARCHIC_WEBSITE_EXPECTED_APP_URL=https://staging-app.monarchic.io \
 pnpm smoke:production
 ```
 

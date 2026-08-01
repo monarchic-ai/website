@@ -12,6 +12,9 @@ research surface. It currently owns:
 - individual product detail pages at `/products/[slug]`
 - the research index at `/research`
 - the substantive ExplicitMem research page at `/research/explicitmem`
+- the current trust boundary at `/security`
+- the company and operator page at `/about`
+- privacy and service terms at `/privacy` and `/terms`
 - legacy BrowserOps and RepoIntel research URLs, which redirect to their product pages
 - generated `robots.txt` and `sitemap.xml` endpoints
 
@@ -22,6 +25,7 @@ and hosted MCP dashboard live in `../monarchic-webapp`.
 
 - Astro as the site shell
 - Tailwind CSS v4 for styling
+- a self-hosted Space Grotesk variable font bundled through Fontsource
 - Svelte integration available for future interactive islands
 - A code-native shader background component in `src/components/Shader14.astro`
 - Shared canonical/Open Graph/Twitter metadata through
@@ -73,15 +77,21 @@ live deployment checklist and current smoke evidence.
 │   └── social-card.svg
 ├── src/
 │   ├── components/
+│   │   ├── ProductWorkflowProof.astro
 │   │   ├── Shader14.astro
 │   │   └── SeoHead.astro
 │   ├── lib/
 │   │   ├── pricing.ts
-│   │   └── productDetails.ts
+│   │   ├── productDetails.ts
+│   │   └── productWorkflowProofs.ts
 │   ├── pages/
 │   │   ├── index.astro
+│   │   ├── about.astro
+│   │   ├── privacy.astro
 │   │   ├── robots.txt.ts
+│   │   ├── security.astro
 │   │   ├── sitemap.xml.ts
+│   │   ├── terms.astro
 │   │   ├── products/
 │   │   │   ├── index.astro
 │   │   │   └── [slug].astro
@@ -116,6 +126,12 @@ live deployment checklist and current smoke evidence.
   `PUBLIC_MONARCHIC_WEBSITE_BASE_URL`, `PUBLIC_MONARCHIC_API_BASE_URL`, and
   `PUBLIC_MONARCHIC_WEBAPP_BASE_URL` from
   `env.example` in Vercel before deploying.
+- `vercel.json` also applies the website CSP, HSTS, framing, MIME-sniffing,
+  referrer, and browser-permission headers. Keep the CSP API origins aligned
+  with the production and staging waitlist endpoints.
+- Available MCP product pages render a website-local, schema-grounded workflow
+  proof. Those examples must keep their permission and content-isolation
+  boundaries beside the request, output, and credit cost.
 - Set `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` when building non-production
   environments that need canonical URLs, Open Graph URLs, robots output, and
   sitemap entries to point somewhere other than `https://monarchic.io`.

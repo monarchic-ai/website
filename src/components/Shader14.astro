@@ -367,7 +367,7 @@ const {
           alpha: true,
           antialias: false,
           depth: false,
-          powerPreference: "high-performance",
+          powerPreference: "low-power",
           premultipliedAlpha: false,
           stencil: false,
         });
@@ -446,17 +446,23 @@ const {
         const background = hexToRgb(this.dataset.backgroundColor || "#000000");
         const foreground = hexToRgb(this.dataset.color || "#f0f0f0");
         let frameId = 0;
-        let width = 1;
-        let height = 1;
+        let width = 0;
+        let height = 0;
+        let elapsedMilliseconds = 0;
+        let previousFrameTime = null;
+        let isDocumentVisible = !document.hidden;
+        const reducedMotionQuery = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        );
+        let prefersReducedMotion = reducedMotionQuery.matches;
 
-        const resize = () => {
-          const rect = this.getBoundingClientRect();
+        const resize = (cssWidth, cssHeight) => {
           const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-          const nextWidth = Math.max(1, Math.round(rect.width * pixelRatio));
-          const nextHeight = Math.max(1, Math.round(rect.height * pixelRatio));
+          const nextWidth = Math.max(1, Math.round(cssWidth * pixelRatio));
+          const nextHeight = Math.max(1, Math.round(cssHeight * pixelRatio));
 
           if (width === nextWidth && height === nextHeight) {
-            return;
+            return false;
           }
 
           width = nextWidth;
@@ -474,19 +480,21 @@ const {
             0,
           );
           gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          return true;
         };
 
-        const resizeObserver = new ResizeObserver(() => {
-          resize();
-        });
-        resizeObserver.observe(this);
-        resize();
+        const draw = (frameTime) => {
+          frameId = 0;
+          if (!isDocumentVisible) {
+            previousFrameTime = null;
+            return;
+          }
 
-        const startedAt = performance.now();
-        const draw = () => {
-          resize();
-
-          const elapsedSeconds = (performance.now() - startedAt) / 1000;
+          if (previousFrameTime !== null) {
+            elapsedMilliseconds += frameTime - previousFrameTime;
+          }
+          previousFrameTime = frameTime;
+          const elapsedSeconds = elapsedMilliseconds / 1000;
 
           gl.disable(gl.DEPTH_TEST);
           gl.disable(gl.BLEND);
@@ -525,13 +533,66 @@ const {
           gl.uniform1i(ditherLocations.glyphAtlas, 1);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-          frameId = window.requestAnimationFrame(draw);
+          if (!prefersReducedMotion) {
+            frameId = window.requestAnimationFrame(draw);
+          }
         };
 
-        frameId = window.requestAnimationFrame(draw);
+        const requestDraw = () => {
+          if (isDocumentVisible && frameId === 0) {
+            frameId = window.requestAnimationFrame(draw);
+          }
+        };
+
+        const resizeObserver = new ResizeObserver((entries) => {
+          const entry = entries[entries.length - 1];
+          if (
+            entry &&
+            resize(entry.contentRect.width, entry.contentRect.height)
+          ) {
+            requestDraw();
+          }
+        });
+        resizeObserver.observe(this);
+
+        const initialRect = this.getBoundingClientRect();
+        resize(initialRect.width, initialRect.height);
+
+        const handleVisibilityChange = () => {
+          isDocumentVisible = !document.hidden;
+          previousFrameTime = null;
+
+          if (!isDocumentVisible) {
+            window.cancelAnimationFrame(frameId);
+            frameId = 0;
+            return;
+          }
+
+          requestDraw();
+        };
+
+        const handleReducedMotionChange = (event) => {
+          prefersReducedMotion = event.matches;
+          previousFrameTime = null;
+          window.cancelAnimationFrame(frameId);
+          frameId = 0;
+          requestDraw();
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        reducedMotionQuery.addEventListener("change", handleReducedMotionChange);
+        requestDraw();
 
         this._cleanup = () => {
           window.cancelAnimationFrame(frameId);
+          document.removeEventListener(
+            "visibilitychange",
+            handleVisibilityChange,
+          );
+          reducedMotionQuery.removeEventListener(
+            "change",
+            handleReducedMotionChange,
+          );
           resizeObserver.disconnect();
           gl.deleteBuffer(quadBuffer);
           gl.deleteFramebuffer(flowFramebuffer);

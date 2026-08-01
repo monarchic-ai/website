@@ -1,0 +1,147 @@
+---
+import LegalPageLayout from "../layouts/LegalPageLayout.astro";
+
+const sectionClass = "grid gap-5 border-t border-white/35 py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1fr)]";
+const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
+---
+
+<LegalPageLayout
+  title="Security and trust | Monarchic"
+  description="The current Monarchic security boundary for transport, accounts, hosted MCP content, credentials, providers, retention, and incident reporting."
+  path="/security"
+  eyebrow="Trust / Current boundary"
+  heading="Security, without hand-waving."
+  introduction="This page states what the service enforces today, where product-specific controls apply, and which data should stay out of the platform. It is a boundary document, not a certification badge."
+  effectiveDate="August 1, 2026"
+  documentId="security-posture"
+  contactId="security-contact"
+>
+  <a slot="toc" href="#quick-answers" class="hover:text-signal">01 / Quick answers</a>
+  <a slot="toc" href="#access" class="hover:text-signal">02 / Access</a>
+  <a slot="toc" href="#content" class="hover:text-signal">03 / MCP content</a>
+  <a slot="toc" href="#providers" class="hover:text-signal">04 / Providers</a>
+  <a slot="toc" href="#secrets" class="hover:text-signal">05 / Secrets</a>
+  <a slot="toc" href="#retention" class="hover:text-signal">06 / Retention</a>
+  <a slot="toc" href="#telemetry" class="hover:text-signal">07 / Telemetry</a>
+  <a slot="toc" href="#assurance" class="hover:text-signal">08 / Assurance</a>
+
+  <section id="quick-answers" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">01</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Quick answers</h2>
+      <dl class="mt-5 grid border border-white/35 sm:grid-cols-2">
+        <div class="border-b border-white/35 p-4 sm:border-r">
+          <dt class="text-[0.65rem] font-bold uppercase text-white/48">Public transport</dt>
+          <dd class="mt-2 text-sm leading-6 text-white/76">Public website, app, and API traffic use HTTPS.</dd>
+        </div>
+        <div class="border-b border-white/35 p-4">
+          <dt class="text-[0.65rem] font-bold uppercase text-white/48">Stored data</dt>
+          <dd class="mt-2 text-sm leading-6 text-white/76">Storage controls vary by product and store. No universal encryption-at-rest claim is made here.</dd>
+        </div>
+        <div class="border-b border-white/35 p-4 sm:border-r">
+          <dt class="text-[0.65rem] font-bold uppercase text-white/48">Control plane</dt>
+          <dd class="mt-2 text-sm leading-6 text-white/76">Identity, entitlement, usage, and billing checks are tenant-scoped.</dd>
+        </div>
+        <div class="border-b border-white/35 p-4">
+          <dt class="text-[0.65rem] font-bold uppercase text-white/48">Sensitive content</dt>
+          <dd class="mt-2 text-sm leading-6 text-white/76">Not supported by default. Use non-sensitive evaluation data unless a product agreement says otherwise.</dd>
+        </div>
+        <div class="border-b border-white/35 p-4 sm:border-b-0 sm:border-r">
+          <dt class="text-[0.65rem] font-bold uppercase text-white/48">Model training</dt>
+          <dd class="mt-2 text-sm leading-6 text-white/76">No blanket “never used to train” policy is published today. The service terms grant only the rights stated there.</dd>
+        </div>
+        <div class="p-4">
+          <dt class="text-[0.65rem] font-bold uppercase text-white/48">Certifications</dt>
+          <dd class="mt-2 text-sm leading-6 text-white/76">No SOC 2 or ISO certification is claimed on this site.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="access" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">02</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Accounts, keys, and permissions</h2>
+      <div class={copyClass}>
+        <p>Auth0 provides account authentication. The Monarchic API checks identity, tenant membership, product entitlement, rate limits, and prepaid credit availability before a hosted tool call is dispatched.</p>
+        <p>An account API key is not permission to every repository, cloud account, browser, or provider. Do not treat a key-scope label as a product-level data permission. Product pages state what a sample call reads or writes, and external systems still need their own least-privilege credentials when a tool uses them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="content" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">03</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Hosted MCP content boundary</h2>
+      <div class={copyClass}>
+        <p>Account and billing isolation does not, by itself, prove isolation inside every stateful MCP. Some hosted tools accept caller-supplied repository, workspace, or scope identifiers. Monarchic does not publish a blanket tenant-isolation guarantee for that content path yet.</p>
+        <p>Until a product documents a tenant-derived namespace and cross-tenant isolation tests, use non-sensitive evaluation data only. Do not submit secrets, regulated data, private keys, or sensitive personal data.</p>
+        <p>The current service terms grant the rights needed to process, transmit, store, secure, and return service content. They do not grant Monarchic a general-purpose model-training right, but Monarchic does not yet publish a broader “never used to train” policy. A tool that calls an external model or provider is also subject to the documented provider path and its terms.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="providers" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">04</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Providers and subprocesses</h2>
+      <div class={copyClass}>
+        <p>Core providers include AWS for infrastructure, Auth0 for identity, Stripe for billing, and Vercel for the public web surfaces. A hosted MCP may call another provider only when that operation requires it.</p>
+        <p>Some routes run a packaged MCP server or another bounded subprocess. Provider-backed and subprocess work is named in the product workflow where it affects permissions or the default credit weight.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="secrets" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">05</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Secrets and payment data</h2>
+      <div class={copyClass}>
+        <p>Stripe handles payment-card details; Monarchic does not need the full card number. Runtime deployment uses secret references for service credentials rather than committing secret values to the application repositories.</p>
+        <p>Do not place credentials in prompts or generic tool arguments. Use a documented connector field or managed credential path when one exists, and revoke an API key immediately if it may have been exposed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="retention" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">06</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Retention and deletion</h2>
+      <div class={copyClass}>
+        <p>Account and subscription records remain while an account is active and as needed for billing, security, disputes, and legal obligations. Usage records and operational logs are kept for service and security needs. Product artifacts remain until their product control or retention process removes them.</p>
+        <p>The web app has an account-deletion flow that coordinates account access and service records. Backups, payment records, security evidence, and records required by law may remain for a limited period. Send a deletion or export request to support when the product does not expose the needed control.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="telemetry" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">07</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Usage receipts and audit data</h2>
+      <div class={copyClass}>
+        <p>Hosted calls can record the server, tool, timestamp, duration, request and response sizes, outcome, charged credits, and receipt identifiers. Customers can inspect recent usage receipts in the authenticated app.</p>
+        <p>This operational record is not presented as a complete enterprise audit-log product. Ask support about export, retention, or order-specific audit requirements before relying on it for compliance.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="assurance" class={sectionClass}>
+    <span class="font-mono text-xs text-signal">08</span>
+    <div>
+      <h2 class="text-2xl font-extrabold uppercase">Assurance and incident contact</h2>
+      <div class={copyClass}>
+        <p>Monarchic publishes no certification or universal service-level agreement on this site. Signed order terms control when a customer needs a specific security schedule, retention rule, support commitment, or service level.</p>
+        <p>Report a suspected vulnerability or security incident to <a class="font-bold text-signal hover:text-white" href="mailto:support@monarchic.io?subject=Security%20report">support@monarchic.io</a>. Include the affected route, time, and a safe reproduction. Do not include live credentials in the message.</p>
+      </div>
+    </div>
+  </section>
+
+  <div slot="contact">
+    <p class="text-xs font-bold uppercase text-signal">Security contact</p>
+    <h2 class="mt-2 text-2xl font-extrabold uppercase">Ask before sending sensitive data.</h2>
+  </div>
+  <div slot="contact" class="flex flex-wrap gap-3">
+    <a href="mailto:support@monarchic.io?subject=Security%20question" class="border-2 border-signal bg-signal px-5 py-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact security</a>
+    <a href="/privacy" class="border-2 border-white/50 px-5 py-3 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Read privacy notice</a>
+  </div>
+</LegalPageLayout>
