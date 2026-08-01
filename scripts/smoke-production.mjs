@@ -27,6 +27,7 @@ const browserArgs = [
 
 const checks = [];
 const requiredCatalogSlugs = [
+  "monarchic-ai",
   "usage-evaluation",
   "usage-individual",
   "usage-developer",
@@ -48,10 +49,14 @@ const requiredCatalogSlugs = [
   "mcp-webcomposer",
   "mcp-webimplementer",
 ];
-const forbiddenCatalogSlugs = [
-  "mcp-monarchic",
+const retiredCatalogSlugs = [
   "mcp-outreachconnectors",
   "mcp-verified",
+];
+const supersededCatalogSlugs = ["mcp-monarchic"];
+const forbiddenCatalogSlugs = [
+  ...retiredCatalogSlugs,
+  ...supersededCatalogSlugs,
 ];
 
 try {
@@ -85,7 +90,7 @@ async function runSmoke() {
     "/products/mcp-monarchic",
     "/products/mcp-outreachconnectors",
     "/products/mcp-verified",
-  ], "sitemap.xml retired routes");
+  ], "sitemap.xml non-indexed product routes");
   await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/docs`, "tutorial redirect");
   await checkRedirect(
     `${baseUrl}/research/browserops`,
@@ -224,7 +229,7 @@ async function runBrowserSmoke() {
       }
       for (const slug of forbiddenCatalogSlugs) {
         if (await page.locator(`[data-plan-card="${slug}"]`).count() !== 0) {
-          throw new Error(`Retired MCP card must be absent: ${slug}`);
+          throw new Error(`Non-purchasable legacy MCP card must be absent: ${slug}`);
         }
       }
 
@@ -399,7 +404,7 @@ async function checkTextExcludes(url, forbiddenStrings, name) {
   const body = await response.text();
   const present = forbiddenStrings.filter((forbidden) => body.includes(forbidden));
   if (present.length > 0) {
-    throw new Error(`${name} included retired text: ${present.join(", ")}`);
+    throw new Error(`${name} included forbidden text: ${present.join(", ")}`);
   }
   checks.push({ name, status: "ok", forbidden: forbiddenStrings.length });
 }
@@ -477,7 +482,7 @@ async function checkBuildInfo(url, {
   }
   for (const slug of forbiddenCatalogSlugs) {
     if (catalogSlugs.has(slug)) {
-      throw new Error(`build-info included retired catalog slug: ${slug}`);
+      throw new Error(`build-info included non-public catalog slug: ${slug}`);
     }
   }
 
@@ -547,7 +552,7 @@ function validatedCatalogSlugSet(payload) {
     || Object.hasOwn(catalog, "comingSoonPlans")
     || Object.hasOwn(payload, "requiredCatalogSlugs")
   ) {
-    throw new Error("build-info exposes a retired catalog slug bucket");
+    throw new Error("build-info exposes an internal catalog status bucket");
   }
 
   const planSlugs = arrayOrEmpty(catalog.planSlugs);
@@ -704,7 +709,7 @@ async function expectTextAbsent(page, forbiddenStrings) {
   const body = await page.locator("body").innerText();
   const present = forbiddenStrings.filter((forbidden) => body.includes(forbidden));
   if (present.length > 0) {
-    throw new Error(`Page included retired text: ${present.join(", ")}`);
+    throw new Error(`Page included forbidden text: ${present.join(", ")}`);
   }
 }
 

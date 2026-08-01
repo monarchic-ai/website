@@ -318,10 +318,11 @@ function checkPublicCatalogComposition() {
   const generatedPlans = JSON.parse(read("src/lib/pricing.generated.json"));
   const overlayPlans = JSON.parse(read("src/lib/pricing.coming-soon.json"));
   const retiredSlugs = new Set([
-    "mcp-monarchic",
     "mcp-outreachconnectors",
     "mcp-verified",
   ]);
+  const supersededSlugs = new Set(["mcp-monarchic"]);
+  const hiddenSlugs = new Set([...retiredSlugs, ...supersededSlugs]);
   const previewSlugs = new Set([
     "usage-developer",
     "usage-team",
@@ -330,7 +331,7 @@ function checkPublicCatalogComposition() {
   const generatedPublicPlans = generatedPlans.filter(
     (plan) =>
       plan.kind === "usage-plan" &&
-      !retiredSlugs.has(plan.slug) &&
+      !hiddenSlugs.has(plan.slug) &&
       !previewSlugs.has(plan.slug),
   );
   const generatedPublicSlugs = new Set(generatedPublicPlans.map((plan) => plan.slug));
@@ -338,7 +339,7 @@ function checkPublicCatalogComposition() {
     ...generatedPublicPlans,
     ...overlayPlans.filter(
       (plan) =>
-        !retiredSlugs.has(plan.slug) &&
+        !hiddenSlugs.has(plan.slug) &&
         !generatedPublicSlugs.has(plan.slug),
     ),
   ];
@@ -401,6 +402,31 @@ function checkPublicCatalogComposition() {
     } else {
       checks.push(`public catalog: retired slug omitted ${slug}`);
     }
+  }
+
+  for (const slug of supersededSlugs) {
+    if (mcpSlugs.includes(slug)) {
+      failures.push({ path: "src/lib/pricing", supersededPublicSlug: slug });
+    } else {
+      checks.push(`public catalog: superseded alias omitted ${slug}`);
+    }
+  }
+
+  const monarchic = catalog.find((plan) => plan.slug === "monarchic-ai");
+  if (
+    monarchic?.kind !== "ai" ||
+    monarchic?.displayName !== "Monarchic" ||
+    monarchic?.status !== "coming_soon" ||
+    !Array.isArray(monarchic?.prices) ||
+    monarchic.prices.length !== 0
+  ) {
+    failures.push({
+      path: "src/lib/pricing",
+      expectedFlagship: "monarchic-ai coming_soon without checkout prices",
+      actualFlagship: monarchic ?? null,
+    });
+  } else {
+    checks.push("public catalog: Monarchic flagship is coming soon");
   }
 }
 

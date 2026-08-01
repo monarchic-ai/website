@@ -51,13 +51,22 @@ import generatedPlans from "./pricing.generated.json" with { type: "json" };
 import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json" };
 
 // Stripe may retain retired products for historical subscription records. Keep
-// them out of the public catalog even if a future sync sees an active legacy
-// Price.
+// them out of the public catalog even if a future sync sees an active Price.
 export const retiredPublicPlanSlugs = new Set([
-  "mcp-monarchic",
   "mcp-outreachconnectors",
   "mcp-verified",
 ]);
+
+// Monarchic is the flagship account-level product represented publicly by the
+// `monarchic-ai` coming-soon entry. Preserve its older Stripe-backed MCP record
+// for price history, but never render that legacy slug as a second product.
+export const supersededPublicPlanSlugs = new Set([
+  "mcp-monarchic",
+]);
+
+export function isHiddenPublicPlanSlug(slug: string): boolean {
+  return retiredPublicPlanSlugs.has(slug) || supersededPublicPlanSlugs.has(slug);
+}
 
 // These plans have updated public terms but do not have matching live Stripe
 // prices yet. Keep the generated records available for historical subscription
@@ -138,14 +147,14 @@ export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   .filter(
     (plan) =>
       plan.kind === "usage-plan" &&
-      !retiredPublicPlanSlugs.has(plan.slug) &&
+      !isHiddenPublicPlanSlug(plan.slug) &&
       !previewPublicPlanSlugs.has(plan.slug),
   );
 const availablePlanSlugs = new Set(availablePlans.map((plan) => plan.slug));
 export const comingSoonPlans: CatalogPlan[] = nonGeneratedPlans
   .filter(
     (plan) =>
-      !retiredPublicPlanSlugs.has(plan.slug) &&
+      !isHiddenPublicPlanSlug(plan.slug) &&
       !availablePlanSlugs.has(plan.slug),
   );
 export const allPlans: CatalogPlan[] = [...availablePlans, ...comingSoonPlans];
