@@ -4,20 +4,25 @@ This runbook covers the public website live smoke gate.
 
 ## Current Evidence
 
-Latest local run date: 2026-07-19 UTC.
+Latest production validation: 2026-08-01 UTC.
 
-Production website smoke is green on the `www` route. Staging is isolated from
-the production Vercel project:
+Production website smoke is green on both the apex and `www` routes. Staging
+remains isolated from the production Vercel project:
 
-- Website commit `53a41eff315199e0f938a4a63677bbe59b687d03`
-  removes Verified Patch from the public catalog and replaces its homepage card
-  with ReleaseOps. Local catalog, WebComposer, Astro, build, and desktop/mobile
-  rendering checks passed. A Git-connected Vercel deployment briefly routed
-  this commit to production after the main push. The release hold was restored
-  immediately by rolling back to deployment
-  `dpl_4zXsY8xfeKm6iwHh6xEmLVqJyYp7`, commit
-  `579f15cfab08732ca922905b9ad61574ef24445f`. Vercel Git integration is disconnected,
-  so later main pushes cannot create website deployments.
+- Website commit `466058e10d7cadd131182c7f74425610e6f96315` is deployed to
+  production as `dpl_F9Kacmoezy1Z4h2yomxiQA5WXhfK`. It publishes the
+  ExplicitMem LongMemEval-S result at `499/500` answers correct (`99.8%`), with
+  `100%` answer faithfulness and retrieval recall. The research page links the
+  checked-in evidence receipt and records the remaining upstream-gold mismatch.
+- Full browser smoke passed against `https://www.monarchic.io` and
+  `https://monarchic.io` on 2026-08-01 UTC. The checks covered security headers,
+  DNS and HTTP responses, build info, public metadata, product and research
+  routes, redirects, and 320px overflow. `/build-info.json` reports commit
+  `466058e10d7cadd131182c7f74425610e6f96315`, 21 plans, and catalog artifact
+  digest `sha256:6931a337d4d12a8cda800380c5e40e1e95bf1926f86134123f7c035bae5b2f97`.
+- Vercel Git integration is disconnected. A push to `main` does not create
+  a deployment. Production releases must use the clean, commit-pinned local CLI
+  workflow documented under Deployment Checks.
 
 - Website commit `76fce1ac85102117e5799294ab97f528dfd46b70` is deployed to the
   dedicated `website-staging` Vercel project as deployment
@@ -26,12 +31,6 @@ the production Vercel project:
   `staging.monarchic.io/*` to the stable staging-project alias and adds
   `X-Robots-Tag: noindex, nofollow`.
 
-- `pnpm smoke:production` against `https://www.monarchic.io` passed on
-  2026-07-19 UTC. The smoke verified DNS, `HEAD /`, `/build-info.json`,
-  `/robots.txt`, `/sitemap.xml`, homepage metadata, product routes, and
-  research routes. `/build-info.json` reports the intentional rollback commit
-  `579f15cfab08732ca922905b9ad61574ef24445f` and catalog artifact digest
-  `sha256:9b41a101430d3d001bb5f53f1661d29bbac3f5bb18fdd7dd736ceee397915e7e`.
 - `pnpm smoke:staging` against `https://staging.monarchic.io` passed on
   2026-07-19 UTC through the dedicated staging Vercel project and Cloudflare
   route. The commit-pinned smoke reported 22 public plans, catalog artifact
@@ -39,8 +38,7 @@ the production Vercel project:
   no public `mcp-verified` plan, and canonical URLs under
   `https://staging.monarchic.io`.
 
-Keep this command as the current passing production release evidence gate while
-the apex route is under investigation:
+Use this command as the production release evidence gate:
 
 ```bash
 pnpm smoke:production
