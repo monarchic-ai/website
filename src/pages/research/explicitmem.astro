@@ -3,38 +3,24 @@ import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
+import {
+  explicitMemBenchmark,
+  explicitMemQuestionTypes,
+  explicitMemRunConfig,
+} from "../../lib/explicitmemBenchmark";
 import "../../styles/global.css";
 
 const headlineMetrics = [
-  ["Questions", "500"],
-  ["Answer accuracy", "97.8%"],
-  ["Answer faithfulness", "99.8%"],
-  ["Retrieval recall@K", "100%"],
-  ["Retrieval receipts", "100%"],
-  ["Average context", "797 tokens"],
-  ["Average local latency", "63.3 ms"],
-  ["Context budget", "800 tokens"],
-];
-
-const questionTypes = [
-  { label: "Knowledge update", count: 78, accuracy: "98.7%", passed: "77 / 78" },
-  { label: "Multi-session", count: 133, accuracy: "100%", passed: "132 / 133 faithful" },
-  { label: "Single-session assistant", count: 56, accuracy: "96.4%", passed: "54 / 56" },
-  { label: "Single-session preference", count: 30, accuracy: "100%", passed: "30 / 30" },
-  { label: "Single-session user", count: 70, accuracy: "98.6%", passed: "69 / 70" },
-  { label: "Temporal reasoning", count: 133, accuracy: "94.7%", passed: "126 / 133" },
-];
-
-const runConfig = [
-  ["Benchmark", "LongMemEval-S"],
-  ["Protocol", "longmemeval-s-answer-v1"],
-  ["Judge", "Normalized answer string match"],
-  ["Runtime profile", "Synthesis"],
-  ["Retrieval limit", "Top 50"],
-  ["Question coverage", "All 500 questions"],
-  ["Generated", "9 June 2026"],
-  ["Claim scope", "This benchmark configuration"],
-];
+  ["Questions", String(explicitMemBenchmark.questions)],
+  ["Answer accuracy", explicitMemBenchmark.answerAccuracy],
+  ["Answer faithfulness", explicitMemBenchmark.answerFaithfulness],
+  ["Answer evidence hit rate", explicitMemBenchmark.answerEvidenceHitRate],
+  ["Retrieval recall@K", explicitMemBenchmark.retrievalRecallAtK],
+  ["Retrieval receipts", explicitMemBenchmark.retrievalReceiptCoverage],
+  ["Average context", explicitMemBenchmark.averageContext],
+  ["Average local latency", explicitMemBenchmark.averageLatency],
+  ["Context budget", explicitMemBenchmark.contextBudget],
+] as const;
 ---
 
 <html lang="en">
@@ -66,7 +52,7 @@ const runConfig = [
               Memory benchmark
             </h1>
             <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-              A reproduced 500-question run measuring answer accuracy,
+              A reproduced {explicitMemBenchmark.questions}-question run measuring answer accuracy,
               faithfulness, retrieval coverage, context size, and local
               evaluation latency under one fixed protocol.
             </p>
@@ -79,14 +65,14 @@ const runConfig = [
           <aside class="border-2 border-white bg-black/76 p-5">
             <div class="flex items-center justify-between gap-4">
               <p class="text-xs font-bold uppercase text-white/58">Run summary</p>
-              <span class="border border-signal px-2 py-1 text-[0.65rem] font-bold uppercase text-signal">500 questions</span>
+              <span class="border border-signal px-2 py-1 text-[0.65rem] font-bold uppercase text-signal">{explicitMemBenchmark.questions} questions</span>
             </div>
-            <p class="mt-5 text-6xl font-extrabold leading-none">97.8%</p>
+            <p class="mt-5 text-6xl font-extrabold leading-none">{explicitMemBenchmark.answerAccuracy}</p>
             <p class="mt-3 text-xs font-bold uppercase text-white/58">Answer accuracy</p>
             <p class="mt-6 text-sm leading-7 text-white/72">
-              The same run reached 99.8% faithfulness, complete retrieval
+              The same run reached {explicitMemBenchmark.answerFaithfulness} faithfulness, complete retrieval
               recall, and complete retrieval-receipt coverage under the fixed
-              protocol described below.
+              synthesis profile described below.
             </p>
           </aside>
         </section>
@@ -120,7 +106,7 @@ const runConfig = [
                 </tr>
               </thead>
               <tbody>
-                {questionTypes.map((row) => (
+                {explicitMemQuestionTypes.map((row) => (
                   <tr class="border-b border-white/24 transition last:border-b-0 hover:bg-signal/[0.06]">
                     <td class="p-4 font-extrabold uppercase">{row.label}</td>
                     <td class="p-4">{row.count}</td>
@@ -138,18 +124,19 @@ const runConfig = [
             <p class="text-xs font-bold uppercase text-signal">03 / Method</p>
             <h2 class="mt-3 text-2xl font-extrabold uppercase">Fixed answer protocol</h2>
             <p class="mt-4 text-sm leading-7 text-white/74">
-              The run used the complete LongMemEval-S question set, retrieved up
-              to 50 items, synthesized at most 800 context tokens, and judged
-              answers with normalized string matching.
+              The run used the complete {explicitMemBenchmark.benchmark} question set, the promoted
+              synthesis profile, no per-session character limit, up to 50
+              retrieved items, an 800-token context budget, and deterministic
+              normalized answer matching.
             </p>
           </article>
           <article class="border-2 border-white bg-black/70 p-5">
             <p class="text-xs font-bold uppercase text-signal">04 / Failures</p>
-            <h2 class="mt-3 text-2xl font-extrabold uppercase">Temporal reasoning led the misses</h2>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase">One upstream-gold mismatch remains</h2>
             <p class="mt-4 text-sm leading-7 text-white/74">
-              Twelve cases reported context truncation. Seven wrong answers were
-              localized to evidence but synthesized incorrectly, and five cases
-              lacked localized answer evidence.
+              The only scored miss is faithful and evidence-localized: the
+              source dates compute to 12 weeks, while the upstream gold answer
+              expects 15. The repository's strict 100% threshold remains unmet.
             </p>
           </article>
           <article class="border-2 border-white bg-black/70 p-5">
@@ -169,7 +156,7 @@ const runConfig = [
             <h2 class="mt-3 text-3xl font-extrabold uppercase">Reproduction boundary</h2>
           </div>
           <dl class="grid sm:grid-cols-2">
-            {runConfig.map(([label, value]) => (
+            {explicitMemRunConfig.map(([label, value]) => (
               <div class="border-b border-white/30 p-4 odd:sm:border-r">
                 <dt class="text-[0.65rem] font-bold uppercase text-white/48">{label}</dt>
                 <dd class="mt-2 text-sm font-semibold text-white/82">{value}</dd>
@@ -188,9 +175,14 @@ const runConfig = [
               performance on other datasets, hosted latency, or direct
               superiority over another memory product.
             </p>
-            <a class="mt-4 inline-flex text-sm font-bold text-signal underline underline-offset-4 transition hover:text-white" href="https://github.com/xiaowu0162/longmemeval">
-              LongMemEval project and paper
-            </a>
+            <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+              <a class="inline-flex text-sm font-bold text-signal underline underline-offset-4 transition hover:text-white" href={explicitMemBenchmark.evidenceUrl}>
+                ExplicitMem evidence receipt
+              </a>
+              <a class="inline-flex text-sm font-bold text-signal underline underline-offset-4 transition hover:text-white" href="https://github.com/xiaowu0162/longmemeval">
+                LongMemEval project and paper
+              </a>
+            </div>
           </div>
           <a href="/products/mcp-explicitmem" class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
             View ExplicitMem

@@ -22,11 +22,11 @@ checkFileIncludes("src/pages/index.astro", [
   'href="/research"',
   'href={`${appBaseUrl}/docs`}',
   'href="#waitlist"',
-  "97.8%",
-  "99.8%",
-  "100%",
-  "63.3 ms",
-  "The full report sits beside the headline.",
+  "explicitMemBenchmark.answerAccuracy",
+  "explicitMemBenchmark.answerFaithfulness",
+  "explicitMemBenchmark.retrievalRecallAtK",
+  "explicitMemBenchmark.averageLatency",
+  "remaining mismatch, and limits sit beside the headline.",
   "One allowance covers every available MCP.",
   "cannot be checked out.",
   "/research/explicitmem",
@@ -265,10 +265,10 @@ checkFileIncludes("webcomposer/page-maps.json", [
 checkFileIncludes("src/pages/research/index.astro", [
   "Benchmarks and methodology.",
   "ExplicitMem on LongMemEval-S",
-  "97.8%",
-  "99.8%",
-  "100%",
-  "63.3 ms",
+  "explicitMemBenchmark.answerAccuracy",
+  "explicitMemBenchmark.answerFaithfulness",
+  "explicitMemBenchmark.retrievalRecallAtK",
+  "explicitMemBenchmark.averageLatency",
 ]);
 checkForbidden("src/pages/research/index.astro", [
   'href="/research/browserops"',
@@ -279,15 +279,22 @@ checkForbidden("src/pages/research/index.astro", [
 
 checkFileIncludes("src/pages/research/explicitmem.astro", [
   "Memory benchmark",
-  "500-question run",
-  "97.8%",
-  "99.8%",
-  "100%",
-  "63.3 ms",
+  "explicitMemBenchmark.questions",
+  "explicitMemBenchmark.answerAccuracy",
+  "explicitMemBenchmark.answerFaithfulness",
+  "explicitMemBenchmark.averageLatency",
   "Run summary",
-  "500 questions",
-  "Temporal reasoning led the misses",
+  "One upstream-gold mismatch remains",
   "No cross-system comparison",
+  "ExplicitMem evidence receipt",
+]);
+checkFileIncludes("src/lib/explicitmemBenchmark.ts", [
+  'answerAccuracy: "99.8%"',
+  'answerFaithfulness: "100%"',
+  'answerEvidenceHitRate: "78.2%"',
+  'averageLatency: "62.5 ms"',
+  'generated: "1 August 2026"',
+  "longmemeval-synthesis-benchmark-evidence.json",
 ]);
 checkForbidden("src/pages/research/explicitmem.astro", [
   "Hosted write p50",

@@ -195,7 +195,7 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
       await page.getByRole("link", { name: "WIP access" }).waitFor();
-      for (const metric of ["97.8%", "99.8%", "100%", "63.3 ms"]) {
+      for (const metric of ["99.8%", "100%", "62.5 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
       await page.getByText("One allowance covers every available MCP.").waitFor();
@@ -386,10 +386,10 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Memory benchmark" }).waitFor();
       await page.getByText("500 questions", { exact: true }).waitFor();
       await page.getByText("Answer accuracy", { exact: true }).first().waitFor();
-      for (const metric of ["97.8%", "99.8%", "100%", "63.3 ms"]) {
+      for (const metric of ["99.8%", "100%", "78.2%", "62.5 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
-      await page.getByRole("heading", { name: "Temporal reasoning led the misses" }).waitFor();
+      await page.getByRole("heading", { name: "One upstream-gold mismatch remains" }).waitFor();
       await page.getByRole("heading", { name: "No cross-system comparison" }).waitFor();
       await expectTextAbsent(page, [
         "Hosted write p50",

@@ -4,6 +4,7 @@ import SeoHead from "../components/SeoHead.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
+import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
 import { allPlans } from "../lib/pricing";
 import "../styles/global.css";
 
@@ -33,7 +34,7 @@ const featuredRoutes = [
   {
     label: "ExplicitMem",
     href: "/products/mcp-explicitmem",
-    proof: "97.8% accuracy on the fixed 500-question LongMemEval-S run.",
+    proof: `${explicitMemBenchmark.answerAccuracy} accuracy (${explicitMemBenchmark.passedQuestions}/${explicitMemBenchmark.questions}) on the fixed ${explicitMemBenchmark.benchmark} run.`,
     role: "Durable memory",
     signal: "AVAILABLE",
   },
@@ -61,10 +62,10 @@ const featuredRoutes = [
 ];
 
 const proofPoints = [
-  ["97.8%", "Accuracy", "LongMemEval-S answer accuracy"],
-  ["99.8%", "Faithfulness", "Answer faithfulness"],
-  ["100%", "Recall@K", "Retrieval coverage"],
-  ["63.3 ms", "Local latency", "Average evaluation time"],
+  [explicitMemBenchmark.answerAccuracy, "Accuracy", `${explicitMemBenchmark.benchmark} answer accuracy`],
+  [explicitMemBenchmark.answerFaithfulness, "Faithfulness", "Answer faithfulness"],
+  [explicitMemBenchmark.retrievalRecallAtK, "Recall@K", "Retrieval coverage"],
+  [explicitMemBenchmark.averageLatency, "Local latency", "Average evaluation time"],
 ];
 ---
 
@@ -176,8 +177,9 @@ const proofPoints = [
               The benchmark includes the method, failures, and limits.
             </h2>
             <p class="mt-5 max-w-2xl text-sm leading-7 text-black/68">
-              ExplicitMem was evaluated against 500 LongMemEval-S questions under
-              one fixed local protocol. The full report sits beside the headline.
+              ExplicitMem was evaluated against {explicitMemBenchmark.questions} {explicitMemBenchmark.benchmark} questions
+              under one fixed benchmark synthesis profile. The evidence receipt,
+              remaining mismatch, and limits sit beside the headline.
             </p>
             <a href="/research/explicitmem" class="mt-6 inline-flex min-h-11 items-center border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-paper hover:text-black">
               Read methodology
