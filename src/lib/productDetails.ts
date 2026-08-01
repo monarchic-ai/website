@@ -8,6 +8,18 @@ export interface ProductDetail {
 }
 
 export const productDetails: Record<string, ProductDetail> = {
+  "monarchic-ai": {
+    slug: "monarchic-ai",
+    category: "Agent Workflows",
+    buyer: "Teams that need long-running agent work to stay observable, reviewable, and connected to account controls.",
+    useCase: "Coordinate long-running agent workflows above the hosted MCP catalog while preserving run state, evidence artifacts, and operator review points.",
+    outcomes: [
+      "Keep multi-step agent work visible across long-running sessions",
+      "Attach reviewable artifacts and decisions to each run",
+      "Use hosted MCP capabilities through one account-level workflow surface",
+    ],
+    workflows: ["Launch run", "Monitor progress", "Review artifacts", "Control execution"],
+  },
   "mcp-cicd": {
     slug: "mcp-cicd",
     category: "Delivery Operations",
