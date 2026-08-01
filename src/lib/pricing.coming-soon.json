@@ -4,7 +4,7 @@
     "slug": "monarchic-ai",
     "displayName": "Monarchic",
     "tagline": "Long-running agent workflows, in development",
-    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. The individual MCP catalog is available separately.",
+    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. Available MCPs are included through shared account credits.",
     "featureBullets": [
       "Long-running, observable agent workflows",
       "Reviewable run artifacts and account controls",

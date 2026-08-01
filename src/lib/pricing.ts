@@ -80,7 +80,6 @@ export const previewPublicPlanSlugs = new Set([
 const PREPAID_HARD_CAP_LABEL = "No overage; hard monthly cap";
 const PREPAID_HARD_CAP_BULLET =
   "No overage; hosted calls pause at the prepaid credit limit";
-const SINGLE_MCP_MONTHLY_CREDITS = 1_000;
 const PREPAID_CREDIT_USAGE_SUMMARY =
   "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.";
 const PREPAID_PTY_USAGE_SUMMARY =
@@ -89,6 +88,26 @@ const PREPAID_PTY_USAGE_SUMMARY =
 function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
   if (plan.kind !== "usage-plan" && plan.kind !== "single-mcp") {
     return plan;
+  }
+  if (plan.kind === "single-mcp") {
+    return {
+      ...plan,
+      featureBullets: plan.featureBullets
+        .filter(
+          (bullet) =>
+            !/overage|additional credit|before metered usage/i.test(bullet),
+        )
+        .map((bullet) =>
+          plan.slug === "mcp-pty" && /one base credit|measured settlement/i.test(bullet)
+            ? "Metadata calls use 0 credits; provider-backed terminal work uses 10 by default"
+            : bullet,
+        ),
+      usageSummary:
+        plan.slug === "mcp-pty" ? PREPAID_PTY_USAGE_SUMMARY : plan.usageSummary,
+      includedCredits: undefined,
+      creditAllowanceLabel: "Shared plan credits",
+      overageLabel: undefined,
+    };
   }
   const isEvaluation = plan.slug === "usage-evaluation";
   const hardCapBullet = isEvaluation
@@ -116,20 +135,9 @@ function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
       "with a predictable hard monthly cap",
     ),
     featureBullets,
-    usageSummary:
-      plan.kind === "usage-plan"
-        ? PREPAID_CREDIT_USAGE_SUMMARY
-        : plan.slug === "mcp-pty"
-          ? PREPAID_PTY_USAGE_SUMMARY
-        : plan.usageSummary,
-    includedCredits:
-      plan.kind === "single-mcp"
-        ? plan.includedCredits ?? SINGLE_MCP_MONTHLY_CREDITS
-        : plan.includedCredits,
-    creditAllowanceLabel:
-      plan.kind === "single-mcp"
-        ? "1,000 route-bound prepaid credits/mo"
-        : plan.creditAllowanceLabel,
+    usageSummary: PREPAID_CREDIT_USAGE_SUMMARY,
+    includedCredits: plan.includedCredits,
+    creditAllowanceLabel: plan.creditAllowanceLabel,
     overageLabel: isEvaluation
       ? "No overage; hard trial cap"
       : PREPAID_HARD_CAP_LABEL,
