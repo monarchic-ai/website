@@ -135,5 +135,36 @@
             PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
           };
         });
+
+      apps = forAllSystems (system:
+        let
+          pkgs = pkgsFor system;
+          mkSmokeApp = name: script: {
+            type = "app";
+            program = "${pkgs.writeShellApplication {
+              inherit name;
+              runtimeInputs = [
+                pkgs.chromium
+                pkgs.nodejs_22
+                pkgs.pnpm
+                pkgs.util-linux
+              ];
+              text = ''
+                if [ ! -f package.json ]; then
+                  echo "${name} must be run from the website repository root." >&2
+                  exit 1
+                fi
+
+                export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="${pkgs.chromium}/bin/chromium"
+                pnpm install --frozen-lockfile
+                flock --wait 600 /tmp/monarchic-frontend-browser-smoke.lock pnpm run ${script}
+              '';
+            }}/bin/${name}";
+          };
+        in
+        {
+          smoke-production = mkSmokeApp "website-smoke-production" "smoke:production";
+          smoke-staging = mkSmokeApp "website-smoke-staging" "smoke:staging";
+        });
     };
 }
