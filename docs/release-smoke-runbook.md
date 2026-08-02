@@ -83,12 +83,14 @@ Run the apex production route for routing triage:
 pnpm smoke:production:apex
 ```
 
-Run the same gate from GitHub with
-`.github/workflows/website-release-smoke.yml`.
+Run the same gate through the flake app:
+
+```bash
+nix run .#smoke-production
+```
 
 Set `MONARCHIC_WEBSITE_SMOKE_REPORT=website-release-smoke-report.json` when
-running in CI or when you need a persisted evidence file. The GitHub workflow
-uploads this report on both pass and fail.
+running in CI or when you need a persisted evidence file.
 
 Network-level fetch failures are retried four times by default. Set
 `MONARCHIC_WEBSITE_SMOKE_FETCH_ATTEMPTS=1` to disable retries when debugging a
@@ -100,10 +102,7 @@ intermittent. HTTP responses such as `404` and `500` are not retried.
 When a staging website domain exists, run:
 
 ```bash
-MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io \
-MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://staging.monarchic.io \
-MONARCHIC_WEBSITE_EXPECTED_APP_URL=https://staging-app.monarchic.io \
-pnpm smoke:production
+nix run .#smoke-staging
 ```
 
 The staging hostname is served by the dedicated `website-staging` Vercel

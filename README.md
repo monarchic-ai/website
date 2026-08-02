@@ -56,14 +56,22 @@ the packaged Chromium build:
 nix develop -c pnpm smoke:production
 ```
 
-GitHub Actions runs `.github/workflows/website-readiness.yml` on website
-changes. That workflow installs dependencies, runs Astro diagnostics, checks
-the WebComposer contract, and builds the static site. Its manual smoke job
-installs Playwright Chromium and runs `pnpm smoke:local`.
+GitHub Actions runs the shared Monarchic Nix CI workflow on `main`. That
+workflow builds the flake packages, runs the flake checks, and leaves release
+smoke commands as explicit flake apps.
 
-The manual release workflow at `.github/workflows/website-release-smoke.yml`
-runs `pnpm smoke:production` against the configured production or staging
-target.
+Run production release smoke with:
+
+```bash
+nix run .#smoke-production
+```
+
+Run staging release smoke with:
+
+```bash
+nix run .#smoke-staging
+```
+
 Use [`docs/release-smoke-runbook.md`](docs/release-smoke-runbook.md) for the
 live deployment checklist and current smoke evidence.
 

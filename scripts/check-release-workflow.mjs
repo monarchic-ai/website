@@ -3,8 +3,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const workflowPath = resolve(process.cwd(), ".github/workflows/website-release-smoke.yml");
-const content = await readFile(workflowPath, "utf8");
+const flake = await readFile(resolve(process.cwd(), "flake.nix"), "utf8");
 const packageJson = await readFile(resolve(process.cwd(), "package.json"), "utf8");
 const deployScript = await readFile(resolve(process.cwd(), "scripts/deploy-vercel-local.mjs"), "utf8");
 const stagingProxyDeployScript = await readFile(resolve(process.cwd(), "scripts/deploy-cloudflare-staging-proxy.mjs"), "utf8");
@@ -13,37 +12,18 @@ const stagingProxyWorker = await readFile(resolve(process.cwd(), "cloudflare/sta
 const smokeScript = await readFile(resolve(process.cwd(), "scripts/smoke-production.mjs"), "utf8");
 const runbook = await readFile(resolve(process.cwd(), "docs/release-smoke-runbook.md"), "utf8");
 
-const requiredText = [
-  "Website release smoke",
-  "include_staging",
-  "staging_website_url",
-  "staging_expected_canonical_url",
-  "staging_webapp_url",
-  "https://staging-app.monarchic.io",
-  "pnpm smoke:production",
-  "https://www.monarchic.io",
-  "website-production-smoke-report.json",
-  "website-staging-smoke-report.json",
-  "MONARCHIC_WEBSITE_SMOKE_URL",
-  "MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL",
-  "MONARCHIC_WEBSITE_EXPECTED_APP_URL",
-];
-
 let failed = false;
 
-for (const expected of requiredText) {
-  if (content.includes(expected)) {
-    console.log(`ok     website-release-smoke.yml: ${expected}`);
-    continue;
-  }
-  failed = true;
-  console.error(`missing website-release-smoke.yml: ${expected}`);
-}
-
 for (const [label, source, expected] of [
+  ["flake.nix", flake, 'smoke-production = mkSmokeApp "website-smoke-production" "smoke:production"'],
+  ["flake.nix", flake, 'smoke-staging = mkSmokeApp "website-smoke-staging" "smoke:staging"'],
+  ["flake.nix", flake, "pnpm install --frozen-lockfile"],
+  ["flake.nix", flake, "flock --wait 600 /tmp/monarchic-frontend-browser-smoke.lock pnpm run"],
   ["package.json", packageJson, '"deploy:vercel:local": "node scripts/deploy-vercel-local.mjs"'],
   ["package.json", packageJson, '"deploy:vercel:staging": "MONARCHIC_VERCEL_PROJECT=staging node scripts/deploy-vercel-local.mjs"'],
   ["package.json", packageJson, '"deploy:cloudflare:staging-proxy": "node scripts/deploy-cloudflare-staging-proxy.mjs"'],
+  ["package.json", packageJson, '"smoke:production": "MONARCHIC_WEBSITE_SMOKE_URL=https://www.monarchic.io MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io node scripts/smoke-production.mjs"'],
+  ["package.json", packageJson, '"smoke:staging": "MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://staging.monarchic.io MONARCHIC_WEBSITE_EXPECTED_APP_URL=https://staging-app.monarchic.io node scripts/smoke-production.mjs"'],
   ["deploy-vercel-local.mjs", deployScript, "MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED"],
   ["deploy-vercel-local.mjs", deployScript, 'project: "website-staging"'],
   ["deploy-vercel-local.mjs", deployScript, "MONARCHIC_VERCEL_PROJECT"],
