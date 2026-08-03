@@ -4,7 +4,7 @@
     "slug": "monarchic-ai",
     "displayName": "Monarchic",
     "tagline": "Long-running agent workflows, in development",
-    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. Available MCPs are included through shared account credits.",
+    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. Available hosted MCPs are included through one shared account credit pool.",
     "featureBullets": [
       "Long-running, observable agent workflows",
       "Reviewable run artifacts and account controls",
@@ -33,18 +33,52 @@
   },
   {
     "kind": "usage-plan",
+    "slug": "usage-individual",
+    "displayName": "Individual",
+    "tagline": "A practical starting point for one developer",
+    "description": "For an individual developer running available hosted MCPs across focused projects and recurring agent workflows.",
+    "featureBullets": [
+      "2,000 included credits each month",
+      "One shared allowance across available hosted MCPs",
+      "No overage; hosted calls pause at the prepaid credit limit",
+      "Scoped API keys and account usage controls"
+    ],
+    "includedCredits": 2000,
+    "creditAllowanceLabel": "2,000 included credits/mo",
+    "overageLabel": "No overage; hard monthly cap",
+    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "status": "coming_soon",
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 2900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 29000,
+        "currency": "usd"
+      }
+    ]
+  },
+  {
+    "kind": "usage-plan",
     "slug": "usage-developer",
     "displayName": "Developer",
     "tagline": "Capacity for one active developer",
     "description": "For one developer using available hosted MCPs across local agents, CI checks, and recurring workflows.",
     "featureBullets": [
-      "4,000 included credits each month",
+      "4,500 included credits each month",
       "One shared allowance across available hosted MCPs",
       "No overage; hosted calls pause at the prepaid credit limit",
       "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 4000,
-    "creditAllowanceLabel": "4,000 included credits/mo",
+    "includedCredits": 4500,
+    "creditAllowanceLabel": "4,500 included credits/mo",
     "overageLabel": "No overage; hard monthly cap",
     "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
     "highlighted": true,
@@ -107,17 +141,32 @@
     "tagline": "Capacity and support for sustained hosted workloads",
     "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
     "featureBullets": [
-      "75,000-credit monthly capacity starting point",
+      "75,000 included credits each month",
       "One shared allowance across available hosted MCPs",
       "No overage; usage pauses at the contracted prepaid limit",
-      "Support and service objectives defined in the agreement"
+      "Starting at $879 per month with support terms defined in the agreement"
     ],
     "includedCredits": 75000,
     "creditAllowanceLabel": "75,000+ included credits/mo",
     "overageLabel": "No overage; contracted hard cap",
     "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
     "status": "contact_sales",
-    "prices": [],
+    "prices": [
+      {
+        "cadence": "monthly",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 87900,
+        "currency": "usd"
+      },
+      {
+        "cadence": "annual",
+        "priceId": null,
+        "lookupKey": null,
+        "priceCents": 879000,
+        "currency": "usd"
+      }
+    ],
     "salesContactUrl": "mailto:sales@monarchic.io?subject=Monarchic%20Business"
   },
   {

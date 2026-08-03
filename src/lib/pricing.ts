@@ -72,6 +72,7 @@ export function isHiddenPublicPlanSlug(slug: string): boolean {
 // prices yet. Keep the generated records available for historical subscription
 // lookup while the public catalog uses non-checkout preview entries.
 export const previewPublicPlanSlugs = new Set([
+  "usage-individual",
   "usage-developer",
   "usage-team",
   "usage-business",

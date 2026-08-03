@@ -215,8 +215,8 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
       await page.getByRole("heading", { name: "One allowance, four clear weights" }).waitFor();
-      await page.getByText("Individual plan / 1,000 credits", { exact: true }).waitFor();
-      await page.getByText("≈333", { exact: true }).waitFor();
+      await page.getByText("Individual plan / 2,000 credits", { exact: true }).waitFor();
+      await page.getByText("≈666", { exact: true }).waitFor();
       for (const creditWeight of ["0", "1", "3", "10"]) {
         await page.getByText(creditWeight, { exact: true }).first().waitFor();
       }

@@ -54,7 +54,7 @@
         { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and the credit model." },
         { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual credit plans and show an eligible next action." },
         { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with five available MCPs, then place ten WIP products in a collapsed Coming next disclosure." },
-        { "id": "how-credits-work", "template": "split.asymmetric", "purpose": "Explain how one account allowance covers every available MCP and translate 1,000 credits into recognizable call equivalents." },
+        { "id": "how-credits-work", "template": "split.asymmetric", "purpose": "Explain how one account allowance covers every available MCP and translate 2,000 credits into recognizable call equivalents." },
         { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
