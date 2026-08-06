@@ -63,7 +63,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Accounts, keys, and permissions</h2>
       <div class={copyClass}>
-        <p>Auth0 provides account authentication. The Monarchic API checks identity, tenant membership, product entitlement, rate limits, and prepaid credit availability before a hosted tool call is dispatched.</p>
+        <p>Auth0 provides account authentication. The Monarchic API checks identity, tenant membership, product entitlement, rate limits, and available plan usage before a hosted tool call is dispatched.</p>
         <p>An account API key is not permission to every repository, cloud account, browser, or provider. Do not treat a key-scope label as a product-level data permission. Product pages state what a sample call reads or writes, and external systems still need their own least-privilege credentials when a tool uses them.</p>
       </div>
     </div>
@@ -87,7 +87,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
       <h2 class="text-2xl font-extrabold uppercase">Providers and subprocesses</h2>
       <div class={copyClass}>
         <p>Core providers include AWS for infrastructure, Auth0 for identity, Stripe for billing, and Vercel for the public web surfaces. A hosted MCP may call another provider only when that operation requires it.</p>
-        <p>Some routes run a packaged MCP server or another bounded subprocess. Provider-backed and subprocess work is named in the product workflow where it affects permissions or the default credit weight.</p>
+        <p>Some routes run a packaged MCP server or another bounded subprocess. Provider-backed and subprocess work is named in the product workflow where it affects permissions or estimated plan usage.</p>
       </div>
     </div>
   </section>
@@ -119,7 +119,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Usage receipts and audit data</h2>
       <div class={copyClass}>
-        <p>Hosted calls can record the server, tool, timestamp, duration, request and response sizes, outcome, charged credits, and receipt identifiers. Customers can inspect recent usage receipts in the authenticated app.</p>
+        <p>Hosted calls can record the server, tool, timestamp, duration, request and response sizes, outcome, internal work-unit settlement, and receipt identifiers. Customers see the resulting plan-usage impact in the authenticated app.</p>
         <p>This operational record is not presented as a complete enterprise audit-log product. Ask support about export, retention, or order-specific audit requirements before relying on it for compliance.</p>
       </div>
     </div>

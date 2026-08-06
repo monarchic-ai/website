@@ -78,13 +78,10 @@ export const previewPublicPlanSlugs = new Set([
   "usage-business",
 ]);
 
-const PREPAID_HARD_CAP_LABEL = "No overage; hard monthly cap";
-const PREPAID_HARD_CAP_BULLET =
-  "No overage; hosted calls pause at the prepaid credit limit";
-const PREPAID_CREDIT_USAGE_SUMMARY =
-  "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.";
-const PREPAID_PTY_USAGE_SUMMARY =
-  "PTY metadata operations use 0 credits. Provider-backed terminal work uses 10 credits by default.";
+const DEFAULT_USAGE_SUMMARY =
+  "Simple calls use very little of the allowance. Analysis, long-running jobs, browser execution, stored evidence, output size, and disclosed provider expense can use more.";
+const PTY_USAGE_SUMMARY =
+  "PTY discovery uses very little of the allowance. Provider-backed terminal execution varies with duration and measured resource use.";
 
 function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
   if (plan.kind !== "usage-plan" && plan.kind !== "single-mcp") {
@@ -96,52 +93,56 @@ function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
       featureBullets: plan.featureBullets
         .filter(
           (bullet) =>
-            !/overage|additional credit|before metered usage/i.test(bullet),
+            !/credits?|overage|additional usage|before metered usage/i.test(bullet),
         )
         .map((bullet) =>
           plan.slug === "mcp-pty" && /one base credit|measured settlement/i.test(bullet)
-            ? "Metadata calls use 0 credits; provider-backed terminal work uses 10 by default"
+            ? "Terminal usage varies with execution duration and measured provider work"
             : bullet,
         ),
       usageSummary:
-        plan.slug === "mcp-pty" ? PREPAID_PTY_USAGE_SUMMARY : plan.usageSummary,
+        plan.slug === "mcp-pty" ? PTY_USAGE_SUMMARY : (plan.usageSummary ?? DEFAULT_USAGE_SUMMARY),
       includedCredits: undefined,
-      creditAllowanceLabel: "Shared plan credits",
+      creditAllowanceLabel: "Included with an active usage plan",
       overageLabel: undefined,
     };
   }
   const isEvaluation = plan.slug === "usage-evaluation";
-  const hardCapBullet = isEvaluation
-    ? "No overage; hosted calls pause at the trial credit limit"
-    : PREPAID_HARD_CAP_BULLET;
+  const afterLimitBullet = isEvaluation
+    ? "Usage pauses at the evaluation limit"
+    : "Pause by default or enable pay-as-you-go";
   const featureBullets = plan.featureBullets
     .filter(
       (bullet) =>
-        !/overage|additional credit|before metered usage/i.test(
+        !/credits?|overage|additional usage|before metered usage/i.test(
           bullet,
         ),
     )
     .map((bullet) =>
       plan.slug === "mcp-pty" && /one base credit|measured settlement/i.test(bullet)
-        ? "Metadata calls use 0 credits; provider-backed terminal work uses 10 by default"
+        ? "Terminal usage varies with execution duration and measured provider work"
         : bullet,
     );
-  if (!featureBullets.includes(hardCapBullet)) {
-    featureBullets.push(hardCapBullet);
+  if (!featureBullets.some((bullet) =>
+    isEvaluation
+      ? /usage pauses at the evaluation limit/i.test(bullet)
+      : bullet === afterLimitBullet
+  )) {
+    featureBullets.push(afterLimitBullet);
   }
   return {
     ...plan,
     description: plan.description.replace(
       /before metered usage begins/gi,
-      "with a predictable hard monthly cap",
+      "within the plan's monthly usage allowance",
     ),
     featureBullets,
-    usageSummary: PREPAID_CREDIT_USAGE_SUMMARY,
+    usageSummary: plan.usageSummary ?? DEFAULT_USAGE_SUMMARY,
     includedCredits: plan.includedCredits,
     creditAllowanceLabel: plan.creditAllowanceLabel,
     overageLabel: isEvaluation
-      ? "No overage; hard trial cap"
-      : PREPAID_HARD_CAP_LABEL,
+      ? "Paused after the evaluation allowance"
+      : "Pause by default; optional PAYG",
   };
 }
 
@@ -225,10 +226,10 @@ export function cadenceFromQueryString(value: string | null | undefined): PlanCa
   return value === "annual" ? "annual" : "monthly";
 }
 
-export function creditAllowanceLabel(plan: CatalogPlan): string | null {
+export function usageAllowanceLabel(plan: CatalogPlan): string | null {
   if (plan.creditAllowanceLabel) return plan.creditAllowanceLabel;
   if (plan.includedCredits === undefined) return null;
-  return `${plan.includedCredits.toLocaleString("en-US")} included credits/mo`;
+  return `Approximately ${plan.includedCredits.toLocaleString("en-US")} standard operations/mo`;
 }
 
 export function planStatusLabel(status: PlanStatus): string {

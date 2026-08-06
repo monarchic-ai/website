@@ -4,7 +4,7 @@
     "slug": "monarchic-ai",
     "displayName": "Monarchic",
     "tagline": "Long-running agent workflows, in development",
-    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. Available hosted MCPs are included through one shared account credit pool.",
+    "description": "Monarchic is the account-level agent workflow product in development above the hosted MCP catalog. Available hosted MCPs share one account-level monthly usage allowance.",
     "featureBullets": [
       "Long-running, observable agent workflows",
       "Reviewable run artifacts and account controls",
@@ -20,14 +20,14 @@
     "tagline": "A bounded first run through the hosted MCP catalog",
     "description": "Try available hosted Monarchic MCPs with a one-time trial allowance and a hard usage cap before choosing a paid plan.",
     "featureBullets": [
-      "200 one-time trial credits",
+      "Limited 30-day evaluation usage",
       "Verified email required",
-      "No card and no overage"
+      "No card; usage pauses at the evaluation limit"
     ],
     "includedCredits": 200,
-    "creditAllowanceLabel": "200 one-time trial credits",
-    "overageLabel": "No overage; hard one-time cap",
-    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "creditAllowanceLabel": "Limited 30-day evaluation usage",
+    "overageLabel": "Paused after the evaluation allowance",
+    "usageSummary": "Simple calls use very little of the allowance. Analysis, long-running jobs, browser execution, stored evidence, and provider-backed work use more.",
     "status": "available",
     "prices": []
   },
@@ -38,29 +38,29 @@
     "tagline": "A practical starting point for one developer",
     "description": "For an individual developer running available hosted MCPs across focused projects and recurring agent workflows.",
     "featureBullets": [
-      "2,000 included credits each month",
-      "One shared allowance across available hosted MCPs",
-      "No overage; hosted calls pause at the prepaid credit limit",
+      "Personal monthly usage allowance",
+      "Approximately 2,500 standard operations each month",
+      "Pause by default or enable pay-as-you-go",
       "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 2000,
-    "creditAllowanceLabel": "2,000 included credits/mo",
-    "overageLabel": "No overage; hard monthly cap",
-    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "includedCredits": 2500,
+    "creditAllowanceLabel": "Approximately 2,500 standard operations/mo",
+    "overageLabel": "Pause by default; optional PAYG",
+    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
     "status": "coming_soon",
     "prices": [
       {
         "cadence": "monthly",
         "priceId": null,
         "lookupKey": null,
-        "priceCents": 2900,
+        "priceCents": 1900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
         "priceId": null,
         "lookupKey": null,
-        "priceCents": 29000,
+        "priceCents": 19000,
         "currency": "usd"
       }
     ]
@@ -72,15 +72,15 @@
     "tagline": "Capacity for one active developer",
     "description": "For one developer using available hosted MCPs across local agents, CI checks, and recurring workflows.",
     "featureBullets": [
-      "4,500 included credits each month",
-      "One shared allowance across available hosted MCPs",
-      "No overage; hosted calls pause at the prepaid credit limit",
+      "Approximately 3.6× Individual usage",
+      "Approximately 9,000 standard operations each month",
+      "Pause by default or enable pay-as-you-go",
       "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 4500,
-    "creditAllowanceLabel": "4,500 included credits/mo",
-    "overageLabel": "No overage; hard monthly cap",
-    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "includedCredits": 9000,
+    "creditAllowanceLabel": "Approximately 9,000 standard operations/mo",
+    "overageLabel": "Pause by default; optional PAYG",
+    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
     "highlighted": true,
     "status": "coming_soon",
     "prices": [
@@ -107,29 +107,29 @@
     "tagline": "Shared hosted MCP capacity for small teams",
     "description": "For small teams standardizing agent access to hosted Monarchic infrastructure across development, QA, research, and go-to-market workflows.",
     "featureBullets": [
-      "20,000 included credits each month",
+      "Approximately 10× Individual usage",
+      "Approximately 25,000 standard operations each month",
       "Shared usage pool for team workflows",
-      "Designed for multiple API keys and repeat production usage",
-      "No overage; hosted calls pause at the prepaid credit limit"
+      "Pause by default or enable pay-as-you-go"
     ],
-    "includedCredits": 20000,
-    "creditAllowanceLabel": "20,000 included credits/mo",
-    "overageLabel": "No overage; hard monthly cap",
-    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "includedCredits": 25000,
+    "creditAllowanceLabel": "Approximately 25,000 standard operations/mo",
+    "overageLabel": "Pause by default; optional PAYG",
+    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
     "status": "coming_soon",
     "prices": [
       {
         "cadence": "monthly",
         "priceId": null,
         "lookupKey": null,
-        "priceCents": 24900,
+        "priceCents": 14900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
         "priceId": null,
         "lookupKey": null,
-        "priceCents": 249000,
+        "priceCents": 149000,
         "currency": "usd"
       }
     ]
@@ -141,29 +141,29 @@
     "tagline": "Capacity and support for sustained hosted workloads",
     "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
     "featureBullets": [
-      "75,000 included credits each month",
-      "One shared allowance across available hosted MCPs",
-      "No overage; usage pauses at the contracted prepaid limit",
-      "Starting at $879 per month with support terms defined in the agreement"
+      "Approximately 34× Individual usage",
+      "Approximately 85,000 standard operations each month",
+      "Shared usage with business controls",
+      "Pause by default or enable pay-as-you-go"
     ],
-    "includedCredits": 75000,
-    "creditAllowanceLabel": "75,000+ included credits/mo",
-    "overageLabel": "No overage; contracted hard cap",
-    "usageSummary": "Metadata operations use 0 credits. Standard tool calls use 1 credit, stateful analysis uses 3, and browser or provider-backed work uses 10 by default.",
+    "includedCredits": 85000,
+    "creditAllowanceLabel": "Approximately 85,000 standard operations/mo",
+    "overageLabel": "Pause by default; optional PAYG",
+    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
     "status": "contact_sales",
     "prices": [
       {
         "cadence": "monthly",
         "priceId": null,
         "lookupKey": null,
-        "priceCents": 87900,
+        "priceCents": 49900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
         "priceId": null,
         "lookupKey": null,
-        "priceCents": 879000,
+        "priceCents": 499000,
         "currency": "usd"
       }
     ],
@@ -180,7 +180,7 @@
       "Evaluate release readiness from provider evidence",
       "Export pipeline graphs for architecture analysis"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
+    "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "This product is not available for checkout. Its operations will use the shared account allowance when access opens.",
     "lifecycle": "production",
     "status": "coming_soon",
@@ -197,8 +197,8 @@
       "Check visible content, console output, and network failures",
       "Package screenshots and observations for handoff"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "WIP products are not available for checkout. Browser-backed operations will use the shared account credit model when access opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Basic browser verification typically uses approximately 20× the usage of a standard MCP operation. The interface will estimate usage before starting and settle measured duration afterward.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -214,8 +214,8 @@
       "Keep business evidence attached to decisions",
       "Gate downstream execution until approval"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -231,8 +231,8 @@
       "Return structured project-creation results",
       "Report setup failures without hiding them"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -248,7 +248,7 @@
       "Retrieve bounded context with evidence",
       "Audit memory objects and changes"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
+    "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "status": "available",
@@ -265,7 +265,7 @@
       "Create response packets and recovery checks",
       "Keep external updates guarded and reviewable"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
+    "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "status": "available",
@@ -282,7 +282,7 @@
       "Trace cost, reliability, and latency signals",
       "Export architecture graphs and optimization plans"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
+    "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "status": "available",
@@ -299,8 +299,8 @@
       "Connect buyer research to source evidence",
       "Prepare practical outreach angles"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -315,10 +315,10 @@
       "Run interactive terminal sessions through MCP",
       "Keep command output visible for review",
       "Use one consistent terminal interface across clients",
-      "PTY metadata uses 0 credits; provider-backed terminal work uses 10 by default"
+      "PTY discovery uses very little; terminal execution varies with duration"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "PTY metadata operations use 0 credits. Provider-backed terminal work uses 10 credits by default.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "PTY discovery uses very little of the allowance. Terminal execution varies with duration and measured provider work.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -334,7 +334,7 @@
       "Catch missing documentation and artifacts",
       "Export a reviewable release pack"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
+    "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "status": "available",
@@ -351,8 +351,8 @@
       "Coordinate bounded fleet-wide operations",
       "Return machine-readable results and failures"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -368,7 +368,7 @@
       "Query generated architecture and workflow context",
       "Ground plans in indexed repository evidence"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
+    "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "status": "available",
@@ -385,8 +385,8 @@
       "Plan internal links from site evidence",
       "Run repeatable ranking checks"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -402,8 +402,8 @@
       "Plan ordered page sections from reusable templates",
       "Check content coverage before implementation"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []
@@ -419,8 +419,8 @@
       "Keep generated changes inside an explicit write scope",
       "Prepare rendered checks before applying a patch"
     ],
-    "creditAllowanceLabel": "Shared plan credits",
-    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account credit model when it opens.",
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []

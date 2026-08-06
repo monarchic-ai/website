@@ -8,7 +8,7 @@ import "../../styles/global.css";
 import {
   allPlans,
   cadenceLabel,
-  creditAllowanceLabel,
+  usageAllowanceLabel,
   findPlanPrice,
   formatPriceUSD,
   planStatusLabel,
@@ -59,7 +59,7 @@ function statusClasses(plan: CatalogPlan): string {
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Products | Monarchic"
-      description="Compare Monarchic credit plans and the complete catalog of available and work-in-progress MCPs."
+      description="Compare Monarchic usage plans and the complete catalog of available and work-in-progress MCPs."
       path="/products"
     />
   </head>
@@ -77,7 +77,7 @@ function statusClasses(plan: CatalogPlan): string {
             Plans and MCPs
           </h1>
           <p class="mx-auto mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
-            Choose a monthly or annual plan. Its shared credit allowance works
+            Choose a monthly or annual plan. One adaptive usage allowance works
             across every MCP marked Available.
           </p>
           <div class="mt-8 flex flex-col justify-center gap-3 min-[440px]:flex-row">
@@ -117,16 +117,16 @@ function statusClasses(plan: CatalogPlan): string {
           <span class="mr-2 self-center text-[0.65rem] font-bold uppercase text-white/46">Jump to /</span>
           <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plans</a>
           <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Available MCPs</a>
-          <a href="#how-credits-work" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Credits</a>
+          <a href="#how-usage-works" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Usage</a>
         </nav>
 
         <section id="plans" class="mb-20 scroll-mt-8">
           <p class="text-xs font-bold uppercase text-signal">01 / Plans</p>
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            Each plan includes an account-level credit allowance. Available MCPs
-            draw from that shared allowance. Paid plans are prepaid, have no
-            overage, and stop hosted calls when the allowance is empty.
+            Each plan includes an account-level monthly usage allowance shared
+            across available MCPs. Usage pauses at the limit by default; paid
+            plans can enable dollar-denominated pay-as-you-go when available.
           </p>
           <div class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {usagePlans.map((plan) => {
@@ -141,7 +141,7 @@ function statusClasses(plan: CatalogPlan): string {
                   class={`flex min-h-[330px] flex-col border-2 bg-black/74 p-5 transition duration-200 hover:-translate-y-1 hover:border-signal hover:bg-signal/[0.06] focus-within:-translate-y-1 focus-within:border-signal ${plan.highlighted ? "border-signal" : "border-white/70"}`}
                 >
                   <div class="flex flex-wrap items-start justify-between gap-3">
-                    <span class="text-[0.65rem] font-bold uppercase text-white/58">Credit plan</span>
+                    <span class="text-[0.65rem] font-bold uppercase text-white/58">Usage plan</span>
                     <span class={`border px-2 py-1 text-[0.62rem] font-bold uppercase ${statusClasses(plan)}`}>{planStatusLabel(plan.status)}</span>
                   </div>
                   <h3 class="mt-5 text-2xl font-extrabold uppercase">{plan.displayName}</h3>
@@ -159,20 +159,20 @@ function statusClasses(plan: CatalogPlan): string {
                       )}
                     </div>
                   )}
-                  {creditAllowanceLabel(plan) && (
+                  {usageAllowanceLabel(plan) && (
                     <p class="mt-4 border-l-2 border-signal pl-3 text-xs font-bold uppercase text-signal-soft">
-                      {creditAllowanceLabel(plan)}
+                      {usageAllowanceLabel(plan)}
                     </p>
                   )}
                   {!isEvaluation && (
                     <p class="mt-3 text-[0.65rem] font-bold uppercase text-white/48">
-                      Prepaid · no overage
+                      {plan.overageLabel}
                     </p>
                   )}
                   <div class="flex-1"></div>
                   <div class="mt-7 grid gap-2">
                     {isEvaluation ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Claim 200 credits</a>
+                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Start free evaluation</a>
                     ) : isPurchasable ? (
                       <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Choose plan</a>
                     ) : plan.status === "contact_sales" && plan.salesContactUrl ? (
@@ -192,9 +192,9 @@ function statusClasses(plan: CatalogPlan): string {
           <p class="text-xs font-bold uppercase text-signal">02 / MCP catalog</p>
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Available MCPs</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            These five products are ready for public use with one shared credit
+            These five products are ready for public use with one shared usage
             plan. Open a product to inspect a real tool call, its evidence, and
-            the default credit cost.
+            its estimated plan impact.
           </p>
           <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {availableMcpProducts.map((plan) => (
@@ -224,63 +224,71 @@ function statusClasses(plan: CatalogPlan): string {
           </details>
         </section>
 
-        <section id="how-credits-work" class="mb-20 scroll-mt-8 border-2 border-white bg-black/76 p-6 lg:p-8">
+        <section id="how-usage-works" class="mb-20 scroll-mt-8 border-2 border-white bg-black/76 p-6 lg:p-8">
           <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
-              <p class="text-xs font-bold uppercase text-signal">03 / Credits</p>
-              <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, four clear weights</h2>
+              <p class="text-xs font-bold uppercase text-signal">03 / Adaptive usage</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, measured by the work</h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-                Credits track the kind of work a tool call performs. The same
-                weights apply across available MCPs, so a plan is comparable
-                before you buy it and usage stays readable afterward.
+                Customers see one percentage, not an internal unit balance.
+                Small calls use very little; longer and more resource-intensive
+                work uses more. Every receipt shows the operation and its usage impact.
               </p>
             </div>
             <div class="grid gap-3 text-sm leading-6 text-white/72">
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">Review usage and credit impact from your account.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Paid plans are prepaid and hard-capped; hosted calls pause at the credit limit.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">See monthly usage remaining, the reset date, and operation receipts.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Pause at the plan limit by default or opt into pay-as-you-go with a spending limit.</span></div>
             </div>
           </div>
           <div class="mt-8 grid border-t border-white/36 sm:grid-cols-2 lg:grid-cols-4">
             <div class="border-b border-white/36 p-4 sm:border-r lg:border-b-0">
-              <p class="font-mono text-3xl font-extrabold text-signal">0</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Metadata</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Status, health, schema, and similar discovery calls.</p>
+              <p class="font-mono text-3xl font-extrabold text-signal">01</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Operation</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Simple reads use less than analysis, indexing, search, or synthesis.</p>
             </div>
             <div class="border-b border-white/36 p-4 lg:border-b-0 lg:border-r">
-              <p class="font-mono text-3xl font-extrabold text-signal">1</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Standard</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Normal hosted tool calls without heavier analysis or providers.</p>
+              <p class="font-mono text-3xl font-extrabold text-signal">02</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Runtime</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Execution duration, compute, and memory shape the final impact.</p>
             </div>
             <div class="border-b border-white/36 p-4 sm:border-b-0 sm:border-r">
-              <p class="font-mono text-3xl font-extrabold text-signal">3</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Stateful analysis</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Analysis, indexing, search, synthesis, and related work.</p>
+              <p class="font-mono text-3xl font-extrabold text-signal">03</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Evidence</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Stored evidence and larger outputs consume more of the allowance.</p>
             </div>
             <div class="p-4">
-              <p class="font-mono text-3xl font-extrabold text-signal">10</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Provider-backed</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Browser, terminal, and external-provider work by default.</p>
+              <p class="font-mono text-3xl font-extrabold text-signal">04</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Providers</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Browser and external-provider expenses are measured and disclosed separately.</p>
             </div>
           </div>
           <div class="mt-8 border border-signal/70 bg-signal/[0.06] p-5 sm:p-6">
-            <p class="text-[0.65rem] font-bold uppercase text-signal">Individual plan / 2,000 credits</p>
-            <div class="mt-5 grid gap-5 sm:grid-cols-3">
+            <p class="text-[0.65rem] font-bold uppercase text-signal">Standard-operation equivalents / estimates</p>
+            <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
               <div>
-                <p class="font-mono text-2xl font-extrabold">2,000</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">standard one-credit calls</p>
+                <p class="font-mono text-2xl font-extrabold">Limited</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">Evaluation / 30 days</p>
               </div>
               <div>
-                <p class="font-mono text-2xl font-extrabold">≈666</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">stateful analysis, indexing, or memory calls at three credits</p>
+                <p class="font-mono text-2xl font-extrabold">≈2,500</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">Individual / month</p>
               </div>
               <div>
-                <p class="font-mono text-2xl font-extrabold">200</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">provider-backed calls at the default ten-credit weight</p>
+                <p class="font-mono text-2xl font-extrabold">≈9,000</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">Developer / month</p>
+              </div>
+              <div>
+                <p class="font-mono text-2xl font-extrabold">≈25K</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">Team / month</p>
+              </div>
+              <div>
+                <p class="font-mono text-2xl font-extrabold">≈85K</p>
+                <p class="mt-2 text-sm leading-6 text-white/62">Business / month</p>
               </div>
             </div>
             <p class="mt-5 text-xs leading-6 text-white/48">
-              These are single-call equivalents. A workflow that invokes several tools uses the sum of their receipts.
+              These are comparison estimates, not balances. Actual capacity varies with workload complexity. Basic BrowserOps verification typically uses approximately 20× the usage of a standard operation.
             </p>
           </div>
         </section>

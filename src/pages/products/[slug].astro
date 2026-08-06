@@ -9,7 +9,7 @@ import {
   allPlans,
   cadenceLabel,
   catalogStatusLabel,
-  creditAllowanceLabel,
+  usageAllowanceLabel,
   findPlanPrice,
   formatPriceUSD,
   planStatusLabel,
@@ -63,7 +63,7 @@ const researchByPlanSlug: Record<string, { href: string; label: string; summary:
 const planResearch = researchByPlanSlug[plan.slug] ?? null;
 
 function kindBadge(kind: PlanKind): string {
-  if (kind === "usage-plan") return "Credit plan";
+  if (kind === "usage-plan") return "Usage plan";
   if (kind === "single-mcp") return "MCP";
   return "Product";
 }
@@ -135,12 +135,12 @@ function statusClasses(plan: CatalogPlan): string {
 
             {plan.kind === "usage-plan" && (
               <section class="mt-10 border-2 border-white bg-black/68 p-5">
-                <p class="text-xs font-bold uppercase text-signal">Credit allowance</p>
+                <p class="text-xs font-bold uppercase text-signal">Included usage</p>
                 <div class="mt-4 grid gap-3 sm:grid-cols-3">
-                  {creditAllowanceLabel(plan) !== null && (
+                  {usageAllowanceLabel(plan) !== null && (
                     <div class="border border-white/36 bg-black/54 p-4">
                       <p class="text-[0.65rem] font-bold uppercase text-white/48">Included</p>
-                      <p class="mt-2 text-sm font-extrabold uppercase">{creditAllowanceLabel(plan)}</p>
+                      <p class="mt-2 text-sm font-extrabold uppercase">{usageAllowanceLabel(plan)}</p>
                     </div>
                   )}
                   {plan.overageLabel && (
@@ -160,16 +160,16 @@ function statusClasses(plan: CatalogPlan): string {
 
             {plan.kind === "single-mcp" && (
               <section class="mt-10 border-2 border-white bg-black/68 p-5">
-                <p class="text-xs font-bold uppercase text-signal">Access and credits</p>
+                <p class="text-xs font-bold uppercase text-signal">Access and usage</p>
                 <h2 class="mt-3 text-2xl font-extrabold uppercase">
-                  {plan.status === "available" ? "Included with an active credit plan" : "Public access is WIP"}
+                  {plan.status === "available" ? "Included with an active usage plan" : "Public access is WIP"}
                 </h2>
                 <p class="mt-3 max-w-2xl text-sm leading-7 text-white/72">
-                  {plan.usageSummary ?? "This MCP uses the shared credit allowance on the account plan."}
+                  {plan.usageSummary ?? "This MCP uses the shared monthly allowance on the account plan."}
                 </p>
                 {plan.status === "available" && (
                   <a href="/products#plans" class="mt-5 inline-flex min-h-11 items-center justify-center border border-signal px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white lg:hidden">
-                    Compare credit plans
+                    Compare usage plans
                   </a>
                 )}
               </section>
@@ -231,10 +231,10 @@ function statusClasses(plan: CatalogPlan): string {
             {isEvaluation ? (
               <>
                 <p class="text-xs font-bold uppercase text-signal">Start Evaluation</p>
-                <p class="mt-4 text-2xl font-extrabold uppercase">200 one-time credits</p>
-                <p class="mt-4 text-sm leading-6 text-white/66">Sign in with a verified email in the Monarchic webapp. No card, automatic billing, overage, or rollover.</p>
+                <p class="mt-4 text-2xl font-extrabold uppercase">Limited 30-day usage</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">Sign in with a verified email in the Monarchic webapp. No card or automatic billing; usage pauses at the evaluation limit.</p>
                 <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
-                  Claim 200 credits
+                  Start free evaluation
                 </a>
               </>
             ) : isPurchasable ? (
@@ -251,7 +251,7 @@ function statusClasses(plan: CatalogPlan): string {
                     Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")} · two months included
                   </p>
                 )}
-                <p class="mt-4 text-sm leading-6 text-white/66">Choose monthly or annual billing in the Monarchic webapp. Both are prepaid with no overage.</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">Choose monthly or annual billing in the Monarchic webapp. Usage pauses at the plan limit by default.</p>
                 <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Choose plan
                 </a>
@@ -268,8 +268,8 @@ function statusClasses(plan: CatalogPlan): string {
             ) : plan.kind === "single-mcp" && plan.status === "available" ? (
               <>
                 <p class="text-xs font-bold uppercase text-signal">Available</p>
-                <p class="mt-4 text-2xl font-extrabold uppercase">Use it with a credit plan</p>
-                <p class="mt-4 text-sm leading-6 text-white/66">Calls draw from the included credits on your active plan.</p>
+                <p class="mt-4 text-2xl font-extrabold uppercase">Use it with a usage plan</p>
+                <p class="mt-4 text-sm leading-6 text-white/66">Calls draw from the monthly usage included with your active plan.</p>
                 <a href="/products#plans" class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Compare plans
                 </a>

@@ -18,9 +18,9 @@ const wipProducts = allPlans
 
 const connectionSteps = [
   ["01", "Choose", "Compare each current MCP by job and public availability."],
-  ["02", "Plan", "Use one prepaid credit allowance across available MCPs."],
+  ["02", "Plan", "Use one monthly usage allowance across available MCPs."],
   ["03", "Connect", "Create a scoped key and copy a client-ready configuration."],
-  ["04", "Call", "Run tools from your MCP client and inspect the credit impact."],
+  ["04", "Call", "Run tools from your MCP client and inspect the usage impact."],
 ];
 
 const featuredRoutes = [
@@ -110,12 +110,12 @@ const proofPoints = [
 
           <div class="grid content-between gap-8 border-t border-white/20 p-5 lg:border-l lg:border-t-0">
             <p class="text-sm leading-6 text-white/64">
-              Start with 200 free credits. No card or automatic billing. Create
-              an account key and see the credit impact of every call.
+              Start with a free 30-day evaluation. No card or automatic billing.
+              Create an account key and see the usage impact of every call.
             </p>
             <div class="grid gap-2">
               <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
-                Claim 200 free credits <span aria-hidden="true">↗</span>
+                Start free evaluation <span aria-hidden="true">↗</span>
               </a>
               <div class="grid grid-cols-2 gap-2">
                 <a href={appBaseUrl} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Open webapp</a>
@@ -245,22 +245,22 @@ const proofPoints = [
       <section id="pricing_model" aria-labelledby="pricing-title" class="border-b border-white/20 bg-white/[0.025] text-white">
         <div class="grid lg:grid-cols-[minmax(0,1fr)_22rem]">
           <div class="p-5 sm:p-8 lg:p-10">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Shared credit model / 05</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Adaptive usage / 05</p>
             <h2 id="pricing-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
-              One allowance covers every available MCP.
+              One plan covers every available MCP.
             </h2>
             <p class="mt-6 max-w-3xl text-base leading-7 text-white/62">
-              Choose a prepaid monthly allowance with no overage. Metadata calls
-              use 0 credits, standard calls use 1, stateful analysis uses 3, and
-              browser or provider-backed work uses 10 by default.
+              See one monthly usage percentage across the catalog. Simple calls
+              use very little; analysis, longer jobs, BrowserOps, stored evidence,
+              and disclosed provider work use more.
             </p>
           </div>
           <div class="grid content-between border-t border-white/24 p-5 lg:border-l lg:border-t-0 lg:p-7">
             <div class="font-mono text-[0.65rem] uppercase leading-6 text-white/48">
               <p>Evaluation → Business</p>
               <p>Available MCPs included</p>
-              <p>0 / 1 / 3 / 10 credit bands</p>
-              <p>Usage visible by account</p>
+              <p>Percentage remaining + reset date</p>
+              <p>Operation-level usage receipts</p>
             </div>
             <a href="/products#plans" class="mt-8 inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-paper">
               Compare plans <span aria-hidden="true">↗</span>

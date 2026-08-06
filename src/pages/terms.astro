@@ -54,7 +54,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
       <h2 class="text-2xl font-extrabold uppercase">Services and usage metering</h2>
       <div class={copyClass}>
         <p>Monarchic provides hosted MCP routes, agent execution, account controls, evidence artifacts, and related interfaces as described in current product documentation.</p>
-        <p>Usage may be measured by operation class, runtime, external-provider work, storage, or another unit shown in the catalog or order. Credits are service units, have no cash value, and expire or reset as stated by the applicable plan. Metadata calls may be rated differently from infrastructure-backed work.</p>
+        <p>Usage may be measured by operation class, runtime, compute, memory, browser duration, external-provider work, stored evidence, output size, or another dimension shown in the catalog or order. The account interface reports the percentage of plan usage remaining; unused monthly usage does not roll over unless an order says otherwise.</p>
         <p>Products marked WIP are not available for checkout. Product labels and access status control over general marketing copy.</p>
       </div>
     </div>
@@ -89,7 +89,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Billing</h2>
       <div class={copyClass}>
-        <p>Prices, included usage, cadence, overage status, and taxes are shown at checkout or in an order. Stripe processes payment methods. Unless an order says otherwise, subscriptions renew for the selected cadence until canceled.</p>
+        <p>Prices, included usage, cadence, after-limit behavior, and taxes are shown at checkout or in an order. Stripe processes payment methods. Unless an order says otherwise, subscriptions renew for the selected cadence until canceled.</p>
         <p>You authorize charges shown at checkout and any enabled usage charges described by the plan. Failed or overdue payment may pause access. Fees are non-refundable except where the order or law requires otherwise.</p>
       </div>
     </div>
