@@ -1,7 +1,6 @@
 export interface WorkflowCall {
   tool: string;
   arguments: Record<string, unknown>;
-  workUnits: number;
 }
 
 export interface ProductWorkflowProof {
@@ -14,7 +13,6 @@ export interface ProductWorkflowProof {
   outputKind: "Exact deterministic output" | "Representative contract excerpt";
   permission: string;
   boundary: string;
-  workUnitCost: number;
   usageExplanation: string;
 }
 
@@ -31,7 +29,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
           scopeId: "project_specific",
           content: "Production releases require two reviewers.",
         },
-        workUnits: 3,
       },
       {
         tool: "memory.retrieve_context",
@@ -43,7 +40,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
           limit: 5,
           tokenBudget: 300,
         },
-        workUnits: 3,
       },
     ],
     execution: "Writes one explicit constraint, retrieves a bounded context packet, and attaches the source event and deterministic context receipt.",
@@ -92,8 +88,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     },
     permission: "Needs an authenticated, entitled account and a write-enabled ExplicitMem tool profile. No external model credential is required for the default local-hash path.",
     boundary: "The caller supplies workspace and scope IDs. They are not yet derived from the authenticated tenant, so use non-sensitive evaluation memory only.",
-    workUnitCost: 6,
-    usageExplanation: "This two-call workflow is estimated from the Individual plan's standard-operation equivalent. The final receipt reflects measured execution.",
+    usageExplanation: "Each call receives its own measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
   "mcp-incidentops": {
     slug: "mcp-incidentops",
@@ -159,7 +154,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
             ],
           },
         },
-        workUnits: 1,
       },
     ],
     execution: "Audits the supplied evidence, ranks the current hypothesis, and assembles rollback, recovery, communication, closure, and follow-up artifacts.",
@@ -200,8 +194,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     },
     permission: "This call analyzes request data only. It needs no provider token, filesystem access, ambient AWS access, or write permission.",
     boundary: "Live connector tools have separate request-scoped credential requirements. Guarded provider writes require an explicit execution flag and confirmation phrase.",
-    workUnitCost: 1,
-    usageExplanation: "A short, provider-free hosted call typically has a very small plan impact. The final receipt reflects measured execution.",
+    usageExplanation: "The completed call receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
   "mcp-infraprofiler": {
     slug: "mcp-infraprofiler",
@@ -227,7 +220,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
             ],
           },
         },
-        workUnits: 1,
       },
     ],
     execution: "Builds the critical path from caller-supplied timing evidence, identifies queue, cache, network, and stage bottlenecks, then projects bounded optimizations.",
@@ -272,8 +264,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     },
     permission: "This call only reads the telemetry in the request. It needs no provider token, filesystem, subprocess, Kubernetes, or cloud mutation access.",
     boundary: "Live provider collection is a separate operation and requires a request-scoped read token. Savings are deterministic projections, not guarantees.",
-    workUnitCost: 1,
-    usageExplanation: "A short analysis of caller-supplied telemetry typically has a very small plan impact. The final receipt reflects measured execution.",
+    usageExplanation: "The completed analysis receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
   "mcp-releaseops": {
     slug: "mcp-releaseops",
@@ -288,7 +279,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
           existing_tags: ["v1.1.0"],
           worktree_clean: true,
         },
-        workUnits: 1,
       },
     ],
     execution: "Checks the supplied tag name, target ref, existing-tag list, and worktree state, then binds the verdict into a deterministic receipt hash.",
@@ -304,8 +294,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     },
     permission: "No repository, provider, network, subprocess, or mutation access is used. The caller supplies the facts to check.",
     boundary: "The receipt hash detects changed output; it is not a signature. This call does not independently inspect the repository or create a tag.",
-    workUnitCost: 1,
-    usageExplanation: "A short, provider-free hosted call typically has a very small plan impact. The final receipt reflects measured execution.",
+    usageExplanation: "The completed call receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
   "mcp-repointel": {
     slug: "mcp-repointel",
@@ -315,7 +304,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
       {
         tool: "get_repository_summary",
         arguments: { repo: "explicitmem-mcp-ff694657" },
-        workUnits: 3,
       },
     ],
     execution: "Resolves an already-indexed repository ID and returns its stored summary, entry points, component and workflow counts, and evidence references.",
@@ -351,8 +339,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     },
     permission: "The repository must already exist in the hosted registry. This read-only call receives no customer provider credential and cannot index or refresh repositories.",
     boundary: "The current hosted registry is shared and repository IDs are caller-supplied. This example uses a pre-indexed public/demo repository; do not use it for private source yet.",
-    workUnitCost: 3,
-    usageExplanation: "Repository summary generation uses more of the allowance than a simple read. The final receipt reflects measured execution.",
+    usageExplanation: "The completed summary receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
 };
 
@@ -362,12 +349,6 @@ for (const [slug, proof] of Object.entries(productWorkflowProofs)) {
   }
   if (proof.calls.length === 0) {
     throw new Error(`Workflow proof ${slug} must include at least one tool call`);
-  }
-  const callWorkUnits = proof.calls.reduce((total, call) => total + call.workUnits, 0);
-  if (callWorkUnits !== proof.workUnitCost) {
-    throw new Error(
-      `Workflow proof ${slug} declares ${proof.workUnitCost} internal work units but its calls total ${callWorkUnits}`,
-    );
   }
 }
 

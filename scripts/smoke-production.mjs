@@ -215,9 +215,7 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
       await page.getByRole("heading", { name: "One allowance, measured by the work" }).waitFor();
-      for (const weeklyEstimate of ["≈671", "≈224", "≈65"]) {
-        await page.getByText(weeklyEstimate, { exact: true }).first().waitFor();
-      }
+      await page.getByText("Quantities not yet published", { exact: true }).waitFor();
 
       const usageCards = page.locator('[data-plan-card^="usage-"]');
       const usageCardCount = await usageCards.count();

@@ -43,14 +43,6 @@ const researchByPlanSlug: Record<string, string> = {
   "mcp-explicitmem": "/research/explicitmem",
 };
 
-const weeklyUsageExamples = [
-  { plan: "Evaluation", cadence: "one time", standard: "Bounded", advanced: "Bounded", browser: "25 max" },
-  { plan: "Individual", cadence: "weekly", standard: "≈671", advanced: "≈224", browser: "≈65" },
-  { plan: "Developer", cadence: "weekly", standard: "≈2,085", advanced: "≈695", browser: "≈204" },
-  { plan: "Team", cadence: "weekly", standard: "≈5,265", advanced: "≈1,754", browser: "≈515" },
-  { plan: "Business", cadence: "weekly", standard: "≈17,632", advanced: "≈5,876", browser: "≈1,724" },
-];
-
 function statusClasses(plan: CatalogPlan): string {
   if (plan.status === "available") return "border-signal bg-signal text-black";
   if (plan.status === "contact_sales") return "border-white/70 text-white";
@@ -202,7 +194,7 @@ function statusClasses(plan: CatalogPlan): string {
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             These five products are ready for public use with one shared usage
             plan. Open a product to inspect a real tool call, its evidence, and
-            its estimated plan impact.
+            its runtime usage receipt.
           </p>
           <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {availableMcpProducts.map((plan) => (
@@ -271,38 +263,19 @@ function statusClasses(plan: CatalogPlan): string {
               <p class="mt-2 text-sm leading-6 text-white/58">Browser and external-provider expenses are measured and disclosed separately.</p>
             </div>
           </div>
-          <div class="mt-8 border border-signal/70 bg-signal/[0.06] p-5 sm:p-6">
-            <p class="text-[0.65rem] font-bold uppercase text-signal">Weekly operation equivalents / estimates</p>
-            <p class="mt-3 max-w-3xl text-sm leading-6 text-white/62">
-              Standard, advanced, and BrowserOps counts are alternatives from the same allowance, not three separate pools.
-            </p>
-            <div class="mt-5 grid border-l border-t border-white/30 sm:grid-cols-2 lg:grid-cols-5">
-              {weeklyUsageExamples.map((example) => (
-                <article class="min-w-0 border-b border-r border-white/30 bg-black/38 p-4">
-                  <div class="flex items-baseline justify-between gap-3">
-                    <h3 class="text-sm font-extrabold uppercase">{example.plan}</h3>
-                    <span class="font-mono text-[0.58rem] font-bold uppercase text-white/42">{example.cadence}</span>
-                  </div>
-                  <dl class="mt-5 grid gap-3">
-                    <div class="flex items-baseline justify-between gap-3 border-b border-white/18 pb-2">
-                      <dt class="text-[0.62rem] font-bold uppercase text-white/48">Standard</dt>
-                      <dd class="font-mono text-lg font-extrabold text-white">{example.standard}</dd>
-                    </div>
-                    <div class="flex items-baseline justify-between gap-3 border-b border-white/18 pb-2">
-                      <dt class="text-[0.62rem] font-bold uppercase text-white/48">Advanced</dt>
-                      <dd class="font-mono text-lg font-extrabold text-white">{example.advanced}</dd>
-                    </div>
-                    <div class="flex items-baseline justify-between gap-3">
-                      <dt class="text-[0.62rem] font-bold uppercase text-white/48">BrowserOps</dt>
-                      <dd class="font-mono text-lg font-extrabold text-signal-soft">{example.browser}</dd>
-                    </div>
-                  </dl>
-                </article>
-              ))}
+          <div class="mt-8 grid border border-signal/70 bg-signal/[0.06] lg:grid-cols-[0.72fr_1.28fr]">
+            <div class="border-b border-signal/40 p-5 lg:border-b-0 lg:border-r sm:p-6">
+              <p class="text-[0.65rem] font-bold uppercase text-signal">Allowance publication status</p>
+              <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">Quantities not yet published</p>
             </div>
-            <p class="mt-5 text-xs leading-6 text-white/48">
-              These are comparison estimates, not balances. Actual capacity varies with workload complexity. Evaluation has a separate maximum of 25 BrowserOps operations during its 30-day term.
-            </p>
+            <div class="p-5 sm:p-6">
+              <p class="max-w-3xl text-sm leading-7 text-white/70">
+                Plan prices and weekly grants are fixed for launch. Operation quantities will be published after direct and shared variable costs are allocated, representative workloads are replayed, and full-utilization margins pass review.
+              </p>
+              <p class="mt-4 text-xs leading-6 text-white/48">
+                Fixed platform overhead is evaluated at the plan level and does not change a customer's allowance as subscriber count changes.
+              </p>
+            </div>
           </div>
         </section>
 

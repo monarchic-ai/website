@@ -24,7 +24,6 @@
       "Verified email required",
       "No card; usage pauses at the evaluation limit"
     ],
-    "includedCredits": 200,
     "creditAllowanceLabel": "Limited 30-day evaluation usage",
     "overageLabel": "Paused after the evaluation allowance",
     "usageSummary": "Simple calls use very little of the allowance. Analysis, long-running jobs, browser execution, stored evidence, and provider-backed work use more.",
@@ -39,14 +38,13 @@
     "description": "For an individual developer running available hosted MCPs across focused projects and recurring agent workflows.",
     "featureBullets": [
       "Personal weekly execution allowance",
-      "Approximately 671 standard operations each week",
+      "Launch quantities will follow the fully allocated rate card",
       "Pause by default or enable pay-as-you-go",
       "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 2500,
-    "creditAllowanceLabel": "Approximately 671 standard operations/week",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
     "status": "coming_soon",
     "prices": [
       {
@@ -73,14 +71,13 @@
     "description": "For one developer using available hosted MCPs across local agents, CI checks, and recurring workflows.",
     "featureBullets": [
       "Weekly execution allowance for one active developer",
-      "Approximately 2,085 standard operations each week",
+      "Launch quantities will follow the fully allocated rate card",
       "Pause by default or enable pay-as-you-go",
       "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 9000,
-    "creditAllowanceLabel": "Approximately 2,085 standard operations/week",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
     "highlighted": true,
     "status": "coming_soon",
     "prices": [
@@ -108,14 +105,13 @@
     "description": "For small teams standardizing agent access to hosted Monarchic infrastructure across development, QA, research, and go-to-market workflows.",
     "featureBullets": [
       "Shared weekly execution allowance",
-      "Approximately 5,265 standard operations each week",
+      "Launch quantities will follow the fully allocated rate card",
       "Shared usage for team workflows",
       "Pause by default or enable pay-as-you-go"
     ],
-    "includedCredits": 25000,
-    "creditAllowanceLabel": "Approximately 5,265 standard operations/week",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
     "status": "coming_soon",
     "prices": [
       {
@@ -142,14 +138,13 @@
     "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
     "featureBullets": [
       "Shared weekly execution allowance",
-      "Approximately 17,632 standard operations each week",
+      "Launch quantities will follow the fully allocated rate card",
       "Shared usage with business controls",
       "Pause by default or enable pay-as-you-go"
     ],
-    "includedCredits": 85000,
-    "creditAllowanceLabel": "Approximately 17,632 standard operations/week",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Usage varies with operation type, execution duration, compute, memory, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
     "status": "contact_sales",
     "prices": [
       {
@@ -198,7 +193,7 @@
       "Package screenshots and observations for handoff"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Basic browser verification typically uses approximately 20× the usage of a standard MCP operation. The interface will estimate usage before starting and settle measured duration afterward.",
+    "usageSummary": "Browser verification uses the browser operation class. The interface will show the applicable rate before starting and settle measured runtime and provider expense afterward.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []

@@ -54,7 +54,7 @@
         { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and adaptive usage." },
         { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual subscriptions and show an eligible next action." },
         { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with five available MCPs, then place ten WIP products in a collapsed Coming next disclosure." },
-        { "id": "how-usage-works", "template": "split.asymmetric", "purpose": "Explain how one weekly execution allowance covers every available MCP and show standard, advanced, and BrowserOps equivalents." },
+        { "id": "how-usage-works", "template": "split.asymmetric", "purpose": "Explain how one weekly execution allowance covers every available MCP and disclose that launch quantities await the fully allocated rate card." },
         { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]

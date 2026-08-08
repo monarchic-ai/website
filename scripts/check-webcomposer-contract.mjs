@@ -177,12 +177,9 @@ checkFileIncludes("src/pages/products/index.astro", [
   "Every current public product",
   "Listed for visibility and marked WIP",
   "Customers see one percentage, not an internal unit balance.",
-  "Standard",
-  "Advanced",
-  "BrowserOps",
-  "≈671",
-  "≈224",
-  "≈65",
+  "Quantities not yet published",
+  "direct and shared variable costs are allocated",
+  "Fixed platform overhead is evaluated at the plan level",
   "two months included",
   "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
   "findPlanPrice",
@@ -201,6 +198,9 @@ checkForbidden("src/pages/products/index.astro", [
   "release checks",
   "credit",
   "Credit",
+  "≈671",
+  "≈224",
+  "≈65",
 ]);
 
 checkFileIncludes("src/pages/products/[slug].astro", [
@@ -223,12 +223,19 @@ checkFileIncludes("src/components/ProductWorkflowProof.astro", [
   "01 / Request",
   "02 / Execution",
   "03 / Evidence + output",
-  "04 / Estimated usage",
+  "04 / Usage rating",
+  "At runtime",
+  "Recorded on the operation receipt",
   "Required access",
   "Current boundary",
   "data-workflow-proof",
 ]);
-checkForbidden("src/components/ProductWorkflowProof.astro", ["credit", "Credit"]);
+checkForbidden("src/components/ProductWorkflowProof.astro", [
+  "credit",
+  "Credit",
+  "Estimated usage",
+  "individualWeeklyStandardEquivalent",
+]);
 
 checkFileIncludes("src/lib/productWorkflowProofs.ts", [
   '"mcp-explicitmem"',
