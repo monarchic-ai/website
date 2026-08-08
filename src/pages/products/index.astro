@@ -43,6 +43,14 @@ const researchByPlanSlug: Record<string, string> = {
   "mcp-explicitmem": "/research/explicitmem",
 };
 
+const weeklyUsageExamples = [
+  { plan: "Evaluation", cadence: "one time", standard: "Bounded", advanced: "Bounded", browser: "25 max" },
+  { plan: "Individual", cadence: "weekly", standard: "≈671", advanced: "≈224", browser: "≈65" },
+  { plan: "Developer", cadence: "weekly", standard: "≈2,085", advanced: "≈695", browser: "≈204" },
+  { plan: "Team", cadence: "weekly", standard: "≈5,265", advanced: "≈1,754", browser: "≈515" },
+  { plan: "Business", cadence: "weekly", standard: "≈17,632", advanced: "≈5,876", browser: "≈1,724" },
+];
+
 function statusClasses(plan: CatalogPlan): string {
   if (plan.status === "available") return "border-signal bg-signal text-black";
   if (plan.status === "contact_sales") return "border-white/70 text-white";
@@ -124,7 +132,7 @@ function statusClasses(plan: CatalogPlan): string {
           <p class="text-xs font-bold uppercase text-signal">01 / Plans</p>
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            Each plan includes an account-level monthly usage allowance shared
+            Each plan includes an account-level weekly execution allowance shared
             across available MCPs. Usage pauses at the limit by default; paid
             plans can enable dollar-denominated pay-as-you-go when available.
           </p>
@@ -237,7 +245,7 @@ function statusClasses(plan: CatalogPlan): string {
             </div>
             <div class="grid gap-3 text-sm leading-6 text-white/72">
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">See monthly usage remaining, the reset date, and operation receipts.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">See weekly execution remaining, the refresh date, available rollover, and operation receipts.</span></div>
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Pause at the plan limit by default or opt into pay-as-you-go with a spending limit.</span></div>
             </div>
           </div>
@@ -264,31 +272,36 @@ function statusClasses(plan: CatalogPlan): string {
             </div>
           </div>
           <div class="mt-8 border border-signal/70 bg-signal/[0.06] p-5 sm:p-6">
-            <p class="text-[0.65rem] font-bold uppercase text-signal">Standard-operation equivalents / estimates</p>
-            <div class="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-              <div>
-                <p class="font-mono text-2xl font-extrabold">Limited</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">Evaluation / 30 days</p>
-              </div>
-              <div>
-                <p class="font-mono text-2xl font-extrabold">≈2,500</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">Individual / month</p>
-              </div>
-              <div>
-                <p class="font-mono text-2xl font-extrabold">≈9,000</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">Developer / month</p>
-              </div>
-              <div>
-                <p class="font-mono text-2xl font-extrabold">≈25K</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">Team / month</p>
-              </div>
-              <div>
-                <p class="font-mono text-2xl font-extrabold">≈85K</p>
-                <p class="mt-2 text-sm leading-6 text-white/62">Business / month</p>
-              </div>
+            <p class="text-[0.65rem] font-bold uppercase text-signal">Weekly operation equivalents / estimates</p>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-white/62">
+              Standard, advanced, and BrowserOps counts are alternatives from the same allowance, not three separate pools.
+            </p>
+            <div class="mt-5 grid border-l border-t border-white/30 sm:grid-cols-2 lg:grid-cols-5">
+              {weeklyUsageExamples.map((example) => (
+                <article class="min-w-0 border-b border-r border-white/30 bg-black/38 p-4">
+                  <div class="flex items-baseline justify-between gap-3">
+                    <h3 class="text-sm font-extrabold uppercase">{example.plan}</h3>
+                    <span class="font-mono text-[0.58rem] font-bold uppercase text-white/42">{example.cadence}</span>
+                  </div>
+                  <dl class="mt-5 grid gap-3">
+                    <div class="flex items-baseline justify-between gap-3 border-b border-white/18 pb-2">
+                      <dt class="text-[0.62rem] font-bold uppercase text-white/48">Standard</dt>
+                      <dd class="font-mono text-lg font-extrabold text-white">{example.standard}</dd>
+                    </div>
+                    <div class="flex items-baseline justify-between gap-3 border-b border-white/18 pb-2">
+                      <dt class="text-[0.62rem] font-bold uppercase text-white/48">Advanced</dt>
+                      <dd class="font-mono text-lg font-extrabold text-white">{example.advanced}</dd>
+                    </div>
+                    <div class="flex items-baseline justify-between gap-3">
+                      <dt class="text-[0.62rem] font-bold uppercase text-white/48">BrowserOps</dt>
+                      <dd class="font-mono text-lg font-extrabold text-signal-soft">{example.browser}</dd>
+                    </div>
+                  </dl>
+                </article>
+              ))}
             </div>
             <p class="mt-5 text-xs leading-6 text-white/48">
-              These are comparison estimates, not balances. Actual capacity varies with workload complexity. Basic BrowserOps verification typically uses approximately 20× the usage of a standard operation.
+              These are comparison estimates, not balances. Actual capacity varies with workload complexity. Evaluation has a separate maximum of 25 BrowserOps operations during its 30-day term.
             </p>
           </div>
         </section>

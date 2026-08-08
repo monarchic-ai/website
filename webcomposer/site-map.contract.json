@@ -5,36 +5,36 @@
     {
       "route": "/",
       "title": "Home",
-      "purpose": "Introduce the Monarchic MCP catalog, shared credit model, product availability, and current benchmark evidence.",
+      "purpose": "Introduce the Monarchic MCP catalog, adaptive usage model, product availability, and current benchmark evidence.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["catalog_positioning", "available_and_wip_scope", "shared_credit_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
+      "requiredContent": ["catalog_positioning", "available_and_wip_scope", "adaptive_usage_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
       "forbiddenContent": ["secret names", "private API URLs", "unsupported availability claims", "internal test output", "website implementation details"],
-      "primaryActions": ["claim_evaluation_credits", "view_products", "read_docs", "view_research", "join_waitlist"]
+      "primaryActions": ["start_evaluation", "view_products", "read_docs", "view_research", "join_waitlist"]
     },
     {
       "route": "/products",
       "title": "Products",
-      "purpose": "Let buyers compare five shared-credit plans, lead with the five available MCPs, and inspect ten WIP products under a collapsed roadmap.",
+      "purpose": "Let buyers compare five subscription plans with weekly execution usage, lead with the five available MCPs, and inspect ten WIP products under a collapsed roadmap.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["five_credit_plans", "fifteen_mcp_products", "five_available_mcps_first", "collapsed_wip_roadmap", "availability", "wip_markers", "shared_credit_model", "catalog_prices", "recognizable_credit_examples", "purchase_link_for_available_plans", "docs_link"],
+      "requiredContent": ["five_usage_plans", "fifteen_mcp_products", "five_available_mcps_first", "collapsed_wip_roadmap", "availability", "wip_markers", "adaptive_usage_model", "catalog_prices", "weekly_operation_examples", "purchase_link_for_available_plans", "docs_link"],
       "forbiddenContent": ["retired MCPs", "workflow bundles", "platform promotion", "standalone MCP subscriptions", "prices absent from the catalog", "checkout promises for WIP products", "website implementation details"],
       "primaryActions": ["compare_plans", "inspect_product", "open_purchase_flow_when_available", "read_docs"]
     },
     {
       "route": "/products/mcp-explicitmem",
       "title": "ExplicitMem Product",
-      "purpose": "Explain ExplicitMem's buyer fit, shared-credit access, capabilities, status, concrete priced workflow, current content boundary, and qualifying benchmark.",
+      "purpose": "Explain ExplicitMem's buyer fit, shared-plan access, capabilities, status, concrete metered workflow, current content boundary, and qualifying benchmark.",
       "audience": ["agent users", "AI platform teams", "engineering leaders"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_credit_access", "request_execution_output_credit_workflow", "required_access_and_boundary", "benchmark_link", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_plan_access", "request_execution_output_usage_workflow", "required_access_and_boundary", "benchmark_link", "primary_cta"],
       "forbiddenContent": ["unsupported latency claims", "private benchmark records", "internal test output", "standalone MCP price"],
       "primaryActions": ["compare_plans", "read_benchmark", "return_to_catalog"]
     },
     {
       "route": "/products/[slug]",
       "title": "Product Detail",
-      "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-credit access, and eligible next action; available MCPs also show one priced tool workflow and its current boundary.",
+      "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-plan access, and eligible next action; available MCPs also show one metered tool workflow and its current boundary.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_credit_access", "request_execution_output_credit_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_plan_access", "request_execution_output_usage_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
       "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for WIP products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
       "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_wip", "return_to_catalog", "read_benchmark_when_available"]
     },
@@ -95,7 +95,7 @@
     {
       "route": "/terms",
       "title": "Service Terms",
-      "purpose": "State the operating terms for Monarchic accounts, hosted MCPs, credit metering, billing, customer content, acceptable use, and service availability.",
+      "purpose": "State the operating terms for Monarchic accounts, hosted MCPs, adaptive usage metering, billing, customer content, acceptable use, and service availability.",
       "audience": ["account holders", "buyers", "agent users", "billing owners"],
       "requiredContent": ["effective_date", "agreement_scope", "account_terms", "usage_metering", "acceptable_use", "customer_content", "third_party_services", "payment_terms", "suspension_boundary", "warranty_boundary", "liability_boundary", "change_notice", "contact_path"],
       "forbiddenContent": ["unsupported uptime commitments", "unpublished pricing promises", "secret values", "private customer data", "automatic compliance claims"],

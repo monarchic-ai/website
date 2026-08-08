@@ -11,9 +11,9 @@ const callPayload = proof.calls.length === 1
   : proof.calls.map((call) => ({ tool: call.tool, arguments: call.arguments }));
 const requestJson = JSON.stringify(callPayload, null, 2);
 const outputJson = JSON.stringify(proof.output, null, 2);
-const individualPlanEquivalent = 2_500;
+const individualWeeklyStandardEquivalent = 671;
 const formatUsageImpact = (workUnits: number) => {
-  const percent = (workUnits / individualPlanEquivalent) * 100;
+  const percent = (workUnits / individualWeeklyStandardEquivalent) * 100;
   return percent < 0.1 ? "<0.1%" : `≈${percent.toFixed(1)}%`;
 };
 const usageImpact = formatUsageImpact(proof.workUnitCost);
@@ -55,7 +55,7 @@ const usageImpact = formatUsageImpact(proof.workUnitCost);
     <section class="min-w-0 bg-signal p-5 text-black">
       <p class="font-mono text-[0.62rem] font-bold uppercase text-black/58">04 / Estimated usage</p>
       <p class="mt-5 font-mono text-5xl font-extrabold leading-none">{usageImpact}</p>
-      <p class="mt-2 text-xs font-extrabold uppercase">of Individual monthly usage</p>
+      <p class="mt-2 text-xs font-extrabold uppercase">of Individual weekly execution</p>
       <p class="mt-6 text-xs font-semibold leading-5 text-black/72">{proof.usageExplanation}</p>
       {proof.calls.length > 1 && (
         <ul class="mt-5 border-t border-black/28 pt-4 text-[0.65rem] font-bold uppercase leading-5">

@@ -21,7 +21,7 @@
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose products, app documentation, and research." },
         { "id": "introduction", "template": "hero.split", "purpose": "Lead with the hosted MCP catalog and show an example request across the four currently available MCPs." },
         { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Show the four current ExplicitMem benchmark metrics with their scope." },
-        { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain the shared credit model and routes into the product catalog." },
+        { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain adaptive account usage and routes into the product catalog." },
         { "id": "waitlist", "template": "form.inline", "purpose": "Collect interest in MCPs currently marked WIP." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
@@ -49,12 +49,12 @@
       },
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level public routes and app documentation." },
-        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce plans and MCPs under one shared credit allowance." },
+        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce plans and MCPs under one weekly execution allowance." },
         { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize five plans, fifteen MCPs, and clear Available or WIP status." },
-        { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and the credit model." },
-        { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual credit plans and show an eligible next action." },
+        { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and adaptive usage." },
+        { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual subscriptions and show an eligible next action." },
         { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with five available MCPs, then place ten WIP products in a collapsed Coming next disclosure." },
-        { "id": "how-credits-work", "template": "split.asymmetric", "purpose": "Explain how one account allowance covers every available MCP and translate 2,000 credits into recognizable call equivalents." },
+        { "id": "how-usage-works", "template": "split.asymmetric", "purpose": "Explain how one weekly execution allowance covers every available MCP and show standard, advanced, and BrowserOps equivalents." },
         { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
@@ -68,11 +68,11 @@
       },
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
-        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place ExplicitMem positioning and capabilities beside its shared-credit access state." },
+        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place ExplicitMem positioning and capabilities beside its shared-plan access state." },
         { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange capabilities, buyer fit, outcomes, and workflows." },
         { "id": "benchmark", "template": "proof.metric_story", "purpose": "Link the qualifying LongMemEval-S result with its method and limitations." },
         { "id": "access", "template": "cta.banner", "purpose": "Route buyers to plans, the benchmark, and the catalog." },
-        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "Show one write-and-retrieve workflow with exact payloads, representative provenance output, required access, current boundary, and six-credit total." },
+        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "Show one write-and-retrieve workflow with exact payloads, representative provenance output, required access, current boundary, and estimated weekly usage impact." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
@@ -88,7 +88,7 @@
         { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capabilities beside its price or access status." },
         { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities, buyer fit, outcomes, and workflows." },
         { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to purchase, available MCPs to plans, WIP products to the waitlist, and all products back to the catalog." },
-        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "For each available MCP, show one request, exact tool payload, representative or exact output, required access, current boundary, and numeric credit cost." },
+        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "For each available MCP, show one request, exact tool payload, representative or exact output, required access, current boundary, and estimated weekly usage impact." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },

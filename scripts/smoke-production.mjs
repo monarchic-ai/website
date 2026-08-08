@@ -180,7 +180,7 @@ async function runBrowserSmoke() {
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
       await expectHref(
-        page.getByRole("link", { name: "Claim 200 free credits" }),
+        page.getByRole("link", { name: "Start free evaluation" }),
         `${expectedAppBaseUrl}/products/usage-evaluation`,
       );
       await expectHref(
@@ -198,7 +198,7 @@ async function runBrowserSmoke() {
       for (const metric of ["99.8%", "100%", "62.5 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
-      await page.getByText("One allowance covers every available MCP.").waitFor();
+      await page.getByText("One plan covers every available MCP.").waitFor();
       await expectTextAbsent(page, [
         "Hosted staging MCP route",
         "3.45s",
@@ -214,17 +214,15 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
-      await page.getByRole("heading", { name: "One allowance, four clear weights" }).waitFor();
-      await page.getByText("Individual plan / 2,000 credits", { exact: true }).waitFor();
-      await page.getByText("≈666", { exact: true }).waitFor();
-      for (const creditWeight of ["0", "1", "3", "10"]) {
-        await page.getByText(creditWeight, { exact: true }).first().waitFor();
+      await page.getByRole("heading", { name: "One allowance, measured by the work" }).waitFor();
+      for (const weeklyEstimate of ["≈671", "≈224", "≈65"]) {
+        await page.getByText(weeklyEstimate, { exact: true }).first().waitFor();
       }
 
       const usageCards = page.locator('[data-plan-card^="usage-"]');
       const usageCardCount = await usageCards.count();
       if (usageCardCount !== 5) {
-        throw new Error(`Expected 5 credit plan cards, got ${usageCardCount}`);
+        throw new Error(`Expected 5 usage plan cards, got ${usageCardCount}`);
       }
       const mcpCards = page.locator('[data-plan-card^="mcp-"]');
       const mcpCardCount = await mcpCards.count();
@@ -245,11 +243,14 @@ async function runBrowserSmoke() {
       }
 
       const individualCard = page.locator('[data-plan-card="usage-individual"]');
-      await individualCard.getByText("Annual $290/yr", { exact: false }).waitFor();
+      await individualCard.getByText("Annual $190/yr", { exact: false }).waitFor();
       await expectHref(
-        individualCard.getByRole("link", { name: "Choose plan" }),
-        `${expectedAppBaseUrl}/products/usage-individual`,
+        individualCard.getByRole("link", { name: "Join waitlist" }),
+        "/waitlist",
       );
+      if (await individualCard.getByRole("link", { name: "Choose plan" }).count() !== 0) {
+        throw new Error("Paid Individual checkout must remain unavailable before production activation");
+      }
       const businessCard = page.locator('[data-plan-card="usage-business"]');
       await businessCard.getByText("Contact sales", { exact: false }).first().waitFor();
       const repoIntelCardText = await page.locator('[data-plan-card="mcp-repointel"]').textContent();
@@ -271,12 +272,15 @@ async function runBrowserSmoke() {
 
     await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
       await page.getByRole("heading", { name: "Individual" }).waitFor();
-      await page.getByText("Annual $290/yr", { exact: false }).waitFor();
+      await page.getByText("Annual $190/yr", { exact: false }).waitFor();
       await page.getByText("Every available MCP", { exact: true }).waitFor();
       await expectHref(
-        page.getByRole("link", { name: "Choose plan" }),
-        `${expectedAppBaseUrl}/products/usage-individual`,
+        page.getByRole("link", { name: "Join waitlist" }),
+        "/waitlist?product=usage-individual",
       );
+      if (await page.getByRole("link", { name: "Choose plan" }).count() !== 0) {
+        throw new Error("Paid Individual checkout must remain unavailable before production activation");
+      }
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/usage-individual`);
       await expectNoHorizontalOverflow(page);
     }, "Individual product route");
@@ -298,18 +302,18 @@ async function runBrowserSmoke() {
     }, "BrowserOps product route");
 
     for (const proof of [
-      { slug: "mcp-explicitmem", tool: "memory.retrieve_context", credits: "6" },
-      { slug: "mcp-incidentops", tool: "build_incident_response_packet", credits: "1" },
-      { slug: "mcp-infraprofiler", tool: "profile_pipeline", credits: "1" },
-      { slug: "mcp-releaseops", tool: "releaseops_verify_tag_pack", credits: "1" },
-      { slug: "mcp-repointel", tool: "get_repository_summary", credits: "3" },
+      { slug: "mcp-explicitmem", tool: "memory.retrieve_context", usageImpact: "≈0.9%" },
+      { slug: "mcp-incidentops", tool: "build_incident_response_packet", usageImpact: "≈0.1%" },
+      { slug: "mcp-infraprofiler", tool: "profile_pipeline", usageImpact: "≈0.1%" },
+      { slug: "mcp-releaseops", tool: "releaseops_verify_tag_pack", usageImpact: "≈0.1%" },
+      { slug: "mcp-repointel", tool: "get_repository_summary", usageImpact: "≈0.4%" },
     ]) {
       await checkPage(page, `${baseUrl}/products/${proof.slug}`, async () => {
         const workflow = page.locator(`[data-workflow-proof="${proof.slug}"]`);
         await workflow.waitFor();
         await workflow.getByText("Concrete workflow / priced call", { exact: true }).waitFor();
         await workflow.getByText(proof.tool, { exact: false }).first().waitFor();
-        await workflow.getByText(proof.credits, { exact: true }).waitFor();
+        await workflow.getByText(proof.usageImpact, { exact: true }).first().waitFor();
         await workflow.getByText("Required access", { exact: true }).waitFor();
         await workflow.getByText("Current boundary", { exact: true }).waitFor();
         await expectNoHorizontalOverflow(page);
@@ -335,18 +339,18 @@ async function runBrowserSmoke() {
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/products`, async () => {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
-      await page.getByRole("link", { name: "Choose plan" }).first().waitFor();
+      await page.getByRole("link", { name: "Start free evaluation" }).first().waitFor();
       await expectNoHorizontalOverflow(page);
     }, "products route at 320px");
     await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
       await page.getByRole("heading", { name: "Individual" }).waitFor();
-      await page.getByRole("link", { name: "Choose plan" }).waitFor();
+      await page.getByRole("link", { name: "Join waitlist" }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "Individual product route at 320px");
     await checkPage(page, `${baseUrl}/products/mcp-repointel`, async () => {
       await page.locator('[data-workflow-proof="mcp-repointel"]').waitFor();
       await expectHref(
-        page.getByRole("link", { name: "Compare credit plans" }),
+        page.getByRole("link", { name: "Compare usage plans" }),
         "/products#plans",
       );
       await expectNoHorizontalOverflow(page);

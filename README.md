@@ -139,7 +139,7 @@ live deployment checklist and current smoke evidence.
   with the production and staging waitlist endpoints.
 - Available MCP product pages render a website-local, schema-grounded workflow
   proof. Those examples must keep their permission and content-isolation
-  boundaries beside the request, output, and credit cost.
+  boundaries beside the request, output, and estimated usage impact.
 - Set `PUBLIC_MONARCHIC_WEBSITE_BASE_URL` when building non-production
   environments that need canonical URLs, Open Graph URLs, robots output, and
   sitemap entries to point somewhere other than `https://monarchic.io`.

@@ -14,7 +14,7 @@ checkFileIncludes("src/pages/index.astro", [
   "One account.",
   "Purpose-built tools for MCP clients",
   "Connect repository context, durable memory, incident response, and infrastructure analysis",
-  "Claim 200 free credits",
+  "Start free evaluation",
   "From catalog to first tool call.",
   "availableMcpCount",
   "available now.",
@@ -27,7 +27,7 @@ checkFileIncludes("src/pages/index.astro", [
   "explicitMemBenchmark.retrievalRecallAtK",
   "explicitMemBenchmark.averageLatency",
   "remaining mismatch, and limits sit beside the headline.",
-  "One allowance covers every available MCP.",
+  "One plan covers every available MCP.",
   "cannot be checked out.",
   "/research/explicitmem",
 ]);
@@ -42,6 +42,8 @@ checkForbidden("src/pages/index.astro", [
   "3.28s",
   "release checks",
   "website proof",
+  "credit",
+  "Credit",
 ]);
 
 checkFileIncludes("src/components/HostedMcpScene.astro", [
@@ -55,7 +57,7 @@ checkFileIncludes("src/components/HostedMcpScene.astro", [
   "ReleaseOps",
   "publicMcpCount",
   "Available today",
-  "Prepaid",
+  "Adaptive",
   "Account visible",
 ]);
 checkForbidden("src/components/HostedMcpScene.astro", [
@@ -127,6 +129,7 @@ checkFileIncludes("src/pages/about.astro", [
   "Why pay for hosted",
   "Five MCPs are currently marked Available",
 ]);
+checkForbidden("src/pages/about.astro", ["credit", "Credit"]);
 
 checkFileIncludes("src/pages/terms.astro", [
   'path="/terms"',
@@ -136,6 +139,7 @@ checkFileIncludes("src/pages/terms.astro", [
   "Acceptable use",
   "Warranty and liability boundary",
 ]);
+checkForbidden("src/pages/terms.astro", ["credit", "Credit"]);
 
 checkFileIncludes("src/pages/sitemap.xml.ts", [
   '"/privacy"',
@@ -169,22 +173,23 @@ checkFileIncludes("src/pages/products/index.astro", [
   "Shared usage capacity",
   "Available MCPs",
   "Coming next / {wipMcpCount} MCPs",
-  "One allowance, four clear weights",
+  "One allowance, measured by the work",
   "Every current public product",
   "Listed for visibility and marked WIP",
-  "Paid plans are prepaid, have no",
-  "Metadata",
-  "Stateful analysis",
-  "Provider-backed",
-  "Individual plan / 2,000 credits",
-  "≈666",
+  "Customers see one percentage, not an internal unit balance.",
+  "Standard",
+  "Advanced",
+  "BrowserOps",
+  "≈671",
+  "≈224",
+  "≈65",
   "two months included",
   "PUBLIC_MONARCHIC_WEBAPP_BASE_URL",
   "findPlanPrice",
   "Choose plan",
   'id="plans"',
   'id="mcp-catalog"',
-  'id="how-credits-work"',
+  'id="how-usage-works"',
   'href={`${appBaseUrl}/docs`}',
 ]);
 checkForbidden("src/pages/products/index.astro", [
@@ -194,6 +199,8 @@ checkForbidden("src/pages/products/index.astro", [
   "workflow_packs",
   "platform_status",
   "release checks",
+  "credit",
+  "Credit",
 ]);
 
 checkFileIncludes("src/pages/products/[slug].astro", [
@@ -201,25 +208,27 @@ checkFileIncludes("src/pages/products/[slug].astro", [
   "isPurchasable",
   "annualPrice",
   "Choose plan",
-  "Included with an active credit plan",
+  "Included with an active usage plan",
   "Public access is WIP",
-  "Calls draw from the included credits on your active plan.",
+  "Calls draw from the weekly execution usage included with your active plan.",
   "Read benchmark",
   "lg:sticky lg:top-6",
   "ProductWorkflowProof",
   "getProductWorkflowProof",
 ]);
+checkForbidden("src/pages/products/[slug].astro", ["credit", "Credit"]);
 
 checkFileIncludes("src/components/ProductWorkflowProof.astro", [
   "Concrete workflow / priced call",
   "01 / Request",
   "02 / Execution",
   "03 / Evidence + output",
-  "04 / Credit cost",
+  "04 / Estimated usage",
   "Required access",
   "Current boundary",
   "data-workflow-proof",
 ]);
+checkForbidden("src/components/ProductWorkflowProof.astro", ["credit", "Credit"]);
 
 checkFileIncludes("src/lib/productWorkflowProofs.ts", [
   '"mcp-explicitmem"',
@@ -244,9 +253,9 @@ checkFileIncludes("vercel.json", [
 ]);
 
 checkFileIncludes("webcomposer/site-map.contract.json", [
-  "five_credit_plans",
+  "five_usage_plans",
   "fifteen_mcp_products",
-  "shared_credit_model",
+  "adaptive_usage_model",
   "purchase_link_for_available_plans",
   "checkout promises for WIP products",
   "raw internal test output",
@@ -261,6 +270,8 @@ checkFileIncludes("webcomposer/page-maps.json", [
   '"template": "form.inline"',
   '"template": "cta.banner"',
 ]);
+checkForbidden("webcomposer/site-map.contract.json", ["credit", "Credit"]);
+checkForbidden("webcomposer/page-maps.json", ["credit", "Credit"]);
 
 checkFileIncludes("src/pages/research/index.astro", [
   "Benchmarks and methodology.",
@@ -392,6 +403,7 @@ function checkPublicCatalogComposition() {
   const supersededSlugs = new Set(["mcp-monarchic"]);
   const hiddenSlugs = new Set([...retiredSlugs, ...supersededSlugs]);
   const previewSlugs = new Set([
+    "usage-individual",
     "usage-developer",
     "usage-team",
     "usage-business",
@@ -451,7 +463,7 @@ function checkPublicCatalogComposition() {
       actualUsageSlugs: usageSlugs,
     });
   } else {
-    checks.push("public catalog: exactly five credit plans");
+    checks.push("public catalog: exactly five usage plans");
   }
 
   if (JSON.stringify(mcpSlugs) !== JSON.stringify(expectedMcpSlugs)) {

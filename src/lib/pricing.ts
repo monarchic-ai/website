@@ -134,12 +134,14 @@ function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
     ...plan,
     description: plan.description.replace(
       /before metered usage begins/gi,
-      "within the plan's monthly usage allowance",
+      "within the plan's weekly execution allowance",
     ),
     featureBullets,
     usageSummary: plan.usageSummary ?? DEFAULT_USAGE_SUMMARY,
-    includedCredits: plan.includedCredits,
-    creditAllowanceLabel: plan.creditAllowanceLabel,
+    includedCredits: undefined,
+    creditAllowanceLabel: isEvaluation
+      ? "Limited 30-day evaluation usage"
+      : plan.creditAllowanceLabel,
     overageLabel: isEvaluation
       ? "Paused after the evaluation allowance"
       : "Pause by default; optional PAYG",
@@ -227,9 +229,7 @@ export function cadenceFromQueryString(value: string | null | undefined): PlanCa
 }
 
 export function usageAllowanceLabel(plan: CatalogPlan): string | null {
-  if (plan.creditAllowanceLabel) return plan.creditAllowanceLabel;
-  if (plan.includedCredits === undefined) return null;
-  return `Approximately ${plan.includedCredits.toLocaleString("en-US")} standard operations/mo`;
+  return plan.creditAllowanceLabel ?? null;
 }
 
 export function planStatusLabel(status: PlanStatus): string {
