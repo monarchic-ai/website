@@ -26,7 +26,7 @@
     ],
     "creditAllowanceLabel": "Limited 30-day evaluation usage",
     "overageLabel": "Paused after the evaluation allowance",
-    "usageSummary": "Simple calls use very little of the allowance. Analysis, long-running jobs, browser execution, stored evidence, and provider-backed work use more.",
+    "usageSummary": "Each operation uses its frozen rate-card class. Files and indexed data are metered separately; disclosed provider expenses are BYOK or itemized.",
     "status": "available",
     "prices": []
   },
@@ -44,7 +44,7 @@
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
     "status": "coming_soon",
     "prices": [
       {
@@ -77,7 +77,7 @@
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
     "highlighted": true,
     "status": "coming_soon",
     "prices": [
@@ -111,7 +111,7 @@
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
     "status": "coming_soon",
     "prices": [
       {
@@ -144,7 +144,7 @@
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Final usage will vary with operation type, runtime, browser duration, stored evidence, output size, and disclosed provider expense.",
+    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
     "status": "contact_sales",
     "prices": [
       {
@@ -194,7 +194,7 @@
       "Package screenshots and observations for handoff"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Browser verification uses the browser operation class. The interface will show the applicable rate before starting and settle measured runtime and provider expense afterward.",
+    "usageSummary": "Browser verification uses the frozen browser operation class. Evidence storage and disclosed provider expenses are metered separately.",
     "lifecycle": "production",
     "hostedStatus": "available",
     "status": "available",
@@ -318,10 +318,10 @@
       "Run interactive terminal sessions through MCP",
       "Keep command output visible for review",
       "Use one consistent terminal interface across clients",
-      "PTY discovery uses very little; terminal execution varies with duration"
+      "PTY operations use the class fixed in the applicable rate card"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "PTY discovery uses very little of the allowance. Provider-backed terminal execution varies with duration and measured resource use.",
+    "usageSummary": "PTY operations use their frozen rate-card classes. Disclosed provider expenses are BYOK or itemized separately.",
     "lifecycle": "production",
     "hostedStatus": "available",
     "status": "available",
@@ -519,7 +519,7 @@
       "Return tool output and failures in one structured result"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Job duration and the selected profiling toolbox will determine allowance use when access opens.",
+    "usageSummary": "Hosted deployment is planned. Each profiling operation will use the class fixed in the applicable rate card.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -555,7 +555,7 @@
       "Collect cross-repository findings in one report"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Multi-repository jobs will be metered by their measured runtime and workload when access opens.",
+    "usageSummary": "Hosted deployment is planned. Multi-repository jobs will use the class fixed in the applicable rate card.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -573,7 +573,7 @@
       "Apply explicit signing and export policy"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Pack creation, verification, storage, and signing will use the shared account allowance when access opens.",
+    "usageSummary": "Hosted deployment is planned. Pack operations will use frozen rate-card classes; retained evidence will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -591,7 +591,7 @@
       "Validate artwork before export"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Session work, stored assets, and exports will use the shared account allowance when access opens.",
+    "usageSummary": "Hosted deployment is planned. Session operations will use frozen rate-card classes; stored assets and exports will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -609,7 +609,7 @@
       "Prepare implementation guidance without mutating a repository"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Planning calls and stored project artifacts will use the shared account allowance when access opens.",
+    "usageSummary": "Hosted deployment is planned. Planning calls will use frozen rate-card classes; project artifacts will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -627,7 +627,7 @@
       "Reuse approved research across page-planning tools"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Research, stored evidence, and provider-backed work will use the shared account allowance when access opens.",
+    "usageSummary": "Hosted deployment is planned. Research calls will use frozen rate-card classes; stored evidence and provider expenses are metered separately.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -645,7 +645,7 @@
       "Export assets with implementation-ready metadata"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Browser rendering, video processing, storage, and output size will determine allowance use when access opens.",
+    "usageSummary": "Hosted deployment is planned. Operations will use frozen rate-card classes; stored media and outputs will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",

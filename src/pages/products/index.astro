@@ -201,7 +201,7 @@ function statusClasses(plan: CatalogPlan): string {
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             These {availableMcpCount} products have production hosted routes.
             Open one to inspect a real tool call, its evidence boundary, and
-            how runtime usage is measured.
+            the fixed rate-card class applied to the operation.
           </p>
           <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {availableMcpProducts.map((plan) => (
@@ -245,8 +245,8 @@ function statusClasses(plan: CatalogPlan): string {
               <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, measured by the work</h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
                 Customers see one percentage, not an internal unit balance.
-                Small calls use very little; longer and more resource-intensive
-                work uses more. Every receipt shows the operation and its usage impact.
+                Every billable operation uses the class fixed in its versioned
+                rate card. Every receipt shows that class and its usage impact.
               </p>
             </div>
             <div class="grid gap-3 text-sm leading-6 text-white/72">
@@ -259,22 +259,22 @@ function statusClasses(plan: CatalogPlan): string {
             <div class="border-b border-white/36 p-4 sm:border-r lg:border-b-0">
               <p class="font-mono text-3xl font-extrabold text-signal">01</p>
               <p class="mt-3 text-xs font-bold uppercase text-white">Operation</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Simple reads use less than analysis, indexing, search, or synthesis.</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Every billable call is assigned a standard, advanced, or browser class.</p>
             </div>
             <div class="border-b border-white/36 p-4 lg:border-b-0 lg:border-r">
               <p class="font-mono text-3xl font-extrabold text-signal">02</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Runtime</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Execution duration, compute, and memory shape the final impact.</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Rate card</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">The operation class and rate-card version are fixed before execution.</p>
             </div>
             <div class="border-b border-white/36 p-4 sm:border-b-0 sm:border-r">
               <p class="font-mono text-3xl font-extrabold text-signal">03</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Evidence</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Stored evidence and larger outputs consume more of the allowance.</p>
+              <p class="mt-3 text-xs font-bold uppercase text-white">Storage</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Files, evidence, and managed indexed data use separate storage meters.</p>
             </div>
             <div class="p-4">
               <p class="font-mono text-3xl font-extrabold text-signal">04</p>
               <p class="mt-3 text-xs font-bold uppercase text-white">Providers</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Browser and external-provider expenses are measured and disclosed separately.</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Model, proxy, CAPTCHA, and paid-provider expenses are BYOK or itemized separately.</p>
             </div>
           </div>
           <div class="mt-8 grid border border-signal/70 bg-signal/[0.06] lg:grid-cols-[0.72fr_1.28fr]">

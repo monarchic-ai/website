@@ -13,6 +13,9 @@ const forbidden = [
   /\bone base credit\b/i,
   /\bstarts? at 1 credit\b/i,
   /"includedCredits"/,
+  /"creditAllowanceLabel"/,
+  /hosted_mcp_credits/i,
+  /\/session\/usage-events/i,
 ];
 const findings = [];
 
