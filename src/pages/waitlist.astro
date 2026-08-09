@@ -8,9 +8,12 @@ import { allPlans } from "../lib/pricing";
 import "../styles/global.css";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
-const wipProducts = allPlans
-  .filter((plan) => plan.kind === "single-mcp" && plan.status === "coming_soon")
-  .map((plan) => ({ slug: plan.slug, label: plan.displayName }));
+const waitlistProducts = allPlans
+  .filter((plan) => plan.status === "coming_soon")
+  .map((plan) => ({
+    slug: plan.slug,
+    label: plan.kind === "usage-plan" ? `${plan.displayName} plan` : plan.displayName,
+  }));
 ---
 
 <html lang="en">
@@ -22,7 +25,7 @@ const wipProducts = allPlans
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Waitlist | Monarchic"
-      description="Join the Monarchic MCP catalog waitlist for coming-soon access updates."
+      description="Join the Monarchic product waitlist for coming-soon access updates."
       path="/waitlist"
     />
   </head>
@@ -37,13 +40,13 @@ const wipProducts = allPlans
         <section class="grid min-h-[calc(100vh-112px)] gap-8 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
           <div>
             <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">
-              MCP catalog waitlist
+              Product waitlist
             </p>
             <h1 class="max-w-4xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl [text-shadow:6px_6px_0_rgba(255,255,255,0.12)]">
               Get Access<br />Updates
             </h1>
             <p class="mt-7 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
-              Choose a WIP MCP and join for an email when public access opens.
+              Choose a planned product and join for an email when public access opens.
             </p>
           </div>
 
@@ -57,14 +60,14 @@ const wipProducts = allPlans
               <WaitlistForm
                 client:load
                 apiBaseUrl={apiBaseUrl}
-                slug={wipProducts[0]?.slug ?? "monarchic-ai"}
-                products={wipProducts}
+                slug={waitlistProducts[0]?.slug ?? "monarchic-ai"}
+                products={waitlistProducts}
                 submitLabel="Join waitlist"
               />
             </div>
             <p class="mt-5 text-xs leading-5 text-white/50">
               Products marked Available can be used through an active plan.
-              WIP products cannot be purchased yet.
+              Coming-soon products cannot be purchased yet.
             </p>
           </div>
         </section>

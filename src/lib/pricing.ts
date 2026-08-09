@@ -8,6 +8,7 @@ export type PlanKind = "usage-plan" | "single-mcp" | "bundle" | "ai";
 export type PlanCadence = "monthly" | "annual";
 export type PlanStatus = "available" | "coming_soon" | "contact_sales";
 export type ProductLifecycle = "production" | "wip";
+export type HostedMcpStatus = "available" | "in_rollout" | "planned";
 
 // Annual subscriptions are always priced at this multiple of the monthly
 // amount. Centralizing the constant keeps Stripe seeding, the UI, and the
@@ -42,6 +43,7 @@ export interface CatalogPlan {
   overageLabel?: string;
   usageSummary?: string;
   lifecycle?: ProductLifecycle;
+  hostedStatus?: HostedMcpStatus;
   highlighted?: boolean;
   status: PlanStatus;
   prices: PlanPrice[];
@@ -167,5 +169,22 @@ export function planStatusLabel(status: PlanStatus): string {
 }
 
 export function catalogStatusLabel(plan: CatalogPlan): string {
-  return planStatusLabel(plan.status);
+  if (plan.kind !== "single-mcp") return planStatusLabel(plan.status);
+  const status = hostedMcpStatus(plan);
+  if (status === "available") return "Available";
+  if (status === "in_rollout") return "In rollout";
+  return "Planned";
+}
+
+export function hostedMcpStatus(plan: CatalogPlan): HostedMcpStatus {
+  if (plan.kind !== "single-mcp") {
+    throw new Error(`hostedMcpStatus requires a single-mcp plan (got ${plan.slug})`);
+  }
+  const status = plan.hostedStatus ?? (plan.status === "available" ? "available" : "planned");
+  if ((status === "available") !== (plan.status === "available")) {
+    throw new Error(
+      `${plan.slug} hostedStatus=${status} conflicts with catalog status=${plan.status}`,
+    );
+  }
+  return status;
 }

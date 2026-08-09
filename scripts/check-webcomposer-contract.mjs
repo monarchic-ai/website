@@ -21,14 +21,14 @@ checkFileIncludes("src/pages/index.astro", [
   'href="/products"',
   'href="/research"',
   'href={`${appBaseUrl}/docs`}',
-  'href="#waitlist"',
+  'href="/products#planned-mcps"',
   "explicitMemBenchmark.answerAccuracy",
   "explicitMemBenchmark.answerFaithfulness",
   "explicitMemBenchmark.retrievalRecallAtK",
   "explicitMemBenchmark.averageLatency",
   "remaining mismatch, and limits sit beside the headline.",
   "One plan covers every available MCP.",
-  "cannot be checked out.",
+  "cannot be checked out yet.",
   "/research/explicitmem",
 ]);
 checkForbidden("src/pages/index.astro", [
@@ -127,7 +127,7 @@ checkFileIncludes("src/pages/about.astro", [
   'documentId="company-profile"',
   "Monarchic LLC",
   "Why pay for hosted",
-  "Five MCPs are currently marked Available",
+  "availableMcps.length",
 ]);
 checkForbidden("src/pages/about.astro", ["credit", "Credit"]);
 
@@ -172,10 +172,11 @@ checkFileIncludes("src/pages/products/index.astro", [
   "Plans and MCPs",
   "Shared usage capacity",
   "Available MCPs",
-  "Coming next / {wipMcpCount} MCPs",
+  "Planned / {plannedMcpCount}",
+  "In rollout / {inRolloutMcpCount}",
   "One allowance, measured by the work",
   "Every current public product",
-  "Listed for visibility and marked WIP",
+  "Accepted for hosted infrastructure",
   "Customers see one percentage, not an internal unit balance.",
   "Quantities not yet published",
   "direct and shared variable costs are allocated",
@@ -209,7 +210,8 @@ checkFileIncludes("src/pages/products/[slug].astro", [
   "annualPrice",
   "Choose plan",
   "Included with an active usage plan",
-  "Public access is WIP",
+  "Hosted deployment planned",
+  "Hosted rollout in progress",
   "Calls draw from the weekly execution usage included with your active plan.",
   "Read benchmark",
   "lg:sticky lg:top-6",
@@ -238,11 +240,22 @@ checkForbidden("src/components/ProductWorkflowProof.astro", [
 ]);
 
 checkFileIncludes("src/lib/productWorkflowProofs.ts", [
+  '"mcp-browserops"',
+  '"mcp-businessmodel"',
+  '"mcp-cicd"',
+  '"mcp-codequality"',
+  '"mcp-copydev"',
+  '"mcp-create-project"',
   '"mcp-explicitmem"',
   '"mcp-incidentops"',
   '"mcp-infraprofiler"',
+  '"mcp-leadgenerator"',
+  '"mcp-nutrition"',
+  '"mcp-pty"',
   '"mcp-releaseops"',
   '"mcp-repointel"',
+  '"mcp-repo-fleet"',
+  '"mcp-seo"',
   "memory.retrieve_context",
   "build_incident_response_packet",
   "profile_pipeline",
@@ -261,10 +274,11 @@ checkFileIncludes("vercel.json", [
 
 checkFileIncludes("webcomposer/site-map.contract.json", [
   "five_usage_plans",
-  "fifteen_mcp_products",
+  "twenty_seven_mcp_products",
+  "sixteen_available_mcps_first",
   "adaptive_usage_model",
   "purchase_link_for_available_plans",
-  "checkout promises for WIP products",
+  "checkout promises for planned products",
   "raw internal test output",
   "500-question LongMemEval-S",
 ]);
@@ -449,18 +463,30 @@ function checkPublicCatalogComposition() {
     "mcp-browserops",
     "mcp-businessmodel",
     "mcp-cicd",
+    "mcp-codeintel",
+    "mcp-codeprofiler",
+    "mcp-codequality",
+    "mcp-copydev",
     "mcp-create-project",
     "mcp-explicitmem",
     "mcp-incidentops",
     "mcp-infraprofiler",
     "mcp-leadgenerator",
+    "mcp-nutrition",
+    "mcp-orgfleet",
+    "mcp-orgintel",
+    "mcp-proofpack",
     "mcp-pty",
     "mcp-releaseops",
     "mcp-repo-fleet",
     "mcp-repointel",
     "mcp-seo",
+    "mcp-vectordesign",
     "mcp-webcomposer",
+    "mcp-webdashboard",
     "mcp-webimplementer",
+    "mcp-webinfo",
+    "mcp-websplash",
   ];
 
   if (JSON.stringify(usageSlugs) !== JSON.stringify(expectedUsageSlugs)) {
@@ -480,7 +506,33 @@ function checkPublicCatalogComposition() {
       actualMcpSlugs: mcpSlugs,
     });
   } else {
-    checks.push("public catalog: exactly fifteen current MCPs");
+    checks.push("public catalog: exactly twenty-seven current MCPs");
+  }
+
+  const mcpPlans = catalog.filter((plan) => plan.kind === "single-mcp");
+  const availableMcpSlugs = mcpPlans
+    .filter((plan) => plan.status === "available" && plan.hostedStatus === "available")
+    .map((plan) => plan.slug)
+    .sort();
+  const roadmapMcpSlugs = mcpPlans
+    .filter(
+      (plan) =>
+        plan.status === "coming_soon"
+        && ["in_rollout", "planned"].includes(plan.hostedStatus),
+    )
+    .map((plan) => plan.slug)
+    .sort();
+  if (availableMcpSlugs.length !== 16 || roadmapMcpSlugs.length !== 11) {
+    failures.push({
+      path: "src/lib/pricing",
+      expectedHostedComposition: { available: 16, roadmap: 11 },
+      actualHostedComposition: {
+        available: availableMcpSlugs,
+        roadmap: roadmapMcpSlugs,
+      },
+    });
+  } else {
+    checks.push("public catalog: hosted status composition is 16 available and 11 roadmap");
   }
 
   for (const slug of retiredSlugs) {

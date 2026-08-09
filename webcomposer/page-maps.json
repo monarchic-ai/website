@@ -22,7 +22,7 @@
         { "id": "introduction", "template": "hero.split", "purpose": "Lead with the hosted MCP catalog and show an example request across the four currently available MCPs." },
         { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Show the four current ExplicitMem benchmark metrics with their scope." },
         { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain adaptive account usage and routes into the product catalog." },
-        { "id": "waitlist", "template": "form.inline", "purpose": "Collect interest in MCPs currently marked WIP." },
+        { "id": "waitlist", "template": "form.inline", "purpose": "Collect interest in planned and in-rollout MCPs." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
     },
@@ -50,10 +50,10 @@
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level public routes and app documentation." },
         { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce plans and MCPs under one weekly execution allowance." },
-        { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize five plans, fifteen MCPs, and clear Available or WIP status." },
+        { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize five plans, twenty-seven MCPs, and clear Available, In rollout, or Planned status." },
         { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and adaptive usage." },
         { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual subscriptions and show an eligible next action." },
-        { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with five available MCPs, then place ten WIP products in a collapsed Coming next disclosure." },
+        { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with sixteen available MCPs, then show in-rollout and planned products in visible roadmap sections." },
         { "id": "how-usage-works", "template": "split.asymmetric", "purpose": "Explain how one weekly execution allowance covers every available MCP and disclose that launch quantities await the fully allocated rate card." },
         { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
@@ -87,7 +87,7 @@
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
         { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capabilities beside its price or access status." },
         { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities, buyer fit, outcomes, and workflows." },
-        { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to purchase, available MCPs to plans, WIP products to the waitlist, and all products back to the catalog." },
+        { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to purchase, available MCPs to plans, roadmap products to the waitlist, and all products back to the catalog." },
         { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "For each available MCP, show one request, exact tool payload, representative or exact output, required access, current boundary, and estimated weekly usage impact." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]
@@ -138,7 +138,7 @@
       },
       "sections": [
         { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research routes available." },
-        { "id": "waitlist_intro", "template": "hero.split", "purpose": "Explain that the form is for WIP product availability and account-access updates." },
+        { "id": "waitlist_intro", "template": "hero.split", "purpose": "Explain that the form is for planned and in-rollout product availability updates." },
         { "id": "waitlist_form", "template": "form.inline", "purpose": "Capture one email address with success, error, and privacy states." },
         { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
       ]

@@ -1,5 +1,5 @@
 ---
-import { allPlans } from "../lib/pricing";
+import { allPlans, hostedMcpStatus } from "../lib/pricing";
 
 const routes = [
   { id: "01", label: "RepoIntel", state: "active", detail: "Repository context" },
@@ -9,7 +9,10 @@ const routes = [
   { id: "05", label: "ReleaseOps", state: "available", detail: "Release management" },
 ];
 const publicMcpCount = allPlans.filter((plan) => plan.kind === "single-mcp").length;
-const availabilityPercent = Math.round((routes.length / publicMcpCount) * 100);
+const availableMcpCount = allPlans.filter(
+  (plan) => plan.kind === "single-mcp" && hostedMcpStatus(plan) === "available",
+).length;
+const availabilityPercent = Math.round((availableMcpCount / publicMcpCount) * 100);
 ---
 
 <section class="mcp-scene relative max-w-full overflow-hidden bg-ink text-white" aria-label="Example hosted MCP request">
@@ -21,7 +24,7 @@ const availabilityPercent = Math.round((routes.length / publicMcpCount) * 100);
       <p class="font-mono text-[0.68rem] font-bold uppercase text-white/72">Example account / Connected</p>
     </div>
     <div class="flex items-center gap-4 font-mono text-[0.65rem] uppercase text-white/48">
-      <span>{routes.length} available MCPs</span>
+      <span>{routes.length} featured routes</span>
       <span class="hidden sm:inline">Scoped credentials</span>
       <span class="text-signal">Usage visible</span>
     </div>
@@ -76,7 +79,7 @@ const availabilityPercent = Math.round((routes.length / publicMcpCount) * 100);
         <div class="border-b border-white/20 px-5 py-5">
           <p class="font-mono text-[0.65rem] font-bold uppercase text-white/42">Public catalog</p>
           <div class="mt-4 flex items-end justify-between gap-4">
-            <p class="text-5xl font-black leading-none">{routes.length}/{publicMcpCount}</p>
+            <p class="text-5xl font-black leading-none">{availableMcpCount}/{publicMcpCount}</p>
             <p class="pb-1 font-mono text-[0.65rem] uppercase text-signal">Available today</p>
           </div>
           <div class="mt-5 h-2 overflow-hidden bg-white/16" aria-hidden="true">
@@ -87,11 +90,11 @@ const availabilityPercent = Math.round((routes.length / publicMcpCount) * 100);
         <dl class="divide-y divide-white/14 px-5">
           <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
             <dt class="font-mono text-[0.65rem] uppercase text-white/44">Available MCPs</dt>
-            <dd class="font-mono text-xs text-white">{String(routes.length).padStart(2, "0")}</dd>
+            <dd class="font-mono text-xs text-white">{String(availableMcpCount).padStart(2, "0")}</dd>
           </div>
           <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
-            <dt class="font-mono text-[0.65rem] uppercase text-white/44">WIP</dt>
-            <dd class="font-mono text-xs text-white">{String(publicMcpCount - routes.length).padStart(2, "0")}</dd>
+            <dt class="font-mono text-[0.65rem] uppercase text-white/44">Roadmap</dt>
+            <dd class="font-mono text-xs text-white">{String(publicMcpCount - availableMcpCount).padStart(2, "0")}</dd>
           </div>
           <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
             <dt class="font-mono text-[0.65rem] uppercase text-white/44">Usage model</dt>

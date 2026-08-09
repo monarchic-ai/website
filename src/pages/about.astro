@@ -1,9 +1,9 @@
 ---
 import LegalPageLayout from "../layouts/LegalPageLayout.astro";
-import { allPlans } from "../lib/pricing";
+import { allPlans, hostedMcpStatus } from "../lib/pricing";
 
 const availableMcps = allPlans.filter(
-  (plan) => plan.kind === "single-mcp" && plan.status === "available",
+  (plan) => plan.kind === "single-mcp" && hostedMcpStatus(plan) === "available",
 );
 const sectionClass = "grid gap-5 border-t border-white/35 py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1fr)]";
 const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
@@ -41,7 +41,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Available now</h2>
       <div class={copyClass}>
-        <p>Five MCPs are currently marked Available. Everything else stays under Coming next and cannot be checked out.</p>
+        <p>{availableMcps.length} MCPs are currently marked Available. Planned and in-rollout products remain visible in the catalog but cannot be checked out.</p>
       </div>
       <div class="mt-5 grid gap-3 sm:grid-cols-2">
         {availableMcps.map((plan) => (
@@ -71,7 +71,7 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Accountability</h2>
       <div class={copyClass}>
-        <p>The catalog status controls: Available means the route is open under the stated plan rules; WIP means it is not. Prices, included usage, and after-limit behavior are shown before checkout.</p>
+        <p>The catalog status controls access. Available means the production route is open under the stated plan rules. In rollout means a non-production deployment is being qualified. Planned means the hosted runtime has been accepted but has not crossed a deployment gate. Prices, included usage, and after-limit behavior are shown before checkout.</p>
         <p>The <a class="font-bold text-signal hover:text-white" href="/security">security page</a> records the current technical boundary. The <a class="font-bold text-signal hover:text-white" href="/privacy">privacy notice</a> covers data handling, and the <a class="font-bold text-signal hover:text-white" href="/terms">service terms</a> identify the contractual limits. Published service-level commitments apply only when an order includes them.</p>
       </div>
     </div>

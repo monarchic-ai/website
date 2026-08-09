@@ -1,6 +1,7 @@
 ---
 import {
-  planStatusLabel,
+  catalogStatusLabel,
+  hostedMcpStatus,
   type CatalogPlan,
 } from "../lib/pricing";
 import { getProductDetail } from "../lib/productDetails";
@@ -12,10 +13,11 @@ interface Props {
 
 const { plan, researchHref } = Astro.props;
 const detail = getProductDetail(plan.slug);
-const statusClass = plan.status === "available"
+const hostedStatus = hostedMcpStatus(plan);
+const statusClass = hostedStatus === "available"
   ? "border-signal bg-signal text-black"
-  : plan.status === "contact_sales"
-    ? "border-white/70 text-white"
+  : hostedStatus === "in_rollout"
+    ? "border-signal/80 bg-signal/10 text-signal-soft"
     : "border-white/35 text-white/58";
 ---
 
@@ -26,13 +28,17 @@ const statusClass = plan.status === "available"
   <div class="flex flex-wrap items-start justify-between gap-3">
     <span class="text-[0.62rem] font-bold uppercase text-white/48">{detail?.category ?? "MCP"}</span>
     <span class={`border px-2 py-1 text-[0.6rem] font-bold uppercase ${statusClass}`}>
-      {planStatusLabel(plan.status)}
+      {catalogStatusLabel(plan)}
     </span>
   </div>
   <h3 class="mt-5 text-xl font-extrabold uppercase">{plan.displayName}</h3>
   <p class="mt-3 text-sm leading-6 text-white/68">{plan.tagline}</p>
   <p class="mt-4 text-xs font-bold uppercase text-white/46">
-    {plan.status === "available" ? "Included in shared plan usage" : "Shared plan usage when available"}
+    {hostedStatus === "available"
+      ? "Included in shared plan usage"
+      : hostedStatus === "in_rollout"
+        ? "Hosted rollout underway"
+        : "Hosted deployment planned"}
   </p>
   <div class="flex-1"></div>
   <div class="mt-6 flex flex-wrap gap-2">

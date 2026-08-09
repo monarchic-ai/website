@@ -36,18 +36,30 @@ const requiredCatalogSlugs = [
   "mcp-browserops",
   "mcp-businessmodel",
   "mcp-cicd",
+  "mcp-codeintel",
+  "mcp-codeprofiler",
+  "mcp-codequality",
+  "mcp-copydev",
   "mcp-create-project",
   "mcp-explicitmem",
   "mcp-incidentops",
   "mcp-infraprofiler",
   "mcp-leadgenerator",
+  "mcp-nutrition",
+  "mcp-orgfleet",
+  "mcp-orgintel",
+  "mcp-proofpack",
   "mcp-pty",
   "mcp-releaseops",
   "mcp-repo-fleet",
   "mcp-repointel",
   "mcp-seo",
+  "mcp-vectordesign",
   "mcp-webcomposer",
+  "mcp-webdashboard",
   "mcp-webimplementer",
+  "mcp-webinfo",
+  "mcp-websplash",
 ];
 const retiredCatalogSlugs = [
   "mcp-outreachconnectors",
@@ -162,7 +174,7 @@ async function runBrowserSmoke() {
       if (body.email !== "smoke+website@monarchic.ai") {
         throw new Error(`unexpected waitlist email: ${body.email}`);
       }
-      if (body.slug !== "mcp-browserops") {
+      if (body.slug !== "mcp-codeintel") {
         throw new Error(`unexpected waitlist slug: ${body.slug}`);
       }
       await route.fulfill({
@@ -175,7 +187,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
       await page.getByRole("heading", { name: "Map this repository and return source-cited architecture." }).waitFor();
-      await page.getByText("5/15", { exact: true }).waitFor();
+      await page.getByText("16/27", { exact: true }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
@@ -194,7 +206,7 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:image:width", "1200");
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
-      await page.getByRole("link", { name: "WIP access" }).waitFor();
+      await page.getByRole("link", { name: "Planned MCPs" }).first().waitFor();
       for (const metric of ["99.8%", "100%", "62.5 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
@@ -224,14 +236,18 @@ async function runBrowserSmoke() {
       }
       const mcpCards = page.locator('[data-plan-card^="mcp-"]');
       const mcpCardCount = await mcpCards.count();
-      if (mcpCardCount !== 15) {
-        throw new Error(`Expected 15 MCP cards, got ${mcpCardCount}`);
+      if (mcpCardCount !== 27) {
+        throw new Error(`Expected 27 MCP cards, got ${mcpCardCount}`);
       }
 
-      const comingNext = page.locator("details[data-coming-next]");
-      await comingNext.waitFor();
-      await comingNext.locator("summary").click();
-      for (const slug of ["mcp-cicd", "mcp-webcomposer", "mcp-webimplementer"]) {
+      for (const slug of [
+        "mcp-codequality",
+        "mcp-copydev",
+        "mcp-nutrition",
+        "mcp-codeintel",
+        "mcp-webcomposer",
+        "mcp-webimplementer",
+      ]) {
         await page.locator(`[data-plan-card="${slug}"]`).waitFor();
       }
       for (const slug of forbiddenCatalogSlugs) {
@@ -244,7 +260,7 @@ async function runBrowserSmoke() {
       await individualCard.getByText("Annual $190/yr", { exact: false }).waitFor();
       await expectHref(
         individualCard.getByRole("link", { name: "Join waitlist" }),
-        "/waitlist",
+        "/waitlist?product=usage-individual",
       );
       if (await individualCard.getByRole("link", { name: "Choose plan" }).count() !== 0) {
         throw new Error("Paid Individual checkout must remain unavailable before production activation");
@@ -286,10 +302,10 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/products/mcp-browserops`, async () => {
       await page.getByRole("heading", { name: "BrowserOps MCP" }).waitFor();
       await page.getByText("Browser QA").first().waitFor();
-      await page.getByRole("heading", { name: "Public access is WIP" }).waitFor();
+      await page.getByRole("heading", { name: "Included with an active usage plan" }).waitFor();
       await expectHref(
-        page.getByRole("link", { name: "Join waitlist" }),
-        "/waitlist?product=mcp-browserops",
+        page.getByRole("link", { name: "Compare plans" }),
+        "/products#plans",
       );
       await page.getByRole("link", { name: "View all products" }).waitFor();
       if (await page.getByRole("link", { name: "Read benchmark" }).count() !== 0) {
@@ -300,18 +316,30 @@ async function runBrowserSmoke() {
     }, "BrowserOps product route");
 
     for (const proof of [
-      { slug: "mcp-explicitmem", tool: "memory.retrieve_context", usageImpact: "≈0.9%" },
-      { slug: "mcp-incidentops", tool: "build_incident_response_packet", usageImpact: "≈0.1%" },
-      { slug: "mcp-infraprofiler", tool: "profile_pipeline", usageImpact: "≈0.1%" },
-      { slug: "mcp-releaseops", tool: "releaseops_verify_tag_pack", usageImpact: "≈0.1%" },
-      { slug: "mcp-repointel", tool: "get_repository_summary", usageImpact: "≈0.4%" },
+      { slug: "mcp-browserops", tool: "browser_observe_url" },
+      { slug: "mcp-businessmodel", tool: "businessmodel_health" },
+      { slug: "mcp-cicd", tool: "diagnose_pipeline_run" },
+      { slug: "mcp-codequality", tool: "analyze_inline_sources" },
+      { slug: "mcp-copydev", tool: "copy_review_detect_vagueness" },
+      { slug: "mcp-create-project", tool: "create_project_health" },
+      { slug: "mcp-explicitmem", tool: "memory.retrieve_context" },
+      { slug: "mcp-incidentops", tool: "build_incident_response_packet" },
+      { slug: "mcp-infraprofiler", tool: "profile_pipeline" },
+      { slug: "mcp-leadgenerator", tool: "score_provided_leads" },
+      { slug: "mcp-nutrition", tool: "nutrition_dilution" },
+      { slug: "mcp-pty", tool: "pty_open" },
+      { slug: "mcp-releaseops", tool: "releaseops_verify_tag_pack" },
+      { slug: "mcp-repo-fleet", tool: "repo_fleet_list" },
+      { slug: "mcp-repointel", tool: "get_repository_summary" },
+      { slug: "mcp-seo", tool: "run_demo_pipeline_tool" },
     ]) {
       await checkPage(page, `${baseUrl}/products/${proof.slug}`, async () => {
         const workflow = page.locator(`[data-workflow-proof="${proof.slug}"]`);
         await workflow.waitFor();
         await workflow.getByText("Concrete workflow / priced call", { exact: true }).waitFor();
         await workflow.getByText(proof.tool, { exact: false }).first().waitFor();
-        await workflow.getByText(proof.usageImpact, { exact: true }).first().waitFor();
+        await workflow.getByText("At runtime", { exact: true }).waitFor();
+        await workflow.getByText("Recorded on the operation receipt", { exact: true }).waitFor();
         await workflow.getByText("Required access", { exact: true }).waitFor();
         await workflow.getByText("Current boundary", { exact: true }).waitFor();
         await expectNoHorizontalOverflow(page);
@@ -366,7 +394,11 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/waitlist`, async () => {
       await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
-      await page.getByLabel("Product interest").selectOption("mcp-browserops");
+      await page.getByLabel("Product interest").selectOption("usage-individual");
+      if (await page.getByLabel("Product interest").inputValue() !== "usage-individual") {
+        throw new Error("expected the Individual plan to be available in the waitlist selector");
+      }
+      await page.getByLabel("Product interest").selectOption("mcp-codeintel");
       await page.getByLabel("Email").fill("smoke+website@monarchic.ai");
       await page.getByRole("button", { name: "Join waitlist" }).click();
       await page.getByText("Thanks. You're on the waitlist.").waitFor();

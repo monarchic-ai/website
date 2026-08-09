@@ -5,15 +5,15 @@ import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
 import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
-import { allPlans } from "../lib/pricing";
+import { allPlans, hostedMcpStatus } from "../lib/pricing";
 import "../styles/global.css";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const publicMcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
-const availableMcpCount = publicMcpProducts.filter((plan) => plan.status === "available").length;
-const wipProducts = allPlans
-  .filter((plan) => plan.kind === "single-mcp" && plan.status === "coming_soon")
+const availableMcpCount = publicMcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
+const plannedProducts = allPlans
+  .filter((plan) => plan.kind === "single-mcp" && hostedMcpStatus(plan) !== "available")
   .map((plan) => ({ slug: plan.slug, label: plan.displayName }));
 
 const connectionSteps = [
@@ -130,7 +130,7 @@ const proofPoints = [
         <div class="grid border-b border-black bg-signal font-mono text-[0.65rem] font-bold uppercase text-black sm:grid-cols-3">
           <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Scoped key / client ready</p>
           <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Usage / account visible</p>
-          <p class="px-4 py-3 sm:px-6">Catalog / Available + WIP</p>
+          <p class="px-4 py-3 sm:px-6">Catalog / Available + roadmap</p>
         </div>
       </section>
 
@@ -214,12 +214,12 @@ const proofPoints = [
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
             <p class="max-w-2xl text-base leading-7 text-white/62">
               The public catalog lists {publicMcpProducts.length} MCPs. {availableMcpCount} are
-              available today. The rest are marked WIP and cannot be checked out.
+              available today. The rest have a visible hosted deployment plan and cannot be checked out yet.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <a href="/products" class="inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">Full catalog</a>
               <a href="/research" class="inline-flex min-h-11 items-center border border-white/50 px-4 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Research</a>
-              <a href="#waitlist" class="inline-flex min-h-11 items-center border border-white/50 px-4 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">WIP access</a>
+              <a href="/products#planned-mcps" class="inline-flex min-h-11 items-center border border-white/50 px-4 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Planned MCPs</a>
             </div>
           </div>
         </header>
@@ -274,11 +274,11 @@ const proofPoints = [
           <div class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Product signal / 06</p>
             <h2 id="waitlist-title" class="mt-4 max-w-2xl text-4xl font-black uppercase leading-[0.94] sm:text-5xl">
-              Tell us which WIP product matters next.
+              Tell us which planned MCP matters next.
             </h2>
             <p class="mt-5 max-w-xl text-sm leading-7 text-white/60">
-              Choose one work-in-progress MCP to receive an access update.
-              Nothing marked WIP is available for checkout.
+              Choose one planned or in-rollout MCP to receive an access update.
+              These products are not available for checkout until their hosted gates pass.
             </p>
           </div>
           <div class="bg-white/[0.025] p-5 text-white sm:p-7 lg:p-10">
@@ -286,8 +286,8 @@ const proofPoints = [
             <WaitlistForm
               client:load
               apiBaseUrl={apiBaseUrl}
-              slug={wipProducts[0]?.slug ?? "monarchic-ai"}
-              products={wipProducts}
+              slug={plannedProducts[0]?.slug ?? "monarchic-ai"}
+              products={plannedProducts}
               submitLabel="Join waitlist"
             />
           </div>

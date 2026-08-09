@@ -11,6 +11,7 @@ import {
   usageAllowanceLabel,
   findPlanPrice,
   formatPriceUSD,
+  hostedMcpStatus,
   planStatusLabel,
   resolveDisplayPrice,
   type CatalogPlan,
@@ -30,14 +31,17 @@ const usagePlans = allPlans
 const mcpProducts = allPlans
   .filter((plan) => plan.kind === "single-mcp")
   .sort((a, b) => {
-    const availabilityOrder = (plan: CatalogPlan) => plan.status === "available" ? 0 : 1;
+    const statusOrder = { available: 0, in_rollout: 1, planned: 2 } as const;
+    const availabilityOrder = (plan: CatalogPlan) => statusOrder[hostedMcpStatus(plan)];
     return availabilityOrder(a) - availabilityOrder(b) || a.displayName.localeCompare(b.displayName);
   });
 
-const availableMcpProducts = mcpProducts.filter((plan) => plan.status === "available");
-const wipMcpProducts = mcpProducts.filter((plan) => plan.status !== "available");
+const availableMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "available");
+const inRolloutMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "in_rollout");
+const plannedMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "planned");
 const availableMcpCount = availableMcpProducts.length;
-const wipMcpCount = wipMcpProducts.length;
+const inRolloutMcpCount = inRolloutMcpProducts.length;
+const plannedMcpCount = plannedMcpProducts.length;
 
 const researchByPlanSlug: Record<string, string> = {
   "mcp-explicitmem": "/research/explicitmem",
@@ -59,7 +63,7 @@ function statusClasses(plan: CatalogPlan): string {
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Products | Monarchic"
-      description="Compare Monarchic usage plans and the complete catalog of available and work-in-progress MCPs."
+      description="Compare Monarchic usage plans and the complete catalog of available, in-rollout, and planned MCPs."
       path="/products"
     />
   </head>
@@ -90,7 +94,7 @@ function statusClasses(plan: CatalogPlan): string {
           </div>
         </section>
 
-        <section aria-label="Catalog summary" class="mb-12 grid border-2 border-white bg-black/70 sm:grid-cols-2 lg:grid-cols-4">
+        <section aria-label="Catalog summary" class="mb-12 grid border-2 border-white bg-black/70 sm:grid-cols-2 lg:grid-cols-5">
           <div class="border-b border-white/36 p-5 sm:border-r lg:border-b-0">
             <p class="text-xs font-bold uppercase text-white/52">Plans</p>
             <p class="mt-3 text-3xl font-extrabold">{usagePlans.length}</p>
@@ -106,10 +110,15 @@ function statusClasses(plan: CatalogPlan): string {
             <p class="mt-3 text-3xl font-extrabold">{availableMcpCount}</p>
             <p class="mt-2 text-sm text-white/62">Ready to use with an active plan</p>
           </div>
+          <div class="border-b border-white/36 p-5 sm:border-r lg:border-b-0">
+            <p class="text-xs font-bold uppercase text-white/52">In rollout</p>
+            <p class="mt-3 text-3xl font-extrabold">{inRolloutMcpCount}</p>
+            <p class="mt-2 text-sm text-white/62">Healthy non-production deployment</p>
+          </div>
           <div class="p-5">
-            <p class="text-xs font-bold uppercase text-white/52">In progress</p>
-            <p class="mt-3 text-3xl font-extrabold">{wipMcpCount}</p>
-            <p class="mt-2 text-sm text-white/62">Listed for visibility and marked WIP</p>
+            <p class="text-xs font-bold uppercase text-white/52">Planned</p>
+            <p class="mt-3 text-3xl font-extrabold">{plannedMcpCount}</p>
+            <p class="mt-2 text-sm text-white/62">Accepted for hosted infrastructure</p>
           </div>
         </section>
 
@@ -117,6 +126,7 @@ function statusClasses(plan: CatalogPlan): string {
           <span class="mr-2 self-center text-[0.65rem] font-bold uppercase text-white/46">Jump to /</span>
           <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plans</a>
           <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Available MCPs</a>
+          <a href="#planned-mcps" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Planned MCPs</a>
           <a href="#how-usage-works" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Usage</a>
         </nav>
 
@@ -178,7 +188,7 @@ function statusClasses(plan: CatalogPlan): string {
                     ) : plan.status === "contact_sales" && plan.salesContactUrl ? (
                       <a href={plan.salesContactUrl} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact sales</a>
                     ) : (
-                      <a href="/waitlist" class="inline-flex min-h-11 items-center justify-center border-2 border-signal/80 px-3 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">Join waitlist</a>
+                      <a href={`/waitlist?product=${encodeURIComponent(plan.slug)}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal/80 px-3 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">Join waitlist</a>
                     )}
                     <a href={`/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plan details</a>
                   </div>
@@ -192,9 +202,9 @@ function statusClasses(plan: CatalogPlan): string {
           <p class="text-xs font-bold uppercase text-signal">02 / MCP catalog</p>
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Available MCPs</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            These five products are ready for public use with one shared usage
-            plan. Open a product to inspect a real tool call, its evidence, and
-            its runtime usage receipt.
+            These {availableMcpCount} products have production hosted routes.
+            Open one to inspect a real tool call, its evidence boundary, and
+            how runtime usage is measured.
           </p>
           <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {availableMcpProducts.map((plan) => (
@@ -202,26 +212,33 @@ function statusClasses(plan: CatalogPlan): string {
             ))}
           </div>
 
-          <details data-coming-next class="group mt-10 border-2 border-white/55 bg-black/72">
-            <summary class="flex min-h-20 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 transition hover:bg-signal hover:text-black focus-visible:bg-signal focus-visible:text-black [&::-webkit-details-marker]:hidden">
-              <span>
-                <span class="block text-[0.65rem] font-bold uppercase opacity-56">Roadmap</span>
-                <span class="mt-1 block text-lg font-extrabold uppercase">Coming next / {wipMcpCount} MCPs</span>
-              </span>
-              <span aria-hidden="true" class="text-3xl font-light leading-none transition-transform group-open:rotate-45">+</span>
-            </summary>
-            <div class="border-t border-white/35 p-4 sm:p-5">
-              <p class="max-w-3xl text-sm leading-7 text-white/62">
-                These products are visible for roadmap context but are not open
-                for checkout. Expand only when you want to inspect what is in progress.
+          {inRolloutMcpCount > 0 && (
+            <section class="mt-14 border-t-2 border-signal pt-8">
+              <p class="text-xs font-bold uppercase text-signal">Hosted expansion</p>
+              <h3 class="mt-3 text-2xl font-extrabold uppercase">In rollout / {inRolloutMcpCount}</h3>
+              <p class="mt-3 max-w-3xl text-sm leading-7 text-white/62">
+                These MCPs have passed a non-production deployment gate. Public access stays closed until production readiness, tenant isolation, and cost attribution pass.
               </p>
               <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {wipMcpProducts.map((plan) => (
+                {inRolloutMcpProducts.map((plan) => (
                   <ProductCatalogCard plan={plan} researchHref={researchByPlanSlug[plan.slug]} />
                 ))}
               </div>
+            </section>
+          )}
+
+          <section id="planned-mcps" class="mt-14 scroll-mt-8 border-t-2 border-white/55 pt-8">
+            <p class="text-xs font-bold uppercase text-white/54">Hosted expansion</p>
+            <h3 class="mt-3 text-2xl font-extrabold uppercase">Planned / {plannedMcpCount}</h3>
+            <p class="mt-3 max-w-3xl text-sm leading-7 text-white/62">
+              These MCPs are accepted for the hosted catalog and have an assigned runtime plan. They are listed so the roadmap is visible, but public access remains closed until their deployment gates pass.
+            </p>
+            <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {plannedMcpProducts.map((plan) => (
+                <ProductCatalogCard plan={plan} researchHref={researchByPlanSlug[plan.slug]} />
+              ))}
             </div>
-          </details>
+          </section>
         </section>
 
         <section id="how-usage-works" class="mb-20 scroll-mt-8 border-2 border-white bg-black/76 p-6 lg:p-8">

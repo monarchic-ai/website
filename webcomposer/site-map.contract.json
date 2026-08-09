@@ -7,17 +7,17 @@
       "title": "Home",
       "purpose": "Introduce the Monarchic MCP catalog, adaptive usage model, product availability, and current benchmark evidence.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["catalog_positioning", "available_and_wip_scope", "adaptive_usage_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
+      "requiredContent": ["catalog_positioning", "available_rollout_and_planned_scope", "adaptive_usage_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
       "forbiddenContent": ["secret names", "private API URLs", "unsupported availability claims", "internal test output", "website implementation details"],
       "primaryActions": ["start_evaluation", "view_products", "read_docs", "view_research", "join_waitlist"]
     },
     {
       "route": "/products",
       "title": "Products",
-      "purpose": "Let buyers compare five subscription plans with weekly execution usage, lead with the five available MCPs, and inspect ten WIP products under a collapsed roadmap.",
+      "purpose": "Let buyers compare five subscription plans with weekly execution usage, inspect sixteen available MCPs, and see eleven planned hosted products.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["five_usage_plans", "fifteen_mcp_products", "five_available_mcps_first", "collapsed_wip_roadmap", "availability", "wip_markers", "adaptive_usage_model", "catalog_prices", "weekly_operation_examples", "purchase_link_for_available_plans", "docs_link"],
-      "forbiddenContent": ["retired MCPs", "workflow bundles", "platform promotion", "standalone MCP subscriptions", "prices absent from the catalog", "checkout promises for WIP products", "website implementation details"],
+      "requiredContent": ["five_usage_plans", "twenty_seven_mcp_products", "sixteen_available_mcps_first", "visible_hosted_roadmap", "availability", "rollout_and_planned_markers", "adaptive_usage_model", "catalog_prices", "weekly_operation_examples", "purchase_link_for_available_plans", "docs_link"],
+      "forbiddenContent": ["retired MCPs", "workflow bundles", "platform promotion", "standalone MCP subscriptions", "prices absent from the catalog", "checkout promises for planned products", "website implementation details"],
       "primaryActions": ["compare_plans", "inspect_product", "open_purchase_flow_when_available", "read_docs"]
     },
     {
@@ -35,7 +35,7 @@
       "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-plan access, and eligible next action; available MCPs also show one metered tool workflow and its current boundary.",
       "audience": ["buyers", "engineering teams", "agent users"],
       "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_plan_access", "request_execution_output_usage_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
-      "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for WIP products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
+      "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for planned products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
       "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_wip", "return_to_catalog", "read_benchmark_when_available"]
     },
     {
@@ -59,9 +59,9 @@
     {
       "route": "/waitlist",
       "title": "Waitlist",
-      "purpose": "Collect an email address for WIP product availability and account-access updates.",
+      "purpose": "Collect an email address for planned and in-rollout product availability updates.",
       "audience": ["prospects", "buyers", "agent users"],
-      "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "wip_scope"],
+      "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "hosted_roadmap_scope"],
       "forbiddenContent": ["instant access promises", "unsupported launch dates", "private CRM labels", "website release status"],
       "primaryActions": ["join_waitlist"]
     },

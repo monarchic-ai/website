@@ -169,16 +169,17 @@
     "slug": "mcp-cicd",
     "displayName": "CI/CD MCP",
     "tagline": "Pipeline diagnostics, release gates, and workflow analysis",
-    "description": "CI/CD MCP diagnoses delivery pipelines, evaluates release gates, and exports pipeline architecture. Public access is still a work in progress.",
+    "description": "CI/CD MCP diagnoses delivery pipelines, evaluates release gates, and exports pipeline architecture through the hosted catalog.",
     "featureBullets": [
       "Diagnose failed and slow pipeline runs",
       "Evaluate release readiness from provider evidence",
       "Export pipeline graphs for architecture analysis"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is not available for checkout. Its operations will use the shared account allowance when access opens.",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
-    "status": "coming_soon",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -186,7 +187,7 @@
     "slug": "mcp-browserops",
     "displayName": "BrowserOps MCP",
     "tagline": "Browser evidence and UI verification",
-    "description": "BrowserOps MCP captures screenshots, console failures, network failures, and visible-page assertions. Public hosted access remains a work in progress.",
+    "description": "BrowserOps MCP captures screenshots, console failures, network failures, and visible-page assertions through an isolated hosted browser runtime.",
     "featureBullets": [
       "Capture browser evidence for UI reviews",
       "Check visible content, console output, and network failures",
@@ -194,8 +195,9 @@
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Browser verification uses the browser operation class. The interface will show the applicable rate before starting and settle measured runtime and provider expense afterward.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -210,9 +212,10 @@
       "Gate downstream execution until approval"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -227,9 +230,10 @@
       "Report setup failures without hiding them"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -246,6 +250,7 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
+    "hostedStatus": "available",
     "status": "available",
     "prices": []
   },
@@ -263,6 +268,7 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
+    "hostedStatus": "available",
     "status": "available",
     "prices": []
   },
@@ -280,6 +286,7 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
+    "hostedStatus": "available",
     "status": "available",
     "prices": []
   },
@@ -295,9 +302,10 @@
       "Prepare practical outreach angles"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -314,8 +322,9 @@
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "PTY discovery uses very little of the allowance. Provider-backed terminal execution varies with duration and measured resource use.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -332,6 +341,7 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
+    "hostedStatus": "available",
     "status": "available",
     "prices": []
   },
@@ -347,9 +357,10 @@
       "Return machine-readable results and failures"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -366,6 +377,7 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
+    "hostedStatus": "available",
     "status": "available",
     "prices": []
   },
@@ -381,9 +393,64 @@
       "Run repeatable ranking checks"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-codequality",
+    "displayName": "CodeQuality MCP",
+    "tagline": "Focused code-quality analysis and finding explanations",
+    "description": "CodeQuality MCP analyzes source input for concrete quality findings and explains each result through the hosted catalog.",
+    "featureBullets": [
+      "Analyze supplied source without cloning a repository",
+      "Separate lightweight explanations from deeper analysis",
+      "Return structured findings with practical remediation"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-copydev",
+    "displayName": "CopyDev MCP",
+    "tagline": "Copy editing and precise content review",
+    "description": "CopyDev MCP edits product copy and checks it for vague, unsupported, or hard-to-act-on language through the hosted catalog.",
+    "featureBullets": [
+      "Edit copy while preserving its intended voice",
+      "Flag vague claims and unclear calls to action",
+      "Return review findings separately from rewritten text"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-nutrition",
+    "displayName": "Nutrition MCP",
+    "tagline": "Structured nutrition calculations and planning",
+    "description": "Nutrition MCP applies deterministic nutrition calculations, validates requirements, and builds structured plans through the hosted catalog.",
+    "featureBullets": [
+      "Inspect calculation inputs and schema requirements",
+      "Run deterministic dilution and nutrition calculations",
+      "Build structured plans from explicit constraints"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -400,6 +467,7 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
+    "hostedStatus": "planned",
     "status": "coming_soon",
     "prices": []
   },
@@ -417,6 +485,169 @@
     "creditAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-codeintel",
+    "displayName": "CodeIntel MCP",
+    "tagline": "Live code navigation and language-server intelligence",
+    "description": "CodeIntel MCP keeps a durable repository index and warm language-server sessions for symbol lookup, references, diagnostics, and code navigation. Hosted deployment is planned.",
+    "featureBullets": [
+      "Navigate symbols and references across large repositories",
+      "Reuse warm language-server sessions between related calls",
+      "Keep repository indexing separate for each tenant"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Indexing and language-server work will use the shared account allowance when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-codeprofiler",
+    "displayName": "CodeProfiler MCP",
+    "tagline": "Codebase profiling plans and bounded analysis jobs",
+    "description": "CodeProfiler MCP detects a repository's languages and project markers, builds a profiling plan, and runs bounded read-only probes in an isolated job. Hosted deployment is planned.",
+    "featureBullets": [
+      "Choose profiling tools from the repository's actual stack",
+      "Separate quick inventory from deeper analysis jobs",
+      "Return tool output and failures in one structured result"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Job duration and the selected profiling toolbox will determine allowance use when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-orgfleet",
+    "displayName": "OrgFleet MCP",
+    "tagline": "Organization-wide repository inventory and governed sync",
+    "description": "OrgFleet MCP inventories repositories across a GitHub organization and coordinates governed clone and sync operations from the management plane. Hosted deployment is planned.",
+    "featureBullets": [
+      "Inspect organization repository state in one inventory",
+      "Keep read-only checks separate from clone and sync operations",
+      "Record structured results for fleet-wide work"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Read-only inventory and governed repository operations will use different operation classes when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-orgintel",
+    "displayName": "OrgIntel MCP",
+    "tagline": "Cross-repository intelligence and organization reports",
+    "description": "OrgIntel MCP runs repository intelligence across an organization, tracks multi-repository jobs, and produces resumable reports. Hosted deployment is planned.",
+    "featureBullets": [
+      "Run repository analysis across a selected organization scope",
+      "Resume long jobs without discarding completed work",
+      "Collect cross-repository findings in one report"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Multi-repository jobs will be metered by their measured runtime and workload when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-proofpack",
+    "displayName": "ProofPack MCP",
+    "tagline": "Signed evidence packs for agent and release work",
+    "description": "ProofPack MCP hashes evidence, builds portable proof packs, verifies their contents, and applies signing policy before export. Hosted deployment is planned.",
+    "featureBullets": [
+      "Bundle evidence with a deterministic manifest",
+      "Verify content hashes before review or release",
+      "Apply explicit signing and export policy"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Pack creation, verification, storage, and signing will use the shared account allowance when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-vectordesign",
+    "displayName": "VectorDesign MCP",
+    "tagline": "Structured vector design sessions and export",
+    "description": "VectorDesign MCP lets agents build and revise vector artwork through structured design sessions, then validate and export the result. Hosted deployment is planned.",
+    "featureBullets": [
+      "Build vector graphics through inspectable design operations",
+      "Keep session state available across related calls",
+      "Validate artwork before export"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Session work, stored assets, and exports will use the shared account allowance when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-webdashboard",
+    "displayName": "WebDashboard MCP",
+    "tagline": "Dashboard specifications from approved web plans",
+    "description": "WebDashboard MCP turns approved WebComposer contracts into dashboard-specific structure, states, and implementation guidance. Hosted deployment is planned.",
+    "featureBullets": [
+      "Define dashboard information hierarchy and states",
+      "Reuse approved site contracts and design constraints",
+      "Prepare implementation guidance without mutating a repository"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Planning calls and stored project artifacts will use the shared account allowance when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-webinfo",
+    "displayName": "WebInfo MCP",
+    "tagline": "Website research, evidence, and content decisions",
+    "description": "WebInfo MCP gathers website research, records source evidence, and turns approved findings into reusable content decisions. Hosted deployment is planned.",
+    "featureBullets": [
+      "Keep website research tied to source evidence",
+      "Separate draft findings from approved content decisions",
+      "Reuse approved research across page-planning tools"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Research, stored evidence, and provider-backed work will use the shared account allowance when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
+    "status": "coming_soon",
+    "prices": []
+  },
+  {
+    "kind": "single-mcp",
+    "slug": "mcp-websplash",
+    "displayName": "WebSplash MCP",
+    "tagline": "Rendered web visuals, motion, and export",
+    "description": "WebSplash MCP builds and renders web-ready visual scenes, then exports still images, motion assets, and implementation bundles. Hosted deployment is planned.",
+    "featureBullets": [
+      "Create web visuals from structured scene inputs",
+      "Render still and motion outputs in an isolated browser runtime",
+      "Export assets with implementation-ready metadata"
+    ],
+    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageSummary": "Hosted deployment is planned. Browser rendering, video processing, storage, and output size will determine allowance use when access opens.",
+    "lifecycle": "wip",
+    "hostedStatus": "planned",
     "status": "coming_soon",
     "prices": []
   }
