@@ -313,7 +313,7 @@
       "PTY discovery uses very little; terminal execution varies with duration"
     ],
     "creditAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "PTY discovery uses very little of the allowance. Terminal execution varies with duration and measured provider work.",
+    "usageSummary": "PTY discovery uses very little of the allowance. Provider-backed terminal execution varies with duration and measured resource use.",
     "lifecycle": "wip",
     "status": "coming_soon",
     "prices": []

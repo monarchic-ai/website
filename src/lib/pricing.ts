@@ -1,6 +1,8 @@
 // Catalog of Monarchic plans rendered by the public website and webapp.
-// Product and price data is generated from Stripe into pricing.generated.json;
-// coming-soon plans are maintained in pricing.coming-soon.json.
+// Product and price data is generated from Stripe into pricing.generated.json.
+// Browser code imports the separately generated public copy so historical
+// Stripe credit vocabulary never enters a customer-delivered bundle.
+// Coming-soon plans are maintained in pricing.coming-soon.json.
 
 export type PlanKind = "usage-plan" | "single-mcp" | "bundle" | "ai";
 export type PlanCadence = "monthly" | "annual";
@@ -47,7 +49,7 @@ export interface CatalogPlan {
   salesContactUrl?: string;
 }
 
-import generatedPlans from "./pricing.generated.json" with { type: "json" };
+import generatedPlans from "./pricing.public.generated.json" with { type: "json" };
 import comingSoonPlansJson from "./pricing.coming-soon.json" with { type: "json" };
 
 // Stripe may retain retired products for historical subscription records. Keep
@@ -78,82 +80,8 @@ export const previewPublicPlanSlugs = new Set([
   "usage-business",
 ]);
 
-const DEFAULT_USAGE_SUMMARY =
-  "Simple calls use very little of the allowance. Analysis, long-running jobs, browser execution, stored evidence, output size, and disclosed provider expense can use more.";
-const PTY_USAGE_SUMMARY =
-  "PTY discovery uses very little of the allowance. Provider-backed terminal execution varies with duration and measured resource use.";
-
-function applyPrepaidCatalogPolicy(plan: CatalogPlan): CatalogPlan {
-  if (plan.kind !== "usage-plan" && plan.kind !== "single-mcp") {
-    return plan;
-  }
-  if (plan.kind === "single-mcp") {
-    return {
-      ...plan,
-      featureBullets: plan.featureBullets
-        .filter(
-          (bullet) =>
-            !/credits?|overage|additional usage|before metered usage/i.test(bullet),
-        )
-        .map((bullet) =>
-          plan.slug === "mcp-pty" && /one base credit|measured settlement/i.test(bullet)
-            ? "Terminal usage varies with execution duration and measured provider work"
-            : bullet,
-        ),
-      usageSummary:
-        plan.slug === "mcp-pty" ? PTY_USAGE_SUMMARY : (plan.usageSummary ?? DEFAULT_USAGE_SUMMARY),
-      includedCredits: undefined,
-      creditAllowanceLabel: "Included with an active usage plan",
-      overageLabel: undefined,
-    };
-  }
-  const isEvaluation = plan.slug === "usage-evaluation";
-  const afterLimitBullet = isEvaluation
-    ? "Usage pauses at the evaluation limit"
-    : "Pause by default or enable pay-as-you-go";
-  const featureBullets = plan.featureBullets
-    .filter(
-      (bullet) =>
-        !/credits?|overage|additional usage|before metered usage/i.test(
-          bullet,
-        ),
-    )
-    .map((bullet) =>
-      plan.slug === "mcp-pty" && /one base credit|measured settlement/i.test(bullet)
-        ? "Terminal usage varies with execution duration and measured provider work"
-        : bullet,
-    );
-  if (!featureBullets.some((bullet) =>
-    isEvaluation
-      ? /usage pauses at the evaluation limit/i.test(bullet)
-      : bullet === afterLimitBullet
-  )) {
-    featureBullets.push(afterLimitBullet);
-  }
-  return {
-    ...plan,
-    description: plan.description.replace(
-      /before metered usage begins/gi,
-      "within the plan's weekly execution allowance",
-    ),
-    featureBullets,
-    usageSummary: plan.usageSummary ?? DEFAULT_USAGE_SUMMARY,
-    includedCredits: undefined,
-    creditAllowanceLabel: isEvaluation
-      ? "Limited 30-day evaluation usage"
-      : plan.creditAllowanceLabel,
-    overageLabel: isEvaluation
-      ? "Paused after the evaluation allowance"
-      : "Pause by default; optional PAYG",
-  };
-}
-
-const generatedCatalogPlans = (
-  (generatedPlans as CatalogPlan[]) ?? []
-).map(applyPrepaidCatalogPolicy);
-const nonGeneratedPlans = (
-  (comingSoonPlansJson as CatalogPlan[]) ?? []
-).map(applyPrepaidCatalogPolicy);
+const generatedCatalogPlans = (generatedPlans as CatalogPlan[]) ?? [];
+const nonGeneratedPlans = (comingSoonPlansJson as CatalogPlan[]) ?? [];
 
 export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   .filter(

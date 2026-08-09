@@ -7,6 +7,7 @@ import { resolve } from "node:path";
 const catalogFiles = [
   "pricing.ts",
   "pricing.generated.json",
+  "pricing.public.generated.json",
   "pricing.coming-soon.json",
   "productDetails.ts",
 ];
@@ -73,6 +74,7 @@ for (const marker of [
   '"X-Robots-Tag": "noindex, nofollow"',
   '"pricing.ts"',
   '"pricing.generated.json"',
+  '"pricing.public.generated.json"',
   '"pricing.coming-soon.json"',
   '"productDetails.ts"',
 ]) {

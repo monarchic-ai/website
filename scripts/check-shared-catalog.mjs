@@ -8,6 +8,7 @@ import { workspace } from "./client-workspace.mjs";
 const catalogFiles = [
   "pricing.ts",
   "pricing.generated.json",
+  "pricing.public.generated.json",
   "pricing.coming-soon.json",
   "productDetails.ts",
 ];
@@ -139,6 +140,7 @@ async function checkBuildInfoDigestMarker(label, projectDir) {
     '"X-Robots-Tag": "noindex, nofollow"',
     '"pricing.ts"',
     '"pricing.generated.json"',
+    '"pricing.public.generated.json"',
     '"pricing.coming-soon.json"',
     '"productDetails.ts"',
   ];

@@ -1,5 +1,6 @@
 import { allPlans } from "../lib/pricing";
 import generatedPlans from "../lib/pricing.generated.json" with { type: "json" };
+import publicGeneratedPlans from "../lib/pricing.public.generated.json" with { type: "json" };
 import comingSoonPlansJson from "../lib/pricing.coming-soon.json" with { type: "json" };
 import catalogManifest from "../lib/catalog.manifest.json" with { type: "json" };
 import { productDetails } from "../lib/productDetails";
@@ -14,6 +15,7 @@ async function catalogArtifactDigest(): Promise<string> {
   const payload = stableStringify({
     "pricing.ts": manifestFileHash("pricing.ts"),
     "pricing.generated.json": generatedPlans,
+    "pricing.public.generated.json": publicGeneratedPlans,
     "pricing.coming-soon.json": comingSoonPlansJson,
     "productDetails.ts": productDetails,
   });
