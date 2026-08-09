@@ -54,11 +54,19 @@ The production smoke verifies:
 - `/build-info.json`
 - homepage content and canonical/Open Graph/Twitter metadata
 - public product index
-- BrowserOps product detail page
-- research index
-- RepoIntel research page
+- all 27 MCP product-to-research links
+- research index coverage, including 16 Available and 11 Planned briefs
+- all 27 research routes, canonical URLs, catalog-derived status, and product backlinks
+- representative Available and Planned research pages in Chromium
+- the distinct ExplicitMem LongMemEval-S benchmark assertions
 - app CTA targets
-- horizontal overflow
+- desktop and 320px horizontal overflow
+
+The product-research route inventory comes from the same checked-in content map
+used to build the pages. A generic research brief is evidence about a product's
+problem, validation approach, and current limits; it must not be reported as a
+published benchmark. Planned pages must retain their planned status and the
+statement that no production result is claimed.
 
 Run production locally:
 

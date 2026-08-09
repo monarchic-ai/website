@@ -1,4 +1,5 @@
 import { allPlans } from "../lib/pricing";
+import { mcpResearchEntries } from "../lib/mcpResearch";
 
 const siteUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBSITE_BASE_URL ?? "https://monarchic.io").replace(/\/$/, "");
 
@@ -11,7 +12,6 @@ const staticPaths = [
   "/privacy",
   "/terms",
   "/research",
-  "/research/explicitmem",
 ];
 
 function urlEntry(path: string): string {
@@ -20,12 +20,13 @@ function urlEntry(path: string): string {
 }
 
 export function GET() {
-  const paths = [
+  const paths = Array.from(new Set([
     ...staticPaths,
     ...allPlans
       .filter((plan) => plan.kind === "usage-plan" || plan.kind === "single-mcp")
       .map((plan) => `/products/${plan.slug}`),
-  ];
+    ...mcpResearchEntries.map((entry) => entry.href),
+  ]));
 
   return new Response(
     [

@@ -4,7 +4,22 @@ import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import { explicitMemBenchmark } from "../../lib/explicitmemBenchmark";
+import { mcpResearchEntries } from "../../lib/mcpResearch";
+import { catalogStatusLabel } from "../../lib/pricing";
 import "../../styles/global.css";
+
+const publishedBenchmark = mcpResearchEntries.find((entry) => entry.publishedBenchmark);
+if (!publishedBenchmark) throw new Error("ExplicitMem research benchmark is missing");
+
+const productionNotes = mcpResearchEntries.filter(
+  (entry) => entry.hostedStatus === "available" && !entry.publishedBenchmark,
+);
+const prelaunchPrograms = mcpResearchEntries.filter(
+  (entry) => entry.hostedStatus !== "available",
+);
+const availableCount = mcpResearchEntries.filter(
+  (entry) => entry.hostedStatus === "available",
+).length;
 ---
 
 <html lang="en">
@@ -16,7 +31,7 @@ import "../../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Research | Monarchic"
-      description="Published Monarchic benchmarks with named datasets, methods, results, and limitations."
+      description="Public research questions, evaluation methods, evidence status, and limitations for every Monarchic MCP."
       path="/research"
     />
   </head>
@@ -25,51 +40,79 @@ import "../../styles/global.css";
       <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-55" />
       <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.72),_rgba(0,0,0,0.97))]"></div>
 
-      <div class="relative z-10 mx-auto max-w-7xl px-5 py-6 sm:px-6 sm:py-10">
+      <div class="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
         <SiteHeader active="research" />
 
-        <section class="grid gap-8 border-b-2 border-white py-12 lg:min-h-[500px] lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
+        <section class="grid gap-10 border-b-2 border-white py-12 lg:min-h-[520px] lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
           <div>
             <p class="inline-flex border border-white/50 bg-black/60 px-3 py-2 text-xs font-bold uppercase text-white/70">
-              Research
+              Research / {mcpResearchEntries.length} public records
             </p>
             <h1 class="mt-6 max-w-5xl text-5xl font-extrabold uppercase leading-[0.86] text-white sm:text-7xl lg:text-8xl [text-shadow:8px_8px_0_rgba(255,255,255,0.11)]">
-              Benchmarks and methodology.
+              Methods, evidence, limits.
             </h1>
             <p class="mt-7 max-w-2xl text-base leading-8 text-white/76 sm:text-lg">
-              We publish a research page only when a result has a named dataset,
-              a dated reproducible run, clear scoring rules, and documented limits.
+              Every public MCP has a research record. Each page states what we test, what evidence exists, and what the evidence does not establish. We reserve the word benchmark for dated measured results.
             </p>
             <div class="mt-8 flex flex-wrap gap-3">
-              <a href="#published-benchmarks" class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
-                View benchmark
+              <a href="#published-benchmark" class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
+                Published benchmark
               </a>
-              <a href="/products" class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-5 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
-                Browse products
+              <a href="#research-notes" class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-5 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
+                All research notes
               </a>
             </div>
           </div>
 
-          <aside class="border-2 border-white bg-black/78 p-6 shadow-[10px_10px_0_rgba(255,255,255,0.1)]">
-            <p class="text-xs font-bold uppercase text-signal">Publication bar</p>
-            <h2 class="mt-4 text-3xl font-extrabold uppercase">Evidence before claims</h2>
-            <ul class="mt-6 grid gap-4 text-sm leading-6 text-white/72">
-              <li class="border-l-2 border-signal pl-4">Named public dataset or protocol</li>
-              <li class="border-l-2 border-signal pl-4">Dated run with a meaningful sample</li>
-              <li class="border-l-2 border-signal pl-4">Scoring method and runtime boundary</li>
-              <li class="border-l-2 border-signal pl-4">Failures and limitations beside the result</li>
-            </ul>
+          <aside class="border-2 border-white bg-black/78 shadow-[10px_10px_0_rgba(255,255,255,0.1)]">
+            <div class="grid grid-cols-3 border-b border-white/36">
+              <div class="border-r border-white/36 p-4">
+                <p class="text-3xl font-extrabold">{mcpResearchEntries.length}</p>
+                <p class="mt-2 text-[0.62rem] font-bold uppercase text-white/48">Records</p>
+              </div>
+              <div class="border-r border-white/36 p-4">
+                <p class="text-3xl font-extrabold">{availableCount}</p>
+                <p class="mt-2 text-[0.62rem] font-bold uppercase text-white/48">Hosted</p>
+              </div>
+              <div class="p-4">
+                <p class="text-3xl font-extrabold">{prelaunchPrograms.length}</p>
+                <p class="mt-2 text-[0.62rem] font-bold uppercase text-white/48">Pre-launch</p>
+              </div>
+            </div>
+            <div class="p-6">
+              <p class="text-xs font-bold uppercase text-signal">Publication discipline</p>
+              <ul class="mt-5 grid gap-4 text-sm leading-6 text-white/72">
+                <li class="border-l-2 border-signal pl-4">A clear question and evaluation method</li>
+                <li class="border-l-2 border-signal pl-4">Evidence status stated beside the claim</li>
+                <li class="border-l-2 border-signal pl-4">Limitations kept visible</li>
+                <li class="border-l-2 border-signal pl-4">No benchmark label without a dated run</li>
+              </ul>
+            </div>
           </aside>
         </section>
 
-        <section id="published-benchmarks" class="scroll-mt-6 py-12">
-          <p class="text-xs font-bold uppercase text-white/52">Published benchmark</p>
-          <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-5xl">ExplicitMem on LongMemEval-S</h2>
+        <section id="published-benchmark" class="scroll-mt-6 py-12">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p class="text-xs font-bold uppercase text-signal">01 / Published benchmark</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-5xl">ExplicitMem on LongMemEval-S</h2>
+            </div>
+            <p class="max-w-md text-sm leading-7 text-white/58">
+              The only current Monarchic result with a dated run, fixed method, named dataset, and reported measurements.
+            </p>
+          </div>
 
-          <article class="group mt-7 grid gap-0 border-2 border-white/70 bg-black/76 transition duration-200 hover:-translate-y-1 hover:border-signal focus-within:-translate-y-1 focus-within:border-signal lg:grid-cols-[0.85fr_1.15fr]">
+          <article
+            data-research-card={publishedBenchmark.productSlug}
+            data-research-status={publishedBenchmark.hostedStatus}
+            class="group mt-7 grid border-2 border-white/70 bg-black/76 transition duration-200 hover:-translate-y-1 hover:border-signal focus-within:-translate-y-1 focus-within:border-signal lg:grid-cols-[0.82fr_1.18fr]"
+          >
             <div class="border-b-2 border-white/40 p-6 transition group-hover:border-signal/50 lg:border-r-2 lg:border-b-0">
-              <p class="text-xs font-bold uppercase text-signal">{explicitMemBenchmark.questions}-question reproduced run</p>
-              <p class="mt-5 text-6xl font-extrabold leading-none sm:text-7xl">{explicitMemBenchmark.answerAccuracy}</p>
+              <div class="flex flex-wrap justify-between gap-3">
+                <p class="text-xs font-bold uppercase text-signal">{explicitMemBenchmark.questions}-question run</p>
+                <span class="border border-signal bg-signal px-2 py-1 text-[0.62rem] font-bold uppercase text-black">{catalogStatusLabel(publishedBenchmark.plan)}</span>
+              </div>
+              <p class="mt-6 text-6xl font-extrabold leading-none sm:text-7xl">{explicitMemBenchmark.answerAccuracy}</p>
               <p class="mt-3 text-xs font-bold uppercase text-white/58">Answer accuracy</p>
               <dl class="mt-8 grid grid-cols-2 gap-3">
                 <div class="border border-white/30 p-3">
@@ -80,40 +123,93 @@ import "../../styles/global.css";
                   <dt class="text-[0.65rem] font-bold uppercase text-white/48">Recall@K</dt>
                   <dd class="mt-2 text-xl font-extrabold">{explicitMemBenchmark.retrievalRecallAtK}</dd>
                 </div>
-                <div class="border border-white/30 p-3">
-                  <dt class="text-[0.65rem] font-bold uppercase text-white/48">Local latency</dt>
-                  <dd class="mt-2 text-xl font-extrabold">{explicitMemBenchmark.averageLatency}</dd>
-                </div>
-                <div class="border border-white/30 p-3">
-                  <dt class="text-[0.65rem] font-bold uppercase text-white/48">Context</dt>
-                  <dd class="mt-2 text-xl font-extrabold">{explicitMemBenchmark.averageContextShort}</dd>
-                </div>
               </dl>
             </div>
             <div class="flex flex-col p-6 sm:p-8">
-              <p class="text-xs font-bold uppercase text-white/48">Generated {explicitMemBenchmark.generated}</p>
-              <h3 class="mt-4 text-3xl font-extrabold uppercase">Durable memory with an 800-token context budget</h3>
+              <p class="text-xs font-bold uppercase text-white/48">{publishedBenchmark.briefLabel}</p>
+              <h3 class="mt-4 text-3xl font-extrabold uppercase">{publishedBenchmark.question}</h3>
               <p class="mt-5 max-w-2xl text-sm leading-7 text-white/72">
-                The run evaluated all {explicitMemBenchmark.questions} {explicitMemBenchmark.benchmark} questions with a
-                50-result retrieval limit and an 800-token context budget.
-                It answered {explicitMemBenchmark.passedQuestions}/{explicitMemBenchmark.questions} correctly with complete
-                answer faithfulness, retrieval recall, and retrieval-receipt coverage.
+                The complete run reports method, configuration, question-type results, one scored miss, and the interpretation boundary beside the measurements.
               </p>
-              <p class="mt-4 max-w-2xl text-sm leading-7 text-signal-soft/80">
-                The one scored miss is a faithful temporal answer that computes
-                12 weeks from the source dates while the upstream gold expects
-                15. This fixed synthesis-profile result is not a universal memory ranking.
-              </p>
+              <p class="mt-4 max-w-2xl text-sm leading-7 text-signal-soft/80">{publishedBenchmark.limit}</p>
               <div class="mt-auto flex flex-wrap gap-3 pt-8">
-                <a href="/research/explicitmem" class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
+                <a href={publishedBenchmark.href} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Method and results
                 </a>
-                <a href="/products/mcp-explicitmem" class="inline-flex min-h-11 items-center justify-center border-2 border-white/50 px-4 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
-                  ExplicitMem product
+                <a href={`/products/${publishedBenchmark.productSlug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-white/50 px-4 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
+                  Product details
                 </a>
               </div>
             </div>
           </article>
+        </section>
+
+        <section id="research-notes" class="scroll-mt-6 border-t-2 border-white py-12">
+          <div class="grid gap-5 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+            <div>
+              <p class="text-xs font-bold uppercase text-signal">02 / Production research notes</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-5xl">Public workflow basis / {productionNotes.length}</h2>
+            </div>
+            <p class="text-sm leading-7 text-white/62">
+              These services are available through hosted routes. Their notes show a bounded workflow contract and the question that still needs evaluation. They do not claim a dated outcome or comparative benchmark.
+            </p>
+          </div>
+          <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {productionNotes.map((entry) => (
+              <article
+                data-research-card={entry.productSlug}
+                data-research-status={entry.hostedStatus}
+                class="group flex min-h-[330px] flex-col border border-white/45 bg-black/66 p-5 transition duration-200 hover:-translate-y-1 hover:border-signal hover:bg-signal/[0.06] focus-within:-translate-y-1 focus-within:border-signal"
+              >
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                  <span class="text-[0.62rem] font-bold uppercase text-white/48">{entry.detail.category}</span>
+                  <span class="border border-signal bg-signal px-2 py-1 text-[0.6rem] font-bold uppercase text-black">{catalogStatusLabel(entry.plan)}</span>
+                </div>
+                <p class="mt-5 text-xs font-bold uppercase text-signal">{entry.briefLabel}</p>
+                <h3 class="mt-3 text-2xl font-extrabold uppercase">{entry.plan.displayName}</h3>
+                <p class="mt-4 text-sm leading-7 text-white/70">{entry.question}</p>
+                <p class="mt-4 text-xs leading-6 text-white/48">{entry.limit}</p>
+                <div class="flex-1"></div>
+                <a href={entry.href} class="mt-6 inline-flex min-h-11 items-center justify-center border border-signal/70 px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">
+                  Read research note
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="border-t-2 border-white/55 py-12">
+          <div class="grid gap-5 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+            <div>
+              <p class="text-xs font-bold uppercase text-white/52">03 / Pre-launch programs</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-5xl">Questions before claims / {prelaunchPrograms.length}</h2>
+            </div>
+            <p class="text-sm leading-7 text-white/62">
+              These pages publish the intended evaluation before hosted access opens. They make no production-result claim.
+            </p>
+          </div>
+          <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {prelaunchPrograms.map((entry) => (
+              <article
+                data-research-card={entry.productSlug}
+                data-research-status={entry.hostedStatus}
+                class="group flex min-h-[330px] flex-col border border-white/35 bg-black/58 p-5 transition duration-200 hover:-translate-y-1 hover:border-signal hover:bg-signal/[0.05] focus-within:-translate-y-1 focus-within:border-signal"
+              >
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                  <span class="text-[0.62rem] font-bold uppercase text-white/48">{entry.detail.category}</span>
+                  <span class="border border-white/35 px-2 py-1 text-[0.6rem] font-bold uppercase text-white/58">{catalogStatusLabel(entry.plan)}</span>
+                </div>
+                <p class="mt-5 text-xs font-bold uppercase text-signal">{entry.briefLabel}</p>
+                <h3 class="mt-3 text-2xl font-extrabold uppercase">{entry.plan.displayName}</h3>
+                <p class="mt-4 text-sm leading-7 text-white/68">{entry.question}</p>
+                <p class="mt-4 text-xs font-bold uppercase text-white/46">No production result claimed</p>
+                <div class="flex-1"></div>
+                <a href={entry.href} class="mt-6 inline-flex min-h-11 items-center justify-center border border-white/45 px-4 text-xs font-bold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
+                  Read research program
+                </a>
+              </article>
+            ))}
+          </div>
         </section>
 
         <SiteFooter />

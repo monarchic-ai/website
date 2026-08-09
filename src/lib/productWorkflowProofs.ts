@@ -579,8 +579,8 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         symbolCount: 20381,
       },
     },
-    permission: "The repository must already exist in the hosted registry. This read-only call receives no customer provider credential and cannot index or refresh repositories.",
-    boundary: "The current hosted registry is shared and repository IDs are caller-supplied. This example uses a pre-indexed public/demo repository; do not use it for private source yet.",
+    permission: "Requires an authenticated, entitled account. This read-only workflow uses an approved pre-indexed public or demo repository.",
+    boundary: "Hosted access is limited to pre-indexed public or demo repositories; private source is not currently supported.",
     usageExplanation: "The completed summary receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
 };

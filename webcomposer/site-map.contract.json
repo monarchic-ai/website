@@ -1,6 +1,6 @@
 {
   "name": "Monarchic Public Website",
-  "description": "Content-only contract for Monarchic's public home, product, benchmark, waitlist, trust, company, privacy, and service-terms routes.",
+  "description": "Content-only contract for Monarchic's public home, product, research, benchmark, waitlist, trust, company, privacy, and service-terms routes.",
   "pages": [
     {
       "route": "/",
@@ -25,27 +25,36 @@
       "title": "ExplicitMem Product",
       "purpose": "Explain ExplicitMem's buyer fit, shared-plan access, capabilities, status, concrete metered workflow, current content boundary, and qualifying benchmark.",
       "audience": ["agent users", "AI platform teams", "engineering leaders"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_plan_access", "request_execution_output_usage_workflow", "required_access_and_boundary", "benchmark_link", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_plan_access", "request_execution_output_usage_workflow", "required_access_and_boundary", "product_research_link", "benchmark_link", "primary_cta"],
       "forbiddenContent": ["unsupported latency claims", "private benchmark records", "internal test output", "standalone MCP price"],
-      "primaryActions": ["compare_plans", "read_benchmark", "return_to_catalog"]
+      "primaryActions": ["compare_plans", "read_product_research", "read_benchmark", "return_to_catalog"]
     },
     {
       "route": "/products/[slug]",
       "title": "Product Detail",
       "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-plan access, and eligible next action; available MCPs also show one metered tool workflow and its current boundary.",
       "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_plan_access", "request_execution_output_usage_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
+      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_plan_access", "product_research_link_for_every_mcp", "request_execution_output_usage_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
       "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for planned products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
-      "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_wip", "return_to_catalog", "read_benchmark_when_available"]
+      "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_planned", "return_to_catalog", "read_product_research"]
     },
     {
       "route": "/research",
       "title": "Research",
-      "purpose": "Index only public benchmarks that meet the stated publication bar and keep limitations beside headline results.",
+      "purpose": "Index one bounded research brief for each of the twenty-seven public MCPs, separate available products from the hosted roadmap, and reserve benchmark language for results that meet the stricter publication bar.",
       "audience": ["technical buyers", "agent users", "research readers"],
-      "requiredContent": ["publication_criteria", "explicitmem_benchmark", "headline_metrics", "methodology_link", "limitations"],
-      "forbiddenContent": ["raw internal test output", "MCP hooks", "deployment checks", "unscoped benchmark rankings", "private data"],
-      "primaryActions": ["open_explicitmem_benchmark", "open_explicitmem_product"]
+      "requiredContent": ["twenty_seven_product_research_briefs", "sixteen_available_and_eleven_planned_status_groups", "catalog_derived_status", "brief_scope_boundary", "publication_criteria", "explicitmem_benchmark", "headline_metrics", "methodology_link", "limitations"],
+      "forbiddenContent": ["raw internal test output", "MCP hooks", "deployment checks", "proprietary implementation details", "unscoped benchmark rankings", "private data", "planned product presented as available"],
+      "primaryActions": ["open_product_research", "open_product_page", "open_explicitmem_benchmark"]
+    },
+    {
+      "route": "/research/[slug]",
+      "title": "MCP Research Brief",
+      "purpose": "Explain one MCP's problem, public research question, high-level validation approach, evidence boundary, current limitations, and catalog-derived hosted status without disclosing proprietary implementation details.",
+      "audience": ["technical buyers", "agent users", "research readers"],
+      "requiredContent": ["product_name", "research_brief_label", "catalog_derived_hosted_status", "problem", "research_question", "validation_approach", "public_evidence_boundary", "current_limitations", "review_date", "product_link", "status_appropriate_primary_cta"],
+      "forbiddenContent": ["secret values", "private API URLs", "private tenant data", "deployment configuration", "internal source paths", "proprietary algorithms", "prompt internals", "full private schemas", "raw internal test output", "unsupported benchmark claims", "planned product presented as available"],
+      "primaryActions": ["view_product", "compare_plans_when_available", "join_waitlist_when_planned", "browse_research"]
     },
     {
       "route": "/research/explicitmem",
@@ -54,7 +63,7 @@
       "audience": ["technical buyers", "memory system builders", "research readers"],
       "requiredContent": ["run_date", "sample_size", "methodology", "headline_results", "question_type_results", "failures", "quality_gate_status", "limitations", "source_link"],
       "forbiddenContent": ["hosted latency claims", "private tenant data", "deployment configuration", "MCP hooks", "unscoped competitive claims"],
-      "primaryActions": ["view_product", "view_source"]
+      "primaryActions": ["view_product", "view_source", "browse_research"]
     },
     {
       "route": "/waitlist",

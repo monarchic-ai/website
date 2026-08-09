@@ -1,0 +1,241 @@
+---
+import Shader14 from "../../components/Shader14.astro";
+import SeoHead from "../../components/SeoHead.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import {
+  RESEARCH_REVIEWED_ON,
+  mcpResearchEntries,
+  type McpResearchEntry,
+} from "../../lib/mcpResearch";
+import { catalogStatusLabel } from "../../lib/pricing";
+import "../../styles/global.css";
+
+interface Props {
+  entry: McpResearchEntry;
+}
+
+export function getStaticPaths() {
+  return mcpResearchEntries
+    .filter((entry) => !entry.publishedBenchmark)
+    .map((entry) => ({
+      params: { slug: entry.researchSlug },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const isAvailable = entry.hostedStatus === "available";
+const proof = entry.workflowProof;
+const productHref = `/products/${entry.productSlug}`;
+const waitlistHref = `/waitlist?product=${encodeURIComponent(entry.productSlug)}`;
+const description = `${entry.plan.displayName} public research brief: the question, evaluation method, evidence status, and current limits.`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
+    <meta name="viewport" content="width=device-width" />
+    <SeoHead
+      title={`${entry.plan.displayName} Research | Monarchic`}
+      description={description}
+      path={entry.href}
+      type="article"
+    />
+  </head>
+  <body class="min-h-screen bg-black text-white">
+    <main
+      data-research-brief={entry.productSlug}
+      data-research-status={entry.hostedStatus}
+      class="relative min-h-screen overflow-hidden"
+    >
+      <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-58" />
+      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.7),_rgba(0,0,0,0.97))]"></div>
+
+      <div class="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
+        <SiteHeader active="research" />
+
+        <p class="mt-9 text-xs font-semibold uppercase text-white/54">
+          <a href="/research" class="transition hover:text-signal-soft">Research</a>
+          <span aria-hidden="true"> / </span>
+          {entry.plan.displayName}
+        </p>
+
+        <section class="grid gap-10 border-b-2 border-white py-10 lg:grid-cols-[minmax(0,1.18fr)_minmax(280px,0.52fr)] lg:items-end lg:py-14">
+          <div class="min-w-0">
+            <div class="flex flex-wrap gap-2">
+              <span class="border border-signal px-3 py-1 text-[0.65rem] font-bold uppercase text-signal-soft">
+                {entry.briefLabel}
+              </span>
+              <span class:list={[
+                "border px-3 py-1 text-[0.65rem] font-bold uppercase",
+                isAvailable ? "border-signal bg-signal text-black" : "border-white/40 text-white/60",
+              ]}>
+                {catalogStatusLabel(entry.plan)}
+              </span>
+            </div>
+            <p class="mt-6 text-xs font-bold uppercase text-white/48">{entry.detail.category} / Public research brief</p>
+            <h1 class="mt-4 max-w-5xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl lg:text-8xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
+              {entry.plan.displayName}
+            </h1>
+            <p class="mt-6 max-w-4xl text-xl font-extrabold uppercase leading-tight text-white sm:text-3xl">
+              {entry.question}
+            </p>
+            <p class="mt-6 max-w-3xl text-base leading-8 text-white/74 sm:text-lg">
+              {entry.detail.useCase}
+            </p>
+          </div>
+
+          <aside class="border-2 border-white bg-black/78">
+            <dl>
+              <div class="border-b border-white/32 p-4">
+                <dt class="text-[0.65rem] font-bold uppercase text-white/46">Evidence class</dt>
+                <dd class="mt-2 text-sm font-extrabold uppercase">{entry.evidenceLabel}</dd>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="border-r border-white/32 p-4">
+                  <dt class="text-[0.65rem] font-bold uppercase text-white/46">Hosted status</dt>
+                  <dd class="mt-2 text-sm font-extrabold uppercase">{catalogStatusLabel(entry.plan)}</dd>
+                </div>
+                <div class="p-4">
+                  <dt class="text-[0.65rem] font-bold uppercase text-white/46">Reviewed</dt>
+                  <dd class="mt-2 text-sm font-extrabold uppercase">{RESEARCH_REVIEWED_ON}</dd>
+                </div>
+              </div>
+              <div class="border-t border-white/32 p-4">
+                <dt class="text-[0.65rem] font-bold uppercase text-white/46">Public detail</dt>
+                <dd class="mt-2 text-sm font-extrabold uppercase">Methods and limits</dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <section class="grid gap-8 border-b border-white/40 py-12 lg:grid-cols-[0.68fr_1.32fr]">
+          <div>
+            <p class="text-xs font-bold uppercase text-signal">01 / Public method</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-4xl">What we evaluate</h2>
+          </div>
+          <div>
+            <p class="max-w-3xl text-base leading-8 text-white/76">{entry.evaluationLens}</p>
+            <ol class="mt-7 grid gap-0 border-l border-t border-white/36 sm:grid-cols-2">
+              {entry.detail.workflows.map((workflow, index) => (
+                <li class="border-r border-b border-white/36 bg-black/58 p-4">
+                  <span class="font-mono text-xs font-bold text-signal">{String(index + 1).padStart(2, "0")}</span>
+                  <span class="mt-3 block text-sm font-extrabold uppercase leading-6">{workflow}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section class="grid gap-8 border-b border-white/40 py-12 lg:grid-cols-[0.68fr_1.32fr]">
+          <div>
+            <p class="text-xs font-bold uppercase text-signal">02 / Evaluation signals</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-4xl">
+              {isAvailable ? "What we inspect" : "What must be demonstrated"}
+            </h2>
+          </div>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {entry.detail.outcomes.map((outcome) => (
+              <li class="flex gap-3 border border-white/36 bg-black/58 p-4 text-sm leading-7 text-white/72">
+                <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-signal"></span>
+                <span>{outcome}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {isAvailable && proof !== null ? (
+          <section class="grid gap-8 border-b border-white/40 py-12 lg:grid-cols-[0.68fr_1.32fr]">
+            <div>
+              <p class="text-xs font-bold uppercase text-signal">03 / Current public basis</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-4xl">Public workflow basis</h2>
+              <p class="mt-5 max-w-sm text-sm leading-7 text-white/60">
+                This shows a bounded public workflow contract. It is not a dated outcome, comparative benchmark, or performance ranking.
+              </p>
+            </div>
+            <div class="border-2 border-white bg-black/70">
+              <div class="border-b border-white/36 p-5 sm:p-6">
+                <p class="text-[0.65rem] font-bold uppercase text-white/46">Reviewed workflow</p>
+                <h3 class="mt-3 text-2xl font-extrabold uppercase">{proof.title}</h3>
+                <p class="mt-4 text-sm leading-7 text-white/72">{proof.execution}</p>
+              </div>
+              <dl class="grid sm:grid-cols-2">
+                <div class="border-b border-white/32 p-5 sm:border-r">
+                  <dt class="text-[0.65rem] font-bold uppercase text-white/46">Evidence form</dt>
+                  <dd class="mt-3 text-sm leading-7 text-white/76">{proof.outputKind}</dd>
+                </div>
+                <div class="border-b border-white/32 p-5">
+                  <dt class="text-[0.65rem] font-bold uppercase text-white/46">Scope shown</dt>
+                  <dd class="mt-3 text-sm leading-7 text-white/76">One bounded hosted workflow and its expected evidence form.</dd>
+                </div>
+                <div class="p-5 sm:col-span-2">
+                  <dt class="text-[0.65rem] font-bold uppercase text-white/46">What it establishes</dt>
+                  <dd class="mt-3 text-sm leading-7 text-white/76">The service exposes a defined operation and a structured result boundary. Broader quality and performance remain part of the research question above.</dd>
+                </div>
+              </dl>
+            </div>
+          </section>
+        ) : (
+          <section class="grid gap-8 border-b border-white/40 py-12 lg:grid-cols-[0.68fr_1.32fr]">
+            <div>
+              <p class="text-xs font-bold uppercase text-signal">03 / Evidence status</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-4xl">Before launch</h2>
+            </div>
+            <div class="border-2 border-signal/70 bg-signal/[0.06] p-5 sm:p-7">
+              <p class="text-xl font-extrabold uppercase text-white">No production result is claimed.</p>
+              <p class="mt-4 max-w-3xl text-sm leading-7 text-white/72">
+                This page records the research question and acceptance method for a planned hosted service. Public access and production performance remain unverified until the deployment and evidence gates pass.
+              </p>
+            </div>
+          </section>
+        )}
+
+        <section class="grid gap-8 py-12 lg:grid-cols-[0.68fr_1.32fr]">
+          <div>
+            <p class="text-xs font-bold uppercase text-signal">04 / Limits</p>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-4xl">What this does not show</h2>
+          </div>
+          <div class="grid gap-5">
+            <p class="border-l-2 border-signal pl-5 text-base leading-8 text-white/78">{entry.limit}</p>
+            <div class="border border-white/36 bg-black/58 p-5">
+              <p class="text-xs font-bold uppercase text-white/50">Disclosure boundary</p>
+              <p class="mt-3 text-sm leading-7 text-white/68">
+                We publish the question, evaluation method, evidence status, and limitations. We do not publish private customer data, raw prompts, internal thresholds, provider configuration, or infrastructure details that would weaken security or invalidate later evaluation.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-12 grid gap-6 border-2 border-white bg-black/76 p-5 sm:p-7 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p class="text-xs font-bold uppercase text-signal">{entry.plan.displayName}</p>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase">Read the product scope and access status</h2>
+            <p class="mt-3 max-w-2xl text-sm leading-7 text-white/68">
+              Product details describe the supported use case. This research brief stays focused on what can be tested and what remains unproven.
+            </p>
+          </div>
+          <div class="flex flex-col gap-2 min-[420px]:flex-row">
+            <a href={productHref} class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
+              View {entry.plan.displayName}
+            </a>
+            {isAvailable ? (
+              <a href="/products#plans" class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-5 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
+                Compare plans
+              </a>
+            ) : (
+              <a href={waitlistHref} class="inline-flex min-h-12 items-center justify-center border-2 border-white/50 px-5 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
+                Join waitlist
+              </a>
+            )}
+          </div>
+        </section>
+
+        <SiteFooter />
+      </div>
+    </main>
+  </body>
+</html>

@@ -6,6 +6,35 @@ import { resolve } from "node:path";
 const root = process.cwd();
 const checks = [];
 const failures = [];
+const expectedMcpSlugs = [
+  "mcp-browserops",
+  "mcp-businessmodel",
+  "mcp-cicd",
+  "mcp-codeintel",
+  "mcp-codeprofiler",
+  "mcp-codequality",
+  "mcp-copydev",
+  "mcp-create-project",
+  "mcp-explicitmem",
+  "mcp-incidentops",
+  "mcp-infraprofiler",
+  "mcp-leadgenerator",
+  "mcp-nutrition",
+  "mcp-orgfleet",
+  "mcp-orgintel",
+  "mcp-proofpack",
+  "mcp-pty",
+  "mcp-releaseops",
+  "mcp-repo-fleet",
+  "mcp-repointel",
+  "mcp-seo",
+  "mcp-vectordesign",
+  "mcp-webcomposer",
+  "mcp-webdashboard",
+  "mcp-webimplementer",
+  "mcp-webinfo",
+  "mcp-websplash",
+];
 
 checkFileIncludes("astro.config.mjs", ["devToolbar: { enabled: false }"]);
 
@@ -146,13 +175,11 @@ checkFileIncludes("src/pages/sitemap.xml.ts", [
   '"/terms"',
   '"/security"',
   '"/about"',
-  '"/research/explicitmem"',
+  "mcpResearchEntries",
   'plan.kind === "usage-plan" || plan.kind === "single-mcp"',
 ]);
 checkForbidden("src/pages/sitemap.xml.ts", [
   '"/tutorial"',
-  '"/research/browserops"',
-  '"/research/repointel"',
 ]);
 
 checkFileIncludes("src/pages/tutorial.astro", [
@@ -161,13 +188,6 @@ checkFileIncludes("src/pages/tutorial.astro", [
   "https://app.monarchic.io",
   "301",
 ]);
-checkFileIncludes("src/pages/research/browserops.astro", [
-  'Astro.redirect("/products/mcp-browserops", 301)',
-]);
-checkFileIncludes("src/pages/research/repointel.astro", [
-  'Astro.redirect("/products/mcp-repointel", 301)',
-]);
-
 checkFileIncludes("src/pages/products/index.astro", [
   "Plans and MCPs",
   "Shared usage capacity",
@@ -213,6 +233,7 @@ checkFileIncludes("src/pages/products/[slug].astro", [
   "Hosted deployment planned",
   "Hosted rollout in progress",
   "Calls draw from the weekly execution usage included with your active plan.",
+  "getMcpResearchByProductSlug",
   "Read benchmark",
   "lg:sticky lg:top-6",
   "ProductWorkflowProof",
@@ -279,6 +300,10 @@ checkFileIncludes("webcomposer/site-map.contract.json", [
   "adaptive_usage_model",
   "purchase_link_for_available_plans",
   "checkout promises for planned products",
+  '"route": "/research/[slug]"',
+  "twenty_seven_product_research_briefs",
+  "product_research_link_for_every_mcp",
+  "planned product presented as available",
   "raw internal test output",
   "500-question LongMemEval-S",
 ]);
@@ -290,23 +315,48 @@ checkFileIncludes("webcomposer/page-maps.json", [
   '"template": "docs.toc_content"',
   '"template": "form.inline"',
   '"template": "cta.banner"',
+  '"route": "/research/[slug]"',
+  '"id": "product_research"',
 ]);
 checkForbidden("webcomposer/site-map.contract.json", ["credit", "Credit"]);
 checkForbidden("webcomposer/page-maps.json", ["credit", "Credit"]);
 
 checkFileIncludes("src/pages/research/index.astro", [
-  "Benchmarks and methodology.",
+  "mcpResearchEntries",
+  "data-research-card",
+  "data-research-status",
   "ExplicitMem on LongMemEval-S",
   "explicitMemBenchmark.answerAccuracy",
   "explicitMemBenchmark.answerFaithfulness",
   "explicitMemBenchmark.retrievalRecallAtK",
-  "explicitMemBenchmark.averageLatency",
 ]);
 checkForbidden("src/pages/research/index.astro", [
-  'href="/research/browserops"',
-  'href="/research/repointel"',
   "Hosted write p50",
   "MCP hooks",
+]);
+
+checkFileIncludes("src/pages/research/[slug].astro", [
+  "getStaticPaths",
+  "mcpResearchEntries",
+  "data-research-brief",
+  "data-research-status",
+  "No production result is claimed.",
+  'type="article"',
+]);
+checkForbidden("src/pages/research/[slug].astro", [
+  "AWS account",
+  "task definition",
+  "private API",
+  "MCP hooks",
+]);
+
+checkFileIncludes("src/lib/mcpResearch.ts", [
+  "mcpResearchEntries",
+  "hostedMcpStatus",
+  "researchSlugForProductSlug",
+  "getMcpResearchByProductSlug",
+  "getMcpResearchByRouteSlug",
+  "researchHrefForProductSlug",
 ]);
 
 checkFileIncludes("src/pages/research/explicitmem.astro", [
@@ -340,6 +390,7 @@ checkForbidden("src/pages/research/explicitmem.astro", [
 ]);
 
 checkPublicCatalogComposition();
+checkMcpResearchCoverage();
 checkContractSeparation();
 checkMissing("webcomposer/section-catalog.json");
 checkBrightSurfacePolicy("src");
@@ -401,17 +452,83 @@ function checkContractSeparation() {
     checks.push("webcomposer/page-maps.json: route coverage matches sitemap");
   }
 
-  for (const retiredRoute of [
-    "/tutorial",
-    "/research/browserops",
-    "/research/repointel",
-  ]) {
+  for (const retiredRoute of ["/tutorial"]) {
     if (siteRoutes.includes(retiredRoute) || mappedRoutes.includes(retiredRoute)) {
       failures.push({ path: "webcomposer", forbiddenRoute: retiredRoute });
     } else {
-      checks.push(`webcomposer: redirect route omitted ${retiredRoute}`);
+      checks.push(`webcomposer: non-indexed route omitted ${retiredRoute}`);
     }
   }
+}
+
+function checkMcpResearchCoverage() {
+  const path = "src/lib/mcpResearchContent.json";
+  let content;
+  try {
+    content = JSON.parse(read(path));
+  } catch (error) {
+    failures.push({ path, invalidJson: error.message });
+    return;
+  }
+
+  if (!Array.isArray(content)) {
+    failures.push({ path, expected: "an array of exactly 27 MCP research entries" });
+    return;
+  }
+
+  const requiredFields = ["evaluationLens", "limit", "productSlug", "question"];
+  const productSlugs = [];
+  const researchSlugs = new Set();
+
+  for (const [index, entry] of content.entries()) {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      failures.push({ path, index, expected: "a research content object" });
+      continue;
+    }
+
+    const actualFields = Object.keys(entry).sort();
+    if (JSON.stringify(actualFields) !== JSON.stringify(requiredFields)) {
+      failures.push({ path, index, expectedFields: requiredFields, actualFields });
+      continue;
+    }
+
+    for (const field of requiredFields) {
+      if (typeof entry[field] !== "string" || entry[field].trim().length === 0) {
+        failures.push({ path, index, field, expected: "a non-empty string" });
+      }
+    }
+
+    if (!/^mcp-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.productSlug)) {
+      failures.push({ path, index, invalidProductSlug: entry.productSlug });
+      continue;
+    }
+
+    productSlugs.push(entry.productSlug);
+    const researchSlug = entry.productSlug.slice(4);
+    if (researchSlugs.has(researchSlug)) {
+      failures.push({ path, duplicateResearchSlug: researchSlug });
+    }
+    researchSlugs.add(researchSlug);
+  }
+
+  const sortedProductSlugs = productSlugs.sort();
+  if (
+    content.length !== 27
+    || JSON.stringify(sortedProductSlugs) !== JSON.stringify(expectedMcpSlugs)
+    || researchSlugs.size !== 27
+  ) {
+    failures.push({
+      path,
+      expectedCount: 27,
+      actualCount: content.length,
+      expectedProductSlugs: expectedMcpSlugs,
+      actualProductSlugs: sortedProductSlugs,
+      uniqueResearchRouteCount: researchSlugs.size,
+    });
+    return;
+  }
+
+  checks.push("MCP research content: exactly 27 schema-valid catalog entries and unique routes");
 }
 
 function checkPublicCatalogComposition() {
@@ -459,36 +576,6 @@ function checkPublicCatalogComposition() {
     "usage-individual",
     "usage-team",
   ];
-  const expectedMcpSlugs = [
-    "mcp-browserops",
-    "mcp-businessmodel",
-    "mcp-cicd",
-    "mcp-codeintel",
-    "mcp-codeprofiler",
-    "mcp-codequality",
-    "mcp-copydev",
-    "mcp-create-project",
-    "mcp-explicitmem",
-    "mcp-incidentops",
-    "mcp-infraprofiler",
-    "mcp-leadgenerator",
-    "mcp-nutrition",
-    "mcp-orgfleet",
-    "mcp-orgintel",
-    "mcp-proofpack",
-    "mcp-pty",
-    "mcp-releaseops",
-    "mcp-repo-fleet",
-    "mcp-repointel",
-    "mcp-seo",
-    "mcp-vectordesign",
-    "mcp-webcomposer",
-    "mcp-webdashboard",
-    "mcp-webimplementer",
-    "mcp-webinfo",
-    "mcp-websplash",
-  ];
-
   if (JSON.stringify(usageSlugs) !== JSON.stringify(expectedUsageSlugs)) {
     failures.push({
       path: "src/lib/pricing",

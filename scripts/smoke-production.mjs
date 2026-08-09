@@ -70,6 +70,10 @@ const forbiddenCatalogSlugs = [
   ...retiredCatalogSlugs,
   ...supersededCatalogSlugs,
 ];
+const requiredResearchRoutes = requiredCatalogSlugs
+  .filter((slug) => slug.startsWith("mcp-"))
+  .map((slug) => `/research/${slug.slice("mcp-".length)}`);
+const requiredMcpSlugs = requiredCatalogSlugs.filter((slug) => slug.startsWith("mcp-"));
 
 try {
   await runSmoke();
@@ -91,31 +95,21 @@ async function runSmoke() {
     "<urlset",
     "/about",
     "/security",
-    "/research/explicitmem",
+    ...requiredResearchRoutes,
     "/products/mcp-cicd",
     "/products/mcp-webcomposer",
     "/products/mcp-webimplementer",
   ], "sitemap.xml");
   await checkTextExcludes(`${baseUrl}/sitemap.xml`, [
     "/tutorial",
-    "/research/browserops",
-    "/research/repointel",
     "/products/monarchic-ai",
     "/products/mcp-monarchic",
     "/products/mcp-outreachconnectors",
     "/products/mcp-verified",
   ], "sitemap.xml non-indexed product routes");
   await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/docs`, "tutorial redirect");
-  await checkRedirect(
-    `${baseUrl}/research/browserops`,
-    `${baseUrl}/products/mcp-browserops`,
-    "BrowserOps research redirect",
-  );
-  await checkRedirect(
-    `${baseUrl}/research/repointel`,
-    `${baseUrl}/products/mcp-repointel`,
-    "RepoIntel research redirect",
-  );
+  await checkExactHttpStatuses(requiredResearchRoutes, 200, "MCP research routes");
+  await checkMcpResearchReciprocalLinks();
 
   if (staticOnly) {
     checks.push({
@@ -409,12 +403,50 @@ async function runBrowserSmoke() {
     }, "waitlist route");
 
     await checkPage(page, `${baseUrl}/research`, async () => {
-      await page.getByRole("heading", { name: "Benchmarks and methodology." }).waitFor();
-      await page.getByRole("heading", { name: "ExplicitMem on LongMemEval-S" }).waitFor();
-      await page.getByRole("link", { name: "Method and results" }).waitFor();
+      const researchCards = page.locator("[data-research-card]");
+      const availableResearchCards = page.locator('[data-research-card][data-research-status="available"]');
+      const plannedResearchCards = page.locator('[data-research-card][data-research-status="planned"]');
+      const cardCount = await researchCards.count();
+      const availableCardCount = await availableResearchCards.count();
+      const plannedCardCount = await plannedResearchCards.count();
+      if (cardCount !== 27 || availableCardCount !== 16 || plannedCardCount !== 11) {
+        throw new Error(
+          `Expected research cards 27 total / 16 available / 11 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
+        );
+      }
+      await researchCards.locator('a[href="/research/explicitmem"]').waitFor();
+      await researchCards.locator('a[href="/research/browserops"]').waitFor();
+      await researchCards.locator('a[href="/research/codeintel"]').waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
       await expectNoHorizontalOverflow(page);
     }, "research route");
+
+    await checkPage(page, `${baseUrl}/research/browserops`, async () => {
+      const brief = page.locator('[data-research-brief="mcp-browserops"]');
+      await brief.waitFor();
+      await brief.getByText("Production research note", { exact: true }).waitFor();
+      await expectHref(
+        brief.locator('a[href="/products/mcp-browserops"]').first(),
+        "/products/mcp-browserops",
+      );
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research/browserops`);
+      await expectMeta(page, "og:type", "article");
+      await expectNoHorizontalOverflow(page);
+    }, "BrowserOps research route");
+
+    await checkPage(page, `${baseUrl}/research/codeintel`, async () => {
+      const brief = page.locator('[data-research-brief="mcp-codeintel"]');
+      await brief.waitFor();
+      await brief.getByText("Pre-launch research program", { exact: true }).waitFor();
+      await brief.getByText("No production result is claimed.", { exact: true }).waitFor();
+      await expectHref(
+        brief.locator('a[href="/products/mcp-codeintel"]').first(),
+        "/products/mcp-codeintel",
+      );
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research/codeintel`);
+      await expectMeta(page, "og:type", "article");
+      await expectNoHorizontalOverflow(page);
+    }, "CodeIntel research route");
 
     await checkPage(page, `${baseUrl}/research/explicitmem`, async () => {
       await page.getByRole("heading", { name: "Memory benchmark" }).waitFor();
@@ -435,6 +467,19 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:type", "article");
       await expectNoHorizontalOverflow(page);
     }, "ExplicitMem research route");
+
+    await page.setViewportSize({ width: 320, height: 900 });
+    await checkPage(page, `${baseUrl}/research/codeintel`, async () => {
+      const brief = page.locator('[data-research-brief="mcp-codeintel"]');
+      await brief.waitFor();
+      await brief.getByText("Pre-launch research program", { exact: true }).waitFor();
+      await brief.getByText("No production result is claimed.", { exact: true }).waitFor();
+      await expectHref(
+        brief.locator('a[href="/products/mcp-codeintel"]').first(),
+        "/products/mcp-codeintel",
+      );
+      await expectNoHorizontalOverflow(page);
+    }, "CodeIntel research route at 320px");
   } finally {
     await browser.close();
   }
@@ -541,6 +586,59 @@ async function checkTextExcludes(url, forbiddenStrings, name) {
     throw new Error(`${name} included forbidden text: ${present.join(", ")}`);
   }
   checks.push({ name, status: "ok", forbidden: forbiddenStrings.length });
+}
+
+async function checkExactHttpStatuses(paths, expectedStatus, name) {
+  for (const path of paths) {
+    const url = `${baseUrl}${path}`;
+    const response = await fetchOrThrow(url, { method: "HEAD", redirect: "manual" }, name);
+    if (response.status !== expectedStatus) {
+      throw new Error(
+        `${name} expected HTTP ${expectedStatus} for ${url}, got ${response.status} ${response.statusText}`,
+      );
+    }
+  }
+  checks.push({ name, status: "ok", expectedStatus, routes: paths.length });
+}
+
+async function checkMcpResearchReciprocalLinks() {
+  await Promise.all(requiredMcpSlugs.map(async (productSlug) => {
+    const researchSlug = productSlug.slice("mcp-".length);
+    const productPath = `/products/${productSlug}`;
+    const researchPath = `/research/${researchSlug}`;
+    const [productResponse, researchResponse] = await Promise.all([
+      fetchOrThrow(`${baseUrl}${productPath}`, undefined, "MCP product research links"),
+      fetchOrThrow(`${baseUrl}${researchPath}`, undefined, "MCP research product backlinks"),
+    ]);
+
+    if (!productResponse.ok) {
+      throw new Error(`MCP product research links failed for ${productPath}: ${productResponse.status}`);
+    }
+    if (!researchResponse.ok) {
+      throw new Error(`MCP research product backlinks failed for ${researchPath}: ${researchResponse.status}`);
+    }
+
+    const [productBody, researchBody] = await Promise.all([
+      productResponse.text(),
+      researchResponse.text(),
+    ]);
+    if (!productBody.includes(`href="${researchPath}"`)) {
+      throw new Error(`${productPath} does not link to ${researchPath}`);
+    }
+    if (!researchBody.includes(`href="${productPath}"`)) {
+      throw new Error(`${researchPath} does not link to ${productPath}`);
+    }
+    if (!researchBody.includes(`data-research-brief="${productSlug}"`)) {
+      throw new Error(`${researchPath} is missing its ${productSlug} research marker`);
+    }
+    const canonicalUrl = `${expectedCanonicalBaseUrl}${researchPath}`;
+    if (!researchBody.includes(`rel="canonical" href="${canonicalUrl}"`)) {
+      throw new Error(`${researchPath} does not publish canonical ${canonicalUrl}`);
+    }
+  }));
+
+  checks.push({ name: "MCP product-to-research links", status: "ok", routes: requiredMcpSlugs.length });
+  checks.push({ name: "MCP research product backlinks", status: "ok", routes: requiredMcpSlugs.length });
 }
 
 async function checkRedirect(url, expectedTarget, name) {

@@ -1,0 +1,164 @@
+[
+  {
+    "productSlug": "mcp-browserops",
+    "question": "Does each bounded browser run connect its assertions to visible browser evidence?",
+    "evaluationLens": "Review observation and verification receipts for page state, screenshots, console output, and failed requests.",
+    "limit": "Observing a page does not prove that it has no hidden defects. This work does not cover unrestricted crawling or stealth automation."
+  },
+  {
+    "productSlug": "mcp-businessmodel",
+    "question": "Does execution stay blocked until a company synthesis has enough reviewed evidence?",
+    "evaluationLens": "Exercise the synthesis gate with complete, incomplete, and conflicting evidence across the required decision areas.",
+    "limit": "This evaluates gate behavior. It cannot establish that a business thesis is commercially correct or likely to succeed."
+  },
+  {
+    "productSlug": "mcp-cicd",
+    "question": "Does the release gate refuse incomplete or revision-mismatched pipeline evidence and explain why?",
+    "evaluationLens": "Use provider-contract and fail-closed release scenarios, then inspect whether each refusal is tied to the supplied evidence.",
+    "limit": "Fixture coverage cannot represent every provider edge case. Mutating operations require separate confirmation and verification."
+  },
+  {
+    "productSlug": "mcp-codeintel",
+    "question": "Can incremental language-server indexing reuse unchanged work without weakening code-navigation results?",
+    "evaluationLens": "Compare cold and incremental index runs, then check symbol, reference, relationship, and persistence behavior across supported language servers.",
+    "limit": "No dated hosted performance result is published. Accuracy depends partly on the capabilities exposed by each language server."
+  },
+  {
+    "productSlug": "mcp-codeprofiler",
+    "question": "Can profiling stay read-only by default while active probes require a deliberate execution path?",
+    "evaluationLens": "Test stack detection, plan generation, toolbox selection, and runner policy against repositories with different build and runtime shapes.",
+    "limit": "Execution hardening is not an operating-system sandbox. Profiler output must be treated as untrusted input."
+  },
+  {
+    "productSlug": "mcp-codequality",
+    "question": "Can the analyzer separate static findings, proposed remediation, and validated runtime evidence?",
+    "evaluationLens": "Run bounded source fixtures through static analysis and evidence adapters, then inspect finding specificity and unsupported inference.",
+    "limit": "Static findings do not establish architectural certainty. Proposed changes remain review-only."
+  },
+  {
+    "productSlug": "mcp-copydev",
+    "question": "Do editing and review workflows stay consistent across representative product-copy briefs?",
+    "evaluationLens": "Use fixed copy fixtures to compare edits, vagueness findings, preserved meaning, and the separation between diagnosis and rewrite.",
+    "limit": "A language review cannot prove persuasion or conversion. Provider-backed generation is not deterministic."
+  },
+  {
+    "productSlug": "mcp-create-project",
+    "question": "Does project creation keep discovery, planning, generation, and verification inspectable?",
+    "evaluationLens": "Exercise maintained templates through list, dry-run, creation, and post-generation checks while recording partial failures.",
+    "limit": "Contract correctness does not prove that a template is ideal or that every generated dependency is secure."
+  },
+  {
+    "productSlug": "mcp-explicitmem",
+    "question": "How accurately does fixed ExplicitMem synthesis answer LongMemEval-S within an 800-token context budget?",
+    "evaluationLens": "Use the dated 500-question LongMemEval-S run with fixed retrieval, synthesis, scoring, and context settings.",
+    "limit": "The result applies only to the published configuration. It is not a cross-product ranking or a hosted-latency claim."
+  },
+  {
+    "productSlug": "mcp-incidentops",
+    "question": "When evidence is thin, does incident triage lower confidence and suppress unsupported actions?",
+    "evaluationLens": "Vary evidence sufficiency across timeline, ownership, rollback, and guarded-write scenarios, then inspect confidence and refusal behavior.",
+    "limit": "Generated triage is not incident truth and does not grant authority to resolve an incident."
+  },
+  {
+    "productSlug": "mcp-infraprofiler",
+    "question": "Can normalized infrastructure and pipeline snapshots produce traceable hotspot rankings?",
+    "evaluationLens": "Run deterministic snapshots through scoring and topology analysis, then trace each ranking back to supplied telemetry.",
+    "limit": "Results depend on the supplied telemetry. Projected savings are estimates, and the hosted service remains read-only."
+  },
+  {
+    "productSlug": "mcp-leadgenerator",
+    "question": "Can enrichment records remain traceable as they become ranked target accounts?",
+    "evaluationLens": "Validate supported data exports, provider adapters, ranking inputs, and report provenance with controlled organization fixtures.",
+    "limit": "Public-web discovery is best effort. It does not guarantee identity accuracy, replies, pipeline, or revenue."
+  },
+  {
+    "productSlug": "mcp-nutrition",
+    "question": "Do modeled inputs produce deterministic calculations with explicit assumptions and safety warnings?",
+    "evaluationLens": "Check calculations, unit handling, schema stability, and external mappings against fixed inputs and invalid edge cases.",
+    "limit": "This is decision support, not diagnosis or treatment. Unmodeled life stages require qualified clinical review."
+  },
+  {
+    "productSlug": "mcp-orgfleet",
+    "question": "Can organization-wide repository actions preserve manifest, authorization, and dry-run boundaries?",
+    "evaluationLens": "Inspect organization-scoped command generation, approval transitions, and structured results across read-only and mutating scenarios.",
+    "limit": "This does not yet prove hosted authorization, tenant isolation, or safe production synchronization."
+  },
+  {
+    "productSlug": "mcp-orgintel",
+    "question": "Can cross-repository analysis report progress, resume completed work, and isolate repository failures?",
+    "evaluationLens": "Exercise dry-run, checkpoint, resume, concurrency, and preflight behavior across mixed repository outcomes.",
+    "limit": "Analysis quality inherits RepoIntel and the selected repository manifest. Hosted execution is not yet deployed."
+  },
+  {
+    "productSlug": "mcp-proofpack",
+    "question": "Does verification detect artifact, receipt, and manifest tampering before export?",
+    "evaluationLens": "Use deterministic tamper cases across pack construction, verification, and signing-policy refusal paths.",
+    "limit": "Hash integrity is not provenance. Production signing remains a separate launch gate."
+  },
+  {
+    "productSlug": "mcp-pty",
+    "question": "Can an agent reliably observe and control interactive terminal state through a structured session?",
+    "evaluationLens": "Exercise shell, REPL, transcript-cursor, resize, timeout, and session-lifecycle behavior through the MCP boundary.",
+    "limit": "A PTY is an execution interface, not a sandbox. Commands retain the permissions of the isolated runtime."
+  },
+  {
+    "productSlug": "mcp-releaseops",
+    "question": "Does release-pack verification detect changed, missing, or undeclared artifacts?",
+    "evaluationLens": "Run deterministic tamper and receipt-drift scenarios against artifact manifests and release verification rules.",
+    "limit": "Hashes demonstrate integrity against captured bytes, not signer identity. ReleaseOps does not publish releases."
+  },
+  {
+    "productSlug": "mcp-repo-fleet",
+    "question": "Does manifest reconciliation distinguish missing clones, remote drift, and dirty repository state?",
+    "evaluationLens": "Use temporary repositories to test inventory, dry-run reconciliation, safe fetch behavior, and structured failure reporting.",
+    "limit": "Synchronization clones or fetches matching repositories. It does not pull or change checked-out branches."
+  },
+  {
+    "productSlug": "mcp-repointel",
+    "question": "How well does repository intelligence localize, explain, plan, and review changes on defined tasks?",
+    "evaluationLens": "Use pinned repository tasks to inspect evidence localization, architecture context, change planning, and review quality.",
+    "limit": "Existing validation results need dated run metadata before benchmark publication. Private calibration data is excluded."
+  },
+  {
+    "productSlug": "mcp-seo",
+    "question": "Does each recommendation and patch remain tied to a verified audit and receipt chain?",
+    "evaluationLens": "Exercise audit packs, recommendations, patch preparation, and release-pack verification with deterministic page fixtures.",
+    "limit": "This work does not guarantee traffic, rankings, revenue, or conversion outcomes."
+  },
+  {
+    "productSlug": "mcp-vectordesign",
+    "question": "Can a fixed brief reproduce structured vector variants without losing candidate lineage?",
+    "evaluationLens": "Run seeded brief-to-export workflows and inspect geometry validation, candidate history, and reproducible SVG output.",
+    "limit": "Heuristic fitness does not prove aesthetic quality, originality, or intellectual-property clearance."
+  },
+  {
+    "productSlug": "mcp-webcomposer",
+    "question": "Can a bounded template vocabulary represent reviewed page patterns without mixing content and geometry?",
+    "evaluationLens": "Audit public-site coverage, finite layout constraints, and scoring calibration against reviewed page contracts.",
+    "limit": "Pattern coverage does not prove design quality, accessibility, or implementation quality."
+  },
+  {
+    "productSlug": "mcp-webdashboard",
+    "question": "Can dashboard data, actions, and states validate into a strict composition contract?",
+    "evaluationLens": "Test profile calibration and composition compatibility across loading, empty, error, populated, and responsive states.",
+    "limit": "This produces specifications, not final code, copy, or evidence of usability."
+  },
+  {
+    "productSlug": "mcp-webimplementer",
+    "question": "Can an approved composition become a write-scoped patch with validation receipts?",
+    "evaluationLens": "Use repository fixtures to inspect scope enforcement, patch preparation, validation, and browser-QA handoff.",
+    "limit": "The service does not deploy, publish, merge, or invent missing copy. A local worktree is not a security sandbox."
+  },
+  {
+    "productSlug": "mcp-webinfo",
+    "question": "Do planning gates reject thin discovery and weak site plans, then survive export and replay?",
+    "evaluationLens": "Use quality calibration, artifact migration, and replay fixtures to inspect evidence retention and approval-state changes.",
+    "limit": "Scores encode a planning rubric. They do not validate the underlying customer or market research."
+  },
+  {
+    "productSlug": "mcp-websplash",
+    "question": "Does a fixed seed reproduce a web scene while unsafe path and artifact requests are refused?",
+    "evaluationLens": "Check seeded rendering, artifact export, contract validation, and bounded analyzer behavior across controlled scenes.",
+    "limit": "Deterministic rendering and image heuristics do not prove visual quality, accessibility, or browser-wide behavior."
+  }
+]

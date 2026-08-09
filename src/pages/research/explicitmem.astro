@@ -8,7 +8,11 @@ import {
   explicitMemQuestionTypes,
   explicitMemRunConfig,
 } from "../../lib/explicitmemBenchmark";
+import { getMcpResearchByProductSlug } from "../../lib/mcpResearch";
 import "../../styles/global.css";
+
+const researchEntry = getMcpResearchByProductSlug("mcp-explicitmem");
+if (!researchEntry) throw new Error("ExplicitMem research entry is missing");
 
 const headlineMetrics = [
   ["Questions", String(explicitMemBenchmark.questions)],
@@ -38,7 +42,11 @@ const headlineMetrics = [
     />
   </head>
   <body class="min-h-screen bg-black text-white">
-    <main class="relative min-h-screen overflow-hidden">
+    <main
+      data-research-brief={researchEntry.productSlug}
+      data-research-status={researchEntry.hostedStatus}
+      class="relative min-h-screen overflow-hidden"
+    >
       <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-65" />
       <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.7),_rgba(0,0,0,0.96))]"></div>
 

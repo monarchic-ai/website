@@ -19,6 +19,7 @@ import {
   type PlanKind,
 } from "../../lib/pricing";
 import { getProductDetail } from "../../lib/productDetails";
+import { getMcpResearchByProductSlug } from "../../lib/mcpResearch";
 import {
   getProductWorkflowProof,
   productWorkflowProofs,
@@ -55,14 +56,7 @@ const isPurchasable = plan.kind === "usage-plan" && plan.status === "available" 
 const isEvaluation = plan.slug === "usage-evaluation";
 const mcpHostedStatus = plan.kind === "single-mcp" ? hostedMcpStatus(plan) : null;
 
-const researchByPlanSlug: Record<string, { href: string; label: string; summary: string }> = {
-  "mcp-explicitmem": {
-    href: "/research/explicitmem",
-    label: "LongMemEval-S benchmark",
-    summary: "Method, results, retrieval coverage, latency, and limitations from the latest 500-question run.",
-  },
-};
-const planResearch = researchByPlanSlug[plan.slug] ?? null;
+const planResearch = getMcpResearchByProductSlug(plan.slug);
 
 function kindBadge(kind: PlanKind): string {
   if (kind === "usage-plan") return "Usage plan";
@@ -226,11 +220,21 @@ function statusClasses(plan: CatalogPlan): string {
 
             {planResearch !== null && (
               <section class="mt-10 border-2 border-signal/70 bg-black/68 p-5">
-                <p class="text-xs font-bold uppercase text-signal">Benchmark</p>
-                <h2 class="mt-3 text-2xl font-extrabold uppercase">{planResearch.label}</h2>
-                <p class="mt-3 max-w-2xl text-sm leading-7 text-white/72">{planResearch.summary}</p>
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <p class="text-xs font-bold uppercase text-signal">Research</p>
+                  <span class="border border-signal/60 px-2 py-1 text-[0.62rem] font-bold uppercase text-signal-soft">
+                    {planResearch.briefLabel}
+                  </span>
+                </div>
+                <h2 class="mt-4 text-2xl font-extrabold uppercase">{planResearch.question}</h2>
+                <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">{planResearch.evaluationLens}</p>
+                <p class="mt-4 border-l-2 border-white/40 pl-4 text-xs leading-6 text-white/52">{planResearch.limit}</p>
                 <a href={planResearch.href} class="mt-5 inline-flex min-h-11 items-center justify-center border border-signal px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">
-                  Read benchmark
+                  {planResearch.publishedBenchmark
+                    ? "Read benchmark"
+                    : planResearch.hostedStatus === "available"
+                      ? "Read research note"
+                      : "Read research program"}
                 </a>
               </section>
             )}
