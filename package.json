@@ -12,6 +12,7 @@
     "check:public-usage-language": "node scripts/check-public-usage-language.mjs",
     "check:shared-catalog": "node scripts/check-shared-catalog.mjs",
     "check:webcomposer": "node scripts/check-webcomposer-contract.mjs",
+    "check:webinfo-artifacts": "node scripts/check-webinfo-artifacts.mjs",
     "check:release-workflow": "node scripts/check-release-workflow.mjs",
     "check:social-preview": "node scripts/check-social-preview.mjs",
     "vercel": "node scripts/vercel-cli.mjs",

@@ -109,6 +109,7 @@
           '';
           contracts = mkWebsiteCheck "contracts" ''
             pnpm run check:webcomposer
+            pnpm run check:webinfo-artifacts
             pnpm run check:catalog-artifact
             pnpm run check:shared-catalog
             pnpm run check:release-workflow

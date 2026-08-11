@@ -1,0 +1,115 @@
+{
+  "artifactKind": "webinfo.project",
+  "artifactVersion": 1,
+  "exportedAt": "2026-08-11T14:58:31.987Z",
+  "project": {
+    "project": "monarchic-context-seed",
+    "createdAt": "2026-08-10T19:09:33.400Z",
+    "updatedAt": "2026-08-11T14:58:16.313Z",
+    "discoveryAnswers": [
+      {
+        "questionId": "identity.name_category",
+        "question": "What is the site or organization name, and what category should visitors immediately understand it belongs to?",
+        "answer": "The official legal name is Monarchic, LLC, but the public-facing brand and doing-business-as name should be simply “Monarchic” across branding and marketing. Monarchic is an automation development and research firm whose vision is to create high-quality, reproducible results through automation. Its current focus is AI: AI systems, machine-learning models, and heuristics supported by deterministic tooling. The broader long-term scope is not limited to AI and includes automated engineering, automated bio-genetics, and other STEM fields; automation is the enduring category, while AI is the present emphasis.",
+        "tags": [
+          "name",
+          "category"
+        ]
+      },
+      {
+        "questionId": "audience.primary",
+        "question": "Who are the primary visitor groups, and what situation brings each group to the site?",
+        "answer": "The primary audience is existing software developers who already use AI tools and want to improve the quality, intelligence, speed, and performance of AI-assisted engineering work. A secondary audience is software developers and engineers who do not currently use AI in their workflows; they arrive needing credible evidence that Monarchic’s automation is reliable and capable enough for professional engineering. A third audience is non-technical people who already use AI and want more effective, higher-quality automated workflows. Across these groups, the common trigger is dissatisfaction with the quality, reliability, capability, or efficiency of current AI workflows and a desire to improve them.",
+        "tags": [
+          "audience"
+        ]
+      },
+      {
+        "questionId": "differentiation.positioning",
+        "question": "What makes this offer, organization, or person meaningfully different from plausible alternatives?",
+        "answer": "Monarchic is not organized around one narrow AI niche or a single disposable tool. Despite being small, it operates with the broad, connected scope of an AI lab: advancing AI-system alignment, intelligence, architecture, system design, and heuristics across an ecosystem of products. Its central aim is to make AI-assisted work smarter, more aligned with the user, more reproducible, and more consistently capable of solving difficult problems. This differs from prompt-to-app and one-shot generation products that optimize for quickly producing a new codebase or unconstrained output. Monarchic focuses on solving real problems and maintaining existing codebases through high-quality automation that stays aligned with user intent. The company applies competitive architectures, system designs, and heuristics across multiple tools while using data and benchmarks to demonstrate where individual products outperform narrower single-tool alternatives.",
+        "tags": [
+          "differentiator"
+        ]
+      },
+      {
+        "questionId": "avoidance.boundaries",
+        "question": "What content, claims, audiences, pages, or visual patterns should the site avoid?",
+        "answer": "Keep all OmnisGenomics products and research off the site for now because they are too early. Do not sell or present libmonarchic as a currently available product. Do not imply that every MCP has publishable research, manufacture benchmark claims, or force identical proof sections across products. The main product emphasis should remain on first-party MCP servers in monarchic-ai and describe their concrete user value with honest lifecycle and evidence boundaries.",
+        "tags": [
+          "avoid"
+        ]
+      },
+      {
+        "questionId": "product.evaluation",
+        "question": "What must a buyer compare, evaluate, or configure before they are ready to act?",
+        "answer": "The near-term commercial focus is Monarchic's MCP servers in the monarchic-ai organization and the user problems, workflows, integrations, and advantages each MCP provides. Buyers should be able to compare those product-specific capabilities and evidence where evidence is genuinely publishable. libmonarchic helps explain the depth and direction of Monarchic's technical work, but it is too early to sell and must not be presented as an available product. OmnisGenomics is also too early and is outside this website's scope for now. Published research is not a requirement for every product and must not be fabricated to force uniform product pages.",
+        "tags": [
+          "differentiator"
+        ]
+      },
+      {
+        "questionId": "trust.proof",
+        "question": "What proof, credentials, examples, outcomes, or trust signals should the site rely on?",
+        "answer": "The site should use three valid classes of public evidence, clearly labeled so visitors understand what each claim represents: (1) recognized external-dataset benchmarks, such as ExplicitMem runs on LongMemEval-S or LoCoMo; (2) reproducible first-party evaluations designed by Monarchic, such as capability, robustness, corpus, or deterministic gate evaluations; and (3) production and engineering verification, such as security checks, automated test coverage, tenant isolation, persistent-state verification, artifact promotion across environments, protocol checks, latency or cost measurements, and production telemetry. These evidence types should be used only where they genuinely exist. Products do not need matching proof sections, and the site must not blur first-party evaluation or operational verification into independent research or external benchmark claims.",
+        "tags": [
+          "trust"
+        ]
+      },
+      {
+        "questionId": "voice.brand",
+        "question": "What should the site sound and feel like, and what tone would be wrong?",
+        "answer": "The site should sound academic and professional, with institutional confidence: technically serious, measured, precise, and evidence-first. It should explain sophisticated systems in clear product language rather than hiding behind unnecessary jargon or reading like a paper abstract. Claims should be concrete and scoped, with methods, evidence types, and limitations stated where relevant. The voice may be ambitious and confident about Monarchic's long-term direction, but it must remain restrained and honest about current product maturity and company scale. Avoid hype, vague superlatives, breathless startup language, playful gimmicks, combative competitor attacks, inflated big-tech posturing, and unsupported claims of superiority.",
+        "tags": [
+          "voice"
+        ]
+      }
+    ],
+    "identity": {
+      "name": "Monarchic",
+      "category": "Automation development and research firm currently focused on AI systems and deterministic tooling",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "goals": [
+        "Define the product- or application-specific user goals and next actions while preserving Monarchic’s broader automation vision",
+        "Preserve honest lifecycle, scope, and evidence boundaries throughout product-specific planning"
+      ],
+      "differentiators": [
+        "A connected, lab-style ecosystem of MCP products rather than one narrow or disposable AI tool",
+        "A focus on making AI-assisted work smarter, aligned with user intent, reproducible, and consistently capable of solving difficult problems",
+        "Emphasis on solving and maintaining real systems rather than one-shot prompt-to-app or unconstrained codebase generation",
+        "Competitive deterministic architectures, system designs, and heuristics supported by clearly scoped evidence"
+      ],
+      "trustSignals": [
+        "Recognized external-dataset benchmark results, explicitly labeled with protocol, scope, and limitations",
+        "Reproducible first-party Monarchic evaluations, explicitly distinguished from independent benchmarks",
+        "Production and engineering verification such as security checks, automated testing, isolation, persistence, artifact promotion, protocol checks, latency or cost measurements, and telemetry"
+      ],
+      "voice": [
+        "Academic and professional, with institutional confidence",
+        "Technically serious, measured, precise, and evidence-first",
+        "Clear product language that explains sophisticated systems without unnecessary jargon",
+        "Ambitious about the long-term direction while restrained and honest about current maturity and company scale"
+      ],
+      "avoid": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence"
+      ]
+    },
+    "sitemapCandidates": [],
+    "pageBriefs": {},
+    "pageMaps": {},
+    "approvalRecords": [],
+    "reviewEvents": [],
+    "webComposerRoundTrips": [],
+    "operationReceipts": []
+  }
+}

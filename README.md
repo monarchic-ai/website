@@ -2,6 +2,35 @@
 
 Public website for Monarchic.
 
+## Approved planning contracts
+
+The approved WebInfo interview defines the next corporate-site information
+architecture in [`webcomposer/site-map.contract.json`](webcomposer/site-map.contract.json)
+and [`webcomposer/page-maps.json`](webcomposer/page-maps.json). Its routes are:
+
+- `/`
+- `/products`
+- `/products/[slug]`
+- `/research`
+- `/research/[slug]`
+- `/company`
+- `/security`
+- `/privacy`
+- `/terms`
+
+The contracts supersede older planning assumptions such as `/about`, a
+standalone `/waitlist`, and a dedicated `/research/explicitmem` route. They are
+planning inputs for a later implementation pass; the current Astro pages have
+not been migrated by this contract-only change.
+
+Portable interview artifacts and reuse instructions live in
+[`webinfo/`](webinfo/README.md). Validate the handoff with:
+
+```bash
+pnpm check:webcomposer
+pnpm check:webinfo-artifacts
+```
+
 ## Current Scope
 
 The site is an Astro static site for the Monarchic brand and public product
