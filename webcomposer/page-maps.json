@@ -3,218 +3,657 @@
     {
       "route": "/",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "hero.split", "dashboard.metric_grid", "form.inline", "footer.multi_column"],
-        "exactTemplateCounts": {
-          "nav.horizontal": 1,
-          "hero.split": 1,
-          "dashboard.metric_grid": 1,
-          "form.inline": 1
-        },
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"],
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
         "mustAppearBefore": [
-          { "before": "hero.split", "after": "dashboard.metric_grid" },
-          { "before": "dashboard.metric_grid", "after": "form.inline" }
-        ]
+          {
+            "before": "hero.split",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose products, app documentation, and research." },
-        { "id": "introduction", "template": "hero.split", "purpose": "Lead with the hosted MCP catalog and show an example request across the four currently available MCPs." },
-        { "id": "proof", "template": "dashboard.metric_grid", "purpose": "Show the four current ExplicitMem benchmark metrics with their scope." },
-        { "id": "pricing_model", "template": "split.asymmetric", "purpose": "Explain adaptive account usage and routes into the product catalog." },
-        { "id": "waitlist", "template": "form.inline", "purpose": "Collect interest in planned and in-rollout MCPs." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "hero",
+          "template": "hero.split",
+          "purpose": "Position Monarchic as an automation research and development firm, distinguish its broad automation direction from its current AI and MCP focus, and establish the primary product path."
+        },
+        {
+          "id": "product-landscape",
+          "template": "feature.grid",
+          "purpose": "Help visitors identify the current MCP products and workflows relevant to their problems while understanding availability."
+        },
+        {
+          "id": "engineering-approach",
+          "template": "comparison.two_column",
+          "purpose": "Explain how Monarchic combines connected systems, deterministic tooling, alignment, and maintenance-oriented automation."
+        },
+        {
+          "id": "evidence",
+          "template": "proof.metric_story",
+          "purpose": "Support product and engineering claims with representative, correctly classified evidence and a path to the research library."
+        },
+        {
+          "id": "long-term-direction",
+          "template": "row.equal",
+          "purpose": "Connect the current AI focus to Monarchic’s broader engineering, STEM, and business automation direction while remaining honest about availability and scale."
+        },
+        {
+          "id": "next-paths",
+          "template": "cta.banner",
+          "purpose": "Give visitors clear next steps based on whether they want to evaluate products, inspect evidence, or understand the company."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
       "route": "/products",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "hero.centered", "stats.strip", "pricing.tiers", "integrations.catalog", "split.asymmetric", "cta.banner", "footer.multi_column"],
-        "exactTemplateCounts": {
-          "nav.horizontal": 1,
-          "hero.centered": 1,
-          "stats.strip": 1,
-          "pricing.tiers": 1,
-          "integrations.catalog": 1,
-          "split.asymmetric": 1,
-          "cta.banner": 1
-        },
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"],
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
         "mustAppearBefore": [
-          { "before": "pricing.tiers", "after": "integrations.catalog" },
-          { "before": "integrations.catalog", "after": "split.asymmetric" },
-          { "before": "split.asymmetric", "after": "cta.banner" }
-        ]
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose top-level public routes and app documentation." },
-        { "id": "catalog_intro", "template": "hero.centered", "purpose": "Introduce plans and MCPs under one weekly execution allowance." },
-        { "id": "catalog_summary", "template": "stats.strip", "purpose": "Summarize five plans, twenty-seven MCPs, and clear Available, In rollout, or Planned status." },
-        { "id": "catalog_navigation", "template": "nav.breadcrumb_bar", "purpose": "Provide anchors for plans, MCPs, and adaptive usage." },
-        { "id": "plans", "template": "pricing.tiers", "purpose": "Compare five monthly or annual subscriptions and show an eligible next action." },
-        { "id": "mcp-catalog", "template": "integrations.catalog", "purpose": "Lead with sixteen available MCPs, then show in-rollout and planned products in visible roadmap sections." },
-        { "id": "how-usage-works", "template": "split.asymmetric", "purpose": "Explain how one weekly execution allowance covers every available MCP and disclose that launch quantities await the fully allocated rate card." },
-        { "id": "docs", "template": "cta.banner", "purpose": "Send setup readers to documentation in the webapp." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
-      ]
-    },
-    {
-      "route": "/products/mcp-explicitmem",
-      "constraints": {
-        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "feature.grid", "proof.metric_story", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
-      },
-      "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
-        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place ExplicitMem positioning and capabilities beside its shared-plan access state." },
-        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange capabilities, buyer fit, outcomes, and workflows." },
-        { "id": "product_research", "template": "proof.metric_story", "purpose": "Link the public ExplicitMem research surface and identify its qualifying LongMemEval-S benchmark with the method and limitations attached." },
-        { "id": "access", "template": "cta.banner", "purpose": "Route buyers to plans, the benchmark, and the catalog." },
-        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "Show one write-and-retrieve workflow with exact payloads, representative provenance output, required access, current boundary, and estimated weekly usage impact." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "hero",
+          "template": "hero.centered",
+          "purpose": "Introduce the approved first-party MCP catalog and help visitors begin evaluating products by the problems they need to solve."
+        },
+        {
+          "id": "workflow-navigation",
+          "template": "feature.grid",
+          "purpose": "Answer which Monarchic products address each visitor’s problem or workflow without requiring prior knowledge of product names."
+        },
+        {
+          "id": "product-catalog",
+          "template": "column.stack",
+          "purpose": "Give visitors enough comparable information to identify relevant products and open the appropriate detail page."
+        },
+        {
+          "id": "connected-ecosystem",
+          "template": "comparison.two_column",
+          "purpose": "Explain how Monarchic’s MCP products can work together while keeping each product independently understandable and evaluable."
+        },
+        {
+          "id": "lifecycle-and-evidence",
+          "template": "proof.metric_story",
+          "purpose": "Define product maturity and show how applicable evidence is classified so visitors can judge readiness and claims correctly."
+        },
+        {
+          "id": "next-path",
+          "template": "cta.banner",
+          "purpose": "Route visitors to the appropriate product detail, separate application, external signup, or product-specific waitlist without handling product accounts or purchases here."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
       "route": "/products/[slug]",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "detail.sidebar", "proof.metric_story", "feature.grid", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
-        { "id": "product_detail", "template": "detail.sidebar", "purpose": "Place product positioning and capabilities beside its price or access status." },
-        { "id": "capabilities", "template": "feature.grid", "purpose": "Arrange catalog-backed capabilities, buyer fit, outcomes, and workflows." },
-        { "id": "product_research", "template": "proof.metric_story", "purpose": "Give every MCP a direct route to its bounded public research brief without representing a brief as a benchmark." },
-        { "id": "access", "template": "cta.banner", "purpose": "Route eligible plans to purchase, available MCPs to plans, roadmap products to the waitlist, and all products back to the catalog." },
-        { "id": "workflow_proof", "template": "proof.metric_story", "purpose": "For each available MCP, show one request, exact tool payload, representative or exact output, required access, current boundary, and estimated weekly usage impact." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "product-hero",
+          "template": "hero.centered",
+          "purpose": "Identify the product, state its concise value proposition and lifecycle, and establish the relevant audience without implying unsupported availability."
+        },
+        {
+          "id": "problem-and-fit",
+          "template": "comparison.two_column",
+          "purpose": "Answer what problem the product solves, why existing approaches fall short, and which visitors and use cases it fits."
+        },
+        {
+          "id": "capabilities-and-workflow",
+          "template": "process.stepper",
+          "purpose": "Show the supported outcomes, capabilities, and representative workflow at the product’s actual hosted scope."
+        },
+        {
+          "id": "architecture-and-integrations",
+          "template": "comparison.two_column",
+          "purpose": "Explain relevant architecture, system design, heuristics, integrations, and relationships to other Monarchic products."
+        },
+        {
+          "id": "availability-and-access",
+          "template": "row.equal",
+          "purpose": "State lifecycle, availability, limitations, readiness boundaries, and any verified pricing or demonstration without inventing unavailable details."
+        },
+        {
+          "id": "evidence",
+          "template": "proof.metric_story",
+          "purpose": "Present correctly scoped product evidence and limitations only when genuine evidence exists; omit the entire module otherwise."
+        },
+        {
+          "id": "next-action",
+          "template": "cta.banner",
+          "purpose": "Present only the configured next actions appropriate to the product’s lifecycle and available supporting material."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
       "route": "/research",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "hero.split", "grid.card_responsive", "split.asymmetric", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Expose products, app documentation, and research." },
-        { "id": "research_intro", "template": "hero.split", "purpose": "Distinguish bounded product research briefs from benchmarks that meet the stricter publication bar." },
-        { "id": "product_research", "template": "grid.card_responsive", "purpose": "Expose one research brief for each of the twenty-seven MCPs, grouped by catalog-derived Available and Planned status." },
-        { "id": "research_boundary", "template": "split.asymmetric", "purpose": "Explain what each brief includes, what it withholds, and why planned hosted products are not presented as available." },
-        { "id": "published-benchmarks", "template": "grid.card_responsive", "purpose": "Present the qualifying ExplicitMem benchmark with its metrics, publication boundary, and direct links." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "research-hero",
+          "template": "hero.centered",
+          "purpose": "Establish the page as Monarchic’s authoritative library of approved research, evaluations, benchmarks, and engineering evidence."
+        },
+        {
+          "id": "evidence-taxonomy",
+          "template": "feature.grid",
+          "purpose": "Help visitors distinguish the three evidence classes and understand what each can and cannot support."
+        },
+        {
+          "id": "featured-evidence",
+          "template": "proof.metric_story",
+          "purpose": "Present a limited set of approved representative findings with enough scope and limitation context to avoid decontextualized headline metrics."
+        },
+        {
+          "id": "evidence-library",
+          "template": "column.stack",
+          "purpose": "Provide the complete browsable evidence index and connect every entry to its report and related product."
+        },
+        {
+          "id": "publication-standards",
+          "template": "row.equal",
+          "purpose": "Explain Monarchic’s publication standards, comparability rules, reproducibility expectations, and non-uniform research coverage."
+        },
+        {
+          "id": "next-paths",
+          "template": "cta.banner",
+          "purpose": "Let visitors continue to a complete evidence report or inspect the product associated with a result."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
       "route": "/research/[slug]",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "header.detail_status", "article.prose_aside", "feature.grid", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, documentation, and the research index available." },
-        { "id": "brief_header", "template": "header.detail_status", "purpose": "Identify the MCP, research-brief scope, review date, and catalog-derived hosted status above the fold." },
-        { "id": "research_question", "template": "article.prose_aside", "purpose": "State the problem and research question in public, product-level terms." },
-        { "id": "validation_and_limits", "template": "feature.grid", "purpose": "Separate the high-level validation approach, public evidence boundary, and current limitations without exposing proprietary implementation details." },
-        { "id": "product_bridge", "template": "cta.banner", "purpose": "Link to the product and choose a status-appropriate plan or waitlist action." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
-      ]
-    },
-    {
-      "route": "/research/explicitmem",
-      "constraints": {
-        "requiredTemplates": ["nav.horizontal", "header.detail_status", "dashboard.kpi_chart_table", "article.prose_aside", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
-      },
-      "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research navigation available." },
-        { "id": "report_header", "template": "header.detail_status", "purpose": "Identify the dataset, sample, run status, and benchmark boundary." },
-        { "id": "results", "template": "dashboard.kpi_chart_table", "purpose": "Keep headline metrics and question-type results in one evidence surface." },
-        { "id": "methodology", "template": "feature.grid", "purpose": "Separate the fixed method, observed failures, and comparison boundary." },
-        { "id": "run_configuration", "template": "article.prose_aside", "purpose": "Present the reproducible configuration beside source and interpretation notes." },
-        { "id": "product_bridge", "template": "cta.banner", "purpose": "Connect the report to the ExplicitMem product." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
-      ]
-    },
-    {
-      "route": "/waitlist",
-      "constraints": {
-        "requiredTemplates": ["nav.horizontal", "hero.split", "form.inline", "footer.multi_column"],
-        "exactTemplateCounts": {
-          "nav.horizontal": 1,
-          "hero.split": 1,
-          "form.inline": 1
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
         },
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
-      },
-      "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep product, docs, and research routes available." },
-        { "id": "waitlist_intro", "template": "hero.split", "purpose": "Explain that the form is for planned and in-rollout product availability updates." },
-        { "id": "waitlist_form", "template": "form.inline", "purpose": "Capture one email address with success, error, and privacy states." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, and legal navigation." }
+        {
+          "id": "report-header",
+          "template": "hero.centered",
+          "purpose": "Identify the report, summarize its scope, state publication status and date, associate it with a product, and establish the report-level evidence classification."
+        },
+        {
+          "id": "question-and-classification",
+          "template": "feature.grid",
+          "purpose": "Define the evaluated research questions or engineering claims and identify the type and provenance of every included result."
+        },
+        {
+          "id": "study-collection",
+          "template": "landing.section_sequence",
+          "purpose": "Render one repeatable, independently scoped study block for each included evaluation so protocols and metrics are never collapsed into one aggregate claim."
+        },
+        {
+          "id": "findings-and-boundaries",
+          "template": "comparison.two_column",
+          "purpose": "Synthesize what the results support and do not support while preserving failures, limitations, metric distinctions, and comparability constraints."
+        },
+        {
+          "id": "reproducibility",
+          "template": "column.stack",
+          "purpose": "Provide the approved evidence paths, artifacts, configuration details, and instructions needed to inspect or reproduce the work."
+        },
+        {
+          "id": "product-relationship",
+          "template": "row.equal",
+          "purpose": "Explain which MCP and exact product capability the report evaluates without generalizing beyond the tested scope."
+        },
+        {
+          "id": "next-paths",
+          "template": "cta.banner",
+          "purpose": "Let readers inspect supporting artifacts, evaluate the related product, or return to the complete Research index."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
-      "route": "/privacy",
+      "route": "/company",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
-        { "id": "privacy_notice", "template": "docs.toc_content", "purpose": "Present data categories, purposes, providers, retention, rights, security boundaries, and effective date." },
-        { "id": "privacy_contact", "template": "cta.banner", "purpose": "Provide a direct privacy contact and a route to the service terms." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, privacy, and terms navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "company-hero",
+          "template": "hero.centered",
+          "purpose": "Identify Monarchic, distinguish the public brand from its legal operator, and state the company’s automation mission."
+        },
+        {
+          "id": "mission-and-horizon",
+          "template": "feature.grid",
+          "purpose": "Explain the enduring automation scope, present AI and MCP focus, broader audiences, and long-term fields without implying future availability."
+        },
+        {
+          "id": "our-approach",
+          "template": "process.stepper",
+          "purpose": "Present Our approach as an evidence-first system of research, deterministic engineering, architecture, heuristics, reproducibility, and disciplined product development."
+        },
+        {
+          "id": "research-to-product-system",
+          "template": "comparison.two_column",
+          "purpose": "Show how research, underlying tooling, and commercial MCP products reinforce one another as a connected program rather than isolated releases."
+        },
+        {
+          "id": "evidence-in-practice",
+          "template": "proof.metric_story",
+          "purpose": "Ground the operating method in correctly classified evidence and direct visitors toward published research and engineering verification."
+        },
+        {
+          "id": "scope-and-operating-posture",
+          "template": "row.equal",
+          "purpose": "Separate current products from long-term direction and describe Monarchic’s small, technically ambitious, long-horizon operating posture without implying unsupported scale."
+        },
+        {
+          "id": "next-paths",
+          "template": "cta.banner",
+          "purpose": "Direct visitors toward current products, published research, or security and engineering practices based on their evaluation needs."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
       "route": "/security",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
-        { "id": "security_posture", "template": "docs.toc_content", "purpose": "Separate verified control-plane controls from product content boundaries, providers, retention, and claims that are not yet made." },
-        { "id": "security_contact", "template": "cta.banner", "purpose": "Provide a direct incident and security-question contact beside the privacy notice." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, company, security, privacy, terms, and access navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "security-header",
+          "template": "hero.centered",
+          "purpose": "Define the Security page’s covered systems, exclusions, assurance scope, and last-updated context without making absolute claims."
+        },
+        {
+          "id": "hosted-boundaries",
+          "template": "comparison.two_column",
+          "purpose": "Explain current hosted-runtime, security, data-handling, isolation, persistence, and product-specific boundaries."
+        },
+        {
+          "id": "verified-controls",
+          "template": "feature.grid",
+          "purpose": "Organize only confirmed engineering controls and identify where their applicability varies by product or lifecycle."
+        },
+        {
+          "id": "deployment-and-readiness",
+          "template": "process.stepper",
+          "purpose": "Show how artifacts and deployments are validated while distinguishing deployment, operational verification, lifecycle status, and complete readiness."
+        },
+        {
+          "id": "engineering-verification",
+          "template": "proof.metric_story",
+          "purpose": "Present applicable operational evidence with its scope, date, provenance, and limitations without treating it as independent research."
+        },
+        {
+          "id": "disclosure-and-claims",
+          "template": "row.equal",
+          "purpose": "Provide a vulnerability-reporting path only when configured and state only certifications or compliance claims that are actually verified."
+        },
+        {
+          "id": "next-paths",
+          "template": "cta.banner",
+          "purpose": "Let visitors review boundaries, follow a configured disclosure channel, or continue to product and company context."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
-      "route": "/about",
+      "route": "/privacy",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
-        { "id": "company_profile", "template": "docs.toc_content", "purpose": "Identify Monarchic LLC, list available products, explain hosted value, and state the current accountability path without invented biographies." },
-        { "id": "company_contact", "template": "cta.banner", "purpose": "Provide a direct company contact and a route to the product catalog." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, company, security, privacy, terms, and access navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "policy-header",
+          "template": "hero.centered",
+          "purpose": "Identify Monarchic, LLC and state the Privacy policy’s scope, effective date, update date, and publication context."
+        },
+        {
+          "id": "scope-and-boundaries",
+          "template": "comparison.two_column",
+          "purpose": "Explain what the corporate website policy covers and distinguish it from separately governed product applications."
+        },
+        {
+          "id": "data-and-purposes",
+          "template": "column.stack",
+          "purpose": "Describe verified submitted and automatically collected data, why it is processed, and how cookies, analytics, logs, forms, and consent operate."
+        },
+        {
+          "id": "processors-transfers-retention",
+          "template": "comparison.two_column",
+          "purpose": "Identify current processors, relevant transfer information, and actual retention periods or defensible retention criteria."
+        },
+        {
+          "id": "rights-and-protection",
+          "template": "row.equal",
+          "purpose": "Explain applicable privacy rights, request procedures, and high-level data-protection practices without making absolute guarantees."
+        },
+        {
+          "id": "implementation-verification",
+          "template": "column.stack",
+          "purpose": "Require the published policy to match the implementation-time data inventory and complete legal review before release."
+        },
+        {
+          "id": "requests-and-next-paths",
+          "template": "cta.banner",
+          "purpose": "Provide configured privacy-request and policy-navigation paths without inventing unavailable destinations."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     },
     {
       "route": "/terms",
       "constraints": {
-        "requiredTemplates": ["nav.horizontal", "docs.toc_content", "cta.banner", "footer.multi_column"],
-        "mustStartWith": ["nav.horizontal"],
-        "mustEndWith": ["footer.multi_column"]
+        "requiredTemplates": [
+          "nav.horizontal",
+          "footer.multi_column"
+        ],
+        "excludedTemplates": [],
+        "exactTemplateCounts": {},
+        "minTemplateCounts": {},
+        "maxTemplateCounts": {},
+        "mustStartWith": [
+          "nav.horizontal"
+        ],
+        "mustEndWith": [
+          "footer.multi_column"
+        ],
+        "mustAppearBefore": [
+          {
+            "before": "hero.centered",
+            "after": "footer.multi_column"
+          }
+        ],
+        "exactlyOneOf": [],
+        "atLeastOneOf": []
       },
       "sections": [
-        { "id": "navigation", "template": "nav.horizontal", "purpose": "Keep products, docs, research, and access routes available." },
-        { "id": "service_terms", "template": "docs.toc_content", "purpose": "Present account, usage, billing, content, acceptable-use, availability, and liability boundaries." },
-        { "id": "terms_contact", "template": "cta.banner", "purpose": "Provide a support contact and a route to the privacy notice." },
-        { "id": "footer", "template": "footer.multi_column", "purpose": "Close with product, docs, research, access, privacy, and terms navigation." }
+        {
+          "id": "navigation",
+          "template": "nav.horizontal",
+          "purpose": "Provide the primary site navigation."
+        },
+        {
+          "id": "terms-header",
+          "template": "hero.centered",
+          "purpose": "Identify Monarchic, LLC and state the Website Terms’ effective date, update date, and corporate-site scope."
+        },
+        {
+          "id": "scope-and-separate-agreements",
+          "template": "comparison.two_column",
+          "purpose": "Explain that these terms govern the informational corporate site and not separately governed products, accounts, subscriptions, pricing, or services."
+        },
+        {
+          "id": "acceptable-use",
+          "template": "column.stack",
+          "purpose": "State the legally reviewed permitted and prohibited uses of the corporate website and its functionality."
+        },
+        {
+          "id": "intellectual-property-and-artifacts",
+          "template": "row.equal",
+          "purpose": "Cover branding, site content, research publications, downloadable artifacts, trademarks, and applicable external or open-source licenses."
+        },
+        {
+          "id": "research-and-external-destinations",
+          "template": "comparison.two_column",
+          "purpose": "Explain research and benchmark interpretation limits and clarify that external links and product applications are separately governed."
+        },
+        {
+          "id": "disclaimers-and-legal-provisions",
+          "template": "column.stack",
+          "purpose": "Contain only counsel-reviewed warranty, liability, change, continued-use, governing-law, dispute, and contact provisions."
+        },
+        {
+          "id": "implementation-and-legal-verification",
+          "template": "row.equal",
+          "purpose": "Require the published terms to match the implemented website, published materials, outbound destinations, and licenses and to complete legal review."
+        },
+        {
+          "id": "next-paths",
+          "template": "cta.banner",
+          "purpose": "Provide clear navigation to the related Privacy policy or back to the MCP product catalog."
+        },
+        {
+          "id": "footer",
+          "template": "footer.multi_column",
+          "purpose": "Close the page with navigation, trust, and contact context."
+        }
       ]
     }
   ]

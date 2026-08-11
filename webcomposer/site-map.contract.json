@@ -1,114 +1,388 @@
 {
-  "name": "Monarchic Public Website",
-  "description": "Content-only contract for Monarchic's public home, product, research, benchmark, waitlist, trust, company, privacy, and service-terms routes.",
+  "name": "Monarchic",
+  "description": "Centers Monarchic’s products, publishable evidence, and automation research direction while giving each audience a direct path to relevant product details, external applications, or product-specific waitlists.",
   "pages": [
     {
       "route": "/",
       "title": "Home",
-      "purpose": "Introduce the Monarchic MCP catalog, adaptive usage model, product availability, and current benchmark evidence.",
-      "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["catalog_positioning", "available_rollout_and_planned_scope", "adaptive_usage_model", "primary_cta", "benchmark_metrics", "measurement_limits", "waitlist_offer"],
-      "forbiddenContent": ["secret names", "private API URLs", "unsupported availability claims", "internal test output", "website implementation details"],
-      "primaryActions": ["start_evaluation", "view_products", "read_docs", "view_research", "join_waitlist"]
+      "purpose": "Explain Monarchic's long-term automation vision and its current focus on a connected ecosystem of AI-focused MCP products while establishing a technically serious, long-horizon research and development firm without overstating team size or operational scale.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "requiredContent": [
+        "A connected, lab-style ecosystem of MCP products rather than one narrow or disposable AI tool",
+        "A focus on making AI-assisted work smarter, aligned with user intent, reproducible, and consistently capable of solving difficult problems",
+        "A product portfolio organized by user problem",
+        "An ambitious but honest account of Monarchic’s maturity and operating scale",
+        "Clear paths to Products, Research, and Company",
+        "Clear product lifecycle and availability boundaries",
+        "Competitive deterministic architectures, system designs, and heuristics supported by clearly scoped evidence",
+        "Emphasis on solving and maintaining real systems rather than one-shot prompt-to-app or unconstrained codebase generation",
+        "Its current commercial focus on AI systems and MCP products",
+        "Its longer-term relevance to engineering, STEM, and business automation without presenting future work as currently available",
+        "Monarchic’s identity as an automation development and research firm",
+        "Representative evidence using the three approved evidence labels",
+        "The connected-system, deterministic-tooling, and real-system-maintenance differentiators"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Explore MCP products",
+        "Review published research and evidence"
+      ]
     },
     {
       "route": "/products",
       "title": "Products",
-      "purpose": "Let buyers compare five subscription plans with weekly execution usage, inspect sixteen available MCPs, and see eleven planned hosted products.",
-      "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["five_usage_plans", "twenty_seven_mcp_products", "sixteen_available_mcps_first", "visible_hosted_roadmap", "availability", "rollout_and_planned_markers", "adaptive_usage_model", "catalog_prices", "weekly_operation_examples", "purchase_link_for_available_plans", "docs_link"],
-      "forbiddenContent": ["retired MCPs", "workflow bundles", "platform promotion", "standalone MCP subscriptions", "prices absent from the catalog", "checkout promises for planned products", "website implementation details"],
-      "primaryActions": ["compare_plans", "inspect_product", "open_purchase_flow_when_available", "read_docs"]
-    },
-    {
-      "route": "/products/mcp-explicitmem",
-      "title": "ExplicitMem Product",
-      "purpose": "Explain ExplicitMem's buyer fit, shared-plan access, capabilities, status, concrete metered workflow, current content boundary, and qualifying benchmark.",
-      "audience": ["agent users", "AI platform teams", "engineering leaders"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "shared_plan_access", "request_execution_output_usage_workflow", "required_access_and_boundary", "product_research_link", "benchmark_link", "primary_cta"],
-      "forbiddenContent": ["unsupported latency claims", "private benchmark records", "internal test output", "standalone MCP price"],
-      "primaryActions": ["compare_plans", "read_product_research", "read_benchmark", "return_to_catalog"]
+      "purpose": "Help visitors evaluate each MCP through concrete problems, use cases, capabilities, integrations, differentiators, lifecycle, and applicable evidence, then route qualified visitors to separate product dashboards or applications or to waitlists without processing purchases on the corporate site.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "requiredContent": [
+        "Only approved first-party products from the canonical monarchic-ai registry",
+        "Products grouped by user problem and workflow rather than an undifferentiated list",
+        "Concise use case, audience fit, differentiator, integration, and lifecycle summaries for every listed product",
+        "Clear separation of production, active-development, and approved planned products",
+        "Optional evidence indicators using the three approved evidence labels",
+        "Pricing summaries and demonstrations only when verified and appropriate",
+        "Links to product detail pages, separate applications, external signup, or product-specific waitlists",
+        "No checkout, account creation, subscription management, or implication that deployment alone equals product readiness on the corporate site"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Open a product detail",
+        "Continue to a separate product application or eligible product-specific waitlist without purchasing on the corporate site"
+      ]
     },
     {
       "route": "/products/[slug]",
-      "title": "Product Detail",
-      "purpose": "Describe one catalog product with its buyer fit, capabilities, availability, shared-plan access, and eligible next action; available MCPs also show one metered tool workflow and its current boundary.",
-      "audience": ["buyers", "engineering teams", "agent users"],
-      "requiredContent": ["product_name", "buyer_fit", "capabilities", "availability", "catalog_price_state", "shared_plan_access", "product_research_link_for_every_mcp", "request_execution_output_usage_workflow_for_available_mcps", "required_access_and_boundary_for_available_mcps", "purchase_link_when_available", "primary_cta"],
-      "forbiddenContent": ["retired products", "prices absent from the catalog", "checkout promises for planned products", "private catalog metadata", "unsupported evidence claims", "website implementation details"],
-      "primaryActions": ["open_purchase_flow_when_available", "join_waitlist_when_planned", "return_to_catalog", "read_product_research"]
+      "title": "MCP Product Detail",
+      "purpose": "Give a prospective user enough product-specific information to understand fit, evaluate technical advantages, and continue to the correct separate product application or eligible waitlist.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "requiredContent": [
+        "Product identity and concise positioning",
+        "The user problem and shortcomings of existing approaches",
+        "Applicable audiences, use cases, capabilities, and representative workflows at the correct hosted-product scope",
+        "Integrations and ecosystem relationships",
+        "Advantages grounded in architecture, system design, heuristics, or demonstrated workflow outcomes",
+        "Current lifecycle, availability, limitations, and known boundaries",
+        "Verified pricing and demonstrations only when available",
+        "Optional correctly labeled evidence only when genuine product evidence exists",
+        "A lifecycle-appropriate external application, signup, or product-specific waitlist action"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Open the separate product application when available",
+        "Sign up externally when available",
+        "View verified pricing or a product demonstration when available",
+        "Join the product-specific waitlist when eligible",
+        "Read related evidence when available"
+      ]
     },
     {
       "route": "/research",
-      "title": "Research",
-      "purpose": "Index one bounded research brief for each of the twenty-seven public MCPs, separate available products from the hosted roadmap, and reserve benchmark language for results that meet the stricter publication bar.",
-      "audience": ["technical buyers", "agent users", "research readers"],
-      "requiredContent": ["twenty_seven_product_research_briefs", "sixteen_available_and_eleven_planned_status_groups", "catalog_derived_status", "brief_scope_boundary", "publication_criteria", "explicitmem_benchmark", "headline_metrics", "methodology_link", "limitations"],
-      "forbiddenContent": ["raw internal test output", "MCP hooks", "deployment checks", "proprietary implementation details", "unscoped benchmark rankings", "private data", "planned product presented as available"],
-      "primaryActions": ["open_product_research", "open_product_page", "open_explicitmem_benchmark"]
+      "title": "Research and Evidence",
+      "purpose": "Index only research, benchmarks, evaluations, and engineering evidence that Monarchic is prepared to publish, while explaining that products do not require uniform research coverage.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis"
+      ],
+      "requiredContent": [
+        "Evidence grouped as external-dataset benchmarks, first-party evaluations, or production and engineering verification",
+        "Product association, publication date, evaluated scope, and evidence status",
+        "A visible explanation that not every product has or needs a research publication",
+        "No placeholder studies, unapproved results, synthetic fixtures presented as product benchmarks, or incomparable score claims"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Read an evidence report",
+        "Open the related product"
+      ]
     },
     {
       "route": "/research/[slug]",
-      "title": "MCP Research Brief",
-      "purpose": "Explain one MCP's problem, public research question, high-level validation approach, evidence boundary, current limitations, and catalog-derived hosted status without disclosing proprietary implementation details.",
-      "audience": ["technical buyers", "agent users", "research readers"],
-      "requiredContent": ["product_name", "research_brief_label", "catalog_derived_hosted_status", "problem", "research_question", "validation_approach", "public_evidence_boundary", "current_limitations", "review_date", "product_link", "status_appropriate_primary_cta"],
-      "forbiddenContent": ["secret values", "private API URLs", "private tenant data", "deployment configuration", "internal source paths", "proprietary algorithms", "prompt internals", "full private schemas", "raw internal test output", "unsupported benchmark claims", "planned product presented as available"],
-      "primaryActions": ["view_product", "compare_plans_when_available", "join_waitlist_when_planned", "browse_research"]
+      "title": "Research and Evidence Detail",
+      "purpose": "Present one publishable research or evidence collection with enough method, scope, and boundary detail for a technically literate reader to evaluate it.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis"
+      ],
+      "requiredContent": [
+        "Report identity, publication status, date, and concise abstract",
+        "Evidence-type labels for every included result",
+        "One or more related research questions or engineering claims",
+        "A repeatable per-study structure for methods, datasets, protocols, scopes, system versions, metrics, and dates",
+        "Results including failures, thresholds, and quality-gate outcomes",
+        "Limitations and explicit comparability boundaries",
+        "Publishable artifacts, evidence paths, or reproduction instructions",
+        "Relationship to the relevant MCP and the exact capability evaluated",
+        "Clear separation between full runs, first-party evaluations, fixture smoke, projections, and harness-only work",
+        "For ExplicitMem, distinct coverage of LongMemEval-S, LoCoMo, cross-dataset retrieval-policy, and generic-answer evaluations with their respective caveats"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Inspect supporting artifacts",
+        "Open the related product",
+        "Return to the Research index"
+      ]
     },
     {
-      "route": "/research/explicitmem",
-      "title": "ExplicitMem Research",
-      "purpose": "Publish the dated 500-question LongMemEval-S result, fixed method, question-type breakdown, failures, and interpretation limits.",
-      "audience": ["technical buyers", "memory system builders", "research readers"],
-      "requiredContent": ["run_date", "sample_size", "methodology", "headline_results", "question_type_results", "failures", "quality_gate_status", "limitations", "source_link"],
-      "forbiddenContent": ["hosted latency claims", "private tenant data", "deployment configuration", "MCP hooks", "unscoped competitive claims"],
-      "primaryActions": ["view_product", "view_source", "browse_research"]
+      "route": "/company",
+      "title": "Company",
+      "purpose": "Establish Monarchic as a technically serious, long-horizon automation research and development firm without overstating team size or operational scale and without making the story team-centric.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "requiredContent": [
+        "A clear distinction between long-term direction and currently available product scope",
+        "Automation as the enduring scope and AI as the present focus",
+        "Connected systems-lab posture rather than one-off startups",
+        "Honest statement that Monarchic is small and built for a long horizon",
+        "No team roster, founder mythology, or employee-scale implication",
+        "Our approach as a section covering evidence-first systems research, deterministic tooling, and product development",
+        "Public brand Monarchic and legal operator Monarchic, LLC",
+        "Relationship between research, deterministic tooling, and commercial MCP products",
+        "The audiences Monarchic ultimately serves across engineering, STEM research, business operations, and guided nontechnical workflows"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Assess Monarchic’s technical approach, long-horizon research posture, and current scale",
+        "Explore MCP products",
+        "Review published research"
+      ]
     },
     {
-      "route": "/waitlist",
-      "title": "Waitlist",
-      "purpose": "Collect an email address for planned and in-rollout product availability updates.",
-      "audience": ["prospects", "buyers", "agent users"],
-      "requiredContent": ["waitlist_offer", "form_fields", "success_state", "privacy_boundary", "hosted_roadmap_scope"],
-      "forbiddenContent": ["instant access promises", "unsupported launch dates", "private CRM labels", "website release status"],
-      "primaryActions": ["join_waitlist"]
+      "route": "/security",
+      "title": "Security and Engineering Trust",
+      "purpose": "Explain production and engineering verification for hosted MCPs without presenting operational checks as independent research.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis"
+      ],
+      "requiredContent": [
+        "Scope, covered systems, exclusions, and last-updated context",
+        "Current hosted-runtime, security, and data-handling boundaries",
+        "Only verified controls across isolation, persistence, protocol behavior, testing, release, artifact promotion, telemetry, and incident handling",
+        "Product- or lifecycle-specific differences where relevant",
+        "Clear distinction between deployment, operational verification, and complete product readiness",
+        "Production and engineering verification explicitly distinguished from external benchmarks and independent studies",
+        "A responsible-disclosure path only when a real destination is configured",
+        "No unverified certifications or compliance claims",
+        "Links to Products and Company for product scope and operating context"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Review security boundaries",
+        "Follow the configured responsible-disclosure channel when available"
+      ]
     },
     {
       "route": "/privacy",
       "title": "Privacy Notice",
-      "purpose": "Explain Monarchic's current data handling for the website, accounts, billing, hosted MCP requests, operational telemetry, and support contacts.",
-      "audience": ["website visitors", "account holders", "buyers", "agent users"],
-      "requiredContent": ["effective_date", "controller_identity", "data_categories", "processing_purposes", "service_providers", "retention_boundary", "privacy_rights", "security_boundary", "contact_path"],
-      "forbiddenContent": ["unsupported compliance certifications", "guaranteed security claims", "secret values", "private customer data", "unsupported retention periods"],
-      "primaryActions": ["contact_privacy", "read_terms"]
-    },
-    {
-      "route": "/security",
-      "title": "Security and Trust",
-      "purpose": "State the current, evidence-backed service boundary for transport, control-plane access, hosted MCP content, providers, secrets, retention, telemetry, training policy, and incident contact.",
-      "audience": ["security reviewers", "technical buyers", "account holders"],
-      "requiredContent": ["effective_date", "public_transport", "stored_data_claim_boundary", "control_plane_scope", "hosted_mcp_content_boundary", "permissions_and_keys", "providers_and_subprocesses", "secret_handling", "retention_and_deletion", "usage_receipts", "training_policy_boundary", "certification_boundary", "security_contact"],
-      "forbiddenContent": ["blanket tenant isolation claim", "unverified encryption-at-rest claim", "unsupported training promise", "unsupported compliance certification", "guaranteed deletion timeline", "secret values"],
-      "primaryActions": ["contact_security", "read_privacy"]
-    },
-    {
-      "route": "/about",
-      "title": "Company",
-      "purpose": "Identify Monarchic LLC as the service operator, show what is available now, explain the hosted value, and give buyers a direct accountability path.",
-      "audience": ["buyers", "partners", "account holders"],
-      "requiredContent": ["operator_identity", "direct_contact", "available_products", "hosted_value", "accountability_links"],
-      "forbiddenContent": ["invented founder identity", "invented biography", "unsupported location", "unsupported company history"],
-      "primaryActions": ["contact_company", "view_products", "read_security"]
+      "purpose": "Explain data handling for the corporate website and any configured inquiry or product-specific waitlist referral surfaces at their actual current scope.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "requiredContent": [
+        "Monarchic, LLC identity, policy scope, effective date, and update date",
+        "Clear boundary between the corporate website and separately governed product applications",
+        "Verified categories of data collected automatically or submitted by visitors",
+        "Actual purposes and applicable legal bases",
+        "Cookie and analytics practices including consent behavior where applicable",
+        "Current processors and relevant transfer information",
+        "Retention periods or defensible retention criteria",
+        "Applicable user rights and request procedures",
+        "High-level security and data-protection practices without absolute guarantees",
+        "A real privacy-request channel configured before publication",
+        "Policy-update procedures and links to Website Terms",
+        "Legal review required before final publication"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Use the configured privacy-request channel when needed",
+        "Review Website Terms",
+        "Return to MCP products"
+      ]
     },
     {
       "route": "/terms",
-      "title": "Service Terms",
-      "purpose": "State the operating terms for Monarchic accounts, hosted MCPs, adaptive usage metering, billing, customer content, acceptable use, and service availability.",
-      "audience": ["account holders", "buyers", "agent users", "billing owners"],
-      "requiredContent": ["effective_date", "agreement_scope", "account_terms", "usage_metering", "acceptable_use", "customer_content", "third_party_services", "payment_terms", "suspension_boundary", "warranty_boundary", "liability_boundary", "change_notice", "contact_path"],
-      "forbiddenContent": ["unsupported uptime commitments", "unpublished pricing promises", "secret values", "private customer data", "automatic compliance claims"],
-      "primaryActions": ["contact_support", "read_privacy"]
+      "title": "Website Terms",
+      "purpose": "State the terms for the corporate informational website without substituting for separate product-service terms.",
+      "audience": [
+        "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
+        "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
+        "Researchers, scientists, and engineers across STEM seeking reproducible automation for technical work, experimentation, and analysis",
+        "Founders, operators, and business teams seeking structured automation for creating, validating, operating, and growing businesses",
+        "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
+      ],
+      "requiredContent": [
+        "Monarchic, LLC identity, effective date, update date, and website-level scope",
+        "Explicit separation from product-service terms, privacy policies, pricing, accounts, and subscriptions",
+        "Permitted and prohibited use of the corporate website",
+        "Intellectual-property, trademark, published-research, and artifact-use terms",
+        "Research and benchmark interpretation boundaries including methodology and comparability limitations",
+        "External-link and third-party destination boundaries",
+        "Appropriately reviewed warranty disclaimers and liability limitations",
+        "Change-notification and continued-use terms",
+        "Governing-law, dispute, and contact provisions only after jurisdictional and legal review",
+        "Links to Privacy and Products",
+        "Legal review required before final publication"
+      ],
+      "forbiddenContent": [
+        "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
+        "Unsupported superiority claims or language implying big-tech staffing or scale",
+        "All OmnisGenomics products and research until they are ready for public presentation",
+        "Presenting libmonarchic as an available or sellable product",
+        "Inventing research, benchmarks, or uniform proof sections for products without applicable evidence",
+        "Corporate-site purchasing, a dedicated contact page, or a team-centric company narrative",
+        "A services page that misrepresents MCP products as consulting services",
+        "Presenting retired ProofPack as active without a canonical lifecycle promotion",
+        "Treating PTY deployment as proof that active-development readiness gates are closed",
+        "Conflating the three evidence types",
+        "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
+        "Direct competitor-win claims without same-protocol comparable evidence",
+        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+      ],
+      "primaryActions": [
+        "Review the Privacy policy",
+        "Return to MCP products"
+      ]
     }
   ]
 }
