@@ -8,10 +8,10 @@
     "featureBullets": [
       "Larger shared allowance for production agent workloads",
       "Best fit for sustained BrowserOps, RepoIntel, SEO, and lead workflows",
-      "Pause by default or enable pay-as-you-go"
+      "No overage charges; usage pauses at the weekly limit"
     ],
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Each operation uses its frozen rate-card class. Files and indexed data are metered separately; disclosed provider expenses are BYOK or itemized.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "available",
     "prices": [
       {
@@ -39,10 +39,10 @@
     "featureBullets": [
       "Usage-based access across hosted MCP routes",
       "Scoped API keys, billing controls, and account dashboard access",
-      "Pause by default or enable pay-as-you-go"
+      "No overage charges; usage pauses at the weekly limit"
     ],
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Each operation uses its frozen rate-card class. Files and indexed data are metered separately; disclosed provider expenses are BYOK or itemized.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "highlighted": true,
     "status": "available",
     "prices": [
@@ -67,14 +67,14 @@
     "slug": "usage-individual",
     "displayName": "Individual",
     "tagline": "Solo hosted MCP access with a hard monthly cap",
-    "description": "A single-developer entry tier for trying hosted Monarchic routes without surprise overage. Built for solo agents, side projects, and evaluation work.",
+    "description": "A single-developer entry tier for running hosted Monarchic routes with a fixed subscription and hard usage limit. Built for solo agents, side projects, and evaluation work.",
     "featureBullets": [
       "Hosted access to the Monarchic MCP routes as they open",
       "Dashboard API keys and billing controls",
-      "Pause by default or enable pay-as-you-go"
+      "No overage charges; usage pauses at the weekly limit"
     ],
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Each operation uses its frozen rate-card class. Files and indexed data are metered separately; disclosed provider expenses are BYOK or itemized.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "available",
     "prices": [
       {
@@ -102,10 +102,10 @@
     "featureBullets": [
       "Shared usage pool for team workflows",
       "Designed for multiple API keys and repeat production usage",
-      "Pause by default or enable pay-as-you-go"
+      "No overage charges; usage pauses at the weekly limit"
     ],
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Each operation uses its frozen rate-card class. Files and indexed data are metered separately; disclosed provider expenses are BYOK or itemized.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "available",
     "prices": [
       {

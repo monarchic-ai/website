@@ -133,7 +133,7 @@ function statusClasses(plan: CatalogPlan): string {
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Each plan includes an account-level weekly execution allowance shared
             across available MCPs. Usage pauses at the limit by default; paid
-            plans can enable dollar-denominated pay-as-you-go when available.
+            usage pauses at the included weekly limit with no automatic overage charges.
           </p>
           <div class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {usagePlans.map((plan) => {
@@ -252,7 +252,7 @@ function statusClasses(plan: CatalogPlan): string {
             <div class="grid gap-3 text-sm leading-6 text-white/72">
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">See weekly execution remaining, the refresh date, available rollover, and operation receipts.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Pause at the plan limit by default or opt into pay-as-you-go with a spending limit.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Usage pauses at the included limit. No automatic overage charges.</span></div>
             </div>
           </div>
           <div class="mt-8 grid border-t border-white/36 sm:grid-cols-2 lg:grid-cols-4">

@@ -39,12 +39,12 @@
     "featureBullets": [
       "Personal weekly execution allowance",
       "Launch quantities will follow the fully allocated rate card",
-      "Pause by default or enable pay-as-you-go",
+      "No overage charges; usage pauses at the weekly limit",
       "Scoped API keys and account usage controls"
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "coming_soon",
     "prices": [
       {
@@ -72,12 +72,12 @@
     "featureBullets": [
       "Weekly execution allowance for one active developer",
       "Launch quantities will follow the fully allocated rate card",
-      "Pause by default or enable pay-as-you-go",
+      "No overage charges; usage pauses at the weekly limit",
       "Scoped API keys and account usage controls"
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "highlighted": true,
     "status": "coming_soon",
     "prices": [
@@ -107,11 +107,11 @@
       "Shared weekly execution allowance",
       "Launch quantities will follow the fully allocated rate card",
       "Shared usage for team workflows",
-      "Pause by default or enable pay-as-you-go"
+      "No overage charges; usage pauses at the weekly limit"
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "coming_soon",
     "prices": [
       {
@@ -140,11 +140,11 @@
       "Shared weekly execution allowance",
       "Launch quantities will follow the fully allocated rate card",
       "Shared usage with business controls",
-      "Pause by default or enable pay-as-you-go"
+      "No overage charges; usage pauses at the weekly limit"
     ],
     "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
-    "overageLabel": "Pause by default; optional PAYG",
-    "usageSummary": "Operation quantities remain unpublished while direct and shared variable costs are allocated. Each operation uses its frozen rate-card class; storage and disclosed provider expenses are separate.",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "contact_sales",
     "prices": [
       {
