@@ -250,17 +250,22 @@ async function runBrowserSmoke() {
         }
       }
 
-      const individualCard = page.locator('[data-plan-card="usage-individual"]');
-      await individualCard.getByText("Annual $190/yr", { exact: false }).waitFor();
-      await expectHref(
-        individualCard.getByRole("link", { name: "Join waitlist" }),
-        "/waitlist?product=usage-individual",
-      );
-      if (await individualCard.getByRole("link", { name: "Choose plan" }).count() !== 0) {
-        throw new Error("Paid Individual checkout must remain unavailable before production activation");
+      for (const plan of [
+        { slug: "usage-individual", annual: "Annual $190/yr" },
+        { slug: "usage-developer", annual: "Annual $590/yr" },
+        { slug: "usage-team", annual: "Annual $1,490/yr" },
+        { slug: "usage-business", annual: "Annual $4,990/yr" },
+      ]) {
+        const card = page.locator(`[data-plan-card="${plan.slug}"]`);
+        await card.getByText(plan.annual, { exact: false }).waitFor();
+        await expectHref(
+          card.getByRole("link", { name: "Choose plan" }),
+          `${expectedAppBaseUrl}/products/${plan.slug}`,
+        );
+        if (await card.getByRole("link", { name: "Join waitlist" }).count() !== 0) {
+          throw new Error(`Live plan must not render a waitlist CTA: ${plan.slug}`);
+        }
       }
-      const businessCard = page.locator('[data-plan-card="usage-business"]');
-      await businessCard.getByText("Contact sales", { exact: false }).first().waitFor();
       const repoIntelCardText = await page.locator('[data-plan-card="mcp-repointel"]').textContent();
       if (repoIntelCardText?.includes("$29") || repoIntelCardText?.includes("$49")) {
         throw new Error("RepoIntel must not advertise a standalone price");
@@ -283,11 +288,11 @@ async function runBrowserSmoke() {
       await page.getByText("Annual $190/yr", { exact: false }).waitFor();
       await page.getByText("Every available MCP", { exact: true }).waitFor();
       await expectHref(
-        page.getByRole("link", { name: "Join waitlist" }),
-        "/waitlist?product=usage-individual",
+        page.getByRole("link", { name: "Choose plan" }),
+        `${expectedAppBaseUrl}/products/usage-individual`,
       );
-      if (await page.getByRole("link", { name: "Choose plan" }).count() !== 0) {
-        throw new Error("Paid Individual checkout must remain unavailable before production activation");
+      if (await page.getByRole("link", { name: "Join waitlist" }).count() !== 0) {
+        throw new Error("Live Individual plan must not render a waitlist CTA");
       }
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/usage-individual`);
       await expectNoHorizontalOverflow(page);
@@ -364,7 +369,10 @@ async function runBrowserSmoke() {
     }, "products route at 320px");
     await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
       await page.getByRole("heading", { name: "Individual" }).waitFor();
-      await page.getByRole("link", { name: "Join waitlist" }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Choose plan" }),
+        `${expectedAppBaseUrl}/products/usage-individual`,
+      );
       await expectNoHorizontalOverflow(page);
     }, "Individual product route at 320px");
     await checkPage(page, `${baseUrl}/products/mcp-repointel`, async () => {
@@ -388,11 +396,10 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/waitlist`, async () => {
       await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
-      await page.getByLabel("Product interest").selectOption("usage-individual");
-      if (await page.getByLabel("Product interest").inputValue() !== "usage-individual") {
-        throw new Error("expected the Individual plan to be available in the waitlist selector");
-      }
       await page.getByLabel("Product interest").selectOption("mcp-codeintel");
+      if (await page.getByLabel("Product interest").inputValue() !== "mcp-codeintel") {
+        throw new Error("expected the planned CodeIntel MCP to be available in the waitlist selector");
+      }
       await page.getByLabel("Email").fill("smoke+website@monarchic.ai");
       await page.getByRole("button", { name: "Join waitlist" }).click();
       await page.getByText("Thanks. You're on the waitlist.").waitFor();
