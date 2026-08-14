@@ -1,7 +1,7 @@
 // Catalog of Monarchic plans rendered by the public website and webapp.
 // Product and price data is generated from Stripe into pricing.generated.json.
-// Browser code imports the separately generated public copy so historical
-// Stripe credit vocabulary never enters a customer-delivered bundle.
+// Browser code imports only the separately generated current public copy so
+// historical Stripe identifiers and monetary terms never enter a customer bundle.
 // Coming-soon plans are maintained in pricing.coming-soon.json.
 
 export type PlanKind = "usage-plan" | "single-mcp" | "bundle" | "ai";
@@ -38,8 +38,7 @@ export interface CatalogPlan {
   description: string;
   featureBullets: string[];
   includedMcpSlugs?: string[];
-  includedCredits?: number;
-  creditAllowanceLabel?: string;
+  usageAllowanceLabel?: string;
   overageLabel?: string;
   usageSummary?: string;
   lifecycle?: ProductLifecycle;
@@ -49,6 +48,21 @@ export interface CatalogPlan {
   prices: PlanPrice[];
   waitlistUrl?: string;
   salesContactUrl?: string;
+}
+
+export type SubscriptionLookupDisposition =
+  | "current"
+  | "superseded"
+  | "retired"
+  | "legacy";
+
+export interface SubscriptionLookupResolution {
+  disposition: SubscriptionLookupDisposition;
+  cadence: PlanCadence;
+  displayName: string;
+  planSlug: string | null;
+  plan: CatalogPlan | null;
+  price: PlanPrice;
 }
 
 import generatedPlans from "./pricing.public.generated.json" with { type: "json" };
@@ -72,16 +86,6 @@ export function isHiddenPublicPlanSlug(slug: string): boolean {
   return retiredPublicPlanSlugs.has(slug) || supersededPublicPlanSlugs.has(slug);
 }
 
-// These plans have updated public terms but do not have matching live Stripe
-// prices yet. Keep the generated records available for historical subscription
-// lookup while the public catalog uses non-checkout preview entries.
-export const previewPublicPlanSlugs = new Set([
-  "usage-individual",
-  "usage-developer",
-  "usage-team",
-  "usage-business",
-]);
-
 const generatedCatalogPlans = (generatedPlans as CatalogPlan[]) ?? [];
 const nonGeneratedPlans = (comingSoonPlansJson as CatalogPlan[]) ?? [];
 
@@ -89,8 +93,7 @@ export const availablePlans: CatalogPlan[] = generatedCatalogPlans
   .filter(
     (plan) =>
       plan.kind === "usage-plan" &&
-      !isHiddenPublicPlanSlug(plan.slug) &&
-      !previewPublicPlanSlugs.has(plan.slug),
+      !isHiddenPublicPlanSlug(plan.slug),
   );
 const availablePlanSlugs = new Set(availablePlans.map((plan) => plan.slug));
 export const comingSoonPlans: CatalogPlan[] = nonGeneratedPlans
@@ -105,21 +108,109 @@ export function findPlanBySlug(slug: string): CatalogPlan | null {
   return allPlans.find((plan) => plan.slug === slug) ?? null;
 }
 
-export function findPlanByPriceId(
-  priceId: string,
-): { plan: CatalogPlan; price: PlanPrice } | null {
-  for (const plan of [...allPlans, ...generatedCatalogPlans]) {
-    const price = plan.prices.find((p) => p.priceId === priceId);
-    if (price) return { plan, price };
-  }
-  return null;
-}
-
 export function findPlanPrice(
   plan: CatalogPlan,
   cadence: PlanCadence,
 ): PlanPrice | null {
   return plan.prices.find((price) => price.cadence === cadence) ?? null;
+}
+
+function monetaryFreeCompatibilityPrice(cadence: PlanCadence): PlanPrice {
+  return {
+    cadence,
+    priceId: null,
+    lookupKey: null,
+    priceCents: null,
+    currency: "usd",
+  };
+}
+
+function parsedSubscriptionLookupKey(
+  lookupKey: string | null | undefined,
+): { kind: "usage" | "mcp"; planSlug: string; cadence: PlanCadence } | null {
+  if (!lookupKey) return null;
+  const match = /^monarchic_(usage|mcp)_([a-z0-9_]+)_(?:test|live)_(monthly|annual)$/.exec(
+    lookupKey,
+  );
+  if (!match) return null;
+  const [, kind, rawName, cadence] = match;
+  if (
+    (kind !== "usage" && kind !== "mcp") ||
+    !rawName ||
+    (cadence !== "monthly" && cadence !== "annual")
+  ) {
+    return null;
+  }
+  return {
+    kind,
+    planSlug: `${kind}-${rawName.replaceAll("_", "-")}`,
+    cadence,
+  };
+}
+
+export function resolveSubscriptionLookupKey(
+  lookupKey: string | null | undefined,
+): SubscriptionLookupResolution | null {
+  const parsed = parsedSubscriptionLookupKey(lookupKey);
+  if (!parsed) return null;
+
+  if (retiredPublicPlanSlugs.has(parsed.planSlug)) {
+    return {
+      disposition: "retired",
+      cadence: parsed.cadence,
+      displayName: "Legacy MCP subscription",
+      planSlug: null,
+      plan: null,
+      price: monetaryFreeCompatibilityPrice(parsed.cadence),
+    };
+  }
+
+  if (supersededPublicPlanSlugs.has(parsed.planSlug)) {
+    const replacement = findPlanBySlug("monarchic-ai");
+    if (!replacement) return null;
+    return {
+      disposition: "superseded",
+      cadence: parsed.cadence,
+      displayName: replacement.displayName,
+      planSlug: replacement.slug,
+      plan: replacement,
+      price: monetaryFreeCompatibilityPrice(parsed.cadence),
+    };
+  }
+
+  const plan = findPlanBySlug(parsed.planSlug);
+  if (plan) {
+    const publicPrice = findPlanPrice(plan, parsed.cadence);
+    return {
+      disposition: "current",
+      cadence: parsed.cadence,
+      displayName: plan.displayName,
+      planSlug: plan.slug,
+      plan,
+      price: publicPrice ?? monetaryFreeCompatibilityPrice(parsed.cadence),
+    };
+  }
+
+  if (parsed.kind === "mcp") {
+    return {
+      disposition: "legacy",
+      cadence: parsed.cadence,
+      displayName: "Legacy MCP subscription",
+      planSlug: null,
+      plan: null,
+      price: monetaryFreeCompatibilityPrice(parsed.cadence),
+    };
+  }
+  return null;
+}
+
+export function findPlanByLookupKey(
+  lookupKey: string | null | undefined,
+): { plan: CatalogPlan; price: PlanPrice } | null {
+  const resolution = resolveSubscriptionLookupKey(lookupKey);
+  return resolution?.plan
+    ? { plan: resolution.plan, price: resolution.price }
+    : null;
 }
 
 export function resolveDisplayPrice(
@@ -159,7 +250,7 @@ export function cadenceFromQueryString(value: string | null | undefined): PlanCa
 }
 
 export function usageAllowanceLabel(plan: CatalogPlan): string | null {
-  return plan.creditAllowanceLabel ?? null;
+  return plan.usageAllowanceLabel ?? null;
 }
 
 export function planStatusLabel(status: PlanStatus): string {

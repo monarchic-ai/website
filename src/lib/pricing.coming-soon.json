@@ -24,7 +24,7 @@
       "Verified email required",
       "No card; usage pauses at the evaluation limit"
     ],
-    "creditAllowanceLabel": "Limited 30-day evaluation usage",
+    "usageAllowanceLabel": "Limited 30-day evaluation usage",
     "overageLabel": "Paused after the evaluation allowance",
     "usageSummary": "Each operation uses its frozen rate-card class. Files and indexed data are metered separately; disclosed provider expenses are BYOK or itemized.",
     "status": "available",
@@ -42,7 +42,7 @@
       "No overage charges; usage pauses at the weekly limit",
       "Scoped API keys and account usage controls"
     ],
-    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "usageAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Usage pauses at the weekly limit",
     "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "coming_soon",
@@ -75,7 +75,7 @@
       "No overage charges; usage pauses at the weekly limit",
       "Scoped API keys and account usage controls"
     ],
-    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "usageAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Usage pauses at the weekly limit",
     "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "highlighted": true,
@@ -109,7 +109,7 @@
       "Shared usage for team workflows",
       "No overage charges; usage pauses at the weekly limit"
     ],
-    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "usageAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Usage pauses at the weekly limit",
     "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "coming_soon",
@@ -142,7 +142,7 @@
       "Shared usage with business controls",
       "No overage charges; usage pauses at the weekly limit"
     ],
-    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "usageAllowanceLabel": "Weekly execution allowance; quantities not yet published",
     "overageLabel": "Usage pauses at the weekly limit",
     "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "contact_sales",
@@ -175,7 +175,7 @@
       "Evaluate release readiness from provider evidence",
       "Export pipeline graphs for architecture analysis"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -193,7 +193,7 @@
       "Check visible content, console output, and network failures",
       "Package screenshots and observations for handoff"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Browser verification uses the frozen browser operation class. Evidence storage and disclosed provider expenses are metered separately.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -211,7 +211,7 @@
       "Keep business evidence attached to decisions",
       "Gate downstream execution until approval"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -229,7 +229,7 @@
       "Return structured project-creation results",
       "Report setup failures without hiding them"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -247,7 +247,7 @@
       "Retrieve bounded context with evidence",
       "Audit memory objects and changes"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -265,7 +265,7 @@
       "Create response packets and recovery checks",
       "Keep external updates guarded and reviewable"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -283,7 +283,7 @@
       "Trace cost, reliability, and latency signals",
       "Export architecture graphs and optimization plans"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -301,7 +301,7 @@
       "Connect buyer research to source evidence",
       "Prepare practical outreach angles"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -320,7 +320,7 @@
       "Use one consistent terminal interface across clients",
       "PTY operations use the class fixed in the applicable rate card"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "PTY operations use their frozen rate-card classes. Disclosed provider expenses are BYOK or itemized separately.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -338,7 +338,7 @@
       "Catch missing documentation and artifacts",
       "Export a reviewable release pack"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -356,7 +356,7 @@
       "Coordinate bounded fleet-wide operations",
       "Return machine-readable results and failures"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -374,7 +374,7 @@
       "Query generated architecture and workflow context",
       "Ground plans in indexed repository evidence"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -392,7 +392,7 @@
       "Plan internal links from site evidence",
       "Run repeatable ranking checks"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -410,7 +410,7 @@
       "Separate lightweight explanations from deeper analysis",
       "Return structured findings with practical remediation"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -428,7 +428,7 @@
       "Flag vague claims and unclear calls to action",
       "Return review findings separately from rewritten text"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -446,7 +446,7 @@
       "Run deterministic dilution and nutrition calculations",
       "Build structured plans from explicit constraints"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
     "lifecycle": "production",
     "hostedStatus": "available",
@@ -464,7 +464,7 @@
       "Plan ordered page sections from reusable templates",
       "Check content coverage before implementation"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -482,7 +482,7 @@
       "Keep generated changes inside an explicit write scope",
       "Prepare rendered checks before applying a patch"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -500,7 +500,7 @@
       "Reuse warm language-server sessions between related calls",
       "Keep repository indexing separate for each tenant"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Indexing and language-server work will use the shared account allowance when access opens.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -518,7 +518,7 @@
       "Separate quick inventory from deeper analysis jobs",
       "Return tool output and failures in one structured result"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Each profiling operation will use the class fixed in the applicable rate card.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -536,7 +536,7 @@
       "Keep read-only checks separate from clone and sync operations",
       "Record structured results for fleet-wide work"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Read-only inventory and governed repository operations will use different operation classes when access opens.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -554,7 +554,7 @@
       "Resume long jobs without discarding completed work",
       "Collect cross-repository findings in one report"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Multi-repository jobs will use the class fixed in the applicable rate card.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -572,7 +572,7 @@
       "Verify content hashes before review or release",
       "Apply explicit signing and export policy"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Pack operations will use frozen rate-card classes; retained evidence will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -590,7 +590,7 @@
       "Keep session state available across related calls",
       "Validate artwork before export"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Session operations will use frozen rate-card classes; stored assets and exports will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -608,7 +608,7 @@
       "Reuse approved site contracts and design constraints",
       "Prepare implementation guidance without mutating a repository"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Planning calls will use frozen rate-card classes; project artifacts will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -626,7 +626,7 @@
       "Separate draft findings from approved content decisions",
       "Reuse approved research across page-planning tools"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Research calls will use frozen rate-card classes; stored evidence and provider expenses are metered separately.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
@@ -644,7 +644,7 @@
       "Render still and motion outputs in an isolated browser runtime",
       "Export assets with implementation-ready metadata"
     ],
-    "creditAllowanceLabel": "Included with an active usage plan",
+    "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Hosted deployment is planned. Operations will use frozen rate-card classes; stored media and outputs will use the separate file-storage meter.",
     "lifecycle": "wip",
     "hostedStatus": "planned",

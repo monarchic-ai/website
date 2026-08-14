@@ -3,31 +3,31 @@
     "kind": "usage-plan",
     "slug": "usage-business",
     "displayName": "Business",
-    "tagline": "Higher-volume hosted agent infrastructure",
-    "description": "For companies running heavier hosted MCP workloads and needing a larger included allowance before metered usage begins.",
+    "tagline": "Capacity and support for sustained hosted workloads",
+    "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
     "featureBullets": [
-      "75,000 included credits each month",
-      "Larger shared allowance for production agent workloads",
-      "$0.015 per additional credit after the included allowance",
-      "Best fit for sustained BrowserOps, RepoIntel, SEO, and lead workflows"
+      "Shared weekly execution allowance",
+      "Launch quantities will follow the fully allocated rate card",
+      "Shared usage with business controls",
+      "No overage charges; usage pauses at the weekly limit"
     ],
-    "includedCredits": 75000,
-    "overageLabel": "$0.015/credit overage",
-    "usageSummary": "Built for sustained infrastructure-backed agent workloads where usage-based billing reflects actual hosted compute and route cost.",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TqL9tGmcDOdOLjFV56kHPir",
+        "priceId": "price_1U4RHuGmcDOdOLjFGyM2Rd3I",
         "lookupKey": "monarchic_usage_business_live_monthly",
-        "priceCents": 79900,
+        "priceCents": 49900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TqL9tGmcDOdOLjF4lTpwZB7",
+        "priceId": "price_1U4RHuGmcDOdOLjFzE01Qqg3",
         "lookupKey": "monarchic_usage_business_live_annual",
-        "priceCents": 799000,
+        "priceCents": 499000,
         "currency": "usd"
       }
     ]
@@ -36,32 +36,32 @@
     "kind": "usage-plan",
     "slug": "usage-developer",
     "displayName": "Developer",
-    "tagline": "A practical tier for one active production developer",
-    "description": "For a developer running hosted MCPs regularly from local agents, CI checks, and production workflows that need room beyond evaluation traffic.",
+    "tagline": "Capacity for one active developer",
+    "description": "For one developer using available hosted MCPs across local agents, CI checks, and recurring workflows.",
     "featureBullets": [
-      "4,000 included credits each month",
-      "Usage-based access across hosted MCP routes",
-      "$0.025 per additional credit after the included allowance",
-      "Scoped API keys, billing controls, and account dashboard access"
+      "Weekly execution allowance for one active developer",
+      "Launch quantities will follow the fully allocated rate card",
+      "No overage charges; usage pauses at the weekly limit",
+      "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 4000,
-    "overageLabel": "$0.025/credit overage",
-    "usageSummary": "Standard MCP calls use 1 credit. PTY sessions start at 1 credit with controls included and measured settlement at close. BrowserOps evidence, SEO ranking, lead generation, and project creation can use higher measured tiers.",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "highlighted": true,
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TqL9pGmcDOdOLjFD1Rl1mxL",
+        "priceId": "price_1U4RHrGmcDOdOLjFxnoNVRkJ",
         "lookupKey": "monarchic_usage_developer_live_monthly",
-        "priceCents": 7900,
+        "priceCents": 5900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TqL9qGmcDOdOLjFVd2JpZgK",
+        "priceId": "price_1U4RHrGmcDOdOLjFVtEA3dQX",
         "lookupKey": "monarchic_usage_developer_live_annual",
-        "priceCents": 79000,
+        "priceCents": 59000,
         "currency": "usd"
       }
     ]
@@ -70,31 +70,31 @@
     "kind": "usage-plan",
     "slug": "usage-individual",
     "displayName": "Individual",
-    "tagline": "Solo hosted MCP access with a hard monthly cap",
-    "description": "A single-developer entry tier for trying hosted Monarchic routes without surprise overage. Built for solo agents, side projects, and evaluation work.",
+    "tagline": "A practical starting point for one developer",
+    "description": "For an individual developer running available hosted MCPs across focused projects and recurring agent workflows.",
     "featureBullets": [
-      "1,000 included credits each month",
-      "Hosted access to the Monarchic MCP routes as they open",
-      "Overage disabled at launch so spend stays capped",
-      "Dashboard API keys and billing controls"
+      "Personal weekly execution allowance",
+      "Launch quantities will follow the fully allocated rate card",
+      "No overage charges; usage pauses at the weekly limit",
+      "Scoped API keys and account usage controls"
     ],
-    "includedCredits": 1000,
-    "overageLabel": "Overage disabled at launch",
-    "usageSummary": "Basic auth, list, config, and read calls are free or near-free. Standard MCP calls use 1 credit. PTY controls are included in a session; browser, SEO, lead, and project-generation work can use more based on measured cost.",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TqL9oGmcDOdOLjF4lG2IBm7",
+        "priceId": "price_1U4RHpGmcDOdOLjF5Dh7x5Eq",
         "lookupKey": "monarchic_usage_individual_live_monthly",
-        "priceCents": 2900,
+        "priceCents": 1900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TqL9oGmcDOdOLjFasMBDagk",
+        "priceId": "price_1U4RHqGmcDOdOLjF1f3Yf889",
         "lookupKey": "monarchic_usage_individual_live_annual",
-        "priceCents": 29000,
+        "priceCents": 19000,
         "currency": "usd"
       }
     ]
@@ -106,401 +106,28 @@
     "tagline": "Shared hosted MCP capacity for small teams",
     "description": "For small teams standardizing agent access to hosted Monarchic infrastructure across development, QA, research, and go-to-market workflows.",
     "featureBullets": [
-      "15,000 included credits each month",
-      "Shared usage pool for team workflows",
-      "$0.02 per additional credit after the included allowance",
-      "Designed for multiple API keys and repeat production usage"
+      "Shared weekly execution allowance",
+      "Launch quantities will follow the fully allocated rate card",
+      "Shared usage for team workflows",
+      "No overage charges; usage pauses at the weekly limit"
     ],
-    "includedCredits": 15000,
-    "overageLabel": "$0.02/credit overage",
-    "usageSummary": "The shared allowance covers normal hosted MCP usage. PTY controls are included in a session, while browser, provider-backed, and data-intensive work follows measured cost.",
+    "creditAllowanceLabel": "Weekly execution allowance; quantities not yet published",
+    "overageLabel": "Usage pauses at the weekly limit",
+    "usageSummary": "Included capacity adapts to operation type and complexity. Lightweight operations preserve more of the allowance; analysis and browser execution consume more. Files and indexed data are metered separately.",
     "status": "available",
     "prices": [
       {
         "cadence": "monthly",
-        "priceId": "price_1TqL9rGmcDOdOLjFpovzQZNh",
+        "priceId": "price_1U4RHsGmcDOdOLjFl1F6PadU",
         "lookupKey": "monarchic_usage_team_live_monthly",
-        "priceCents": 24900,
+        "priceCents": 14900,
         "currency": "usd"
       },
       {
         "cadence": "annual",
-        "priceId": "price_1TqL9sGmcDOdOLjFhxwOHg02",
+        "priceId": "price_1U4RHtGmcDOdOLjF08jfVhq6",
         "lookupKey": "monarchic_usage_team_live_annual",
-        "priceCents": 249000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-browserops",
-    "displayName": "BrowserOps MCP",
-    "tagline": "Hosted browser evidence capture for agent QA",
-    "description": "Route-level hosted access for teams that need browser screenshots, console checks, network checks, and URL verification.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Playwright-backed browser evidence and receipt workflows",
-      "Priced from heavier browser-session route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd55GmcDOdOLjFQB7DbJrZ",
-        "lookupKey": "monarchic_mcp_browserops_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd56GmcDOdOLjFwL6MJRy0",
-        "lookupKey": "monarchic_mcp_browserops_live_annual",
-        "priceCents": 49000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-businessmodel",
-    "displayName": "BusinessModel MCP",
-    "tagline": "Hosted company synthesis and execution gates",
-    "description": "Route-level hosted access for founders and studios that need evidence-backed business-model synthesis before execution work starts.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Company synthesis reports, execution gates, and blueprint exports",
-      "Priced from heavier synthesis route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd57GmcDOdOLjFSF96LzP2",
-        "lookupKey": "monarchic_mcp_businessmodel_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd57GmcDOdOLjF7JHfV9N4",
-        "lookupKey": "monarchic_mcp_businessmodel_live_annual",
-        "priceCents": 49000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-create-project",
-    "displayName": "Create Project MCP",
-    "tagline": "Hosted governed project scaffolding",
-    "description": "Route-level hosted access for teams that want agents to create projects through known templates and predictable failure paths.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Template-backed project creation in JSON or text mode",
-      "Priced from light wrapper-route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd58GmcDOdOLjFEJJCtM38",
-        "lookupKey": "monarchic_mcp_create_project_live_monthly",
-        "priceCents": 1900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd59GmcDOdOLjFrRV2PuTT",
-        "lookupKey": "monarchic_mcp_create_project_live_annual",
-        "priceCents": 19000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-explicitmem",
-    "displayName": "ExplicitMem MCP",
-    "tagline": "Hosted durable memory for long-running agents",
-    "description": "Route-level hosted access for teams that need explicit, inspectable agent memory across sessions.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Memory write, lookup, curated recall, and state handoff workflows",
-      "Priced from light storage-backed route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5AGmcDOdOLjFjYssKZPJ",
-        "lookupKey": "monarchic_mcp_explicitmem_live_monthly",
-        "priceCents": 1900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5AGmcDOdOLjFCp2f4a3N",
-        "lookupKey": "monarchic_mcp_explicitmem_live_annual",
-        "priceCents": 19000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-leadgenerator",
-    "displayName": "LeadGenerator MCP",
-    "tagline": "Hosted lead generation from validated business models",
-    "description": "Route-level hosted access for B2B teams generating ranked accounts, buyer personas, and outreach angles.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Validated enrichment gates, lead targets, audit reports, and campaign packages",
-      "Priced from heavier generation route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5BGmcDOdOLjFAOwfWhA9",
-        "lookupKey": "monarchic_mcp_leadgenerator_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5CGmcDOdOLjFzvbxRnz5",
-        "lookupKey": "monarchic_mcp_leadgenerator_live_annual",
-        "priceCents": 49000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-monarchic",
-    "displayName": "Monarchic MCP",
-    "tagline": "Hosted orchestration for governed agent runs",
-    "description": "Route-level hosted access for teams that need Monarchic run control, artifact discovery, execution gates, and campaign orchestration.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Run summaries, artifacts, registry, controls, infra launch, and orchestrated campaigns",
-      "Priced from orchestration-route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "highlighted": true,
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5DGmcDOdOLjFh0OsirxS",
-        "lookupKey": "monarchic_mcp_monarchic_live_monthly",
-        "priceCents": 7900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5DGmcDOdOLjFZJWGY2vF",
-        "lookupKey": "monarchic_mcp_monarchic_live_annual",
-        "priceCents": 79000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-outreachconnectors",
-    "displayName": "OutreachConnectors MCP",
-    "tagline": "Hosted governed outreach connector checks",
-    "description": "Route-level hosted access for revenue teams that need outreach readiness and delivery evidence without unsafe auto-send claims.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Connector status, policy preflight, capture templates, and receipt normalization",
-      "Priced from standard connector-route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5QGmcDOdOLjFJZoym9oA",
-        "lookupKey": "monarchic_mcp_outreachconnectors_live_monthly",
-        "priceCents": 2900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5QGmcDOdOLjFhJZiq85e",
-        "lookupKey": "monarchic_mcp_outreachconnectors_live_annual",
-        "priceCents": 29000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-pty",
-    "displayName": "PTY MCP",
-    "tagline": "Hosted governed terminal sessions",
-    "description": "Route-level hosted access for teams that need observable terminal sessions through MCP.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Start, control, review, and close governed PTY sessions",
-      "One base credit per session with measured settlement at close",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "PTY sessions start at 1 credit. Terminal controls and bounded transcript reads are included; unusually expensive sessions settle additional measured credits at close.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5GGmcDOdOLjFJ7A8xvT7",
-        "lookupKey": "monarchic_mcp_pty_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5HGmcDOdOLjFYqT1GEmX",
-        "lookupKey": "monarchic_mcp_pty_live_annual",
-        "priceCents": 49000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-releaseops",
-    "displayName": "ReleaseOps MCP",
-    "tagline": "Hosted release checks and evidence packs",
-    "description": "Route-level hosted access for engineering teams coordinating release readiness, changelogs, and reviewer evidence.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Release readiness, changelog scope, artifact manifests, and release packs",
-      "Priced from slower hosted Lambda telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5IGmcDOdOLjFLR8NFwe3",
-        "lookupKey": "monarchic_mcp_releaseops_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5IGmcDOdOLjFlspjwiEJ",
-        "lookupKey": "monarchic_mcp_releaseops_live_annual",
-        "priceCents": 49000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-repo-fleet",
-    "displayName": "Repo Fleet MCP",
-    "tagline": "Hosted repo-fleet operations for agents",
-    "description": "Route-level hosted access for organizations managing many repositories with structured agent workflows.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Fleet JSON, fleet text, repo inventory, and failure reporting",
-      "Priced from slower hosted Lambda telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5JGmcDOdOLjFAFZRlrAG",
-        "lookupKey": "monarchic_mcp_repo_fleet_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5KGmcDOdOLjF8ufiS6QL",
-        "lookupKey": "monarchic_mcp_repo_fleet_live_annual",
-        "priceCents": 49000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-repointel",
-    "displayName": "RepoIntel MCP",
-    "tagline": "Hosted repository intelligence for coding agents",
-    "description": "Route-level hosted access for teams that need repository maps, generated wiki context, dependency summaries, and targeted evidence lookup.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Repo summary, generated wiki, targeted evidence lookup, and workflow discovery",
-      "Priced above the legacy smoke-test price to reflect hosted route telemetry",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5LGmcDOdOLjFEvjfurvh",
-        "lookupKey": "monarchic_mcp_repointel_live_monthly",
-        "priceCents": 2900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5LGmcDOdOLjFb64clOfa",
-        "lookupKey": "monarchic_mcp_repointel_live_annual",
-        "priceCents": 29000,
-        "currency": "usd"
-      }
-    ]
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-seo",
-    "displayName": "SEO MCP",
-    "tagline": "Hosted deterministic SEO workflows",
-    "description": "Route-level hosted access for teams running route discovery, live page inspection, internal-link planning, and ranking checks.",
-    "featureBullets": [
-      "Single hosted MCP route access",
-      "Route discovery, live page inspection, link planning, and ranking pipeline runs",
-      "Priced from the slowest hosted Lambda telemetry bucket",
-      "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products."
-    ],
-    "usageSummary": "Prices reflect the 2026-07-06 production cost/performance packet: always-on AWS baseline, hosted Lambda latency buckets, and route-cost variance. Usage tiers stay primary; single-MCP subscriptions are narrow route access products.",
-    "status": "available",
-    "prices": [
-      {
-        "cadence": "monthly",
-        "priceId": "price_1Tqd5MGmcDOdOLjFh253rrau",
-        "lookupKey": "monarchic_mcp_seo_live_monthly",
-        "priceCents": 4900,
-        "currency": "usd"
-      },
-      {
-        "cadence": "annual",
-        "priceId": "price_1Tqd5NGmcDOdOLjFfmRZWwVw",
-        "lookupKey": "monarchic_mcp_seo_live_annual",
-        "priceCents": 49000,
+        "priceCents": 149000,
         "currency": "usd"
       }
     ]
