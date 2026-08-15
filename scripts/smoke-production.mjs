@@ -93,7 +93,7 @@ async function runSmoke() {
   await checkText(`${baseUrl}/robots.txt`, "Sitemap:", "robots.txt");
   await checkTextIncludes(`${baseUrl}/sitemap.xml`, [
     "<urlset",
-    "/about",
+    "/company",
     "/security",
     ...requiredResearchRoutes,
     "/products/mcp-cicd",
@@ -108,6 +108,7 @@ async function runSmoke() {
     "/products/mcp-verified",
   ], "sitemap.xml non-indexed product routes");
   await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/docs`, "tutorial redirect");
+  await checkRedirect(`${baseUrl}/about`, `${expectedCanonicalBaseUrl}/company`, "about compatibility redirect");
   await checkExactHttpStatuses(requiredResearchRoutes, 200, "MCP research routes");
   await checkMcpResearchReciprocalLinks();
 
@@ -353,11 +354,11 @@ async function runBrowserSmoke() {
       await expectNoHorizontalOverflow(page);
     }, "security route");
 
-    await checkPage(page, `${baseUrl}/about`, async () => {
-      await page.getByRole("heading", { name: "The company behind the routes." }).waitFor();
-      await page.getByRole("heading", { name: "Why pay for hosted" }).waitFor();
-      await page.getByText("Monarchic LLC", { exact: false }).first().waitFor();
-      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/about`);
+    await checkPage(page, `${baseUrl}/company`, async () => {
+      await page.getByRole("heading", { name: "Automation is the enduring scope." }).waitFor();
+      await page.getByRole("heading", { name: "Evidence before ornament." }).waitFor();
+      await page.getByText("Monarchic, LLC", { exact: false }).first().waitFor();
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/company`);
       await expectNoHorizontalOverflow(page);
     }, "company route");
 
@@ -387,8 +388,8 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Security, without hand-waving." }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "security route at 320px");
-    await checkPage(page, `${baseUrl}/about`, async () => {
-      await page.getByRole("heading", { name: "The company behind the routes." }).waitFor();
+    await checkPage(page, `${baseUrl}/company`, async () => {
+      await page.getByRole("heading", { name: "Automation is the enduring scope." }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "company route at 320px");
     await page.setViewportSize({ width: 1280, height: 900 });

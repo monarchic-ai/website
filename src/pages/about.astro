@@ -1,88 +1,18 @@
 ---
-import LegalPageLayout from "../layouts/LegalPageLayout.astro";
-import { allPlans, hostedMcpStatus } from "../lib/pricing";
-
-const availableMcps = allPlans.filter(
-  (plan) => plan.kind === "single-mcp" && hostedMcpStatus(plan) === "available",
-);
-const sectionClass = "grid gap-5 border-t border-white/35 py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1fr)]";
-const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
+const siteUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBSITE_BASE_URL ?? "https://monarchic.io").replace(/\/$/, "");
+const companyUrl = new URL("/company", `${siteUrl}/`).toString();
 ---
 
-<LegalPageLayout
-  title="Company | Monarchic"
-  description="Who operates Monarchic, what the company ships today, and how to reach the people accountable for the service."
-  path="/about"
-  eyebrow="Company / Operator"
-  heading="The company behind the routes."
-  introduction="Monarchic LLC operates the public site, authenticated app, API, and hosted MCP service. This page separates what is available now from what is still being built."
-  effectiveDate="August 1, 2026"
-  documentId="company-profile"
-  contactId="company-contact"
->
-  <a slot="toc" href="#operator" class="hover:text-signal">01 / Operator</a>
-  <a slot="toc" href="#available" class="hover:text-signal">02 / Available now</a>
-  <a slot="toc" href="#hosted" class="hover:text-signal">03 / Why hosted</a>
-  <a slot="toc" href="#accountability" class="hover:text-signal">04 / Accountability</a>
-
-  <section id="operator" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">01</span>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Operator</h2>
-      <div class={copyClass}>
-        <p>Monarchic LLC is the legal operator named in the service terms and privacy notice. It runs monarchic.io, the Monarchic web app, and the hosted MCP routes sold through the catalog.</p>
-        <p>Product, billing, privacy, and security questions go to <a class="font-bold text-signal hover:text-white" href="mailto:support@monarchic.io">support@monarchic.io</a>. There is no anonymous contact form between a customer and the operator.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="available" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">02</span>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Available now</h2>
-      <div class={copyClass}>
-        <p>{availableMcps.length} MCPs are currently marked Available. Planned and in-rollout products remain visible in the catalog but cannot be checked out.</p>
-      </div>
-      <div class="mt-5 grid gap-3 sm:grid-cols-2">
-        {availableMcps.map((plan) => (
-          <a href={`/products/${plan.slug}`} class="group border border-white/35 bg-black/54 p-4 transition hover:border-signal hover:bg-signal hover:text-black">
-            <span class="font-mono text-[0.62rem] font-bold uppercase text-signal group-hover:text-black/60">Available</span>
-            <strong class="mt-2 block text-base uppercase">{plan.displayName}</strong>
-            <span class="mt-2 block text-sm leading-6 opacity-62">{plan.tagline}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section id="hosted" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">03</span>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Why pay for hosted</h2>
-      <div class={copyClass}>
-        <p>Many Monarchic MCP repositories can be run by a technical team. The hosted product is for teams that do not want to operate every server, adapter, credential path, update, and usage ledger themselves.</p>
-        <p>A paid plan buys managed routing through one account, account API keys, a shared weekly execution allowance, and a receipt for hosted calls. It does not buy ownership of an open-source repository or remove the need to review agent output.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="accountability" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">04</span>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Accountability</h2>
-      <div class={copyClass}>
-        <p>The catalog status controls access. Available means the production route is open under the stated plan rules. In rollout means a non-production deployment is being qualified. Planned means the hosted runtime has been accepted but has not crossed a deployment gate. Prices, included usage, and after-limit behavior are shown before checkout.</p>
-        <p>The <a class="font-bold text-signal hover:text-white" href="/security">security page</a> records the current technical boundary. The <a class="font-bold text-signal hover:text-white" href="/privacy">privacy notice</a> covers data handling, and the <a class="font-bold text-signal hover:text-white" href="/terms">service terms</a> identify the contractual limits. Published service-level commitments apply only when an order includes them.</p>
-      </div>
-    </div>
-  </section>
-
-  <div slot="contact">
-    <p class="text-xs font-bold uppercase text-signal">Talk to the operator</p>
-    <h2 class="mt-2 text-2xl font-extrabold uppercase">Ask a product, security, or company question.</h2>
-  </div>
-  <div slot="contact" class="flex flex-wrap gap-3">
-    <a href="mailto:support@monarchic.io?subject=Company%20question" class="border-2 border-signal bg-signal px-5 py-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Email Monarchic</a>
-    <a href="/products" class="border-2 border-white/50 px-5 py-3 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">View products</a>
-  </div>
-</LegalPageLayout>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={companyUrl} />
+    <meta http-equiv="refresh" content={`0;url=${companyUrl}`} />
+    <title>Company | Monarchic</title>
+  </head>
+  <body>
+    <p>The Monarchic company page has moved to <a href="/company">/company</a>.</p>
+  </body>
+</html>

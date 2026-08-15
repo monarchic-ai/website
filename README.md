@@ -18,10 +18,10 @@ and [`webcomposer/page-maps.json`](webcomposer/page-maps.json). Its routes are:
 - `/privacy`
 - `/terms`
 
-The contracts supersede older planning assumptions such as `/about`, a
-standalone `/waitlist`, and a dedicated `/research/explicitmem` route. They are
-planning inputs for a later implementation pass; the current Astro pages have
-not been migrated by this contract-only change.
+The contracts supersede older planning assumptions such as `/about`. The
+substantive company page now lives at `/company`, with `/about` retained only as
+a compatibility redirect. Newer product-catalog decisions still retain the
+standalone `/waitlist` and substantive `/research/explicitmem` routes.
 
 Portable interview artifacts and reuse instructions live in
 [`webinfo/`](webinfo/README.md). Validate the handoff with:
@@ -44,7 +44,8 @@ research surface. It currently owns:
   `/research/[slug]`
 - the substantive ExplicitMem benchmark at `/research/explicitmem`
 - the current trust boundary at `/security`
-- the company and operator page at `/about`
+- the company, mission, approach, and operator page at `/company`
+- a compatibility redirect from `/about` to `/company`
 - privacy and service terms at `/privacy` and `/terms`
 - generated `robots.txt` and `sitemap.xml` endpoints
 
@@ -126,7 +127,8 @@ live deployment checklist and current smoke evidence.
 │   │   └── productWorkflowProofs.ts
 │   ├── pages/
 │   │   ├── index.astro
-│   │   ├── about.astro
+│   │   ├── about.astro (compatibility redirect)
+│   │   ├── company.astro
 │   │   ├── privacy.astro
 │   │   ├── robots.txt.ts
 │   │   ├── security.astro
