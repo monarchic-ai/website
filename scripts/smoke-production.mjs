@@ -206,6 +206,7 @@ async function runBrowserSmoke() {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
       await page.getByText("One plan covers every available MCP.").waitFor();
+      await page.getByText("1,220 classified operations", { exact: true }).waitFor();
       await expectTextAbsent(page, [
         "Hosted staging MCP route",
         "3.45s",
@@ -221,7 +222,9 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
-      await page.getByRole("heading", { name: "One allowance, measured by the work" }).waitFor();
+      await page.getByRole("heading", { name: "Subscription price. Usage measured by the work." }).waitFor();
+      await page.getByRole("heading", { name: "1,220 operations / three classes" }).waitFor();
+      await page.getByText("PAYG and automatic overage are off.", { exact: false }).waitFor();
       await page.getByText("Quantities not yet published", { exact: true }).waitFor();
 
       const usageCards = page.locator('[data-plan-card^="usage-"]');

@@ -3,6 +3,7 @@ import generatedPlans from "../lib/pricing.generated.json" with { type: "json" }
 import publicGeneratedPlans from "../lib/pricing.public.generated.json" with { type: "json" };
 import comingSoonPlansJson from "../lib/pricing.coming-soon.json" with { type: "json" };
 import catalogManifest from "../lib/catalog.manifest.json" with { type: "json" };
+import usagePolicy from "../lib/usage-policy.generated.json" with { type: "json" };
 import { productDetails } from "../lib/productDetails";
 
 export const prerender = true;
@@ -18,6 +19,7 @@ async function catalogArtifactDigest(): Promise<string> {
     "pricing.public.generated.json": publicGeneratedPlans,
     "pricing.coming-soon.json": comingSoonPlansJson,
     "productDetails.ts": productDetails,
+    "usage-policy.generated.json": usagePolicy,
   });
   const bytes = new TextEncoder().encode(payload);
   const digest = await crypto.subtle.digest("SHA-256", bytes);

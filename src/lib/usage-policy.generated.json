@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "monarchic.website-public-usage-policy.v1",
+  "source": {
+    "repository": "monarchic-mcp-catalog",
+    "commit": "23d0ce9e6526c6243b93260a60c3bec3a3c4aba2",
+    "policyVersion": "adaptive-subscription-launch-2026-08-13-v2",
+    "rateCardVersion": "hosted-mcp-catalog-2026-08-10-v2",
+    "rateCardSha256": "c5e7a112eca0d58ec2ac11ba79f398c7d49e6e254deaf9c9240f9c143b1b0dd8"
+  },
+  "pricing": {
+    "model": "fixed_subscription",
+    "publicClaim": "Included capacity adapts to operation type and complexity.",
+    "plans": [
+      {
+        "slug": "usage-individual",
+        "monthlyPriceCents": 1900,
+        "annualPriceCents": 19000
+      },
+      {
+        "slug": "usage-developer",
+        "monthlyPriceCents": 5900,
+        "annualPriceCents": 59000
+      },
+      {
+        "slug": "usage-team",
+        "monthlyPriceCents": 14900,
+        "annualPriceCents": 149000
+      },
+      {
+        "slug": "usage-business",
+        "monthlyPriceCents": 49900,
+        "annualPriceCents": 499000
+      }
+    ]
+  },
+  "allowance": {
+    "cadenceDays": 7,
+    "grantExpirationDays": 14,
+    "rolloverWeeks": 1,
+    "monthlyAnnualGrantParity": true,
+    "exhaustion": "pause_until_refresh",
+    "automaticOverage": false
+  },
+  "catalog": {
+    "classifiedOperationCount": 1220,
+    "operationClasses": [
+      {
+        "id": "standard",
+        "label": "Standard",
+        "operationCount": 538,
+        "description": "Lower-complexity operations in the current rate card."
+      },
+      {
+        "id": "advanced",
+        "label": "Advanced",
+        "operationCount": 680,
+        "description": "Higher-complexity analysis and workflow operations."
+      },
+      {
+        "id": "browser",
+        "label": "Browser",
+        "operationCount": 2,
+        "description": "Managed browser execution with captured evidence."
+      }
+    ]
+  },
+  "separateMeters": {
+    "storage": "separate_quota_and_ledger",
+    "providerExpense": "byok_or_separately_itemized"
+  },
+  "publication": {
+    "operationRatesPublished": false,
+    "allowanceQuantitiesPublished": false,
+    "paygAvailable": false
+  }
+}

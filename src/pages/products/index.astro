@@ -17,6 +17,7 @@ import {
   type CatalogPlan,
 } from "../../lib/pricing";
 import { researchHrefForProductSlug } from "../../lib/mcpResearch";
+import usagePolicy from "../../lib/usage-policy.generated.json" with { type: "json" };
 
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
@@ -43,6 +44,8 @@ const plannedMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) ==
 const availableMcpCount = availableMcpProducts.length;
 const inRolloutMcpCount = inRolloutMcpProducts.length;
 const plannedMcpCount = plannedMcpProducts.length;
+const formattedOperationCount = usagePolicy.catalog.classifiedOperationCount.toLocaleString("en-US");
+const shortRateCardVersion = usagePolicy.source.rateCardVersion.replace("hosted-mcp-catalog-", "");
 
 function statusClasses(plan: CatalogPlan): string {
   if (plan.status === "available") return "border-signal bg-signal text-black";
@@ -242,11 +245,12 @@ function statusClasses(plan: CatalogPlan): string {
           <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <p class="text-xs font-bold uppercase text-signal">03 / Adaptive usage</p>
-              <h2 class="mt-3 text-3xl font-extrabold uppercase">One allowance, measured by the work</h2>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase">Subscription price. Usage measured by the work.</h2>
               <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-                Customers see one percentage, not an internal unit balance.
-                Every billable operation uses the class fixed in its versioned
-                rate card. Every receipt shows that class and its usage impact.
+                {usagePolicy.pricing.publicClaim} Customers see one weekly
+                percentage, not an internal unit balance. Every operation uses
+                the class fixed in the versioned catalog, and every receipt
+                shows the resulting usage impact.
               </p>
             </div>
             <div class="grid gap-3 text-sm leading-6 text-white/72">
@@ -255,26 +259,44 @@ function statusClasses(plan: CatalogPlan): string {
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Usage pauses at the included limit. No automatic overage charges.</span></div>
             </div>
           </div>
-          <div class="mt-8 grid border-t border-white/36 sm:grid-cols-2 lg:grid-cols-4">
-            <div class="border-b border-white/36 p-4 sm:border-r lg:border-b-0">
-              <p class="font-mono text-3xl font-extrabold text-signal">01</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Operation</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Every billable call is assigned a standard, advanced, or browser class.</p>
+          <div class="mt-8 border-t border-white/36 pt-7">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-[0.65rem] font-bold uppercase text-signal">Current catalog classification</p>
+                <h3 class="mt-2 text-2xl font-extrabold uppercase">{formattedOperationCount} operations / three classes</h3>
+              </div>
+              <p class="font-mono text-[0.62rem] uppercase text-white/42">Rate card {shortRateCardVersion}</p>
             </div>
-            <div class="border-b border-white/36 p-4 lg:border-b-0 lg:border-r">
-              <p class="font-mono text-3xl font-extrabold text-signal">02</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Rate card</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">The operation class and rate-card version are fixed before execution.</p>
+            <div class="mt-5 grid border border-white/40 lg:grid-cols-3">
+              {usagePolicy.catalog.operationClasses.map((operationClass, index) => (
+                <article class:list={["p-5", index < usagePolicy.catalog.operationClasses.length - 1 && "border-b border-white/36 lg:border-b-0 lg:border-r"]}>
+                  <div class="flex items-start justify-between gap-4">
+                    <h3 class="text-sm font-extrabold uppercase">{operationClass.label}</h3>
+                    <span class="font-mono text-lg font-extrabold text-signal">{operationClass.operationCount.toLocaleString("en-US")}</span>
+                  </div>
+                  <p class="mt-3 text-sm leading-6 text-white/58">{operationClass.description}</p>
+                </article>
+              ))}
             </div>
-            <div class="border-b border-white/36 p-4 sm:border-b-0 sm:border-r">
-              <p class="font-mono text-3xl font-extrabold text-signal">03</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Storage</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Files, evidence, and managed indexed data use separate storage meters.</p>
+            <p class="mt-3 text-xs leading-6 text-white/42">
+              Counts describe the complete classified catalog, including products still in rollout or planned. They are catalog coverage—not an allowance quantity or a per-operation price.
+            </p>
+          </div>
+          <div class="mt-8 grid border-y border-white/36 sm:grid-cols-3">
+            <div class="border-b border-white/36 py-5 sm:border-b-0 sm:border-r sm:pr-5">
+              <p class="font-mono text-3xl font-extrabold text-signal">{usagePolicy.allowance.cadenceDays}d</p>
+              <p class="mt-2 text-xs font-bold uppercase text-white">Refresh cadence</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">A new included-usage grant arrives every seven days.</p>
             </div>
-            <div class="p-4">
-              <p class="font-mono text-3xl font-extrabold text-signal">04</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white">Providers</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Model, proxy, CAPTCHA, and paid-provider expenses are BYOK or itemized separately.</p>
+            <div class="border-b border-white/36 py-5 sm:border-b-0 sm:border-r sm:px-5">
+              <p class="font-mono text-3xl font-extrabold text-signal">{usagePolicy.allowance.grantExpirationDays}d</p>
+              <p class="mt-2 text-xs font-bold uppercase text-white">Maximum age</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Unused capacity can cross one refresh and then expires oldest-first.</p>
+            </div>
+            <div class="py-5 sm:pl-5">
+              <p class="font-mono text-3xl font-extrabold text-signal">Stop</p>
+              <p class="mt-2 text-xs font-bold uppercase text-white">At the limit</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Execution pauses until refresh. PAYG and automatic overage are off.</p>
             </div>
           </div>
           <div class="mt-8 grid border border-signal/70 bg-signal/[0.06] lg:grid-cols-[0.72fr_1.28fr]">
@@ -284,10 +306,10 @@ function statusClasses(plan: CatalogPlan): string {
             </div>
             <div class="p-5 sm:p-6">
               <p class="max-w-3xl text-sm leading-7 text-white/70">
-                Plan prices and weekly grants are fixed for launch. Operation quantities will be published after direct and shared variable costs are allocated, representative workloads are replayed, and full-utilization margins pass review.
+                The subscription prices and usage model are published now. Exact included quantities remain behind the catalog's approval gate until direct and shared variable costs are allocated, representative workloads are replayed, and full-utilization margins pass review.
               </p>
               <p class="mt-4 text-xs leading-6 text-white/48">
-                Fixed platform overhead is evaluated at the plan level and does not change a customer's allowance as subscriber count changes.
+                Monthly and annual subscriptions receive the same nominal weekly grant. Annual billing costs ten monthly payments; storage and disclosed provider expenses remain separate.
               </p>
             </div>
           </div>

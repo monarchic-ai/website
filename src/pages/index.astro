@@ -6,6 +6,7 @@ import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
 import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
 import { allPlans, hostedMcpStatus } from "../lib/pricing";
+import usagePolicy from "../lib/usage-policy.generated.json" with { type: "json" };
 import "../styles/global.css";
 
 const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
@@ -250,10 +251,10 @@ const proofPoints = [
               One plan covers every available MCP.
             </h2>
             <p class="mt-6 max-w-3xl text-base leading-7 text-white/62">
-              See one weekly execution percentage across the catalog. Every
-              billable operation uses the class fixed in its versioned rate card.
-              File and indexed storage, plus disclosed provider expenses, are
-              metered separately.
+              {usagePolicy.pricing.publicClaim} See one weekly execution
+              percentage across the catalog. Usage refreshes every
+              {` ${usagePolicy.allowance.cadenceDays} days`}, can roll across one
+              refresh, and pauses at the limit without automatic overage.
             </p>
           </div>
           <div class="grid content-between border-t border-white/24 p-5 lg:border-l lg:border-t-0 lg:p-7">
@@ -261,6 +262,7 @@ const proofPoints = [
               <p>Evaluation → Business</p>
               <p>Available MCPs included</p>
               <p>Weekly percentage + refresh date</p>
+              <p>{usagePolicy.catalog.classifiedOperationCount.toLocaleString("en-US")} classified operations</p>
               <p>Operation-level usage receipts</p>
             </div>
             <a href="/products#plans" class="mt-8 inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-paper">

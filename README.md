@@ -158,6 +158,15 @@ live deployment checklist and current smoke evidence.
   artifacts against `../shared/product-catalog` when the sibling workspace is
   present. In a standalone website checkout it skips cleanly so Vercel and
   GitHub can still build the deployable artifact copy.
+- `src/lib/usage-policy.generated.json` is the fail-closed public subset of
+  `monarchic-mcp-catalog`. Run `pnpm sync:mcp-pricing` after catalog changes.
+  The sync includes approved subscription prices, cadence, rollover, stop
+  behavior, and aggregate class coverage while deliberately excluding
+  provisional operation rates and unpublished allowance quantities.
+- `pnpm check:mcp-pricing` validates the committed public subset and its plan
+  prices. When the source catalog is available locally, it also fails on drift;
+  standalone deploy checkouts validate the committed artifact without needing
+  the sibling repository.
 - `/build-info.json` exposes one sorted `catalog.planSlugs` inventory plus
   aggregate `catalog.manifestDigest` and `catalog.artifactDigest` values for
   generated artifacts. The live smoke verifies that shape and both digests
