@@ -90,12 +90,6 @@
     "limit": "Analysis quality inherits RepoIntel and the selected repository manifest. Hosted execution is not yet deployed."
   },
   {
-    "productSlug": "mcp-proofpack",
-    "question": "Does verification detect artifact, receipt, and manifest tampering before export?",
-    "evaluationLens": "Use deterministic tamper cases across pack construction, verification, and signing-policy refusal paths.",
-    "limit": "Hash integrity is not provenance. Production signing remains a separate launch gate."
-  },
-  {
     "productSlug": "mcp-pty",
     "question": "Can an agent reliably observe and control interactive terminal state through a structured session?",
     "evaluationLens": "Exercise shell, REPL, transcript-cursor, resize, timeout, and session-lifecycle behavior through the MCP boundary.",

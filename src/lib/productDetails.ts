@@ -284,18 +284,6 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Select scope", "Start analysis", "Resume job", "Export report"],
   },
-  "mcp-proofpack": {
-    slug: "mcp-proofpack",
-    category: "Evidence Integrity",
-    buyer: "Agent, release, and compliance teams that need portable evidence with verifiable contents.",
-    useCase: "Hash evidence, build a deterministic proof pack, verify its contents, and apply explicit signing policy before export.",
-    outcomes: [
-      "Detect missing or changed evidence before handoff",
-      "Move review evidence as one portable artifact",
-      "Make signing and export policy explicit",
-    ],
-    workflows: ["Hash evidence", "Build pack", "Verify pack", "Sign and export"],
-  },
   "mcp-vectordesign": {
     slug: "mcp-vectordesign",
     category: "Visual Design",

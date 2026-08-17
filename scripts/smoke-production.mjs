@@ -48,7 +48,6 @@ const requiredCatalogSlugs = [
   "mcp-nutrition",
   "mcp-orgfleet",
   "mcp-orgintel",
-  "mcp-proofpack",
   "mcp-pty",
   "mcp-releaseops",
   "mcp-repo-fleet",
@@ -63,6 +62,7 @@ const requiredCatalogSlugs = [
 ];
 const retiredCatalogSlugs = [
   "mcp-outreachconnectors",
+  "mcp-proofpack",
   "mcp-verified",
 ];
 const supersededCatalogSlugs = ["mcp-monarchic"];

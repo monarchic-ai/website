@@ -563,24 +563,6 @@
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-proofpack",
-    "displayName": "ProofPack MCP",
-    "tagline": "Signed evidence packs for agent and release work",
-    "description": "ProofPack MCP hashes evidence, builds portable proof packs, verifies their contents, and applies signing policy before export. Hosted deployment is planned.",
-    "featureBullets": [
-      "Bundle evidence with a deterministic manifest",
-      "Verify content hashes before review or release",
-      "Apply explicit signing and export policy"
-    ],
-    "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Pack operations will use frozen rate-card classes; retained evidence will use the separate file-storage meter.",
-    "lifecycle": "wip",
-    "hostedStatus": "planned",
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
     "slug": "mcp-vectordesign",
     "displayName": "VectorDesign MCP",
     "tagline": "Structured vector design sessions and export",
