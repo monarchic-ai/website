@@ -40,7 +40,7 @@ research surface. It currently owns:
 - the public products catalog at `/products`
 - individual product detail pages at `/products/[slug]`
 - the research index at `/research`
-- one bounded research brief for each of the 27 public MCPs at
+- one bounded research brief for each of the 26 public MCPs at
   `/research/[slug]`
 - the substantive ExplicitMem benchmark at `/research/explicitmem`
 - the current trust boundary at `/security`
@@ -183,7 +183,7 @@ live deployment checklist and current smoke evidence.
   proof. Those examples must keep their permission and content-isolation
   boundaries beside the request, output, and estimated usage impact.
 - `src/lib/mcpResearchContent.json` is website-local public content. Its entries
-  must cover the same 27 MCP slugs as the catalog exactly. Hosted status and the
+  must cover the same 26 MCP slugs as the catalog exactly. Hosted status and the
   available-plan or waitlist action are derived from the catalog instead of
   being duplicated in research copy.
 - Product research briefs explain the problem, validation approach, public
@@ -203,7 +203,7 @@ live deployment checklist and current smoke evidence.
   `MONARCHIC_WEBSITE_LOCAL_PORT`.
 - `pnpm smoke:production` uses Playwright to verify the live site HTTP
   response, `robots.txt`, `sitemap.xml`, homepage metadata, product pages,
-  all 27 research routes, reciprocal product links, the waitlist form contract,
+  all 26 research routes, reciprocal product links, the waitlist form contract,
   and horizontal overflow against
   `https://www.monarchic.io` while keeping canonical URLs pinned to
   `https://monarchic.io`. Override the target with

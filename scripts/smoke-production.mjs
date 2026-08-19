@@ -182,7 +182,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
       await page.getByRole("heading", { name: "Map this repository and return source-cited architecture." }).waitFor();
-      await page.getByText("16/27", { exact: true }).waitFor();
+      await page.getByText("16/26", { exact: true }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
@@ -234,8 +234,8 @@ async function runBrowserSmoke() {
       }
       const mcpCards = page.locator('[data-plan-card^="mcp-"]');
       const mcpCardCount = await mcpCards.count();
-      if (mcpCardCount !== 27) {
-        throw new Error(`Expected 27 MCP cards, got ${mcpCardCount}`);
+      if (mcpCardCount !== 26) {
+        throw new Error(`Expected 26 MCP cards, got ${mcpCardCount}`);
       }
 
       for (const slug of [
@@ -420,9 +420,9 @@ async function runBrowserSmoke() {
       const cardCount = await researchCards.count();
       const availableCardCount = await availableResearchCards.count();
       const plannedCardCount = await plannedResearchCards.count();
-      if (cardCount !== 27 || availableCardCount !== 16 || plannedCardCount !== 11) {
+      if (cardCount !== 26 || availableCardCount !== 16 || plannedCardCount !== 10) {
         throw new Error(
-          `Expected research cards 27 total / 16 available / 11 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
+          `Expected research cards 26 total / 16 available / 10 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
         );
       }
       await researchCards.locator('a[href="/research/explicitmem"]').waitFor();

@@ -54,9 +54,9 @@ The production smoke verifies:
 - `/build-info.json`
 - homepage content and canonical/Open Graph/Twitter metadata
 - public product index
-- all 27 MCP product-to-research links
+- all 26 MCP product-to-research links
 - research index coverage, including 16 Available and 11 Planned briefs
-- all 27 research routes, canonical URLs, catalog-derived status, and product backlinks
+- all 26 research routes, canonical URLs, catalog-derived status, and product backlinks
 - representative Available and Planned research pages in Chromium
 - the distinct ExplicitMem LongMemEval-S benchmark assertions
 - app CTA targets
