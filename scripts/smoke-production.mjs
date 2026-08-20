@@ -201,7 +201,7 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:image:width", "1200");
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
-      await page.getByRole("link", { name: "Planned MCPs" }).first().waitFor();
+      await page.getByRole("link", { name: "Coming soon MCPs" }).first().waitFor();
       for (const metric of ["99.8%", "100%", "62.5 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }

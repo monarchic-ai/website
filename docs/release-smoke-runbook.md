@@ -55,7 +55,8 @@ The production smoke verifies:
 - homepage content and canonical/Open Graph/Twitter metadata
 - public product index
 - all 26 MCP product-to-research links
-- research index coverage, including 16 Available and 11 Planned briefs
+- public catalog coverage, including 16 available MCPs and 10 coming-soon MCPs
+- research index coverage, including production and pre-launch briefs
 - all 26 research routes, canonical URLs, catalog-derived status, and product backlinks
 - representative Available and Planned research pages in Chromium
 - the distinct ExplicitMem LongMemEval-S benchmark assertions

@@ -63,7 +63,7 @@ function statusClasses(plan: CatalogPlan): string {
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Products | Monarchic"
-      description="Compare Monarchic usage plans and the complete catalog of available, in-rollout, and planned MCPs."
+      description={`Compare Monarchic usage plans, ${availableMcpCount} MCPs available now, and ${plannedMcpCount} more coming soon.`}
       path="/products"
     />
   </head>
@@ -116,7 +116,7 @@ function statusClasses(plan: CatalogPlan): string {
             <p class="mt-2 text-sm text-white/62">Healthy non-production deployment</p>
           </div>
           <div class="p-5">
-            <p class="text-xs font-bold uppercase text-white/52">Planned</p>
+            <p class="text-xs font-bold uppercase text-white/52">Coming soon</p>
             <p class="mt-3 text-3xl font-extrabold">{plannedMcpCount}</p>
             <p class="mt-2 text-sm text-white/62">Accepted for hosted infrastructure</p>
           </div>
@@ -126,7 +126,7 @@ function statusClasses(plan: CatalogPlan): string {
           <span class="mr-2 self-center text-[0.65rem] font-bold uppercase text-white/46">Jump to /</span>
           <a href="#plans" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plans</a>
           <a href="#mcp-catalog" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Available MCPs</a>
-          <a href="#planned-mcps" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Planned MCPs</a>
+          <a href="#coming-soon-mcps" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Coming soon MCPs</a>
           <a href="#how-usage-works" class="border border-white/50 px-3 py-2 text-xs font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Usage</a>
         </nav>
 
@@ -227,11 +227,11 @@ function statusClasses(plan: CatalogPlan): string {
             </section>
           )}
 
-          <section id="planned-mcps" class="mt-14 scroll-mt-8 border-t-2 border-white/55 pt-8">
+          <section id="coming-soon-mcps" class="mt-14 scroll-mt-8 border-t-2 border-white/55 pt-8">
             <p class="text-xs font-bold uppercase text-white/54">Hosted expansion</p>
-            <h3 class="mt-3 text-2xl font-extrabold uppercase">Planned / {plannedMcpCount}</h3>
+            <h3 class="mt-3 text-2xl font-extrabold uppercase">Coming soon / {plannedMcpCount}</h3>
             <p class="mt-3 max-w-3xl text-sm leading-7 text-white/62">
-              These MCPs are accepted for the hosted catalog and have an assigned runtime plan. They are listed so the roadmap is visible, but public access remains closed until their deployment gates pass.
+              These MCPs are accepted for the hosted catalog and have an assigned runtime plan. Their product and research pages are public now, but hosted access remains closed until their deployment gates pass.
             </p>
             <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {plannedMcpProducts.map((plan) => (

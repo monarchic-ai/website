@@ -65,7 +65,8 @@ function kindBadge(kind: PlanKind): string {
 }
 
 function statusLabel(plan: CatalogPlan): string {
-  return plan.kind === "single-mcp" ? catalogStatusLabel(plan) : planStatusLabel(plan.status);
+  if (plan.kind !== "single-mcp") return planStatusLabel(plan.status);
+  return hostedMcpStatus(plan) === "planned" ? "Coming soon" : catalogStatusLabel(plan);
 }
 
 function statusClasses(plan: CatalogPlan): string {
@@ -165,7 +166,7 @@ function statusClasses(plan: CatalogPlan): string {
                     ? "Included with an active usage plan"
                     : mcpHostedStatus === "in_rollout"
                       ? "Hosted rollout in progress"
-                      : "Hosted deployment planned"}
+                      : "Hosted access coming soon"}
                 </h2>
                 <p class="mt-3 max-w-2xl text-sm leading-7 text-white/72">
                   {plan.usageSummary ?? "This MCP uses the shared weekly execution allowance on the account plan."}

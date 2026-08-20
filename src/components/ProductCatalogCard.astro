@@ -28,7 +28,7 @@ const statusClass = hostedStatus === "available"
   <div class="flex flex-wrap items-start justify-between gap-3">
     <span class="text-[0.62rem] font-bold uppercase text-white/48">{detail?.category ?? "MCP"}</span>
     <span class={`border px-2 py-1 text-[0.6rem] font-bold uppercase ${statusClass}`}>
-      {catalogStatusLabel(plan)}
+      {hostedStatus === "planned" ? "Coming soon" : catalogStatusLabel(plan)}
     </span>
   </div>
   <h3 class="mt-5 text-xl font-extrabold uppercase">{plan.displayName}</h3>
@@ -38,7 +38,7 @@ const statusClass = hostedStatus === "available"
       ? "Included in shared plan usage"
       : hostedStatus === "in_rollout"
         ? "Hosted rollout underway"
-        : "Hosted deployment planned"}
+        : "Hosted access coming soon"}
   </p>
   <div class="flex-1"></div>
   <div class="mt-6 flex flex-wrap gap-2">
