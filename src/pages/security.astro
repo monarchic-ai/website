@@ -83,13 +83,33 @@ const controlMatrix = [
 const awsProtection = [
   {
     control: "Object storage",
-    state: "22 / 22 buckets",
+    state: "24 / 24 buckets",
     detail: "S3 uses SSE-S3 with AES-256. Every bucket policy denies requests when aws:SecureTransport is false.",
   },
   {
     control: "Databases",
     state: "6 / 6 tables",
-    detail: "Every DynamoDB table uses encryption at rest. Keys are AWS owned or AWS managed according to the table configuration.",
+    detail: "Every DynamoDB table uses encryption at rest, point-in-time recovery, and deletion protection.",
+  },
+  {
+    control: "Audit logging",
+    state: "4 / 4 accounts",
+    detail: "Multi-Region CloudTrail records management events and global service activity with log-file validation. Audit buckets are encrypted, versioned, and retain current logs for 365 days.",
+  },
+  {
+    control: "Threat detection",
+    state: "4 / 4 accounts",
+    detail: "GuardDuty monitors CloudTrail, DNS, and VPC flow-log sources. Optional protection plans remain disabled while foundational usage is measured during the trial.",
+  },
+  {
+    control: "Finding alerts",
+    state: "3 / 4 accounts",
+    detail: "Medium and higher GuardDuty findings route to encrypted alert topics in dev, staging, and production. Management-account findings are currently reviewed in the GuardDuty console.",
+  },
+  {
+    control: "External access",
+    state: "4 / 4 accounts",
+    detail: "IAM Access Analyzer scans external resource access in every account. Findings remain visible until their trust or policy is reviewed.",
   },
   {
     control: "Operational alerts",
@@ -110,6 +130,11 @@ const awsProtection = [
     control: "Volume defaults",
     state: "4 / 4 accounts",
     detail: "EBS encryption by default is enabled in dev, staging, production, and management. The audit found no active EBS volumes.",
+  },
+  {
+    control: "Object recovery",
+    state: "Versioned",
+    detail: "Managed audit and artifact buckets retain noncurrent object versions for a bounded recovery window. Ephemeral sandbox buckets are excluded from this policy.",
   },
 ];
 
@@ -315,8 +340,8 @@ const providers = [
       <section id="aws-data-protection" aria-labelledby="aws-protection-title" class="border-b border-black bg-paper text-black">
         <header class="grid gap-5 border-b border-black p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase">03 / AWS data protection</p>
-            <h2 id="aws-protection-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Encryption controls in the hosted service.</h2>
+            <p class="font-mono text-[0.65rem] font-bold uppercase">03 / AWS protection</p>
+            <h2 id="aws-protection-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">AWS controls in the hosted service.</h2>
           </div>
           <p class="text-sm leading-7 text-black/64">
             Verified against the dev, staging, production, and management accounts on August 21, 2026.
