@@ -455,42 +455,6 @@
   },
   {
     "kind": "single-mcp",
-    "slug": "mcp-webcomposer",
-    "displayName": "WebComposer MCP",
-    "tagline": "Website structure and composition constraints",
-    "description": "WebComposer MCP defines site content, page structure, and layout constraints before implementation begins.",
-    "featureBullets": [
-      "Separate content requirements from page geometry",
-      "Plan ordered page sections from reusable templates",
-      "Check content coverage before implementation"
-    ],
-    "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "hostedStatus": "planned",
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
-    "slug": "mcp-webimplementer",
-    "displayName": "WebImplementer MCP",
-    "tagline": "Bounded implementation from validated web specifications",
-    "description": "WebImplementer MCP turns a validated WebComposer plan into a bounded repository patch and a BrowserOps-ready review loop.",
-    "featureBullets": [
-      "Bind page intent to an existing repository",
-      "Keep generated changes inside an explicit write scope",
-      "Prepare rendered checks before applying a patch"
-    ],
-    "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "This product is experimental and not available for checkout. Access will use the shared account usage model when it opens.",
-    "lifecycle": "wip",
-    "hostedStatus": "planned",
-    "status": "coming_soon",
-    "prices": []
-  },
-  {
-    "kind": "single-mcp",
     "slug": "mcp-codeintel",
     "displayName": "CodeIntel MCP",
     "tagline": "Live code navigation and language-server intelligence",
@@ -584,7 +548,7 @@
     "slug": "mcp-webdashboard",
     "displayName": "WebDashboard MCP",
     "tagline": "Dashboard specifications from approved web plans",
-    "description": "WebDashboard MCP turns approved WebComposer contracts into dashboard-specific structure, states, and implementation guidance. Hosted deployment is planned.",
+    "description": "WebDashboard MCP turns approved site specifications into dashboard-specific structure, states, and implementation guidance. Hosted deployment is planned.",
     "featureBullets": [
       "Define dashboard information hierarchy and states",
       "Reuse approved site contracts and design constraints",

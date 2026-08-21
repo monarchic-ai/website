@@ -212,30 +212,6 @@ export const productDetails: Record<string, ProductDetail> = {
     ],
     workflows: ["Inspect schema", "Validate requirements", "Run calculation", "Build plan"],
   },
-  "mcp-webcomposer": {
-    slug: "mcp-webcomposer",
-    category: "Web Planning",
-    buyer: "Product and design teams that want precise page intent before implementation.",
-    useCase: "Define site content, page sections, and layout constraints without mixing those decisions into implementation code.",
-    outcomes: [
-      "Make required and forbidden content explicit",
-      "Choose a responsive page structure before coding",
-      "Check that a composition covers the page brief",
-    ],
-    workflows: ["Site contract", "Page map", "Template selection", "Coverage analysis"],
-  },
-  "mcp-webimplementer": {
-    slug: "mcp-webimplementer",
-    category: "Web Implementation",
-    buyer: "Teams turning approved web specifications into bounded, reviewable repository changes.",
-    useCase: "Translate a validated WebComposer plan into an implementation brief, a scoped patch, and a rendered review loop.",
-    outcomes: [
-      "Bind page intent to the existing design system",
-      "Keep generated changes inside an explicit write scope",
-      "Evaluate rendered results before applying the patch",
-    ],
-    workflows: ["Inspect target", "Prepare execution", "Evaluate rendered page", "Apply approved changes"],
-  },
   "mcp-codeintel": {
     slug: "mcp-codeintel",
     category: "Code Intelligence",
@@ -300,7 +276,7 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "mcp-webdashboard",
     category: "Web Planning",
     buyer: "Product teams that need a clear dashboard specification before implementation starts.",
-    useCase: "Turn approved WebComposer contracts into dashboard hierarchy, component states, responsive behavior, and implementation guidance.",
+    useCase: "Turn approved site specifications into dashboard hierarchy, component states, responsive behavior, and implementation guidance.",
     outcomes: [
       "Define dashboard structure before code changes begin",
       "Cover loading, empty, error, and populated states",

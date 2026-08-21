@@ -56,9 +56,7 @@ const requiredCatalogSlugs = [
   "mcp-repointel",
   "mcp-seo",
   "mcp-vectordesign",
-  "mcp-webcomposer",
   "mcp-webdashboard",
-  "mcp-webimplementer",
   "mcp-webinfo",
   "mcp-websplash",
 ];
@@ -68,9 +66,11 @@ const retiredCatalogSlugs = [
   "mcp-verified",
 ];
 const supersededCatalogSlugs = ["mcp-monarchic"];
+const withdrawnCatalogSlugs = ["mcp-webcomposer", "mcp-webimplementer"];
 const forbiddenCatalogSlugs = [
   ...retiredCatalogSlugs,
   ...supersededCatalogSlugs,
+  ...withdrawnCatalogSlugs,
 ];
 const requiredResearchRoutes = requiredCatalogSlugs
   .filter((slug) => slug.startsWith("mcp-"))
@@ -99,8 +99,6 @@ async function runSmoke() {
     "/security",
     ...requiredResearchRoutes,
     "/products/mcp-cicd",
-    "/products/mcp-webcomposer",
-    "/products/mcp-webimplementer",
   ], "sitemap.xml");
   await checkTextExcludes(`${baseUrl}/sitemap.xml`, [
     "/tutorial",
@@ -108,6 +106,8 @@ async function runSmoke() {
     "/products/mcp-monarchic",
     "/products/mcp-outreachconnectors",
     "/products/mcp-verified",
+    "/products/mcp-webcomposer",
+    "/products/mcp-webimplementer",
   ], "sitemap.xml non-indexed product routes");
   await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/docs`, "tutorial redirect");
   await checkRedirect(`${baseUrl}/about`, `${expectedCanonicalBaseUrl}/company`, "about compatibility redirect");
@@ -184,7 +184,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
       await page.getByRole("heading", { name: "Map this repository and return source-cited architecture." }).waitFor();
-      await page.getByText("16/26", { exact: true }).waitFor();
+      await page.getByText("16/24", { exact: true }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
@@ -237,8 +237,8 @@ async function runBrowserSmoke() {
       }
       const mcpCards = page.locator('[data-plan-card^="mcp-"]');
       const mcpCardCount = await mcpCards.count();
-      if (mcpCardCount !== 26) {
-        throw new Error(`Expected 26 MCP cards, got ${mcpCardCount}`);
+      if (mcpCardCount !== 24) {
+        throw new Error(`Expected 24 MCP cards, got ${mcpCardCount}`);
       }
 
       for (const slug of [
@@ -246,8 +246,6 @@ async function runBrowserSmoke() {
         "mcp-copydev",
         "mcp-nutrition",
         "mcp-codeintel",
-        "mcp-webcomposer",
-        "mcp-webimplementer",
       ]) {
         await page.locator(`[data-plan-card="${slug}"]`).waitFor();
       }
@@ -423,9 +421,9 @@ async function runBrowserSmoke() {
       const cardCount = await researchCards.count();
       const availableCardCount = await availableResearchCards.count();
       const plannedCardCount = await plannedResearchCards.count();
-      if (cardCount !== 26 || availableCardCount !== 16 || plannedCardCount !== 10) {
+      if (cardCount !== 24 || availableCardCount !== 16 || plannedCardCount !== 8) {
         throw new Error(
-          `Expected research cards 26 total / 16 available / 10 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
+          `Expected research cards 24 total / 16 available / 8 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
         );
       }
       await researchCards.locator('a[href="/research/explicitmem"]').waitFor();

@@ -82,8 +82,19 @@ export const supersededPublicPlanSlugs = new Set([
   "mcp-monarchic",
 ]);
 
+// These products are intentionally withdrawn from the current offer while
+// their implementation repositories and historical evidence remain intact.
+export const withdrawnPublicPlanSlugs = new Set([
+  "mcp-webcomposer",
+  "mcp-webimplementer",
+]);
+
 export function isHiddenPublicPlanSlug(slug: string): boolean {
-  return retiredPublicPlanSlugs.has(slug) || supersededPublicPlanSlugs.has(slug);
+  return (
+    retiredPublicPlanSlugs.has(slug) ||
+    supersededPublicPlanSlugs.has(slug) ||
+    withdrawnPublicPlanSlugs.has(slug)
+  );
 }
 
 const generatedCatalogPlans = (generatedPlans as CatalogPlan[]) ?? [];

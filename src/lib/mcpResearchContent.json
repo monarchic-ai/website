@@ -126,22 +126,10 @@
     "limit": "Heuristic fitness does not prove aesthetic quality, originality, or intellectual-property clearance."
   },
   {
-    "productSlug": "mcp-webcomposer",
-    "question": "Can a bounded template vocabulary represent reviewed page patterns without mixing content and geometry?",
-    "evaluationLens": "Audit public-site coverage, finite layout constraints, and scoring calibration against reviewed page contracts.",
-    "limit": "Pattern coverage does not prove design quality, accessibility, or implementation quality."
-  },
-  {
     "productSlug": "mcp-webdashboard",
     "question": "Can dashboard data, actions, and states validate into a strict composition contract?",
     "evaluationLens": "Test profile calibration and composition compatibility across loading, empty, error, populated, and responsive states.",
     "limit": "This produces specifications, not final code, copy, or evidence of usability."
-  },
-  {
-    "productSlug": "mcp-webimplementer",
-    "question": "Can an approved composition become a write-scoped patch with validation receipts?",
-    "evaluationLens": "Use repository fixtures to inspect scope enforcement, patch preparation, validation, and browser-QA handoff.",
-    "limit": "The service does not deploy, publish, merge, or invent missing copy. A local worktree is not a security sandbox."
   },
   {
     "productSlug": "mcp-webinfo",
