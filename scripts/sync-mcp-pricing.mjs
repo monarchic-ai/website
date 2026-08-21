@@ -12,7 +12,7 @@ const check = process.argv.includes("--check") || !write;
 const sourceDir = findCatalogDir();
 
 const committed = readJson(outputPath, "committed public usage policy");
-validatePublicPolicy(committed);
+validatePublicPolicy(committed, { allowLegacyV1: write });
 validateWebsitePrices(committed);
 
 if (!sourceDir) {
@@ -68,6 +68,15 @@ function buildPublicPolicy(root) {
 
   requireValue(launch.customerPricingModel === "fixed_subscription", "launch pricing model must be fixed_subscription");
   requireValue(launch.payg?.available === false, "PAYG must remain unavailable");
+  requireValue(launch.payg?.customerConfigurable === false, "PAYG must not be customer configurable");
+  requireValue(launch.payg?.eligibilityScope === "enterprise_contract_only", "PAYG eligibility must be enterprise contract only");
+  requireValue(launch.payg?.selfServicePlanDisposition === "ineligible", "self-service plans must remain PAYG-ineligible");
+  requireValue(launch.payg?.contractEntitlementCapability === "hosted-mcp:enterprise-payg", "enterprise PAYG capability drifted");
+  requireValue(launch.payg?.contractEntitlementSource === "operator_issued", "enterprise PAYG entitlement must be operator issued");
+  requireValue(launch.payg?.tenantBindingRequired === true, "enterprise PAYG entitlement must be tenant bound");
+  requireValue(launch.payg?.minimumCommitmentRequired === true, "enterprise PAYG minimum commitment must be required");
+  requireValue(launch.payg?.operatorEnablementRequired === true, "enterprise PAYG operator enablement must be required");
+  requireValue(launch.payg?.spendingCapRequired === true, "enterprise PAYG spending cap must be required");
   requireValue(launch.payg?.includedUsageExhaustion === "pause_until_refresh", "usage must pause until refresh");
   requireValue(gate.ratesApproved === false, "rate publication changed; review the website export contract before syncing");
   requireValue(gate.allowanceQuantitiesApproved === false, "allowance publication changed; review the website export contract before syncing");
@@ -91,7 +100,7 @@ function buildPublicPolicy(root) {
   }).trim();
 
   return {
-    schemaVersion: "monarchic.website-public-usage-policy.v1",
+    schemaVersion: "monarchic.website-public-usage-policy.v2",
     source: {
       repository: "monarchic-mcp-catalog",
       commit: sourceCommit,
@@ -121,6 +130,18 @@ function buildPublicPolicy(root) {
       exhaustion: launch.payg.includedUsageExhaustion,
       automaticOverage: false,
     },
+    payg: {
+      currentlyAvailable: false,
+      customerConfigurable: false,
+      eligibilityScope: launch.payg.eligibilityScope,
+      selfServicePlanDisposition: launch.payg.selfServicePlanDisposition,
+      contractEntitlementCapability: launch.payg.contractEntitlementCapability,
+      contractEntitlementSource: launch.payg.contractEntitlementSource,
+      tenantBindingRequired: launch.payg.tenantBindingRequired,
+      minimumCommitmentRequired: launch.payg.minimumCommitmentRequired,
+      operatorEnablementRequired: launch.payg.operatorEnablementRequired,
+      spendingCapRequired: launch.payg.spendingCapRequired,
+    },
     catalog: {
       classifiedOperationCount: launch.classifiedOperationCount,
       operationClasses: classOrder.map((id) => ({
@@ -142,13 +163,30 @@ function buildPublicPolicy(root) {
   };
 }
 
-function validatePublicPolicy(value) {
-  requireValue(value?.schemaVersion === "monarchic.website-public-usage-policy.v1", "invalid public usage policy schema");
+function validatePublicPolicy(value, options = {}) {
+  const legacyV1 = value?.schemaVersion === "monarchic.website-public-usage-policy.v1";
+  requireValue(
+    value?.schemaVersion === "monarchic.website-public-usage-policy.v2" ||
+      (options.allowLegacyV1 === true && legacyV1),
+    "invalid public usage policy schema",
+  );
   requireValue(value?.pricing?.model === "fixed_subscription", "public pricing must be fixed subscription");
   requireValue(typeof value?.pricing?.publicClaim === "string" && value.pricing.publicClaim.length > 0, "public claim is missing");
   requireValue(value?.publication?.operationRatesPublished === false, "provisional operation rates must not be published");
   requireValue(value?.publication?.allowanceQuantitiesPublished === false, "unapproved allowance quantities must not be published");
   requireValue(value?.publication?.paygAvailable === false, "PAYG must not be advertised");
+  if (!legacyV1) {
+    requireValue(value?.payg?.currentlyAvailable === false, "PAYG must remain inactive");
+    requireValue(value?.payg?.customerConfigurable === false, "PAYG must not be customer configurable");
+    requireValue(value?.payg?.eligibilityScope === "enterprise_contract_only", "PAYG eligibility must remain enterprise contract only");
+    requireValue(value?.payg?.selfServicePlanDisposition === "ineligible", "self-service plans must remain PAYG-ineligible");
+    requireValue(value?.payg?.contractEntitlementCapability === "hosted-mcp:enterprise-payg", "enterprise PAYG capability drifted");
+    requireValue(value?.payg?.contractEntitlementSource === "operator_issued", "enterprise PAYG entitlement must be operator issued");
+    requireValue(value?.payg?.tenantBindingRequired === true, "enterprise PAYG entitlement must be tenant bound");
+    requireValue(value?.payg?.minimumCommitmentRequired === true, "enterprise PAYG minimum commitment must be required");
+    requireValue(value?.payg?.operatorEnablementRequired === true, "enterprise PAYG operator enablement must be required");
+    requireValue(value?.payg?.spendingCapRequired === true, "enterprise PAYG spending cap must be required");
+  }
   requireValue(value?.allowance?.automaticOverage === false, "automatic overage must remain disabled");
   requireValue(value?.allowance?.exhaustion === "pause_until_refresh", "allowance exhaustion must pause until refresh");
   requireValue(Number.isInteger(value?.catalog?.classifiedOperationCount) && value.catalog.classifiedOperationCount > 0, "classified operation count is invalid");

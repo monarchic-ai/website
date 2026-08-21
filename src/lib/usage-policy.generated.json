@@ -1,11 +1,11 @@
 {
-  "schemaVersion": "monarchic.website-public-usage-policy.v1",
+  "schemaVersion": "monarchic.website-public-usage-policy.v2",
   "source": {
     "repository": "monarchic-mcp-catalog",
-    "commit": "23d0ce9e6526c6243b93260a60c3bec3a3c4aba2",
-    "policyVersion": "adaptive-subscription-launch-2026-08-13-v2",
+    "commit": "99978b7f60cd138cd9d5c1c42bac03adf7b755b9",
+    "policyVersion": "adaptive-subscription-launch-2026-08-21-v3",
     "rateCardVersion": "hosted-mcp-catalog-2026-08-10-v2",
-    "rateCardSha256": "c5e7a112eca0d58ec2ac11ba79f398c7d49e6e254deaf9c9240f9c143b1b0dd8"
+    "rateCardSha256": "d3aa5c5011216ee5f89bedab281e85395bdc6978c9610a991db2b1d105a98650"
   },
   "pricing": {
     "model": "fixed_subscription",
@@ -41,25 +41,37 @@
     "exhaustion": "pause_until_refresh",
     "automaticOverage": false
   },
+  "payg": {
+    "currentlyAvailable": false,
+    "customerConfigurable": false,
+    "eligibilityScope": "enterprise_contract_only",
+    "selfServicePlanDisposition": "ineligible",
+    "contractEntitlementCapability": "hosted-mcp:enterprise-payg",
+    "contractEntitlementSource": "operator_issued",
+    "tenantBindingRequired": true,
+    "minimumCommitmentRequired": true,
+    "operatorEnablementRequired": true,
+    "spendingCapRequired": true
+  },
   "catalog": {
-    "classifiedOperationCount": 1220,
+    "classifiedOperationCount": 979,
     "operationClasses": [
       {
         "id": "standard",
         "label": "Standard",
-        "operationCount": 538,
+        "operationCount": 402,
         "description": "Lower-complexity operations in the current rate card."
       },
       {
         "id": "advanced",
         "label": "Advanced",
-        "operationCount": 680,
+        "operationCount": 573,
         "description": "Higher-complexity analysis and workflow operations."
       },
       {
         "id": "browser",
         "label": "Browser",
-        "operationCount": 2,
+        "operationCount": 4,
         "description": "Managed browser execution with captured evidence."
       }
     ]

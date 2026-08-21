@@ -135,8 +135,9 @@ function statusClasses(plan: CatalogPlan): string {
           <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Each plan includes an account-level weekly execution allowance shared
-            across available MCPs. Usage pauses at the limit by default; paid
-            usage pauses at the included weekly limit with no automatic overage charges.
+            across available MCPs. Self-service usage pauses at the included weekly
+            limit with no automatic overage charges. Contracted Enterprise capacity
+            is arranged separately.
           </p>
           <div class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {usagePlans.map((plan) => {
@@ -256,7 +257,7 @@ function statusClasses(plan: CatalogPlan): string {
             <div class="grid gap-3 text-sm leading-6 text-white/72">
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
               <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">See weekly execution remaining, the refresh date, available rollover, and operation receipts.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Usage pauses at the included limit. No automatic overage charges.</span></div>
+              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Self-service usage pauses at the included limit. PAYG requires a separate Enterprise contract.</span></div>
             </div>
           </div>
           <div class="mt-8 border-t border-white/36 pt-7">
@@ -296,7 +297,7 @@ function statusClasses(plan: CatalogPlan): string {
             <div class="py-5 sm:pl-5">
               <p class="font-mono text-3xl font-extrabold text-signal">Stop</p>
               <p class="mt-2 text-xs font-bold uppercase text-white">At the limit</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Execution pauses until refresh. PAYG and automatic overage are off.</p>
+              <p class="mt-2 text-sm leading-6 text-white/58">Execution pauses until refresh. Self-service PAYG and automatic overage are off.</p>
             </div>
           </div>
           <div class="mt-8 grid border border-signal/70 bg-signal/[0.06] lg:grid-cols-[0.72fr_1.28fr]">
