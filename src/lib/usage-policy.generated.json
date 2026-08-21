@@ -2,10 +2,10 @@
   "schemaVersion": "monarchic.website-public-usage-policy.v2",
   "source": {
     "repository": "monarchic-mcp-catalog",
-    "commit": "99978b7f60cd138cd9d5c1c42bac03adf7b755b9",
-    "policyVersion": "adaptive-subscription-launch-2026-08-21-v3",
+    "commit": "c1938ecc1c3a7203800c4e6deb3b5362047c0df7",
+    "policyVersion": "adaptive-subscription-launch-2026-08-21-v4",
     "rateCardVersion": "hosted-mcp-catalog-2026-08-10-v2",
-    "rateCardSha256": "d3aa5c5011216ee5f89bedab281e85395bdc6978c9610a991db2b1d105a98650"
+    "rateCardSha256": "85a05bb1f990b791953234f3e3ef1ddda40aa70c91a81060e8eba5da63aa46d6"
   },
   "pricing": {
     "model": "fixed_subscription",
@@ -54,18 +54,18 @@
     "spendingCapRequired": true
   },
   "catalog": {
-    "classifiedOperationCount": 979,
+    "classifiedOperationCount": 972,
     "operationClasses": [
       {
         "id": "standard",
         "label": "Standard",
-        "operationCount": 402,
+        "operationCount": 399,
         "description": "Lower-complexity operations in the current rate card."
       },
       {
         "id": "advanced",
         "label": "Advanced",
-        "operationCount": 573,
+        "operationCount": 569,
         "description": "Higher-complexity analysis and workflow operations."
       },
       {
