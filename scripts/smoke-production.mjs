@@ -351,9 +351,9 @@ async function runBrowserSmoke() {
     }
 
     await checkPage(page, `${baseUrl}/security`, async () => {
-      await page.getByRole("heading", { name: "Security, without hand-waving." }).waitFor();
-      await page.getByRole("heading", { name: "Hosted MCP content boundary" }).waitFor();
-      await page.getByText("No universal encryption-at-rest claim is made here.", { exact: false }).waitFor();
+      await page.getByRole("heading", { name: "Current controls. Explicit limits." }).waitFor();
+      await page.getByRole("heading", { name: "Control plane and content are different boundaries." }).waitFor();
+      await page.getByText("Encryption-at-rest commitments are documented per product and store.", { exact: false }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/security`);
       await expectNoHorizontalOverflow(page);
     }, "security route");
@@ -389,7 +389,7 @@ async function runBrowserSmoke() {
       await expectNoHorizontalOverflow(page);
     }, "RepoIntel workflow proof at 320px");
     await checkPage(page, `${baseUrl}/security`, async () => {
-      await page.getByRole("heading", { name: "Security, without hand-waving." }).waitFor();
+      await page.getByRole("heading", { name: "Current controls. Explicit limits." }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "security route at 320px");
     await checkPage(page, `${baseUrl}/company`, async () => {
