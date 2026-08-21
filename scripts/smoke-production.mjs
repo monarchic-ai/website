@@ -352,8 +352,9 @@ async function runBrowserSmoke() {
 
     await checkPage(page, `${baseUrl}/security`, async () => {
       await page.getByRole("heading", { name: "Current controls. Explicit limits." }).waitFor();
-      await page.getByRole("heading", { name: "Control plane and content are different boundaries." }).waitFor();
-      await page.getByText("Encryption-at-rest commitments are documented per product and store.", { exact: false }).waitFor();
+      await page.getByRole("heading", { name: "How a hosted request is scoped." }).waitFor();
+      await page.getByRole("heading", { name: "Encryption controls in the hosted service." }).waitFor();
+      await page.getByText("S3 uses SSE-S3 with AES-256.", { exact: false }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/security`);
       await expectNoHorizontalOverflow(page);
     }, "security route");
@@ -390,6 +391,7 @@ async function runBrowserSmoke() {
     }, "RepoIntel workflow proof at 320px");
     await checkPage(page, `${baseUrl}/security`, async () => {
       await page.getByRole("heading", { name: "Current controls. Explicit limits." }).waitFor();
+      await page.getByRole("heading", { name: "Encryption controls in the hosted service." }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "security route at 320px");
     await checkPage(page, `${baseUrl}/company`, async () => {

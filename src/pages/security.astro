@@ -21,9 +21,9 @@ const controlSummary = [
     detail: "Isolation depends on the tool and its documented namespace.",
   },
   {
-    label: "Certification",
-    state: "Uncertified",
-    detail: "Current public posture excludes SOC 2 and ISO certification claims.",
+    label: "AWS data at rest",
+    state: "Encrypted",
+    detail: "Hosted stores, queues, artifacts, secrets, and logs use encryption at rest.",
   },
 ];
 
@@ -40,7 +40,7 @@ const controlMatrix = [
     control: "Public traffic",
     state: "Enforced",
     scope: "Website, web app, and public API",
-    boundary: "HTTPS protects transport. Stored-data controls are documented by product and store.",
+    boundary: "Public API load balancers redirect HTTP to HTTPS. S3 and SNS policies reject requests without TLS.",
   },
   {
     control: "Account identity",
@@ -68,15 +68,48 @@ const controlMatrix = [
   },
   {
     control: "Stored data",
-    state: "Store specific",
-    scope: "Product state, artifacts, and operational records",
-    boundary: "Encryption-at-rest commitments are documented per product and store.",
+    state: "Enforced",
+    scope: "Hosted AWS state and operational records",
+    boundary: "S3, DynamoDB, SQS, ECR, Secrets Manager, Lambda environment variables, and CloudWatch Logs use encryption at rest. Key ownership differs by service.",
   },
   {
     control: "Payment cards",
     state: "Provider boundary",
     scope: "Subscription payment details",
     boundary: "Stripe handles full card details. Monarchic handles subscription status and billing records.",
+  },
+];
+
+const awsProtection = [
+  {
+    control: "Object storage",
+    state: "22 / 22 buckets",
+    detail: "S3 uses SSE-S3 with AES-256. Every bucket policy denies requests when aws:SecureTransport is false.",
+  },
+  {
+    control: "Databases",
+    state: "6 / 6 tables",
+    detail: "Every DynamoDB table uses encryption at rest. Keys are AWS owned or AWS managed according to the table configuration.",
+  },
+  {
+    control: "Operational alerts",
+    state: "3 / 3 topics",
+    detail: "Dev, staging, and production SNS alert topics use separate customer-managed KMS keys with automatic rotation.",
+  },
+  {
+    control: "Queues and images",
+    state: "Encrypted",
+    detail: "SQS queues use SQS-managed server-side encryption. ECR repositories use AES-256 encryption.",
+  },
+  {
+    control: "Secrets and runtime",
+    state: "Encrypted",
+    detail: "Secrets Manager, Lambda environment variables, and CloudWatch Logs use AWS encryption at rest. The production authorization-approval key is customer managed and rotates.",
+  },
+  {
+    control: "Volume defaults",
+    state: "4 / 4 accounts",
+    detail: "EBS encryption by default is enabled in dev, staging, production, and management. The audit found no active EBS volumes.",
   },
 ];
 
@@ -164,7 +197,7 @@ const providers = [
           <div class="grid grid-cols-2 border-b border-white/20">
             <div class="border-r border-white/20 p-5 sm:p-6">
               <p class="font-mono text-[0.62rem] font-bold uppercase text-white/42">Posture date</p>
-              <p class="mt-4 text-2xl font-black uppercase">Aug 01</p>
+              <p class="mt-4 text-2xl font-black uppercase">Aug 21</p>
               <p class="mt-1 font-mono text-[0.62rem] text-white/44">2026 / CURRENT</p>
             </div>
             <div class="p-5 sm:p-6">
@@ -207,7 +240,7 @@ const providers = [
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-end">
           <div>
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">01 / Hosted boundaries</p>
-            <h2 id="boundary-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Control plane and content are different boundaries.</h2>
+            <h2 id="boundary-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">How a hosted request is scoped.</h2>
           </div>
           <p class="max-w-3xl text-sm leading-7 text-white/62 lg:justify-self-end">
             Account and billing isolation covers the hosted control plane. Stateful MCP content follows product-specific namespace, persistence, and provider rules.
@@ -279,10 +312,39 @@ const providers = [
         </div>
       </section>
 
+      <section id="aws-data-protection" aria-labelledby="aws-protection-title" class="border-b border-black bg-paper text-black">
+        <header class="grid gap-5 border-b border-black p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
+          <div>
+            <p class="font-mono text-[0.65rem] font-bold uppercase">03 / AWS data protection</p>
+            <h2 id="aws-protection-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Encryption controls in the hosted service.</h2>
+          </div>
+          <p class="text-sm leading-7 text-black/64">
+            Verified against the dev, staging, production, and management accounts on August 21, 2026.
+          </p>
+        </header>
+
+        <div>
+          {awsProtection.map((item) => (
+            <article class="grid gap-4 border-b border-black px-5 py-5 last:border-b-0 sm:px-7 lg:grid-cols-[12rem_12rem_minmax(0,1fr)] lg:gap-7">
+              <h3 class="text-sm font-black uppercase">{item.control}</h3>
+              <p class="font-mono text-[0.65rem] font-bold uppercase">{item.state}</p>
+              <p class="text-sm leading-7 text-black/68">{item.detail}</p>
+            </article>
+          ))}
+        </div>
+
+        <div class="grid border-t border-black bg-signal lg:grid-cols-[24rem_minmax(0,1fr)]">
+          <p class="border-b border-black p-5 font-mono text-[0.65rem] font-bold uppercase lg:border-b-0 lg:border-r sm:p-7">Hosted storage boundary</p>
+          <p class="p-5 text-sm font-medium leading-7 sm:p-7">
+            Production storage uses S3 and DynamoDB. MinIO is available only in local development.
+          </p>
+        </div>
+      </section>
+
       <section id="deployment-and-readiness" aria-labelledby="readiness-title" class="border-b border-black bg-paper text-black">
         <header class="grid gap-5 border-b border-black p-5 sm:p-7 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase">03 / Deployment and readiness</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase">04 / Deployment and readiness</p>
             <h2 id="readiness-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Three separate qualification states.</h2>
           </div>
           <p class="max-w-3xl text-sm leading-7 text-black/64 lg:justify-self-end">
@@ -310,7 +372,7 @@ const providers = [
       <section id="engineering-verification" aria-labelledby="verification-title" class="border-b border-white/20">
         <div class="grid lg:grid-cols-[22rem_minmax(0,1fr)]">
           <header class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">04 / Engineering verification</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">05 / Engineering verification</p>
             <h2 id="verification-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">A receipt is evidence of an operation.</h2>
             <p class="mt-5 text-sm leading-7 text-white/58">
               Enterprise audit exports and independent certification require separate agreements and evidence.
@@ -349,7 +411,7 @@ const providers = [
       <section id="disclosure-and-claims" aria-labelledby="disclosure-title" class="border-b border-white/20">
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">05 / Disclosure and claims</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">06 / Disclosure and claims</p>
             <h2 id="disclosure-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Published assurance scope.</h2>
           </div>
           <p class="text-sm leading-7 text-white/62">
@@ -397,7 +459,7 @@ const providers = [
 
       <section id="next-paths" aria-labelledby="next-title" class="grid border-b border-black bg-signal text-black lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
         <div class="p-5 sm:p-7">
-          <p class="font-mono text-[0.65rem] font-bold uppercase">06 / Next paths</p>
+          <p class="font-mono text-[0.65rem] font-bold uppercase">07 / Next paths</p>
           <h2 id="next-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Check the boundary before the workload.</h2>
           <p class="mt-5 max-w-2xl text-sm font-medium leading-7 text-black/66">
             Review the privacy inventory, inspect product-specific workflows, or ask about an order-specific security requirement before sending sensitive data.
