@@ -101,6 +101,9 @@ async function runSmoke() {
   ], "sitemap.xml");
   await checkTextExcludes(`${baseUrl}/sitemap.xml`, [
     "/tutorial",
+    "/waitlist",
+    "/research/repointel",
+    "/research/webinfo",
     "/products/monarchic-ai",
     "/products/mcp-monarchic",
     "/products/mcp-outreachconnectors",
@@ -203,6 +206,14 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
       await page.getByRole("heading", { name: "Featured MCPs." }).waitFor();
+      await page.getByRole("heading", { name: "Tools, evidence, and operating context." }).waitFor();
+      for (const evidenceClass of [
+        "External-dataset benchmarks",
+        "Reproducible first-party evaluations",
+        "Production and engineering verification",
+      ]) {
+        await page.getByText(evidenceClass, { exact: true }).waitFor();
+      }
       await expectTextAbsent(page, [
         "Hosted staging MCP route",
         "3.45s",
@@ -222,6 +233,7 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "Find an MCP by workflow" }).waitFor();
       await page.getByRole("heading", { name: "Subscription price. Usage measured by the work." }).waitFor();
       await page.getByRole("heading", { name: `${expectedClassifiedOperationCount} operations / three classes` }).waitFor();
       await page.getByText("Self-service PAYG and automatic overage are off.", { exact: false }).waitFor();
@@ -305,6 +317,8 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "BrowserOps MCP" }).waitFor();
       await page.getByText("Browser QA").first().waitFor();
       await page.getByRole("heading", { name: "Included with an active usage plan" }).waitFor();
+      await page.getByText("Why it exists", { exact: true }).waitFor();
+      await page.getByText("Connection and contract", { exact: true }).waitFor();
       await expectHref(
         page.getByRole("link", { name: "Compare plans" }),
         "/products#plans",
@@ -407,6 +421,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/waitlist`, async () => {
       await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
+      await expectMeta(page, "robots", "noindex,follow");
       await page.getByLabel("Product interest").selectOption("mcp-orgfleet");
       if (await page.getByLabel("Product interest").inputValue() !== "mcp-orgfleet") {
         throw new Error("expected the planned OrgFleet MCP to be available in the waitlist selector");
@@ -421,22 +436,33 @@ async function runBrowserSmoke() {
     }, "waitlist route");
 
     await checkPage(page, `${baseUrl}/research`, async () => {
+      await page.getByRole("heading", { name: "Three evidence classes" }).waitFor();
+      await page.getByRole("heading", { name: "ExplicitMem evaluations" }).waitFor();
       const researchCards = page.locator("[data-research-card]");
       const cardCount = await researchCards.count();
       if (cardCount !== 1) {
         throw new Error(`Expected one approved research card, got ${cardCount}`);
       }
       await researchCards.locator('a[href="/research/explicitmem"]').waitFor();
+      await expectTextAbsent(page, [
+        "Every public MCP has a research record",
+        "Questions before claims",
+        "Pre-launch research program",
+      ]);
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/research`);
       await expectNoHorizontalOverflow(page);
     }, "research route");
 
     await checkPage(page, `${baseUrl}/research/explicitmem`, async () => {
-      await page.getByRole("heading", { name: "Memory benchmark" }).waitFor();
-      await page.getByText("500 questions", { exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Memory evaluation report" }).waitFor();
+      await page.getByRole("heading", { name: "Study register" }).waitFor();
+      await page.getByText("499 / 500 answers correct", { exact: false }).waitFor();
       await page.getByText("Answer accuracy", { exact: true }).first().waitFor();
-      for (const metric of ["99.8%", "100%", "78.2%", "62.5 ms"]) {
+      for (const metric of ["99.8%", "93.52%", "98.93%", "100%", "78.2%", "62.5 ms"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
+      }
+      for (const studyId of ["longmemeval-s", "locomo", "cross-dataset", "generic-answer"]) {
+        await page.locator(`#${studyId}`).waitFor();
       }
       await page.getByRole("heading", { name: "One upstream-gold mismatch remains" }).waitFor();
       await page.getByRole("heading", { name: "No cross-system comparison" }).waitFor();
@@ -450,6 +476,30 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:type", "article");
       await expectNoHorizontalOverflow(page);
     }, "ExplicitMem research route");
+
+    await checkPage(page, `${baseUrl}/privacy`, async () => {
+      await page.getByRole("heading", { name: "Website Privacy Notice" }).waitFor();
+      await page.getByRole("heading", { name: "Scope and controller" }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Product privacy", exact: true }),
+        `${expectedAppBaseUrl}/privacy`,
+      );
+      await expectTextAbsent(page, ["Billing data", "Service content"]);
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/privacy`);
+      await expectNoHorizontalOverflow(page);
+    }, "privacy route");
+
+    await checkPage(page, `${baseUrl}/terms`, async () => {
+      await page.getByRole("heading", { name: "Website Terms" }).waitFor();
+      await page.getByRole("heading", { name: "Informational boundary" }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Product terms", exact: true }),
+        `${expectedAppBaseUrl}/terms`,
+      );
+      await expectTextAbsent(page, ["You must be at least 18 years old", "aggregate liability"]);
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/terms`);
+      await expectNoHorizontalOverflow(page);
+    }, "terms route");
 
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/products/mcp-codeintel`, async () => {

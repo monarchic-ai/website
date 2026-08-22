@@ -4,39 +4,25 @@ This runbook covers the public website live smoke gate.
 
 ## Current Evidence
 
-Latest production validation: 2026-08-01 UTC.
+Latest staging validation: 2026-08-22 UTC.
 
-Production website smoke is green on both the apex and `www` routes. Staging
-remains isolated from the production Vercel project:
-
-- Website commit `466058e10d7cadd131182c7f74425610e6f96315` is deployed to
-  production as `dpl_F9Kacmoezy1Z4h2yomxiQA5WXhfK`. It publishes the
-  ExplicitMem LongMemEval-S result at `499/500` answers correct (`99.8%`), with
-  `100%` answer faithfulness and retrieval recall. The research page links the
-  checked-in evidence receipt and records the remaining upstream-gold mismatch.
-- Full browser smoke passed against `https://www.monarchic.io` and
-  `https://monarchic.io` on 2026-08-01 UTC. The checks covered security headers,
-  DNS and HTTP responses, build info, public metadata, product and research
-  routes, redirects, and 320px overflow. `/build-info.json` reports commit
-  `466058e10d7cadd131182c7f74425610e6f96315`, 21 plans, and catalog artifact
-  digest `sha256:6931a337d4d12a8cda800380c5e40e1e95bf1926f86134123f7c035bae5b2f97`.
+- Website commit `4243b7171d12c3d5cc5a24f73a5ced2fe364c8c5` is deployed to the
+  isolated `website-staging` project as
+  `dpl_83VksGMJJPgQ8qnq4WPoZnySW6kY`.
+- Full browser smoke passed against `https://staging.monarchic.io` on
+  2026-08-22 UTC. The checks covered security headers, DNS and HTTP responses,
+  build info, metadata, 30 catalog plans, 18 hosted workflow proofs, the one
+  approved research route, all four ExplicitMem study scopes, corporate legal
+  boundaries, redirects, waitlist behavior, and 320px overflow.
+- `/build-info.json` reports commit
+  `4243b7171d12c3d5cc5a24f73a5ced2fe364c8c5` and catalog artifact digest
+  `sha256:f717ad45996d8995884137bcd2eb8209c5d42fec67061f69705e9a9be2699ee1`.
+- Production continues to serve commit
+  `3b1c444bc07a9e9444e7f86d2bb2c3a2f71173a8` until the staging candidate is
+  explicitly approved for production promotion.
 - Vercel Git integration is disconnected. A push to `main` does not create
   a deployment. Production releases must use the clean, commit-pinned local CLI
   workflow documented under Deployment Checks.
-
-- Website commit `76fce1ac85102117e5799294ab97f528dfd46b70` is deployed to the
-  dedicated `website-staging` Vercel project as deployment
-  `dpl_FdjtbprmRmLSLnjSYJSQr4AojDHo`. Cloudflare Worker version
-  `e9f68142-753a-41f6-99ba-d8198e907ae0` routes only
-  `staging.monarchic.io/*` to the stable staging-project alias and adds
-  `X-Robots-Tag: noindex, nofollow`.
-
-- `pnpm smoke:staging` against `https://staging.monarchic.io` passed on
-  2026-07-19 UTC through the dedicated staging Vercel project and Cloudflare
-  route. The commit-pinned smoke reported 22 public plans, catalog artifact
-  digest `sha256:e15dc23ae6193b8001199ce17036c2c3112fab0fda0fa415d3830994f2622cfe`,
-  no public `mcp-verified` plan, and canonical URLs under
-  `https://staging.monarchic.io`.
 
 Use this command as the production release evidence gate:
 
@@ -54,20 +40,19 @@ The production smoke verifies:
 - `/build-info.json`
 - homepage content and canonical/Open Graph/Twitter metadata
 - public product index
-- all 26 MCP product-to-research links
-- public catalog coverage, including 16 available MCPs and 10 coming-soon MCPs
-- research index coverage, including production and pre-launch briefs
-- all 26 research routes, canonical URLs, catalog-derived status, and product backlinks
-- representative Available and Planned research pages in Chromium
-- the distinct ExplicitMem LongMemEval-S benchmark assertions
+- the single approved MCP product-to-research link and reciprocal backlink
+- public catalog coverage, including 24 MCP products and 18 hosted workflow proofs
+- research index coverage and the absence of placeholder or pre-launch studies
+- the ExplicitMem report's distinct LongMemEval-S, LoCoMo, cross-dataset, and generic-answer scopes
+- corporate website Privacy and Terms boundaries
+- product-specific waitlist behavior and indexing policy
 - app CTA targets
 - desktop and 320px horizontal overflow
 
-The product-research route inventory comes from the same checked-in content map
-used to build the pages. A generic research brief is evidence about a product's
-problem, validation approach, and current limits; it must not be reported as a
-published benchmark. Planned pages must retain their planned status and the
-statement that no production result is claimed.
+The public research inventory contains only approved, artifact-backed evidence.
+Product workflow receipts remain engineering verification on product pages and
+do not create a matching research route. Planned product pages retain their
+lifecycle and operating boundary without publishing placeholder studies.
 
 Run production locally:
 
