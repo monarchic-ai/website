@@ -17,6 +17,7 @@
         "A connected, lab-style ecosystem of MCP products rather than one narrow or disposable AI tool",
         "A focus on making AI-assisted work smarter, aligned with user intent, reproducible, and consistently capable of solving difficult problems",
         "A product portfolio organized by user problem",
+        "A complete first-connection path covering prerequisites, account access, scoped API keys, generated client configuration, and a bounded verification task",
         "An ambitious but honest account of Monarchic’s maturity and operating scale",
         "Clear paths to Products, Research, and Company",
         "Clear product lifecycle and availability boundaries",
@@ -45,6 +46,7 @@
       ],
       "primaryActions": [
         "Explore MCP products",
+        "Open the setup guide",
         "Review published research and evidence"
       ]
     },

@@ -12,6 +12,52 @@ const publicMcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableMcpCount = publicMcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
 const comingSoonMcpCount = publicMcpProducts.length - availableMcpCount;
 
+const setupSteps = [
+  {
+    number: "01",
+    title: "Choose an available MCP",
+    detail: `Browse the catalog, then activate the free evaluation. ${availableMcpCount} MCPs can be connected today.`,
+  },
+  {
+    number: "02",
+    title: "Create a scoped API key",
+    detail: "Use a separate key for each client or environment so access can be revoked cleanly.",
+  },
+  {
+    number: "03",
+    title: "Paste the generated config",
+    detail: "The dashboard supplies the package, API URL, credential variable, and file location for your client.",
+  },
+  {
+    number: "04",
+    title: "Run one read-only task",
+    detail: "List the available tools, make a small request, and confirm the usage receipt before expanding the scope.",
+  },
+];
+
+const setupClients = [
+  "Claude Desktop",
+  "Claude Code",
+  "Codex",
+  "Cursor",
+  "VS Code",
+  "Windsurf",
+  "Generic JSON",
+];
+
+const starterConfig = `{
+  "mcpServers": {
+    "your-mcp": {
+      "command": "pnpm",
+      "args": ["dlx", "<package-from-dashboard>"],
+      "env": {
+        "MONARCHIC_API_BASE_URL": "<url-from-dashboard>",
+        "MONARCHIC_API_KEY": "<your-api-key>"
+      }
+    }
+  }
+}`;
+
 const featuredRoutes = [
   {
     label: "RepoIntel",
@@ -81,14 +127,77 @@ const featuredRoutes = [
               Start with a free 30-day evaluation. No card or automatic billing.
               Create an account key and see the usage impact of every call.
             </p>
-            <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
-              Start free evaluation <span aria-hidden="true">↗</span>
-            </a>
+            <div class="grid gap-2">
+              <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
+                Start free evaluation <span aria-hidden="true">↗</span>
+              </a>
+              <a href={`${appBaseUrl}/setup`} class="inline-flex min-h-12 items-center justify-between border border-white/40 px-4 text-xs font-black uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black">
+                Open setup <span aria-hidden="true">↗</span>
+              </a>
+            </div>
           </div>
         </div>
-
-        <HostedMcpScene />
       </section>
+
+      <section id="quickstart" aria-labelledby="quickstart-title" class="border-b border-white/20">
+        <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
+          <div class="px-5 py-7 sm:px-7 sm:py-9">
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">First connection</p>
+            <h2 id="quickstart-title" class="mt-3 max-w-3xl text-4xl font-black uppercase leading-none sm:text-5xl">
+              Connect your first MCP.
+            </h2>
+          </div>
+          <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
+            <p class="text-sm leading-6 text-white/64">
+              You need an MCP-aware client, Node with pnpm available to that client, a Monarchic account, and an active plan.
+            </p>
+            <a href={`${appBaseUrl}/setup`} class="mt-5 inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
+              Full setup guide
+            </a>
+          </div>
+        </header>
+
+        <div class="grid lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
+          <ol class="border-b border-white/20 lg:border-b-0 lg:border-r">
+            {setupSteps.map((step, index) => (
+              <li class:list={[
+                "grid grid-cols-[3rem_minmax(0,1fr)] gap-4 px-5 py-5 sm:grid-cols-[4rem_minmax(0,1fr)] sm:px-7 sm:py-6",
+                index < setupSteps.length - 1 && "border-b border-white/20",
+              ]}>
+                <span class="font-mono text-xs font-bold text-signal">{step.number}</span>
+                <div>
+                  <h3 class="text-base font-black uppercase">{step.title}</h3>
+                  <p class="mt-2 max-w-xl text-sm leading-6 text-white/60">{step.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <div class="min-w-0 bg-[#0d0d0d] p-5 sm:p-7">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/20 pb-4">
+              <div>
+                <p class="font-mono text-[0.62rem] font-bold uppercase text-white/44">Generic configuration</p>
+                <p class="mt-1 text-sm font-bold">Values are generated in your dashboard</p>
+              </div>
+              <span class="border border-amber-300/60 px-2 py-1 font-mono text-[0.58rem] font-bold uppercase text-amber-200">Keep keys private</span>
+            </div>
+            <pre class="max-w-full overflow-x-auto py-5 font-mono text-[0.7rem] leading-6 text-white/74"><code>{starterConfig}</code></pre>
+            <p class="border-t border-white/20 pt-4 text-xs leading-5 text-white/48">
+              These placeholders do not connect as written. Use the generated values for your account, then fully restart the client.
+            </p>
+            <div class="mt-6">
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/44">Supported setup formats</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {setupClients.map((client) => (
+                  <span class="border border-white/20 px-2.5 py-2 text-[0.68rem] font-bold uppercase text-white/64">{client}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <HostedMcpScene />
 
       <section id="catalog" aria-labelledby="catalog-title" class="border-b border-white/20">
         <header class="grid border-b border-white/20 lg:grid-cols-[1fr_1fr]">

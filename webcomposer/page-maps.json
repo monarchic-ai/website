@@ -35,32 +35,22 @@
         {
           "id": "hero",
           "template": "hero.split",
-          "purpose": "Position Monarchic as an automation research and development firm, distinguish its broad automation direction from its current AI and MCP focus, and establish the primary product path."
+          "purpose": "Explain the hosted MCP offer, free evaluation, and primary setup path in the first viewport."
+        },
+        {
+          "id": "quickstart",
+          "template": "process.stepper",
+          "purpose": "Show the prerequisites, account flow, scoped-key boundary, generated client configuration, supported formats, and first verification task needed to connect an MCP."
+        },
+        {
+          "id": "request-example",
+          "template": "comparison.two_column",
+          "purpose": "Show a concrete RepoIntel request and the evidence-bearing response shape a connected client receives."
         },
         {
           "id": "product-landscape",
           "template": "feature.grid",
-          "purpose": "Help visitors identify the current MCP products and workflows relevant to their problems while understanding availability."
-        },
-        {
-          "id": "engineering-approach",
-          "template": "comparison.two_column",
-          "purpose": "Explain how Monarchic combines connected systems, deterministic tooling, alignment, and maintenance-oriented automation."
-        },
-        {
-          "id": "evidence",
-          "template": "proof.metric_story",
-          "purpose": "Support product and engineering claims with representative, correctly classified evidence and a path to the research library."
-        },
-        {
-          "id": "long-term-direction",
-          "template": "row.equal",
-          "purpose": "Connect the current AI focus to Monarchic’s broader engineering, STEM, and business automation direction while remaining honest about availability and scale."
-        },
-        {
-          "id": "next-paths",
-          "template": "cta.banner",
-          "purpose": "Give visitors clear next steps based on whether they want to evaluate products, inspect evidence, or understand the company."
+          "purpose": "Help visitors identify available MCPs by workflow and continue into the full catalog."
         },
         {
           "id": "footer",
