@@ -18,18 +18,6 @@ const availabilityPercent = Math.round((availableMcpCount / publicMcpCount) * 10
 <section class="mcp-scene relative max-w-full overflow-hidden bg-ink text-white" aria-label="Example hosted MCP request">
   <div class="mcp-grid pointer-events-none absolute inset-0 opacity-35"></div>
 
-  <header class="relative flex min-h-14 flex-wrap items-center justify-between gap-3 border-b border-white/20 px-4 py-3 sm:px-6">
-    <div class="flex items-center gap-3">
-      <span class="mcp-pulse h-2.5 w-2.5 bg-signal" aria-hidden="true"></span>
-      <p class="font-mono text-[0.68rem] font-bold uppercase text-white/72">Example account / Connected</p>
-    </div>
-    <div class="flex items-center gap-4 font-mono text-[0.65rem] uppercase text-white/48">
-      <span>{routes.length} featured routes</span>
-      <span class="hidden sm:inline">Scoped credentials</span>
-      <span class="text-signal">Usage visible</span>
-    </div>
-  </header>
-
   <div class="relative grid min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
     <div class="min-w-0 border-b border-white/20 lg:border-b-0 lg:border-r">
       <div class="grid min-h-40 content-between gap-8 border-b border-white/20 px-4 py-6 sm:px-6 sm:py-8">
@@ -164,7 +152,6 @@ const availabilityPercent = Math.round((availableMcpCount / publicMcpCount) * 10
     }
   }
 
-  .mcp-pulse,
   .mcp-cursor {
     animation: pulse 1.35s steps(2, end) infinite;
   }
@@ -178,7 +165,6 @@ const availabilityPercent = Math.round((availableMcpCount / publicMcpCount) * 10
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .mcp-pulse,
     .mcp-cursor,
     .mcp-progress,
     .mcp-scan {
