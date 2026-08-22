@@ -458,14 +458,14 @@
     "slug": "mcp-codeintel",
     "displayName": "CodeIntel MCP",
     "tagline": "Live code navigation and language-server intelligence",
-    "description": "CodeIntel MCP keeps a durable repository index and warm language-server sessions for symbol lookup, references, diagnostics, and code navigation. Hosted deployment is planned.",
+    "description": "CodeIntel MCP keeps a durable repository index and warm language-server sessions for symbol lookup, references, diagnostics, and code navigation. The hosted runtime has passed production qualification. Customer access is coming soon.",
     "featureBullets": [
       "Navigate symbols and references across large repositories",
       "Reuse warm language-server sessions between related calls",
       "Keep repository indexing separate for each tenant"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Indexing and language-server work will use the shared account allowance when access opens.",
+    "usageSummary": "The hosted runtime is qualified for internal use. Customer access is coming soon. Indexing and language-server work will use the shared account allowance when access opens.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
@@ -476,14 +476,14 @@
     "slug": "mcp-codeprofiler",
     "displayName": "CodeProfiler MCP",
     "tagline": "Codebase profiling plans and bounded analysis jobs",
-    "description": "CodeProfiler MCP detects a repository's languages and project markers, builds a profiling plan, and runs bounded read-only probes in an isolated job. Hosted deployment is planned.",
+    "description": "CodeProfiler MCP detects a repository's languages and project markers, builds a profiling plan, and runs bounded read-only probes in an isolated job. The hosted runtime has passed production qualification. Customer access is coming soon.",
     "featureBullets": [
       "Choose profiling tools from the repository's actual stack",
       "Separate quick inventory from deeper analysis jobs",
       "Return tool output and failures in one structured result"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Each profiling operation will use the class fixed in the applicable rate card.",
+    "usageSummary": "The hosted runtime is qualified for internal use. Customer access is coming soon. Each profiling operation will use the class fixed in the applicable rate card.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",
