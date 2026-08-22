@@ -1,5 +1,4 @@
 ---
-import Shader14 from "../../components/Shader14.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
@@ -50,12 +49,9 @@ const description = `${entry.plan.displayName} public research brief: the questi
     <main
       data-research-brief={entry.productSlug}
       data-research-status={entry.hostedStatus}
-      class="relative min-h-screen overflow-hidden"
+      class="min-h-screen"
     >
-      <Shader14 className="pointer-events-none fixed inset-0 h-full w-full opacity-58" />
-      <div class="pointer-events-none fixed inset-0 bg-[linear-gradient(to_bottom,_rgba(0,0,0,0.7),_rgba(0,0,0,0.97))]"></div>
-
-      <div class="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
+      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
         <SiteHeader active="research" />
 
         <p class="mt-9 text-xs font-semibold uppercase text-white/54">
