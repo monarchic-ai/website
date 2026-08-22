@@ -103,8 +103,8 @@ const awsProtection = [
   },
   {
     control: "Finding alerts",
-    state: "3 / 4 accounts",
-    detail: "Medium and higher GuardDuty findings route to encrypted alert topics in dev, staging, and production. Management-account findings are currently reviewed in the GuardDuty console.",
+    state: "4 / 4 accounts",
+    detail: "Medium and higher GuardDuty findings reach confirmed alert subscribers. Management findings cross a scoped EventBridge route into the production alert path.",
   },
   {
     control: "External access",
@@ -344,7 +344,7 @@ const providers = [
             <h2 id="aws-protection-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">AWS controls in the hosted service.</h2>
           </div>
           <p class="text-sm leading-7 text-black/64">
-            Verified against the dev, staging, production, and management accounts on August 21, 2026.
+            Verified against the dev, staging, production, and management accounts on August 22, 2026.
           </p>
         </header>
 

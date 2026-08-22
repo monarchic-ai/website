@@ -357,6 +357,7 @@ async function runBrowserSmoke() {
       await page.getByText("S3 uses SSE-S3 with AES-256.", { exact: false }).waitFor();
       await page.getByText("Multi-Region CloudTrail records management events", { exact: false }).waitFor();
       await page.getByText("GuardDuty monitors CloudTrail, DNS, and VPC flow-log sources.", { exact: false }).waitFor();
+      await page.getByText("Management findings cross a scoped EventBridge route", { exact: false }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/security`);
       await expectNoHorizontalOverflow(page);
     }, "security route");
