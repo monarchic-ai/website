@@ -18,35 +18,30 @@ const featuredRoutes = [
     href: "/products/mcp-repointel",
     proof: "Maps architecture and returns source-cited repository evidence.",
     role: "Codebase context",
-    signal: "AVAILABLE",
   },
   {
     label: "ExplicitMem",
     href: "/products/mcp-explicitmem",
     proof: `${explicitMemBenchmark.answerAccuracy} accuracy (${explicitMemBenchmark.passedQuestions}/${explicitMemBenchmark.questions}) on the fixed ${explicitMemBenchmark.benchmark} run.`,
     role: "Durable memory",
-    signal: "AVAILABLE",
   },
   {
     label: "IncidentOps",
     href: "/products/mcp-incidentops",
     proof: "Builds timelines, triage packets, and guarded response updates.",
     role: "Incident response",
-    signal: "AVAILABLE",
   },
   {
     label: "InfraProfiler",
     href: "/products/mcp-infraprofiler",
     proof: "Finds cost, reliability, latency, and pipeline hotspots.",
     role: "Infrastructure intelligence",
-    signal: "AVAILABLE",
   },
   {
     label: "ReleaseOps",
     href: "/products/mcp-releaseops",
     proof: "Checks release readiness and packages evidence-backed handoffs.",
     role: "Release management",
-    signal: "AVAILABLE",
   },
 ];
 
@@ -86,15 +81,9 @@ const featuredRoutes = [
               Start with a free 30-day evaluation. No card or automatic billing.
               Create an account key and see the usage impact of every call.
             </p>
-            <div class="grid gap-2">
-              <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
-                Start free evaluation <span aria-hidden="true">↗</span>
-              </a>
-              <div class="grid grid-cols-2 gap-2">
-                <a href={appBaseUrl} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Open webapp</a>
-                <a href={`${appBaseUrl}/docs`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Docs</a>
-              </div>
-            </div>
+            <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
+              Start free evaluation <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
 
@@ -104,8 +93,7 @@ const featuredRoutes = [
       <section id="catalog" aria-labelledby="catalog-title" class="border-b border-white/20">
         <header class="grid border-b border-white/20 lg:grid-cols-[1fr_1fr]">
           <div class="p-5 sm:p-7">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Hosted catalog / 02</p>
-            <h2 id="catalog-title" class="mt-4 text-4xl font-black uppercase leading-none sm:text-5xl">
+            <h2 id="catalog-title" class="text-4xl font-black uppercase leading-none sm:text-5xl">
               Featured MCPs.
             </h2>
           </div>
@@ -123,38 +111,16 @@ const featuredRoutes = [
         <div>
           {featuredRoutes.map((route, index) => (
             <a href={route.href} class:list={[
-              "group grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 px-5 py-4 transition hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[3rem_minmax(9rem,0.6fr)_minmax(0,1fr)_auto] sm:gap-4 sm:px-7 sm:py-5",
+              "group grid items-center gap-3 px-5 py-4 transition hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[minmax(9rem,0.55fr)_minmax(0,1fr)] sm:gap-5 sm:px-7 sm:py-5",
               index < featuredRoutes.length - 1 && "border-b border-white/20",
             ]}>
-              <span class="font-mono text-[0.65rem] text-white/34 group-hover:text-black/42">{String(index + 1).padStart(2, "0")}</span>
               <div>
                 <p class="text-xl font-black uppercase">{route.label}</p>
                 <p class="mt-1 font-mono text-[0.62rem] font-bold uppercase opacity-52">{route.role}</p>
               </div>
-              <p class="col-span-2 col-start-2 max-w-2xl text-sm leading-6 opacity-64 sm:col-auto sm:col-start-auto">{route.proof}</p>
-              <span class="font-mono text-[0.62rem] font-bold uppercase text-signal group-hover:text-black">{route.signal}</span>
+              <p class="max-w-2xl text-sm leading-6 opacity-64">{route.proof}</p>
             </a>
           ))}
-        </div>
-      </section>
-
-      <section id="start" aria-labelledby="start-title" class="grid border-b border-black bg-signal text-black lg:grid-cols-[minmax(0,1fr)_22rem]">
-        <div class="p-5 sm:p-8 lg:p-10">
-          <p class="font-mono text-[0.65rem] font-bold uppercase">Start / 03</p>
-          <h2 id="start-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
-            Start a 30-day evaluation.
-          </h2>
-          <p class="mt-5 max-w-2xl text-base leading-7 text-black/68">
-            Create an account, issue a scoped key, and connect from your MCP client.
-          </p>
-        </div>
-        <div class="grid content-end gap-2 border-t border-black p-5 lg:border-l lg:border-t-0 lg:p-7">
-          <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-paper hover:text-black">
-            Create evaluation account <span aria-hidden="true">↗</span>
-          </a>
-          <a href="/products#plans" class="inline-flex min-h-12 items-center justify-between border border-black px-4 text-xs font-black uppercase text-black transition hover:bg-paper">
-            Compare plans <span aria-hidden="true">↗</span>
-          </a>
         </div>
       </section>
 

@@ -184,7 +184,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
       await page.getByRole("heading", { name: "Map this repository and return source-cited architecture." }).waitFor();
-      await page.getByText("16/24", { exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Architecture map ready." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
@@ -204,12 +204,6 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
       await page.getByRole("heading", { name: "Featured MCPs." }).waitFor();
-      await page.getByRole("heading", { name: "Start a 30-day evaluation." }).waitFor();
-      await page.getByRole("link", { name: "Compare plans" }).waitFor();
-      await expectHref(
-        page.getByRole("link", { name: "Create evaluation account" }),
-        `${expectedAppBaseUrl}/products/usage-evaluation`,
-      );
       await expectTextAbsent(page, [
         "Hosted staging MCP route",
         "3.45s",
@@ -220,6 +214,7 @@ async function runBrowserSmoke() {
         "From catalog to first tool call.",
         "The benchmark includes the method, failures, and limits.",
         "Tell us which coming-soon MCP matters next.",
+        "Start a 30-day evaluation.",
       ]);
       await expectNoHorizontalOverflow(page);
     }, "home route");

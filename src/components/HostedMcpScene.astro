@@ -1,174 +1,35 @@
----
-import { allPlans, hostedMcpStatus } from "../lib/pricing";
-
-const routes = [
-  { id: "01", label: "RepoIntel", state: "active", detail: "Repository context" },
-  { id: "02", label: "ExplicitMem", state: "available", detail: "Durable memory" },
-  { id: "03", label: "IncidentOps", state: "available", detail: "Incident response" },
-  { id: "04", label: "InfraProfiler", state: "available", detail: "Infrastructure analysis" },
-  { id: "05", label: "ReleaseOps", state: "available", detail: "Release management" },
-];
-const publicMcpCount = allPlans.filter((plan) => plan.kind === "single-mcp").length;
-const availableMcpCount = allPlans.filter(
-  (plan) => plan.kind === "single-mcp" && hostedMcpStatus(plan) === "available",
-).length;
-const availabilityPercent = Math.round((availableMcpCount / publicMcpCount) * 100);
----
-
-<section class="mcp-scene relative max-w-full overflow-hidden bg-ink text-white" aria-label="Example hosted MCP request">
-  <div class="mcp-grid pointer-events-none absolute inset-0 opacity-35"></div>
-
-  <div class="relative grid min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.45fr)_minmax(19rem,0.55fr)]">
-    <div class="min-w-0 border-b border-white/20 lg:border-b-0 lg:border-r">
-      <div class="grid min-h-40 content-between gap-8 border-b border-white/20 px-4 py-6 sm:px-6 sm:py-8">
-        <div class="flex flex-wrap items-start justify-between gap-5">
-          <div class="min-w-0">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">MCP request</p>
-            <h2 class="mt-3 max-w-3xl text-2xl font-black uppercase leading-[1.02] sm:text-4xl">
-              Map this repository and return source-cited architecture.
-            </h2>
-          </div>
-          <div class="border-l border-white/20 pl-4 font-mono text-[0.65rem] uppercase leading-5 text-white/54">
-            <p>Route / RepoIntel</p>
-            <p>Transport / HTTP</p>
-            <p>Key / Scoped</p>
-          </div>
-        </div>
-        <div class="flex min-w-0 items-center gap-3 font-mono text-xs text-white/68">
-          <span class="text-signal">repointel</span>
-          <span class="text-white/32">/</span>
-          <span class="truncate">repository map --include-citations</span>
-          <span class="mcp-cursor h-4 w-2 shrink-0 bg-white/90" aria-hidden="true"></span>
-        </div>
+<section class="border-b border-white/20 bg-ink text-white" aria-label="Example RepoIntel request and response">
+  <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.65fr)]">
+    <div class="grid min-w-0 content-between gap-8 border-b border-white/20 px-4 py-7 sm:px-6 sm:py-9 lg:border-b-0 lg:border-r">
+      <div>
+        <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">RepoIntel request</p>
+        <h2 class="mt-3 max-w-4xl text-2xl font-black uppercase leading-[1.02] sm:text-4xl">
+          Map this repository and return source-cited architecture.
+        </h2>
       </div>
-
-      <ol class="divide-y divide-white/14">
-        {routes.map((route) => (
-          <li class:list={[
-            "mcp-route grid min-h-14 grid-cols-[2.2rem_minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 font-mono text-[0.68rem] sm:grid-cols-[2.8rem_minmax(8rem,0.45fr)_minmax(0,1fr)_auto] sm:px-6",
-            route.state === "active" && "is-active",
-          ]}>
-            <span class="text-white/38">{route.id}</span>
-            <span class="font-bold uppercase text-white">{route.label}</span>
-            <span class="hidden truncate text-white/46 sm:block">{route.detail}</span>
-            <span class:list={[
-              "justify-self-end uppercase",
-              route.state === "active" ? "text-signal" : "text-paper",
-            ]}>
-              {route.state}
-            </span>
-          </li>
-        ))}
-      </ol>
+      <div class="min-w-0 border-l-2 border-signal pl-4 font-mono text-xs leading-6 text-white/68">
+        <p class="truncate"><span class="text-signal">repointel</span> repository map --include-citations</p>
+        <p class="text-white/42">HTTP / scoped key</p>
+      </div>
     </div>
 
-    <aside class="grid min-w-0 content-between">
-      <div>
-        <div class="border-b border-white/20 px-5 py-5">
-          <p class="font-mono text-[0.65rem] font-bold uppercase text-white/42">Public catalog</p>
-          <div class="mt-4 flex items-end justify-between gap-4">
-            <p class="text-5xl font-black leading-none">{availableMcpCount}/{publicMcpCount}</p>
-            <p class="pb-1 font-mono text-[0.65rem] uppercase text-signal">Available today</p>
-          </div>
-          <div class="mt-5 h-2 overflow-hidden bg-white/16" aria-hidden="true">
-            <span class="mcp-progress block h-full bg-signal" style={`width: ${availabilityPercent}%`}></span>
-          </div>
+    <aside class="bg-signal p-5 text-black sm:p-7">
+      <p class="font-mono text-[0.65rem] font-bold uppercase">Example response</p>
+      <h3 class="mt-4 text-2xl font-black uppercase leading-tight">Architecture map ready.</h3>
+      <dl class="mt-7 border-y border-black/32 font-mono text-[0.65rem] uppercase">
+        <div class="flex items-center justify-between gap-4 border-b border-black/24 py-3">
+          <dt>Summary</dt>
+          <dd class="font-bold">Returned</dd>
         </div>
-
-        <dl class="hidden divide-y divide-white/14 px-5 sm:block">
-          <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
-            <dt class="font-mono text-[0.65rem] uppercase text-white/44">Available MCPs</dt>
-            <dd class="font-mono text-xs text-white">{String(availableMcpCount).padStart(2, "0")}</dd>
-          </div>
-          <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
-            <dt class="font-mono text-[0.65rem] uppercase text-white/44">Roadmap</dt>
-            <dd class="font-mono text-xs text-white">{String(publicMcpCount - availableMcpCount).padStart(2, "0")}</dd>
-          </div>
-          <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
-            <dt class="font-mono text-[0.65rem] uppercase text-white/44">Usage model</dt>
-            <dd class="font-mono text-xs text-paper">Adaptive</dd>
-          </div>
-          <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
-            <dt class="font-mono text-[0.65rem] uppercase text-white/44">Usage</dt>
-            <dd class="font-mono text-xs text-signal">Account visible</dd>
-          </div>
-        </dl>
-      </div>
-
-      <div class="border-t border-white/20 bg-signal p-5 text-black">
-        <p class="font-mono text-[0.65rem] font-bold uppercase">Selected MCP</p>
-        <p class="mt-3 text-lg font-black uppercase leading-tight">RepoIntel / Tool catalog ready</p>
-        <div class="mt-5 h-1.5 overflow-hidden bg-black/20">
-          <span class="mcp-scan block h-full w-2/3 bg-black"></span>
+        <div class="flex items-center justify-between gap-4 border-b border-black/24 py-3">
+          <dt>Source citations</dt>
+          <dd class="font-bold">Linked</dd>
         </div>
-      </div>
+        <div class="flex items-center justify-between gap-4 py-3">
+          <dt>Usage receipt</dt>
+          <dd class="font-bold">Recorded</dd>
+        </div>
+      </dl>
     </aside>
   </div>
 </section>
-
-<style>
-  .mcp-grid {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-
-  .mcp-route {
-    position: relative;
-  }
-
-  .mcp-route.is-active {
-    background: color-mix(in srgb, var(--color-signal) 8%, transparent);
-  }
-
-  .mcp-route.is-active::before {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 3px;
-    background: var(--color-signal);
-    content: "";
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.28;
-    }
-  }
-
-  @keyframes scan {
-    0% {
-      transform: translateX(-18%);
-    }
-    50% {
-      transform: translateX(12%);
-    }
-    100% {
-      transform: translateX(-18%);
-    }
-  }
-
-  .mcp-cursor {
-    animation: pulse 1.35s steps(2, end) infinite;
-  }
-
-  .mcp-progress {
-    animation: pulse 1.9s ease-in-out infinite;
-  }
-
-  .mcp-scan {
-    animation: scan 3.8s ease-in-out infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mcp-cursor,
-    .mcp-progress,
-    .mcp-scan {
-      animation: none;
-    }
-  }
-</style>
