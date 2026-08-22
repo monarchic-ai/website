@@ -43,6 +43,7 @@ export const explicitMemRunConfig = [
 export const explicitMemStudies = [
   {
     id: "longmemeval-s",
+    evidenceClass: "External-dataset benchmark",
     dataset: "LongMemEval-S",
     generated: explicitMemBenchmark.generated,
     scope: "Fixed answer synthesis",
@@ -56,6 +57,7 @@ export const explicitMemStudies = [
   },
   {
     id: "locomo",
+    evidenceClass: "External-dataset benchmark",
     dataset: "LoCoMo",
     generated: "3 June 2026",
     scope: "CUDA cross-encoder runtime",
@@ -69,6 +71,7 @@ export const explicitMemStudies = [
   },
   {
     id: "cross-dataset",
+    evidenceClass: "First-party evaluation on external datasets",
     dataset: "BEAM, ConvoMem, LoCoMo, LongMemEval",
     generated: "3 June 2026",
     scope: "Cross-dataset candidate generation",
@@ -82,6 +85,7 @@ export const explicitMemStudies = [
   },
   {
     id: "generic-answer",
+    evidenceClass: "First-party evaluation",
     dataset: "Generic and non-LongMemEval fixtures",
     generated: "6 June 2026",
     scope: "Generic answer support",

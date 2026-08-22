@@ -12,22 +12,22 @@ if (!publishedStudy) throw new Error("The approved research index is empty");
 
 const evidenceClasses = [
   {
-    label: "Research evidence",
-    definition: "A dated method, named dataset or protocol, measured result, stated limitation, and inspectable artifact.",
+    label: "External-dataset benchmarks",
+    definition: "A recognized external dataset with a dated method, measured result, stated limitation, and inspectable artifact.",
     destination: "/research/explicitmem",
-    action: "Open published study",
+    action: "Inspect benchmark results",
   },
   {
-    label: "Engineering verification",
-    definition: "A concrete product call, output contract, permission requirement, and current operating boundary. It verifies behavior, not comparative performance.",
-    destination: "/products",
-    action: "Inspect product proofs",
+    label: "First-party evaluations",
+    definition: "A reproducible Monarchic-designed capability, robustness, corpus, or deterministic-gate evaluation with its origin stated clearly.",
+    destination: "/research/explicitmem#cross-dataset",
+    action: "Inspect first-party methods",
   },
   {
-    label: "Operational evidence",
-    definition: "Deployment, access, security, and lifecycle records used to describe what is available and how it is operated.",
+    label: "Production and engineering verification",
+    definition: "Security checks, automated tests, isolation, persistence, artifact promotion, protocol checks, and production measurements.",
     destination: "/security",
-    action: "Review operations",
+    action: "Review engineering controls",
   },
 ];
 ---

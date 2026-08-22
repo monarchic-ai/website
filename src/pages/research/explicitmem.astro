@@ -90,8 +90,9 @@ const headlineMetrics = [
             {explicitMemStudies.map((study, index) => (
               <article id={study.id} class:list={["grid lg:grid-cols-[0.62fr_1.38fr]", index < explicitMemStudies.length - 1 && "border-b border-white/35"]}>
                 <div class="border-b border-white/30 p-5 lg:border-b-0 lg:border-r sm:p-6">
-                  <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">0{index + 1} / {study.scope}</p>
+                  <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">0{index + 1} / {study.evidenceClass}</p>
                   <h3 class="mt-3 text-xl font-extrabold uppercase">{study.dataset}</h3>
+                  <p class="mt-2 text-xs font-bold uppercase text-white/44">{study.scope}</p>
                   <p class="mt-5 text-4xl font-extrabold leading-none">{study.metricValue}</p>
                   <p class="mt-2 text-xs font-bold uppercase text-white/52">{study.metricLabel}</p>
                   <p class="mt-4 text-xs leading-5 text-white/48">{study.sample} / generated {study.generated}</p>
