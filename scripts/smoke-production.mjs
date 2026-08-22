@@ -109,7 +109,7 @@ async function runSmoke() {
     "/products/mcp-webcomposer",
     "/products/mcp-webimplementer",
   ], "sitemap.xml non-indexed product routes");
-  await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/docs`, "tutorial redirect");
+  await checkRedirect(`${baseUrl}/tutorial`, `${expectedAppBaseUrl}/setup`, "tutorial redirect");
   await checkRedirect(`${baseUrl}/about`, `${expectedCanonicalBaseUrl}/company`, "about compatibility redirect");
   await checkExactHttpStatuses(requiredResearchRoutes, 200, "MCP research routes");
   await checkMcpResearchReciprocalLinks();
@@ -193,8 +193,8 @@ async function runBrowserSmoke() {
         `${expectedAppBaseUrl}/products/usage-evaluation`,
       );
       await expectHref(
-        page.getByRole("link", { name: "Docs", exact: true }).first(),
-        `${expectedAppBaseUrl}/docs`,
+        page.getByRole("link", { name: "Setup", exact: true }).first(),
+        `${expectedAppBaseUrl}/setup`,
       );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
       await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent workflows");
@@ -275,8 +275,8 @@ async function runBrowserSmoke() {
         throw new Error("RepoIntel must not advertise a standalone price");
       }
       await expectHref(
-        page.getByRole("link", { name: "Open docs" }),
-        `${expectedAppBaseUrl}/docs`,
+        page.getByRole("link", { name: "Open setup" }),
+        `${expectedAppBaseUrl}/setup`,
       );
       await expectTextAbsent(page, [
         "Developer Workflow Pack",

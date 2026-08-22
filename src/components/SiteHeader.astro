@@ -36,7 +36,7 @@ const navClass = (current: boolean) => [
   </a>
   <nav aria-label="Primary navigation" class="flex min-w-0 items-center justify-end gap-1 sm:gap-2">
     <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
-    <a href={`${appBaseUrl}/docs`} class={navClass(false)}>Docs</a>
+    <a href={`${appBaseUrl}/setup`} class={navClass(false)}>Setup</a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
     <a
       href={appBaseUrl}
