@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 
 const root = resolve(process.cwd(), "dist");
 const failures = [];
+const appBaseUrl = (process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const canonicalRoutes = [
   "/",
   "/products",
@@ -74,12 +75,12 @@ includes(security.text, ["Current controls. Explicit limits", "How a hosted requ
 
 const privacy = page("/privacy");
 includes(privacy.text, ["Website Privacy Notice", "public monarchic.io website", "product privacy notice", "Cloudflare", "Vercel", "AWS"], "Corporate website privacy scope");
-includes(privacy.html, ['href="https://app.monarchic.io/privacy"'], "Product privacy boundary link");
+includes(privacy.html, [`href="${appBaseUrl}/privacy"`], "Product privacy boundary link");
 excludes(privacy.text, ["Billing data", "Service content", "hosted MCP routes, agent runs"], "Service-wide privacy copy");
 
 const terms = page("/terms");
 includes(terms.text, ["Website Terms", "public monarchic.io corporate website", "Monarchic product terms", "Informational boundary"], "Corporate website terms scope");
-includes(terms.html, ['href="https://app.monarchic.io/terms"'], "Product terms boundary link");
+includes(terms.html, [`href="${appBaseUrl}/terms"`], "Product terms boundary link");
 excludes(terms.text, ["You must be at least 18 years old", "aggregate liability", "Services and usage metering", "Billing data"], "Service terms copy");
 
 const waitlist = page("/waitlist");
