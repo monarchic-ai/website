@@ -110,7 +110,7 @@ function statusClasses(plan: CatalogPlan): string {
                 {statusLabel(plan)}
               </span>
             </div>
-            <h1 class="mt-5 max-w-4xl break-words text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
+            <h1 class="mt-5 max-w-4xl break-words text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl">
               {plan.displayName}
             </h1>
             <p class="mt-6 max-w-3xl text-lg leading-8 text-white/80">{plan.tagline}</p>
@@ -118,11 +118,11 @@ function statusClasses(plan: CatalogPlan): string {
 
             {productDetail !== null && (
               <section class="mt-8 grid gap-3 sm:grid-cols-2">
-                <div class="border border-white/36 bg-black/60 p-4 transition hover:border-signal">
+                <div class="border border-white/36 bg-black/60 p-4">
                   <p class="text-[0.65rem] font-bold uppercase text-white/48">Category</p>
                   <p class="mt-2 text-sm font-bold uppercase leading-5">{productDetail.category}</p>
                 </div>
-                <div class="border border-white/36 bg-black/60 p-4 transition hover:border-signal">
+                <div class="border border-white/36 bg-black/60 p-4">
                   <p class="text-[0.65rem] font-bold uppercase text-white/48">Best for</p>
                   <p class="mt-2 text-sm leading-6 text-white/74">{productDetail.buyer}</p>
                 </div>
@@ -180,7 +180,7 @@ function statusClasses(plan: CatalogPlan): string {
                 <h2 class="text-xs font-bold uppercase text-white/54">What you get</h2>
                 <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74 sm:grid-cols-2">
                   {plan.featureBullets.map((bullet) => (
-                    <li class="flex gap-3 border border-white/30 bg-black/54 p-4 transition hover:border-signal hover:bg-signal/[0.06]">
+                    <li class="flex gap-3 border border-white/30 bg-black/54 p-4">
                       <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-signal"></span>
                       <span>{bullet}</span>
                     </li>
@@ -197,7 +197,7 @@ function statusClasses(plan: CatalogPlan): string {
                 <h2 class="mt-10 text-xs font-bold uppercase text-white/54">Outcomes</h2>
                 <ul class="mt-4 grid gap-3 text-sm leading-7 text-white/74 sm:grid-cols-2">
                   {productDetail.outcomes.map((outcome) => (
-                    <li class="flex gap-3 border border-white/30 bg-black/50 p-4 transition hover:border-signal hover:bg-signal/[0.06]">
+                    <li class="flex gap-3 border border-white/30 bg-black/50 p-4">
                       <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-signal"></span>
                       <span>{outcome}</span>
                     </li>
