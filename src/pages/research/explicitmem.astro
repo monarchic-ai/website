@@ -52,7 +52,7 @@ const headlineMetrics = [
         <section class="grid gap-10 border-b-2 border-white py-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
           <div>
             <p class="text-xs font-semibold uppercase text-signal">ExplicitMem / LongMemEval-S</p>
-            <h1 class="mt-5 max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl [text-shadow:5px_5px_0_rgba(255,255,255,0.12)]">
+            <h1 class="mt-5 max-w-5xl text-4xl font-extrabold uppercase leading-[0.9] sm:text-6xl lg:text-7xl">
               Memory benchmark
             </h1>
             <p class="mt-7 max-w-3xl text-base leading-8 text-white/78 sm:text-lg">
@@ -82,11 +82,10 @@ const headlineMetrics = [
         </section>
 
         <section id="results" class="scroll-mt-6 py-12">
-          <p class="text-xs font-bold uppercase text-signal">01 / Headline results</p>
-          <h2 class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">What the run measured</h2>
+          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">What the run measured</h2>
           <div class="mt-7 grid border-l border-t border-white/36 sm:grid-cols-2 lg:grid-cols-4">
             {headlineMetrics.map(([label, value]) => (
-              <div class="border-r border-b border-white/36 bg-black/68 p-5 transition hover:border-signal hover:bg-signal/[0.06]">
+              <div class="border-r border-b border-white/36 bg-black/68 p-5">
                 <p class="text-[0.65rem] font-bold uppercase text-white/48">{label}</p>
                 <p class="mt-3 text-2xl font-extrabold">{value}</p>
               </div>
@@ -96,8 +95,7 @@ const headlineMetrics = [
 
         <section class="mb-12 border-2 border-white bg-black/76">
           <div class="border-b-2 border-white p-5 sm:p-6">
-            <p class="text-xs font-bold uppercase text-signal">02 / Question types</p>
-            <h2 class="mt-3 text-2xl font-extrabold uppercase sm:text-3xl">Where the system was strongest and weakest</h2>
+            <h2 class="text-2xl font-extrabold uppercase sm:text-3xl">Where the system was strongest and weakest</h2>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full min-w-[700px] border-collapse text-left text-sm">
@@ -111,7 +109,7 @@ const headlineMetrics = [
               </thead>
               <tbody>
                 {explicitMemQuestionTypes.map((row) => (
-                  <tr class="border-b border-white/24 transition last:border-b-0 hover:bg-signal/[0.06]">
+                  <tr class="border-b border-white/24 last:border-b-0">
                     <td class="p-4 font-extrabold uppercase">{row.label}</td>
                     <td class="p-4">{row.count}</td>
                     <td class="p-4 text-xl font-extrabold">{row.accuracy}</td>
@@ -125,8 +123,7 @@ const headlineMetrics = [
 
         <section class="mb-12 grid gap-5 lg:grid-cols-3">
           <article class="border-2 border-white bg-black/70 p-5">
-            <p class="text-xs font-bold uppercase text-signal">03 / Method</p>
-            <h2 class="mt-3 text-2xl font-extrabold uppercase">Fixed answer protocol</h2>
+            <h2 class="text-2xl font-extrabold uppercase">Fixed answer protocol</h2>
             <p class="mt-4 text-sm leading-7 text-white/74">
               The run used the complete {explicitMemBenchmark.benchmark} question set, the promoted
               synthesis profile, no per-session character limit, up to 50
@@ -135,8 +132,7 @@ const headlineMetrics = [
             </p>
           </article>
           <article class="border-2 border-white bg-black/70 p-5">
-            <p class="text-xs font-bold uppercase text-signal">04 / Failures</p>
-            <h2 class="mt-3 text-2xl font-extrabold uppercase">One upstream-gold mismatch remains</h2>
+            <h2 class="text-2xl font-extrabold uppercase">One upstream-gold mismatch remains</h2>
             <p class="mt-4 text-sm leading-7 text-white/74">
               The only scored miss is faithful and evidence-localized: the
               source dates compute to 12 weeks, while the upstream gold answer
@@ -144,8 +140,7 @@ const headlineMetrics = [
             </p>
           </article>
           <article class="border-2 border-white bg-black/70 p-5">
-            <p class="text-xs font-bold uppercase text-signal">05 / Boundary</p>
-            <h2 class="mt-3 text-2xl font-extrabold uppercase">No cross-system comparison</h2>
+            <h2 class="text-2xl font-extrabold uppercase">No cross-system comparison</h2>
             <p class="mt-4 text-sm leading-7 text-white/74">
               Mem0 and Supermemory are excluded because no comparable run used
               this exact dataset, question order, scoring method, context
