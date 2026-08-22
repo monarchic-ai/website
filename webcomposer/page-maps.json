@@ -53,6 +53,11 @@
           "purpose": "Help visitors identify available MCPs by workflow and continue into the full catalog."
         },
         {
+          "id": "company-context",
+          "template": "proof.metric_story",
+          "purpose": "State Monarchic's automation R&D scope, evidence classes, current scale, long-term direction, and direct paths to Products, Research, Company, and Security."
+        },
+        {
           "id": "footer",
           "template": "footer.multi_column",
           "purpose": "Close the page with navigation, trust, and contact context."
