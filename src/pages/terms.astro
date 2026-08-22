@@ -3,121 +3,90 @@ import LegalPageLayout from "../layouts/LegalPageLayout.astro";
 
 const sectionClass = "border-t border-white/35 py-8 first:border-t-0 first:pt-0";
 const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
+const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 ---
 
 <LegalPageLayout
-  title="Service Terms | Monarchic"
-  description="Terms for Monarchic accounts, hosted MCP routes, usage metering, billing, customer content, and service access."
+  title="Website Terms | Monarchic"
+  description="Terms for using the public monarchic.io corporate website, research pages, and published website materials."
   path="/terms"
-  eyebrow="Legal / Service boundary"
-  heading="Service Terms"
-  introduction="These terms govern access to the Monarchic web app, hosted MCP routes, agent runs, and related paid or preview services."
-  effectiveDate="July 21, 2026"
-  documentId="service-terms"
+  eyebrow="Legal / Corporate website"
+  heading="Website Terms"
+  introduction="These terms apply to the public monarchic.io corporate website and its published materials. Product accounts, billing, hosted MCPs, and agent services use separate terms."
+  effectiveDate="August 22, 2026"
+  documentId="website-terms"
   contactId="terms-contact"
 >
-  <a slot="toc" href="#agreement" class="hover:text-signal">Agreement</a>
-  <a slot="toc" href="#accounts" class="hover:text-signal">Accounts</a>
-  <a slot="toc" href="#usage" class="hover:text-signal">Usage</a>
-  <a slot="toc" href="#acceptable-use" class="hover:text-signal">Acceptable use</a>
-  <a slot="toc" href="#content" class="hover:text-signal">Content</a>
-  <a slot="toc" href="#billing" class="hover:text-signal">Billing</a>
-  <a slot="toc" href="#availability" class="hover:text-signal">Availability</a>
-  <a slot="toc" href="#risk" class="hover:text-signal">Risk</a>
+  <a slot="toc" href="#scope" class="hover:text-signal">Scope</a>
+  <a slot="toc" href="#use" class="hover:text-signal">Site use</a>
+  <a slot="toc" href="#materials" class="hover:text-signal">Materials</a>
+  <a slot="toc" href="#research" class="hover:text-signal">Research</a>
+  <a slot="toc" href="#external" class="hover:text-signal">External links</a>
+  <a slot="toc" href="#disclaimer" class="hover:text-signal">Disclaimer</a>
+  <a slot="toc" href="#changes" class="hover:text-signal">Changes</a>
 
-  <section id="agreement" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Agreement and scope</h2>
-      <div class={copyClass}>
-        <p>By creating an account, using a hosted route, or buying a plan, you agree to these terms. If you use Monarchic for an organization, you confirm that you can bind that organization.</p>
-        <p>An order form, checkout statement, or signed agreement may add product, support, security, pricing, or service terms. If it conflicts with this page, the signed or checkout-specific term controls for that order.</p>
-        <p>You must be at least 18 years old. The service is built for professional and business use.</p>
-      </div>
+  <section id="scope" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">Scope</h2>
+    <div class={copyClass}>
+      <p>These terms govern access to the informational pages, product descriptions, research reports, downloadable website materials, and product waitlist on monarchic.io.</p>
+      <p>They do not govern account creation, subscriptions, payment, hosted MCP calls, agent runs, customer content, service levels, or product support. Those activities are covered by the <a class="font-bold text-signal hover:text-white" href={`${appBaseUrl}/terms`}>Monarchic product terms</a> and any applicable order or agreement.</p>
     </div>
   </section>
 
-  <section id="accounts" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Accounts and access</h2>
-      <div class={copyClass}>
-        <p>Provide accurate account information and keep login credentials and API keys secure. You are responsible for activity under your account and for promptly revoking credentials that may be exposed.</p>
-        <p>Control-plane identity, account, and entitlement access is tenant-scoped and may depend on plan, role, route availability, and safety controls. Product-content isolation has separate boundaries described on the <a class="font-bold text-signal hover:text-white" href="/security">security page</a>. Do not share access outside the organization or scope authorized by your plan.</p>
-      </div>
+  <section id="use" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">Permitted site use</h2>
+    <div class={copyClass}>
+      <p>You may browse the site, evaluate public product information, read published research, link to public pages, and use downloadable materials under the license stated with those materials.</p>
+      <p>Do not interfere with site operation, probe or bypass security controls, distribute malware, misrepresent affiliation with Monarchic, use the site to violate law or third-party rights, or impose an unreasonable automated load. Authorized security research should follow the process on the <a class="font-bold text-signal hover:text-white" href="/security">security page</a>.</p>
     </div>
   </section>
 
-  <section id="usage" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Services and usage metering</h2>
-      <div class={copyClass}>
-        <p>Monarchic provides hosted MCP routes, agent execution, account controls, evidence artifacts, and related interfaces as described in current product documentation.</p>
-        <p>Execution usage is measured by the operation class fixed in the applicable versioned rate card. File storage, managed indexed storage, and disclosed external-provider expenses are metered separately under the catalog or order. The account interface reports weekly execution usage and the next refresh date. Unused included execution may remain through the following weekly cycle and expires after 14 days.</p>
-        <p>Self-service plans do not include PAYG or automatic overage. Usage pauses at the included limit. PAYG may be provided only under a separate Enterprise order with operator enablement, a minimum commitment, and a spending cap.</p>
-        <p>Products marked Coming soon or In rollout are not available for checkout. Product labels and access status control over general marketing copy.</p>
-      </div>
+  <section id="materials" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">Website materials and names</h2>
+    <div class={copyClass}>
+      <p>Monarchic retains rights in its website design, original copy, product names, trademarks, and materials unless a page or linked repository states another license. Access to the website does not grant a trademark license or a right to imply endorsement.</p>
+      <p>Open-source code, datasets, papers, benchmark artifacts, and third-party materials remain subject to their own notices and licenses. Check the linked source before reuse.</p>
     </div>
   </section>
 
-  <section id="acceptable-use" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Acceptable use</h2>
-      <div class={copyClass}>
-        <p>Use Monarchic only on systems, repositories, accounts, browsers, terminals, and data you are authorized to access. Follow applicable law and obtain required consent.</p>
-        <p>Do not use the service to distribute malware, steal credentials, evade access controls, bypass CAPTCHAs, conduct unrestricted scraping, interfere with a service, harm a person, violate intellectual-property or privacy rights, or create an unreasonable security or infrastructure load.</p>
-        <p>You are responsible for reviewing agent actions and setting appropriate scopes, approvals, rate limits, and human checks.</p>
-      </div>
+  <section id="research" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">Research and product information</h2>
+    <div class={copyClass}>
+      <p>Research results apply to the named dataset, method, version, metric, and artifact. A benchmark does not establish general product performance, comparative superiority, production latency, or suitability for a specific use unless the report states that scope.</p>
+      <p>Product availability, lifecycle labels, pricing, and feature descriptions may change. A Coming soon or In rollout label does not promise a launch date. Verify current product status and the terms presented in the webapp before relying on a purchase or deployment decision.</p>
     </div>
   </section>
 
-  <section id="content" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Customer content and output</h2>
-      <div class={copyClass}>
-        <p>You keep ownership of content you submit. You grant Monarchic the limited rights needed to process, transmit, store, secure, and return that content while providing and supporting the service.</p>
-        <p>You are responsible for having the rights to submit content and for deciding whether output is fit for use. Agent and model output can be incomplete, incorrect, or similar to output produced for someone else. Review it before deployment, publication, or any consequential decision.</p>
-        <p>Monarchic retains its software, documentation, interfaces, product names, and other service materials. Feedback may be used without restriction or payment.</p>
-      </div>
+  <section id="external" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">External links and product applications</h2>
+    <div class={copyClass}>
+      <p>The site links to source repositories, research projects, service providers, and the Monarchic webapp. External destinations control their own content, availability, security, and terms.</p>
+      <p>A link is provided for context or access and does not by itself endorse every claim, product, or practice at the destination.</p>
     </div>
   </section>
 
-  <section id="billing" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Billing</h2>
-      <div class={copyClass}>
-        <p>Prices, included usage, cadence, after-limit behavior, and taxes are shown at checkout or in an order. Stripe processes payment methods. Unless an order says otherwise, subscriptions renew for the selected cadence until canceled.</p>
-        <p>You authorize charges shown at checkout and any enabled usage charges described by the plan. Failed or overdue payment may pause access. Fees are non-refundable except where the order or law requires otherwise.</p>
-      </div>
+  <section id="disclaimer" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">Informational boundary</h2>
+    <div class={copyClass}>
+      <p>The corporate website is provided for general information and product evaluation. Content may contain errors, become outdated, or omit facts relevant to your situation. Use primary artifacts and professional review for consequential technical, scientific, legal, financial, or business decisions.</p>
+      <p>To the extent permitted by applicable law, Monarchic does not promise uninterrupted website availability or that every public page will always be complete, current, or error-free. Product commitments arise only from the applicable product terms, checkout statement, order, or signed agreement.</p>
     </div>
   </section>
 
-  <section id="availability" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Availability, suspension, and changes</h2>
-      <div class={copyClass}>
-        <p>We may change, limit, or discontinue a preview, route, model, integration, or feature. Published service-level commitments apply only when an order expressly includes them.</p>
-        <p>We may suspend or terminate access for security risk, unlawful use, material breach, overdue payment, or harm to Monarchic, providers, or other users. You may stop using the service and cancel through the available account or billing controls.</p>
-        <p>We may update these terms. Material changes will be posted here and, when appropriate, communicated through the account or email.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="risk" class={sectionClass}>
-    <div>
-      <h2 class="text-2xl font-extrabold uppercase">Warranty and liability boundary</h2>
-      <div class={copyClass}>
-        <p>Except for commitments in an applicable signed order, the service is provided as available and without warranties of uninterrupted operation, error-free output, merchantability, fitness for a particular purpose, or non-infringement, to the extent the law permits.</p>
-        <p>To the extent the law permits, Monarchic is not liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for lost profits, revenue, data, goodwill, or business interruption. Monarchic's aggregate liability for the service will not exceed the amount you paid for that service during the 12 months before the event giving rise to the claim.</p>
-        <p>Some jurisdictions do not allow every exclusion or limit. In those places, the limits apply only as far as the law allows. These terms do not limit liability that cannot legally be limited.</p>
-      </div>
+  <section id="changes" class={sectionClass}>
+    <h2 class="text-2xl font-extrabold uppercase">Changes and contact</h2>
+    <div class={copyClass}>
+      <p>We may update the website and these terms as the company, products, or publication practices change. The effective date identifies the current website-terms version.</p>
+      <p>Questions about these terms can be sent to <a class="font-bold text-signal hover:text-white" href="mailto:support@monarchic.io?subject=Website%20terms">support@monarchic.io</a>.</p>
     </div>
   </section>
 
   <div slot="contact">
-    <p class="text-xs font-bold uppercase text-signal">Questions about these terms</p>
-    <h2 class="mt-2 text-2xl font-extrabold uppercase">Questions before you use the service?</h2>
+    <p class="text-xs font-bold uppercase text-signal">Website terms</p>
+    <h2 class="mt-2 text-2xl font-extrabold uppercase">Questions about public website use?</h2>
   </div>
   <div slot="contact" class="flex flex-wrap gap-3">
-    <a href="mailto:support@monarchic.io?subject=Service%20terms" class="border-2 border-signal bg-signal px-5 py-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact support</a>
-    <a href="/privacy" class="border-2 border-white/50 px-5 py-3 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Read privacy</a>
+    <a href="mailto:support@monarchic.io?subject=Website%20terms" class="border-2 border-signal bg-signal px-5 py-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact support</a>
+    <a href={`${appBaseUrl}/terms`} class="border-2 border-white/50 px-5 py-3 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Product terms</a>
   </div>
 </LegalPageLayout>
