@@ -6,7 +6,6 @@ const siteUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBSITE_BASE_URL ?? "https://m
 const staticPaths = [
   "/",
   "/products",
-  "/waitlist",
   "/security",
   "/company",
   "/privacy",
