@@ -33,12 +33,9 @@ const waitlistProducts = allPlans
       <section class="mx-auto max-w-5xl px-6 py-8 sm:py-12">
         <SiteHeader />
 
-        <section class="grid min-h-[calc(100vh-112px)] gap-8 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section class="grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
-            <p class="mb-5 text-xs font-semibold uppercase tracking-[0.4em] text-white/64">
-              Product waitlist
-            </p>
-            <h1 class="max-w-4xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl [text-shadow:6px_6px_0_rgba(255,255,255,0.12)]">
+            <h1 class="max-w-4xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl">
               Get Access<br />Updates
             </h1>
             <p class="mt-7 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
@@ -47,12 +44,11 @@ const waitlistProducts = allPlans
           </div>
 
           <div class="border-2 border-white bg-black/76 p-5 sm:p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.32em] text-signal">Join the waitlist</p>
-            <p class="mt-4 text-sm leading-7 text-white/74">
+            <p class="text-sm leading-7 text-white/74">
               We will use this list for product availability and account access
               updates.
             </p>
-            <div class="mt-6">
+            <div class="mt-5">
               <WaitlistForm
                 client:load
                 apiBaseUrl={apiBaseUrl}

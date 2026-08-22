@@ -1,7 +1,7 @@
 ---
 import LegalPageLayout from "../layouts/LegalPageLayout.astro";
 
-const sectionClass = "grid gap-5 border-t border-white/35 py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1fr)]";
+const sectionClass = "border-t border-white/35 py-8 first:border-t-0 first:pt-0";
 const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
 ---
 
@@ -16,17 +16,16 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   documentId="service-terms"
   contactId="terms-contact"
 >
-  <a slot="toc" href="#agreement" class="hover:text-signal">01 / Agreement</a>
-  <a slot="toc" href="#accounts" class="hover:text-signal">02 / Accounts</a>
-  <a slot="toc" href="#usage" class="hover:text-signal">03 / Usage</a>
-  <a slot="toc" href="#acceptable-use" class="hover:text-signal">04 / Acceptable use</a>
-  <a slot="toc" href="#content" class="hover:text-signal">05 / Content</a>
-  <a slot="toc" href="#billing" class="hover:text-signal">06 / Billing</a>
-  <a slot="toc" href="#availability" class="hover:text-signal">07 / Availability</a>
-  <a slot="toc" href="#risk" class="hover:text-signal">08 / Risk</a>
+  <a slot="toc" href="#agreement" class="hover:text-signal">Agreement</a>
+  <a slot="toc" href="#accounts" class="hover:text-signal">Accounts</a>
+  <a slot="toc" href="#usage" class="hover:text-signal">Usage</a>
+  <a slot="toc" href="#acceptable-use" class="hover:text-signal">Acceptable use</a>
+  <a slot="toc" href="#content" class="hover:text-signal">Content</a>
+  <a slot="toc" href="#billing" class="hover:text-signal">Billing</a>
+  <a slot="toc" href="#availability" class="hover:text-signal">Availability</a>
+  <a slot="toc" href="#risk" class="hover:text-signal">Risk</a>
 
   <section id="agreement" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">01</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Agreement and scope</h2>
       <div class={copyClass}>
@@ -38,7 +37,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="accounts" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">02</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Accounts and access</h2>
       <div class={copyClass}>
@@ -49,7 +47,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="usage" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">03</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Services and usage metering</h2>
       <div class={copyClass}>
@@ -62,7 +59,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="acceptable-use" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">04</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Acceptable use</h2>
       <div class={copyClass}>
@@ -74,7 +70,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="content" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">05</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Customer content and output</h2>
       <div class={copyClass}>
@@ -86,7 +81,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="billing" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">06</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Billing</h2>
       <div class={copyClass}>
@@ -97,7 +91,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="availability" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">07</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Availability, suspension, and changes</h2>
       <div class={copyClass}>
@@ -109,7 +102,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="risk" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">08</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Warranty and liability boundary</h2>
       <div class={copyClass}>

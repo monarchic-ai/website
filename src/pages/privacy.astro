@@ -1,7 +1,7 @@
 ---
 import LegalPageLayout from "../layouts/LegalPageLayout.astro";
 
-const sectionClass = "grid gap-5 border-t border-white/35 py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1fr)]";
+const sectionClass = "border-t border-white/35 py-8 first:border-t-0 first:pt-0";
 const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
 ---
 
@@ -16,16 +16,15 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   documentId="privacy-notice"
   contactId="privacy-contact"
 >
-  <a slot="toc" href="#scope" class="hover:text-signal">01 / Scope</a>
-  <a slot="toc" href="#data" class="hover:text-signal">02 / Data</a>
-  <a slot="toc" href="#use" class="hover:text-signal">03 / Use</a>
-  <a slot="toc" href="#providers" class="hover:text-signal">04 / Providers</a>
-  <a slot="toc" href="#retention" class="hover:text-signal">05 / Retention</a>
-  <a slot="toc" href="#rights" class="hover:text-signal">06 / Rights</a>
-  <a slot="toc" href="#security" class="hover:text-signal">07 / Security</a>
+  <a slot="toc" href="#scope" class="hover:text-signal">Scope</a>
+  <a slot="toc" href="#data" class="hover:text-signal">Data</a>
+  <a slot="toc" href="#use" class="hover:text-signal">Use</a>
+  <a slot="toc" href="#providers" class="hover:text-signal">Providers</a>
+  <a slot="toc" href="#retention" class="hover:text-signal">Retention</a>
+  <a slot="toc" href="#rights" class="hover:text-signal">Rights</a>
+  <a slot="toc" href="#security" class="hover:text-signal">Security</a>
 
   <section id="scope" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">01</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Scope</h2>
       <div class={copyClass}>
@@ -36,7 +35,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="data" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">02</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Data we handle</h2>
       <div class={copyClass}>
@@ -49,7 +47,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="use" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">03</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Why we use it</h2>
       <div class={copyClass}>
@@ -61,7 +58,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="providers" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">04</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Providers and disclosure</h2>
       <div class={copyClass}>
@@ -73,7 +69,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="retention" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">05</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Retention</h2>
       <div class={copyClass}>
@@ -84,7 +79,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="rights" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">06</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Your choices and rights</h2>
       <div class={copyClass}>
@@ -95,7 +89,6 @@ const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-b
   </section>
 
   <section id="security" class={sectionClass}>
-    <span class="font-mono text-xs text-signal">07</span>
     <div>
       <h2 class="text-2xl font-extrabold uppercase">Security and changes</h2>
       <div class={copyClass}>

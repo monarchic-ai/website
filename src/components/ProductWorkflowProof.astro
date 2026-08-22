@@ -25,13 +25,13 @@ const outputJson = JSON.stringify(proof.output, null, 2);
 
   <div class="grid min-w-0 lg:grid-cols-[0.82fr_1.18fr_1.18fr_0.62fr]">
     <section class="min-w-0 border-b border-white/35 p-5 lg:border-b-0 lg:border-r">
-      <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">01 / Request</p>
+      <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Request</p>
       <blockquote class="mt-4 text-base font-bold leading-7 text-white">“{proof.request}”</blockquote>
     </section>
 
     <section class="min-w-0 border-b border-white/35 p-5 lg:border-b-0 lg:border-r">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">02 / Execution</p>
+        <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Execution</p>
         <span class="text-[0.58rem] font-bold uppercase text-white/42">Tool call payload</span>
       </div>
       <pre class="mt-4 max-h-80 max-w-full overflow-auto border border-white/28 bg-black p-3 text-[0.68rem] leading-5 text-white/72"><code>{requestJson}</code></pre>
@@ -40,14 +40,14 @@ const outputJson = JSON.stringify(proof.output, null, 2);
 
     <section class="min-w-0 border-b border-white/35 p-5 lg:border-b-0 lg:border-r">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">03 / Evidence + output</p>
+        <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Evidence + output</p>
         <span class="border border-white/35 px-2 py-1 text-[0.56rem] font-bold uppercase text-white/56">{proof.outputKind}</span>
       </div>
       <pre class="mt-4 max-h-80 max-w-full overflow-auto border border-white/28 bg-black p-3 text-[0.68rem] leading-5 text-white/72"><code>{outputJson}</code></pre>
     </section>
 
     <section class="min-w-0 bg-signal p-5 text-black">
-      <p class="font-mono text-[0.62rem] font-bold uppercase text-black/58">04 / Usage rating</p>
+      <p class="font-mono text-[0.62rem] font-bold uppercase text-black/58">Usage rating</p>
       <p class="mt-5 font-mono text-4xl font-extrabold uppercase leading-none">At runtime</p>
       <p class="mt-2 text-xs font-extrabold uppercase">Recorded on the operation receipt</p>
       <p class="mt-6 text-xs font-semibold leading-5 text-black/72">{proof.usageExplanation}</p>

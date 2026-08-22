@@ -4,35 +4,12 @@ import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
 
-const controlSummary = [
-  {
-    label: "Public transport",
-    state: "Enforced",
-    detail: "Website, app, and API traffic use HTTPS.",
-  },
-  {
-    label: "Control plane",
-    state: "Tenant scoped",
-    detail: "Identity, entitlement, usage, and billing checks are account scoped.",
-  },
-  {
-    label: "MCP content",
-    state: "Product specific",
-    detail: "Isolation depends on the tool and its documented namespace.",
-  },
-  {
-    label: "AWS data at rest",
-    state: "Encrypted",
-    detail: "Hosted stores, queues, artifacts, secrets, and logs use encryption at rest.",
-  },
-];
-
 const requestPath = [
-  ["01", "Client", "A scoped account key starts the request."],
-  ["02", "Identity", "Auth0 establishes account identity."],
-  ["03", "Policy", "Tenant, entitlement, rate, and usage checks run."],
-  ["04", "Runtime", "The selected MCP handles the bounded operation."],
-  ["05", "Receipt", "Outcome and usage impact can be recorded."],
+  ["Client", "A scoped account key starts the request."],
+  ["Identity", "Auth0 establishes account identity."],
+  ["Policy", "Tenant, entitlement, rate, and usage checks run."],
+  ["Runtime", "The selected MCP handles the bounded operation."],
+  ["Receipt", "Outcome and usage impact can be recorded."],
 ];
 
 const controlMatrix = [
@@ -140,21 +117,18 @@ const awsProtection = [
 
 const readinessLayers = [
   {
-    id: "01",
     title: "Artifact",
     state: "Built",
     detail: "A package or image exists and can be identified.",
     nextGate: "Deployment, isolation, and customer readiness require separate evidence.",
   },
   {
-    id: "02",
     title: "Deployment",
     state: "Running",
     detail: "A bounded runtime is deployed and responds to its checks.",
     nextGate: "Product gates and support commitments require separate qualification.",
   },
   {
-    id: "03",
     title: "Readiness",
     state: "Qualified",
     detail: "Applicable security, persistence, protocol, release, and operating checks have evidence.",
@@ -199,7 +173,7 @@ const providers = [
     <main class="mx-auto min-h-screen max-w-[1480px] border-x border-white/20 bg-ink">
       <SiteHeader />
 
-      <section id="security-header" aria-labelledby="security-title" class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_24rem]">
+      <section id="security-header" aria-labelledby="security-title" class="border-b border-white/20">
         <div class="min-w-0 px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
           <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Security / Current boundary</p>
           <h1 id="security-title" class="mt-4 max-w-5xl text-[2.65rem] font-black uppercase leading-[0.84] min-[360px]:text-[3.2rem] sm:text-7xl lg:text-[5.2rem]">
@@ -218,54 +192,12 @@ const providers = [
           </div>
         </div>
 
-        <aside class="grid border-t border-white/20 lg:border-l lg:border-t-0">
-          <div class="grid grid-cols-2 border-b border-white/20">
-            <div class="border-r border-white/20 p-5 sm:p-6">
-              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/42">Posture date</p>
-              <p class="mt-4 text-2xl font-black uppercase">Aug 22</p>
-              <p class="mt-1 font-mono text-[0.62rem] text-white/44">2026 / CURRENT</p>
-            </div>
-            <div class="p-5 sm:p-6">
-              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/42">Public operator</p>
-              <p class="mt-4 text-2xl font-black uppercase">Monarchic</p>
-              <p class="mt-1 font-mono text-[0.62rem] text-white/44">LLC / SERVICE</p>
-            </div>
-          </div>
-          <div class="grid content-between gap-8 p-5 sm:p-6">
-            <div>
-              <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Document class</p>
-              <p class="mt-3 text-xl font-black uppercase">Operational boundary</p>
-            </div>
-            <p class="text-sm leading-7 text-white/58">
-              Covers platform controls, product-specific boundaries, provider responsibilities, and current public assurance claims.
-            </p>
-          </div>
-        </aside>
-      </section>
-
-      <section aria-label="Security boundary summary" class="grid border-b border-black bg-paper text-black sm:grid-cols-2 lg:grid-cols-4">
-        {controlSummary.map((item, index) => (
-          <article class:list={[
-            "min-h-48 p-5 sm:p-6",
-            index < controlSummary.length - 1 && "border-b border-black sm:border-b-0 sm:border-r",
-            index === 1 && "sm:border-r-0 lg:border-r",
-            index === 2 && "sm:border-t lg:border-t-0",
-            index === 3 && "sm:border-t lg:border-t-0",
-          ]}>
-            <div class="flex items-center justify-between gap-4 font-mono text-[0.62rem] font-bold uppercase">
-              <span>{item.label}</span>
-              <span class="border border-black px-2 py-1">{item.state}</span>
-            </div>
-            <p class="mt-12 text-base font-bold leading-6">{item.detail}</p>
-          </article>
-        ))}
       </section>
 
       <section id="hosted-boundaries" aria-labelledby="boundary-title" class="border-b border-white/20">
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">01 / Hosted boundaries</p>
-            <h2 id="boundary-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">How a hosted request is scoped.</h2>
+            <h2 id="boundary-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">How a hosted request is scoped.</h2>
           </div>
           <p class="max-w-3xl text-sm leading-7 text-white/62 lg:justify-self-end">
             Account and billing isolation covers the hosted control plane. Stateful MCP content follows product-specific namespace, persistence, and provider rules.
@@ -273,16 +205,12 @@ const providers = [
         </header>
 
         <ol class="grid lg:grid-cols-5">
-          {requestPath.map(([id, title, detail], index) => (
+          {requestPath.map(([title, detail], index) => (
             <li class:list={[
               "relative flex min-h-56 flex-col p-5 sm:p-6",
               index < requestPath.length - 1 && "border-b border-white/20 lg:border-b-0 lg:border-r",
             ]}>
-              <div class="flex items-center justify-between font-mono text-[0.62rem] font-bold uppercase">
-                <span class="text-signal">{id}</span>
-                <span class="text-white/36">{index < requestPath.length - 1 ? "NEXT →" : "RECORDED"}</span>
-              </div>
-              <div class="mt-auto pt-10">
+              <div class="mt-auto">
                 <h3 class="text-2xl font-black uppercase">{title}</h3>
                 <p class="mt-3 text-sm leading-7 text-white/58">{detail}</p>
               </div>
@@ -309,8 +237,7 @@ const providers = [
       <section id="verified-controls" aria-labelledby="controls-title" class="border-b border-white/20">
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">02 / Verified controls</p>
-            <h2 id="controls-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Read the scope before the status.</h2>
+            <h2 id="controls-title" class="max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Read the scope before the status.</h2>
           </div>
           <p class="text-sm leading-7 text-white/62">
             “Enforced” applies only to the named surface. Each product-specific and provider boundary is listed with its control.
@@ -340,8 +267,7 @@ const providers = [
       <section id="aws-data-protection" aria-labelledby="aws-protection-title" class="border-b border-black bg-paper text-black">
         <header class="grid gap-5 border-b border-black p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase">03 / AWS protection</p>
-            <h2 id="aws-protection-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">AWS controls in the hosted service.</h2>
+            <h2 id="aws-protection-title" class="max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">AWS controls in the hosted service.</h2>
           </div>
           <p class="text-sm leading-7 text-black/64">
             Verified against the dev, staging, production, and management accounts on August 22, 2026.
@@ -369,8 +295,7 @@ const providers = [
       <section id="deployment-and-readiness" aria-labelledby="readiness-title" class="border-b border-black bg-paper text-black">
         <header class="grid gap-5 border-b border-black p-5 sm:p-7 lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase">04 / Deployment and readiness</p>
-            <h2 id="readiness-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Three separate qualification states.</h2>
+            <h2 id="readiness-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Three separate qualification states.</h2>
           </div>
           <p class="max-w-3xl text-sm leading-7 text-black/64 lg:justify-self-end">
             Artifact creation, deployment, and product readiness are separate claims. Each needs its own evidence and each remains bounded to a product and environment.
@@ -383,7 +308,6 @@ const providers = [
               index < readinessLayers.length - 1 && "border-b border-black lg:border-b-0 lg:border-r",
             ]}>
               <div class="flex items-center justify-between font-mono text-[0.62rem] font-bold uppercase">
-                <span>{item.id}</span>
                 <span class="border border-black px-2 py-1">{item.state}</span>
               </div>
               <h3 class="mt-10 text-4xl font-black uppercase">{item.title}</h3>
@@ -397,8 +321,7 @@ const providers = [
       <section id="engineering-verification" aria-labelledby="verification-title" class="border-b border-white/20">
         <div class="grid lg:grid-cols-[22rem_minmax(0,1fr)]">
           <header class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">05 / Engineering verification</p>
-            <h2 id="verification-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">A receipt is evidence of an operation.</h2>
+            <h2 id="verification-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">A receipt is evidence of an operation.</h2>
             <p class="mt-5 text-sm leading-7 text-white/58">
               Enterprise audit exports and independent certification require separate agreements and evidence.
             </p>
@@ -436,8 +359,7 @@ const providers = [
       <section id="disclosure-and-claims" aria-labelledby="disclosure-title" class="border-b border-white/20">
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
           <div>
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">06 / Disclosure and claims</p>
-            <h2 id="disclosure-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Published assurance scope.</h2>
+            <h2 id="disclosure-title" class="max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Published assurance scope.</h2>
           </div>
           <p class="text-sm leading-7 text-white/62">
             Certification: none claimed. Universal SLA: none published. Model-training rights follow the service terms; a broader public policy is pending.
@@ -480,21 +402,6 @@ const providers = [
             </a>
           </article>
         </div>
-      </section>
-
-      <section id="next-paths" aria-labelledby="next-title" class="grid border-b border-black bg-signal text-black lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
-        <div class="p-5 sm:p-7">
-          <p class="font-mono text-[0.65rem] font-bold uppercase">07 / Next paths</p>
-          <h2 id="next-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Check the boundary before the workload.</h2>
-          <p class="mt-5 max-w-2xl text-sm font-medium leading-7 text-black/66">
-            Review the privacy inventory, inspect product-specific workflows, or ask about an order-specific security requirement before sending sensitive data.
-          </p>
-        </div>
-        <nav aria-label="Security next steps" class="grid border-t border-black sm:grid-cols-3 lg:border-l lg:border-t-0">
-          <a href="/privacy" class="flex min-h-24 items-center justify-between border-b border-black px-5 text-xs font-black uppercase transition hover:bg-black hover:text-white sm:border-b-0 sm:border-r lg:min-h-40">Privacy <span aria-hidden="true">↗</span></a>
-          <a href="/products" class="flex min-h-24 items-center justify-between border-b border-black px-5 text-xs font-black uppercase transition hover:bg-black hover:text-white sm:border-b-0 sm:border-r lg:min-h-40">Products <span aria-hidden="true">↗</span></a>
-          <a href="mailto:support@monarchic.io?subject=Security%20question" class="flex min-h-24 items-center justify-between px-5 text-xs font-black uppercase transition hover:bg-black hover:text-white lg:min-h-40">Ask security <span aria-hidden="true">↗</span></a>
-        </nav>
       </section>
 
       <SiteFooter />
