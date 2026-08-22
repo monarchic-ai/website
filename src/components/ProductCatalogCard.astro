@@ -23,7 +23,7 @@ const statusClass = hostedStatus === "available"
 
 <article
   data-plan-card={plan.slug}
-  class="group flex min-h-[285px] flex-col border border-white/45 bg-black/66 p-5 transition hover:border-signal focus-within:border-signal"
+  class="group flex min-h-[350px] flex-col border border-white/45 bg-black/66 p-5 transition hover:border-signal focus-within:border-signal"
 >
   <div class="flex flex-wrap items-start justify-between gap-3">
     <span class="text-[0.62rem] font-bold uppercase text-white/48">{detail?.category ?? "MCP"}</span>
@@ -32,7 +32,19 @@ const statusClass = hostedStatus === "available"
     </span>
   </div>
   <h3 class="mt-5 text-xl font-extrabold uppercase">{plan.displayName}</h3>
-  <p class="mt-3 text-sm leading-6 text-white/68">{plan.tagline}</p>
+  <p class="mt-3 text-sm leading-6 text-white/68">{detail?.useCase ?? plan.tagline}</p>
+  {detail && (
+    <dl class="mt-4 grid gap-3 border-t border-white/20 pt-4 text-xs leading-5">
+      <div>
+        <dt class="font-bold uppercase text-white/42">Best for</dt>
+        <dd class="mt-1 text-white/62">{detail.buyer}</dd>
+      </div>
+      <div>
+        <dt class="font-bold uppercase text-white/42">Primary outcome</dt>
+        <dd class="mt-1 text-white/62">{detail.outcomes[0]}</dd>
+      </div>
+    </dl>
+  )}
   <p class="mt-4 text-xs font-bold uppercase text-white/46">
     {hostedStatus === "available"
       ? "Included in shared plan usage"
