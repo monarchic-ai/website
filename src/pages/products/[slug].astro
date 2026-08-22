@@ -57,6 +57,17 @@ const mcpHostedStatus = plan.kind === "single-mcp" ? hostedMcpStatus(plan) : nul
 
 const planResearch = getMcpResearchByProductSlug(plan.slug);
 
+const connectionSummary = mcpHostedStatus === "available"
+  ? "Connect from an MCP-aware client with an account-scoped Monarchic key. The hosted route checks access, runs the named product contract, and records the operation on the account receipt."
+  : mcpHostedStatus === "in_rollout"
+    ? "The client contract and hosted runtime are being qualified outside production. Public credentials and production endpoints are not issued for this MCP yet."
+    : "The intended MCP contract is documented for evaluation, but no public hosted endpoint is available yet.";
+
+const productBoundary = workflowProof?.boundary
+  ?? (mcpHostedStatus === "in_rollout"
+    ? "A non-production deployment does not establish production readiness. Tenant isolation, cost attribution, and release gates remain open."
+    : "The page describes planned product scope. Tool availability, runtime behavior, and performance should not be inferred before the production gate passes.");
+
 function kindBadge(kind: PlanKind): string {
   if (kind === "usage-plan") return "Usage plan";
   if (kind === "single-mcp") return "MCP";
@@ -172,6 +183,34 @@ function statusClasses(plan: CatalogPlan): string {
                     Compare usage plans
                   </a>
                 )}
+              </section>
+            )}
+
+            {plan.kind === "single-mcp" && productDetail !== null && (
+              <section class="mt-10 border-y border-white/40">
+                <div class="grid lg:grid-cols-3">
+                  <article class="border-b border-white/30 py-6 lg:border-b-0 lg:border-r lg:pr-6">
+                    <p class="text-[0.65rem] font-bold uppercase text-signal">Why it exists</p>
+                    <p class="mt-3 text-sm leading-7 text-white/70">{productDetail.useCase}</p>
+                    <p class="mt-3 text-xs leading-6 text-white/48">
+                      Generic terminals, provider APIs, and custom prompts can cover parts of the work, but the caller must supply permission limits, evidence shape, failure handling, and usage accounting.
+                    </p>
+                  </article>
+                  <article class="border-b border-white/30 py-6 lg:border-b-0 lg:border-r lg:px-6">
+                    <p class="text-[0.65rem] font-bold uppercase text-signal">Connection and contract</p>
+                    <p class="mt-3 text-sm leading-7 text-white/70">{connectionSummary}</p>
+                    <p class="mt-3 text-xs leading-6 text-white/48">
+                      The product-specific schema keeps inputs and outputs inspectable for clients and downstream automation.
+                    </p>
+                  </article>
+                  <article class="py-6 lg:pl-6">
+                    <p class="text-[0.65rem] font-bold uppercase text-signal">Current boundary</p>
+                    <p class="mt-3 text-sm leading-7 text-white/70">{productBoundary}</p>
+                    {workflowProof !== null && (
+                      <p class="mt-3 text-xs leading-6 text-white/48">{workflowProof.permission}</p>
+                    )}
+                  </article>
+                </div>
               </section>
             )}
 
