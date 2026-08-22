@@ -87,7 +87,7 @@ const availabilityPercent = Math.round((availableMcpCount / publicMcpCount) * 10
           </div>
         </div>
 
-        <dl class="divide-y divide-white/14 px-5">
+        <dl class="hidden divide-y divide-white/14 px-5 sm:block">
           <div class="grid grid-cols-[1fr_auto] gap-4 py-4">
             <dt class="font-mono text-[0.65rem] uppercase text-white/44">Available MCPs</dt>
             <dd class="font-mono text-xs text-white">{String(availableMcpCount).padStart(2, "0")}</dd>

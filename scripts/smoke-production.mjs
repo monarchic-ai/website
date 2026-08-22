@@ -203,12 +203,13 @@ async function runBrowserSmoke() {
       await expectMeta(page, "og:image:width", "1200");
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
-      await page.getByRole("link", { name: "Coming soon MCPs" }).first().waitFor();
-      for (const metric of ["99.8%", "100%", "62.5 ms"]) {
-        await page.getByText(metric, { exact: true }).first().waitFor();
-      }
-      await page.getByText("One plan covers every available MCP.").waitFor();
-      await page.getByText(`${expectedClassifiedOperationCount} classified operations`, { exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Featured MCPs." }).waitFor();
+      await page.getByRole("heading", { name: "Start a 30-day evaluation." }).waitFor();
+      await page.getByRole("link", { name: "Compare plans" }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "Create evaluation account" }),
+        `${expectedAppBaseUrl}/products/usage-evaluation`,
+      );
       await expectTextAbsent(page, [
         "Hosted staging MCP route",
         "3.45s",
@@ -216,6 +217,9 @@ async function runBrowserSmoke() {
         "Agent tools that leave evidence.",
         "Autonomous engineering",
         "control plane",
+        "From catalog to first tool call.",
+        "The benchmark includes the method, failures, and limits.",
+        "Tell us which coming-soon MCP matters next.",
       ]);
       await expectNoHorizontalOverflow(page);
     }, "home route");

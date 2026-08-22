@@ -3,26 +3,14 @@ import HostedMcpScene from "../components/HostedMcpScene.astro";
 import SeoHead from "../components/SeoHead.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import WaitlistForm from "../components/WaitlistForm.svelte";
 import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
 import { allPlans, hostedMcpStatus } from "../lib/pricing";
-import usagePolicy from "../lib/usage-policy.generated.json" with { type: "json" };
 import "../styles/global.css";
 
-const apiBaseUrl = import.meta.env.PUBLIC_MONARCHIC_API_BASE_URL ?? "https://api.monarchic.io";
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const publicMcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableMcpCount = publicMcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
-const comingSoonProducts = allPlans
-  .filter((plan) => plan.kind === "single-mcp" && hostedMcpStatus(plan) !== "available")
-  .map((plan) => ({ slug: plan.slug, label: plan.displayName }));
-
-const connectionSteps = [
-  ["01", "Choose", "Compare each current MCP by job and public availability."],
-  ["02", "Plan", "Use one weekly execution allowance across available MCPs."],
-  ["03", "Connect", "Create a scoped key and copy a client-ready configuration."],
-  ["04", "Call", "Run tools from your MCP client and inspect the usage impact."],
-];
+const comingSoonMcpCount = publicMcpProducts.length - availableMcpCount;
 
 const featuredRoutes = [
   {
@@ -62,12 +50,6 @@ const featuredRoutes = [
   },
 ];
 
-const proofPoints = [
-  [explicitMemBenchmark.answerAccuracy, "Accuracy", `${explicitMemBenchmark.benchmark} answer accuracy`],
-  [explicitMemBenchmark.answerFaithfulness, "Faithfulness", "Answer faithfulness"],
-  [explicitMemBenchmark.retrievalRecallAtK, "Recall@K", "Retrieval coverage"],
-  [explicitMemBenchmark.averageLatency, "Local latency", "Average evaluation time"],
-];
 ---
 
 <html lang="en">
@@ -88,17 +70,7 @@ const proofPoints = [
       <SiteHeader />
 
       <section id="introduction" aria-labelledby="home-title">
-        <div class="grid border-b border-white/20 lg:grid-cols-[11rem_minmax(0,1fr)_20rem]">
-          <div class="hidden border-r border-white/20 p-5 lg:flex lg:flex-col lg:justify-between">
-            <p class="font-mono text-[0.65rem] font-bold uppercase">MCP catalog / 01</p>
-            <p class="font-mono text-[0.65rem] uppercase leading-5 text-white/46">
-              Choose<br />
-              Connect<br />
-              Call<br />
-              Measure
-            </p>
-          </div>
-
+        <div class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <div class="min-w-0 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
             <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Purpose-built tools for MCP clients</p>
             <h1 id="home-title" class="mt-3 max-w-5xl text-[2.45rem] font-black uppercase leading-[0.82] min-[360px]:text-[3rem] min-[420px]:text-[3.45rem] sm:text-7xl lg:text-[5.2rem] xl:text-[5.2rem]">
@@ -127,101 +99,23 @@ const proofPoints = [
         </div>
 
         <HostedMcpScene />
-
-        <div class="grid border-b border-black bg-signal font-mono text-[0.65rem] font-bold uppercase text-black sm:grid-cols-3">
-          <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Scoped key / client ready</p>
-          <p class="border-b border-black px-4 py-3 sm:border-b-0 sm:border-r sm:px-6">Usage / account visible</p>
-          <p class="px-4 py-3 sm:px-6">Catalog / Available + roadmap</p>
-        </div>
-      </section>
-
-      <section id="connection-model" aria-labelledby="connection-title" class="border-b border-white/20">
-        <div class="grid lg:grid-cols-[22rem_minmax(0,1fr)]">
-          <header class="border-b border-white/20 p-5 lg:border-b-0 lg:border-r lg:p-7">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Connect / 02</p>
-            <h2 id="connection-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">
-              From catalog to first tool call.
-            </h2>
-            <p class="mt-5 text-sm leading-6 text-white/58">
-              Start with one tool. Add others to the same account when the work
-              calls for them.
-            </p>
-          </header>
-
-          <ol class="grid sm:grid-cols-2">
-            {connectionSteps.map(([id, label, detail], index) => (
-              <li class:list={[
-                "grid min-h-44 content-between gap-5 border-white/20 p-5 sm:p-6",
-                index % 2 === 0 && "sm:border-r",
-                index < 2 && "border-b",
-                index === 2 && "border-b sm:border-b-0",
-              ]}>
-                <div class="flex items-center justify-between gap-4 font-mono text-[0.65rem] font-bold uppercase">
-                  <span>{id}</span>
-                  <span class="text-white/34">Account flow</span>
-                </div>
-                <div>
-                  <h3 class="text-xl font-black uppercase">{label}</h3>
-                  <p class="mt-2 max-w-md text-sm leading-6 text-white/56">{detail}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section id="proof" aria-labelledby="proof-title" class="border-b border-black bg-signal text-black">
-        <div class="grid min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
-          <header class="min-w-0 border-b border-black p-5 sm:p-7 lg:border-b-0 lg:border-r">
-            <p class="font-mono text-[0.65rem] font-bold uppercase">Research record / 03</p>
-            <h2 id="proof-title" class="mt-4 max-w-2xl text-4xl font-black uppercase leading-[0.94] sm:text-5xl">
-              The benchmark includes the method, failures, and limits.
-            </h2>
-            <p class="mt-5 max-w-2xl text-sm leading-7 text-black/68">
-              ExplicitMem was evaluated against {explicitMemBenchmark.questions} {explicitMemBenchmark.benchmark} questions
-              under one fixed benchmark synthesis profile. The evidence receipt,
-              remaining mismatch, and limits sit beside the headline.
-            </p>
-            <a href="/research/explicitmem" class="mt-6 inline-flex min-h-11 items-center border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-paper hover:text-black">
-              Read methodology
-            </a>
-          </header>
-
-          <div class="grid min-w-0 grid-cols-1 min-[360px]:grid-cols-2">
-            {proofPoints.map(([value, label, scope], index) => (
-              <div class:list={[
-                "min-w-0 min-h-48 border-black p-5 sm:p-6",
-                index % 2 === 0 && "min-[360px]:border-r",
-                index < 2 && "border-b",
-                index === 2 && "border-b min-[360px]:border-b-0",
-              ]}>
-                <p class="font-mono text-[0.65rem] font-bold uppercase text-black/54">{label}</p>
-                <p class="mt-6 text-3xl font-black leading-none sm:text-5xl">{value}</p>
-                <p class="mt-4 max-w-48 text-xs font-bold uppercase leading-5 text-black/58">{scope}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       <section id="catalog" aria-labelledby="catalog-title" class="border-b border-white/20">
         <header class="grid border-b border-white/20 lg:grid-cols-[1fr_1fr]">
           <div class="p-5 sm:p-7">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Hosted tool layer / 04</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Hosted catalog / 02</p>
             <h2 id="catalog-title" class="mt-4 text-4xl font-black uppercase leading-none sm:text-5xl">
-              {availableMcpCount} MCPs<br />available now.
+              Featured MCPs.
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
             <p class="max-w-2xl text-base leading-7 text-white/62">
               The public catalog lists {publicMcpProducts.length} MCPs. {availableMcpCount} are
-              available today, with {comingSoonProducts.length} more coming soon. Coming-soon MCPs
-              cannot be checked out until their hosted deployment gates pass.
+              available today, with {comingSoonMcpCount} more on the roadmap.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <a href="/products" class="inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">Full catalog</a>
-              <a href="/research" class="inline-flex min-h-11 items-center border border-white/50 px-4 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Research</a>
-              <a href="/products#coming-soon-mcps" class="inline-flex min-h-11 items-center border border-white/50 px-4 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">Coming soon MCPs</a>
             </div>
           </div>
         </header>
@@ -229,7 +123,7 @@ const proofPoints = [
         <div>
           {featuredRoutes.map((route, index) => (
             <a href={route.href} class:list={[
-              "group grid min-h-28 items-center gap-4 px-5 py-5 transition hover:bg-signal hover:text-black sm:grid-cols-[3rem_minmax(9rem,0.6fr)_minmax(0,1fr)_auto] sm:px-7",
+              "group grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 px-5 py-4 transition hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[3rem_minmax(9rem,0.6fr)_minmax(0,1fr)_auto] sm:gap-4 sm:px-7 sm:py-5",
               index < featuredRoutes.length - 1 && "border-b border-white/20",
             ]}>
               <span class="font-mono text-[0.65rem] text-white/34 group-hover:text-black/42">{String(index + 1).padStart(2, "0")}</span>
@@ -237,64 +131,30 @@ const proofPoints = [
                 <p class="text-xl font-black uppercase">{route.label}</p>
                 <p class="mt-1 font-mono text-[0.62rem] font-bold uppercase opacity-52">{route.role}</p>
               </div>
-              <p class="max-w-2xl text-sm leading-6 opacity-64">{route.proof}</p>
+              <p class="col-span-2 col-start-2 max-w-2xl text-sm leading-6 opacity-64 sm:col-auto sm:col-start-auto">{route.proof}</p>
               <span class="font-mono text-[0.62rem] font-bold uppercase text-signal group-hover:text-black">{route.signal}</span>
             </a>
           ))}
         </div>
       </section>
 
-      <section id="pricing_model" aria-labelledby="pricing-title" class="border-b border-white/20 bg-white/[0.025] text-white">
-        <div class="grid lg:grid-cols-[minmax(0,1fr)_22rem]">
-          <div class="p-5 sm:p-8 lg:p-10">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Adaptive usage / 05</p>
-            <h2 id="pricing-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
-              One plan covers every available MCP.
-            </h2>
-            <p class="mt-6 max-w-3xl text-base leading-7 text-white/62">
-              {usagePolicy.pricing.publicClaim} See one weekly execution
-              percentage across the catalog. Usage refreshes every
-              {` ${usagePolicy.allowance.cadenceDays} days`}, can roll across one
-              refresh, and pauses at the limit without automatic overage.
-            </p>
-          </div>
-          <div class="grid content-between border-t border-white/24 p-5 lg:border-l lg:border-t-0 lg:p-7">
-            <div class="font-mono text-[0.65rem] uppercase leading-6 text-white/48">
-              <p>Evaluation → Business</p>
-              <p>Available MCPs included</p>
-              <p>Weekly percentage + refresh date</p>
-              <p>{usagePolicy.catalog.classifiedOperationCount.toLocaleString("en-US")} classified operations</p>
-              <p>Operation-level usage receipts</p>
-            </div>
-            <a href="/products#plans" class="mt-8 inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-paper">
-              Compare plans <span aria-hidden="true">↗</span>
-            </a>
-          </div>
+      <section id="start" aria-labelledby="start-title" class="grid border-b border-black bg-signal text-black lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div class="p-5 sm:p-8 lg:p-10">
+          <p class="font-mono text-[0.65rem] font-bold uppercase">Start / 03</p>
+          <h2 id="start-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
+            Start a 30-day evaluation.
+          </h2>
+          <p class="mt-5 max-w-2xl text-base leading-7 text-black/68">
+            Create an account, issue a scoped key, and connect from your MCP client.
+          </p>
         </div>
-      </section>
-
-      <section id="waitlist" aria-labelledby="waitlist-title" class="border-b border-white/20">
-        <div class="grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-          <div class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Product signal / 06</p>
-            <h2 id="waitlist-title" class="mt-4 max-w-2xl text-4xl font-black uppercase leading-[0.94] sm:text-5xl">
-              Tell us which coming-soon MCP matters next.
-            </h2>
-            <p class="mt-5 max-w-xl text-sm leading-7 text-white/60">
-              Choose one coming-soon or in-rollout MCP to receive an access update.
-              These products are not available for checkout until their hosted gates pass.
-            </p>
-          </div>
-          <div class="bg-white/[0.025] p-5 text-white sm:p-7 lg:p-10">
-            <p class="mb-5 font-mono text-[0.65rem] font-bold uppercase text-white/46">Register interest</p>
-            <WaitlistForm
-              client:load
-              apiBaseUrl={apiBaseUrl}
-              slug={comingSoonProducts[0]?.slug ?? "monarchic-ai"}
-              products={comingSoonProducts}
-              submitLabel="Join waitlist"
-            />
-          </div>
+        <div class="grid content-end gap-2 border-t border-black p-5 lg:border-l lg:border-t-0 lg:p-7">
+          <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-black bg-black px-4 text-xs font-black uppercase text-white transition hover:bg-paper hover:text-black">
+            Create evaluation account <span aria-hidden="true">↗</span>
+          </a>
+          <a href="/products#plans" class="inline-flex min-h-12 items-center justify-between border border-black px-4 text-xs font-black uppercase text-black transition hover:bg-paper">
+            Compare plans <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </section>
 
