@@ -1,4 +1,3 @@
-import contentJson from "./mcpResearchContent.json" with { type: "json" };
 import {
   allPlans,
   hostedMcpStatus,
@@ -11,111 +10,66 @@ import {
   type ProductWorkflowProof,
 } from "./productWorkflowProofs";
 
-export const RESEARCH_REVIEWED_ON = "9 August 2026";
+export const RESEARCH_REVIEWED_ON = "22 August 2026";
 
-export interface McpResearchContent {
+export interface McpResearchEntry {
   productSlug: string;
   question: string;
   evaluationLens: string;
   limit: string;
-}
-
-export interface McpResearchEntry extends McpResearchContent {
   plan: CatalogPlan;
   detail: ProductDetail;
   workflowProof: ProductWorkflowProof | null;
   hostedStatus: HostedMcpStatus;
   researchSlug: string;
   href: string;
-  briefLabel: "Published benchmark" | "Production research note" | "Pre-launch research program";
-  evidenceLabel: "Dated benchmark" | "Public workflow basis" | "Evaluation protocol";
-  publishedBenchmark: boolean;
+  briefLabel: "Published benchmark";
+  evidenceLabel: "Dated benchmark";
+  publishedBenchmark: true;
 }
 
-const content = contentJson as McpResearchContent[];
-for (const [index, entry] of content.entries()) {
-  for (const field of ["productSlug", "question", "evaluationLens", "limit"] as const) {
-    if (typeof entry[field] !== "string" || entry[field].trim().length === 0) {
-      throw new Error(`MCP research entry ${index} has an invalid ${field}`);
-    }
+const productSlug = "mcp-explicitmem";
+const plan = allPlans.find((candidate) => candidate.slug === productSlug);
+if (!plan || plan.kind !== "single-mcp") {
+  throw new Error("ExplicitMem public MCP plan is missing");
+}
+
+const detail = getProductDetail(productSlug);
+if (!detail) throw new Error("ExplicitMem product detail is missing");
+
+const explicitMemResearch: McpResearchEntry = {
+  productSlug,
+  question: "How accurately do fixed ExplicitMem retrieval and synthesis configurations support answers across the published evaluation sets?",
+  evaluationLens: "Use dated, versioned artifacts for LongMemEval-S, LoCoMo, cross-dataset retrieval policy, and generic-answer support checks.",
+  limit: "Each result applies only to its named dataset, configuration, metric, and artifact. The studies do not establish a cross-product ranking, general agent accuracy, or hosted latency guarantee.",
+  plan,
+  detail,
+  workflowProof: getProductWorkflowProof(productSlug),
+  hostedStatus: hostedMcpStatus(plan),
+  researchSlug: "explicitmem",
+  href: "/research/explicitmem",
+  briefLabel: "Published benchmark",
+  evidenceLabel: "Dated benchmark",
+  publishedBenchmark: true,
+};
+
+export const mcpResearchEntries: McpResearchEntry[] = [explicitMemResearch];
+
+export function researchSlugForProductSlug(candidateSlug: string): string {
+  if (!/^mcp-[a-z0-9-]+$/.test(candidateSlug)) {
+    throw new Error(`Invalid MCP product slug for research: ${candidateSlug}`);
   }
-}
-const mcpPlans = allPlans
-  .filter((plan) => plan.kind === "single-mcp")
-  .sort((left, right) => left.slug.localeCompare(right.slug));
-const contentSlugs = content.map((entry) => entry.productSlug).sort();
-const catalogSlugs = mcpPlans.map((plan) => plan.slug);
-
-if (JSON.stringify(contentSlugs) !== JSON.stringify(catalogSlugs)) {
-  throw new Error(
-    `MCP research coverage does not match the public catalog: expected ${catalogSlugs.join(", ")}, got ${contentSlugs.join(", ")}`,
-  );
+  return candidateSlug.slice(4);
 }
 
-const seenResearchSlugs = new Set<string>();
-
-export const mcpResearchEntries: McpResearchEntry[] = content
-  .map((entry) => {
-    const plan = mcpPlans.find((candidate) => candidate.slug === entry.productSlug);
-    if (!plan) throw new Error(`Missing public MCP plan for ${entry.productSlug}`);
-
-    const detail = getProductDetail(entry.productSlug);
-    if (!detail) throw new Error(`Missing product detail for ${entry.productSlug}`);
-
-    const researchSlug = researchSlugForProductSlug(entry.productSlug);
-    if (seenResearchSlugs.has(researchSlug)) {
-      throw new Error(`Duplicate MCP research route slug: ${researchSlug}`);
-    }
-    seenResearchSlugs.add(researchSlug);
-
-    const status = hostedMcpStatus(plan);
-    const workflowProof = getProductWorkflowProof(entry.productSlug);
-    if (status === "available" && workflowProof === null) {
-      throw new Error(`Available MCP research requires a public workflow proof: ${entry.productSlug}`);
-    }
-    if (status !== "available" && workflowProof !== null) {
-      throw new Error(`Non-available MCP research cannot claim a production workflow proof: ${entry.productSlug}`);
-    }
-
-    const publishedBenchmark = entry.productSlug === "mcp-explicitmem";
-    return {
-      ...entry,
-      plan,
-      detail,
-      workflowProof,
-      hostedStatus: status,
-      researchSlug,
-      href: `/research/${researchSlug}`,
-      briefLabel: publishedBenchmark
-        ? "Published benchmark"
-        : status === "available"
-          ? "Production research note"
-          : "Pre-launch research program",
-      evidenceLabel: publishedBenchmark
-        ? "Dated benchmark"
-        : status === "available"
-          ? "Public workflow basis"
-          : "Evaluation protocol",
-      publishedBenchmark,
-    } satisfies McpResearchEntry;
-  })
-  .sort((left, right) => left.plan.displayName.localeCompare(right.plan.displayName));
-
-export function researchSlugForProductSlug(productSlug: string): string {
-  if (!/^mcp-[a-z0-9-]+$/.test(productSlug)) {
-    throw new Error(`Invalid MCP product slug for research: ${productSlug}`);
-  }
-  return productSlug.slice(4);
-}
-
-export function getMcpResearchByProductSlug(productSlug: string): McpResearchEntry | null {
-  return mcpResearchEntries.find((entry) => entry.productSlug === productSlug) ?? null;
+export function getMcpResearchByProductSlug(candidateSlug: string): McpResearchEntry | null {
+  return mcpResearchEntries.find((entry) => entry.productSlug === candidateSlug) ?? null;
 }
 
 export function getMcpResearchByRouteSlug(researchSlug: string): McpResearchEntry | null {
   return mcpResearchEntries.find((entry) => entry.researchSlug === researchSlug) ?? null;
 }
 
-export function researchHrefForProductSlug(productSlug: string): string | null {
-  return getMcpResearchByProductSlug(productSlug)?.href ?? null;
+export function researchHrefForProductSlug(candidateSlug: string): string | null {
+  return getMcpResearchByProductSlug(candidateSlug)?.href ?? null;
 }
