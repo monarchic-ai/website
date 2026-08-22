@@ -171,7 +171,7 @@ async function runBrowserSmoke() {
       if (body.email !== "smoke+website@monarchic.ai") {
         throw new Error(`unexpected waitlist email: ${body.email}`);
       }
-      if (body.slug !== "mcp-codeintel") {
+      if (body.slug !== "mcp-orgfleet") {
         throw new Error(`unexpected waitlist slug: ${body.slug}`);
       }
       await route.fulfill({
@@ -406,9 +406,9 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/waitlist`, async () => {
       await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
-      await page.getByLabel("Product interest").selectOption("mcp-codeintel");
-      if (await page.getByLabel("Product interest").inputValue() !== "mcp-codeintel") {
-        throw new Error("expected the planned CodeIntel MCP to be available in the waitlist selector");
+      await page.getByLabel("Product interest").selectOption("mcp-orgfleet");
+      if (await page.getByLabel("Product interest").inputValue() !== "mcp-orgfleet") {
+        throw new Error("expected the planned OrgFleet MCP to be available in the waitlist selector");
       }
       await page.getByLabel("Email").fill("smoke+website@monarchic.ai");
       await page.getByRole("button", { name: "Join waitlist" }).click();
@@ -426,9 +426,9 @@ async function runBrowserSmoke() {
       const cardCount = await researchCards.count();
       const availableCardCount = await availableResearchCards.count();
       const plannedCardCount = await plannedResearchCards.count();
-      if (cardCount !== 24 || availableCardCount !== 16 || plannedCardCount !== 8) {
+      if (cardCount !== 24 || availableCardCount !== 18 || plannedCardCount !== 6) {
         throw new Error(
-          `Expected research cards 24 total / 16 available / 8 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
+          `Expected research cards 24 total / 18 available / 6 planned, got ${cardCount} / ${availableCardCount} / ${plannedCardCount}`,
         );
       }
       await researchCards.locator('a[href="/research/explicitmem"]').waitFor();
@@ -454,8 +454,9 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/research/codeintel`, async () => {
       const brief = page.locator('[data-research-brief="mcp-codeintel"]');
       await brief.waitFor();
-      await brief.getByText("Pre-launch research program", { exact: true }).waitFor();
-      await brief.getByText("No production result is claimed.", { exact: true }).waitFor();
+      await brief.getByText("Production research note", { exact: true }).waitFor();
+      await brief.getByRole("heading", { name: "Public workflow basis", exact: true }).waitFor();
+      await brief.getByText("Map a retained codebase from its indexed structure", { exact: true }).waitFor();
       await expectHref(
         brief.locator('a[href="/products/mcp-codeintel"]').first(),
         "/products/mcp-codeintel",
@@ -489,8 +490,8 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/research/codeintel`, async () => {
       const brief = page.locator('[data-research-brief="mcp-codeintel"]');
       await brief.waitFor();
-      await brief.getByText("Pre-launch research program", { exact: true }).waitFor();
-      await brief.getByText("No production result is claimed.", { exact: true }).waitFor();
+      await brief.getByText("Production research note", { exact: true }).waitFor();
+      await brief.getByRole("heading", { name: "Public workflow basis", exact: true }).waitFor();
       await expectHref(
         brief.locator('a[href="/products/mcp-codeintel"]').first(),
         "/products/mcp-codeintel",

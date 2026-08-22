@@ -108,6 +108,62 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     boundary: "The analysis covers only the submitted files and cannot infer repository-wide behavior from missing code.",
     usageExplanation: "The completed analysis receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
+  "mcp-codeintel": {
+    slug: "mcp-codeintel",
+    title: "Map a retained codebase from its indexed structure",
+    request: "Show me the components, entry points, and relationships in this repository.",
+    calls: [{
+      tool: "codeintel_hosted_map_v1",
+      arguments: {
+        freshness: "require-current",
+        scope: ["repository"],
+      },
+    }],
+    execution: "Reads the tenant-scoped durable index and returns a bounded component and relationship map without rebuilding or uploading state on the read path.",
+    outputKind: "Representative contract excerpt",
+    output: {
+      schema: "codeintel.hosted-map.v1",
+      status: "ready",
+      summary: {
+        files: 42,
+        objects: 318,
+        relationships: 704,
+        languages: ["typescript"],
+      },
+      freshness: { status: "current" },
+    },
+    permission: "Requires an authenticated, entitled account and a tenant-scoped retained repository. Repository identity and storage paths are resolved by hosted orchestration.",
+    boundary: "The map reflects the retained revision and the capabilities of its language servers. It does not claim runtime coverage or semantic certainty beyond indexed evidence.",
+    usageExplanation: "The completed map receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
+  },
+  "mcp-codeprofiler": {
+    slug: "mcp-codeprofiler",
+    title: "Build a bounded profiling plan before running probes",
+    request: "Assess this retained codebase and identify the measurements that fit the stated performance concern.",
+    calls: [{
+      tool: "codeprofiler_hosted_assess_v1",
+      arguments: {
+        symptoms: ["Build latency increased after dependency changes"],
+        scenario: "Representative build and startup path",
+        constraints: ["Do not access production data"],
+        mode: "standard",
+      },
+    }],
+    execution: "Inspects bounded retained source evidence, detects the stack, and returns an explicit measurement plan before any profiler job is dispatched.",
+    outputKind: "Representative contract excerpt",
+    output: {
+      status: "ready",
+      inventory: { languages: ["typescript"] },
+      recommendedProfilers: [
+        { profiler: "scc", availableForBoundedRun: true },
+        { profiler: "tokei", availableForBoundedRun: true },
+      ],
+      confidence: 0.9,
+    },
+    permission: "Requires an authenticated, entitled account and bounded tenant-scoped source evidence. The assessment operation is read-only and does not start an external profiler.",
+    boundary: "Assessment recommends measurements; it does not prove a bottleneck. Approved profiling jobs remain bounded, read-only, and return untrusted tool output as evidence.",
+    usageExplanation: "The completed assessment receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
+  },
   "mcp-copydev": {
     slug: "mcp-copydev",
     title: "Find vague language before copy reaches production",

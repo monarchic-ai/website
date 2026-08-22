@@ -458,17 +458,17 @@
     "slug": "mcp-codeintel",
     "displayName": "CodeIntel MCP",
     "tagline": "Live code navigation and language-server intelligence",
-    "description": "CodeIntel MCP keeps a durable repository index and warm language-server sessions for symbol lookup, references, diagnostics, and code navigation. The hosted runtime has passed production qualification. Customer access is coming soon.",
+    "description": "CodeIntel MCP keeps a tenant-scoped repository index and warm language-server sessions for symbol lookup, references, diagnostics, and code navigation through the hosted catalog.",
     "featureBullets": [
       "Navigate symbols and references across large repositories",
       "Reuse warm language-server sessions between related calls",
       "Keep repository indexing separate for each tenant"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "The hosted runtime is qualified for internal use. Customer access is coming soon. Indexing and language-server work will use the shared account allowance when access opens.",
-    "lifecycle": "wip",
-    "hostedStatus": "planned",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog for authenticated, entitled accounts. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
@@ -476,17 +476,17 @@
     "slug": "mcp-codeprofiler",
     "displayName": "CodeProfiler MCP",
     "tagline": "Codebase profiling plans and bounded analysis jobs",
-    "description": "CodeProfiler MCP detects a repository's languages and project markers, builds a profiling plan, and runs bounded read-only probes in an isolated job. The hosted runtime has passed production qualification. Customer access is coming soon.",
+    "description": "CodeProfiler MCP detects a repository's languages and project markers, builds a profiling plan, and runs bounded read-only probes through the hosted catalog.",
     "featureBullets": [
       "Choose profiling tools from the repository's actual stack",
       "Separate quick inventory from deeper analysis jobs",
       "Return tool output and failures in one structured result"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "The hosted runtime is qualified for internal use. Customer access is coming soon. Each profiling operation will use the class fixed in the applicable rate card.",
-    "lifecycle": "wip",
-    "hostedStatus": "planned",
-    "status": "coming_soon",
+    "usageSummary": "Available through the hosted catalog for authenticated, entitled accounts. Calls count against the shared allowance on the account plan.",
+    "lifecycle": "production",
+    "hostedStatus": "available",
+    "status": "available",
     "prices": []
   },
   {
