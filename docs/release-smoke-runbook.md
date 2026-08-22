@@ -6,16 +6,16 @@ This runbook covers the public website live smoke gate.
 
 Latest staging validation: 2026-08-22 UTC.
 
-- Website commit `4243b7171d12c3d5cc5a24f73a5ced2fe364c8c5` is deployed to the
+- Website commit `8b551e5f175a2f3a1288f48a9be15d751fa36122` is deployed to the
   isolated `website-staging` project as
-  `dpl_83VksGMJJPgQ8qnq4WPoZnySW6kY`.
+  `dpl_J6dZ164o7zvBDH1jh4e9gLyHXYmW`.
 - Full browser smoke passed against `https://staging.monarchic.io` on
   2026-08-22 UTC. The checks covered security headers, DNS and HTTP responses,
   build info, metadata, 30 catalog plans, 18 hosted workflow proofs, the one
   approved research route, all four ExplicitMem study scopes, corporate legal
   boundaries, redirects, waitlist behavior, and 320px overflow.
 - `/build-info.json` reports commit
-  `4243b7171d12c3d5cc5a24f73a5ced2fe364c8c5` and catalog artifact digest
+  `8b551e5f175a2f3a1288f48a9be15d751fa36122` and catalog artifact digest
   `sha256:f717ad45996d8995884137bcd2eb8209c5d42fec67061f69705e9a9be2699ee1`.
 - Production continues to serve commit
   `3b1c444bc07a9e9444e7f86d2bb2c3a2f71173a8` until the staging candidate is
