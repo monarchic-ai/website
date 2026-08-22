@@ -108,8 +108,8 @@ const awsProtection = [
   },
   {
     control: "External access",
-    state: "4 / 4 accounts",
-    detail: "IAM Access Analyzer scans external resource access in every account. Findings remain visible until their trust or policy is reviewed.",
+    state: "20 / 20 reviewed",
+    detail: "IAM Access Analyzer runs in all four accounts. On August 22, every current IAM finding was non-public, every live trust policy matched its reviewed hash, and no analyzer error remained.",
   },
   {
     control: "Operational alerts",
@@ -222,7 +222,7 @@ const providers = [
           <div class="grid grid-cols-2 border-b border-white/20">
             <div class="border-r border-white/20 p-5 sm:p-6">
               <p class="font-mono text-[0.62rem] font-bold uppercase text-white/42">Posture date</p>
-              <p class="mt-4 text-2xl font-black uppercase">Aug 21</p>
+              <p class="mt-4 text-2xl font-black uppercase">Aug 22</p>
               <p class="mt-1 font-mono text-[0.62rem] text-white/44">2026 / CURRENT</p>
             </div>
             <div class="p-5 sm:p-6">
