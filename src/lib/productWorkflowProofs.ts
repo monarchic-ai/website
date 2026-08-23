@@ -261,26 +261,6 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     boundary: "This is a mathematical calculation, not medical advice or a recommendation to prepare or administer a substance.",
     usageExplanation: "The calculation receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
-  "mcp-pty": {
-    slug: "mcp-pty",
-    title: "Open a bounded terminal session and capture its output",
-    request: "Run one echo command in an isolated session.",
-    calls: [{
-      tool: "pty_open",
-      arguments: { command: "/bin/echo", args: ["hosted PTY ready"] },
-    }],
-    execution: "Starts one isolated terminal session with the requested bounded command and returns a session handle for observable reads and closure.",
-    outputKind: "Representative contract excerpt",
-    output: {
-      contract: "pty.open-session.v1",
-      status: "open",
-      command: "/bin/echo",
-      output: "hosted PTY ready",
-    },
-    permission: "Requires an authenticated, entitled account. Runtime policy controls the executable, resource limits, and session lifetime.",
-    boundary: "PTY access is not an unrestricted host shell. Sessions are isolated, time-bounded, and subject to command and resource policy.",
-    usageExplanation: "Terminal work receives a measured duration receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
-  },
   "mcp-repo-fleet": {
     slug: "mcp-repo-fleet",
     title: "List the repositories in a governed fleet manifest",

@@ -85,6 +85,7 @@ export const supersededPublicPlanSlugs = new Set([
 // These products are intentionally withdrawn from the current offer while
 // their implementation repositories and historical evidence remain intact.
 export const withdrawnPublicPlanSlugs = new Set([
+  "mcp-pty",
   "mcp-webcomposer",
   "mcp-webimplementer",
 ]);

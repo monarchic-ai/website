@@ -34,13 +34,15 @@ includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 
 const products = page("/products");
 includes(products.text, [
   "Find an MCP by workflow",
+  "17 of 23 MCPs available",
   "Understand and change code",
   "Ship and operate systems",
   "Plan and grow",
   "Build product surfaces",
   "Use specialist context",
 ], "Product workflow catalog");
-assert(count(products.html, /data-plan-card="mcp-/g) === 24, "Product catalog must render exactly 24 public MCP cards.");
+assert(count(products.html, /data-plan-card="mcp-/g) === 23, "Product catalog must render exactly 23 public MCP cards.");
+assert(!existsSync(routeFile("/products/mcp-pty")), "Internal PTY route must not be published.");
 
 const availableProduct = page("/products/mcp-repointel");
 includes(availableProduct.text, ["Why it exists", "Connection and contract", "Current boundary", "Concrete workflow / priced call"], "Available product decision context");

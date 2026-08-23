@@ -50,7 +50,6 @@ const requiredCatalogSlugs = [
   "mcp-nutrition",
   "mcp-orgfleet",
   "mcp-orgintel",
-  "mcp-pty",
   "mcp-releaseops",
   "mcp-repo-fleet",
   "mcp-repointel",
@@ -66,7 +65,7 @@ const retiredCatalogSlugs = [
   "mcp-verified",
 ];
 const supersededCatalogSlugs = ["mcp-monarchic"];
-const withdrawnCatalogSlugs = ["mcp-webcomposer", "mcp-webimplementer"];
+const withdrawnCatalogSlugs = ["mcp-pty", "mcp-webcomposer", "mcp-webimplementer"];
 const forbiddenCatalogSlugs = [
   ...retiredCatalogSlugs,
   ...supersededCatalogSlugs,
@@ -345,7 +344,6 @@ async function runBrowserSmoke() {
       { slug: "mcp-infraprofiler", tool: "profile_pipeline" },
       { slug: "mcp-leadgenerator", tool: "score_provided_leads" },
       { slug: "mcp-nutrition", tool: "nutrition_dilution" },
-      { slug: "mcp-pty", tool: "pty_open" },
       { slug: "mcp-releaseops", tool: "releaseops_verify_tag_pack" },
       { slug: "mcp-repo-fleet", tool: "repo_fleet_list" },
       { slug: "mcp-repointel", tool: "get_repository_summary" },
