@@ -202,7 +202,7 @@ export const productDetails: Record<string, ProductDetail> = {
   },
   "mcp-nutrition": {
     slug: "mcp-nutrition",
-    category: "Nutrition Planning",
+    category: "Health and Nutrition",
     buyer: "Teams building nutrition workflows that need deterministic calculations and explicit constraints.",
     useCase: "Validate nutrition inputs, run deterministic calculations, and build structured plans from stated requirements.",
     outcomes: [

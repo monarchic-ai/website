@@ -71,10 +71,16 @@ const workflowGroups = [
     slugs: ["mcp-webinfo", "mcp-webdashboard", "mcp-websplash", "mcp-vectordesign"],
   },
   {
-    id: "specialist-context",
-    title: "Use specialist context",
-    description: "Retrieve explicit long-term memory or run deterministic nutrition planning with stated inputs.",
-    slugs: ["mcp-explicitmem", "mcp-nutrition"],
+    id: "memory-context",
+    title: "Memory and agent context",
+    description: "Retrieve explicit long-term memory for recurring agent work.",
+    slugs: ["mcp-explicitmem"],
+  },
+  {
+    id: "health-nutrition",
+    title: "Health and nutrition",
+    description: "Run deterministic nutrition calculations and structured planning from stated inputs.",
+    slugs: ["mcp-nutrition"],
   },
 ].map((group) => ({
   ...group,
