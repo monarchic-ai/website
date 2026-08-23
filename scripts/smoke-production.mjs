@@ -59,6 +59,7 @@ const requiredCatalogSlugs = [
   "mcp-webinfo",
   "mcp-websplash",
 ];
+const expectedMcpCardCount = requiredCatalogSlugs.filter((slug) => slug.startsWith("mcp-")).length;
 const retiredCatalogSlugs = [
   "mcp-outreachconnectors",
   "mcp-proofpack",
@@ -246,8 +247,8 @@ async function runBrowserSmoke() {
       }
       const mcpCards = page.locator('[data-plan-card^="mcp-"]');
       const mcpCardCount = await mcpCards.count();
-      if (mcpCardCount !== 24) {
-        throw new Error(`Expected 24 MCP cards, got ${mcpCardCount}`);
+      if (mcpCardCount !== expectedMcpCardCount) {
+        throw new Error(`Expected ${expectedMcpCardCount} MCP cards, got ${mcpCardCount}`);
       }
 
       for (const slug of [
