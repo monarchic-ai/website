@@ -41,6 +41,8 @@ includes(products.text, [
   "Build product surfaces",
   "Memory and agent context",
   "Health and nutrition",
+  "Unlimited projects",
+  "Access to every available MCP",
 ], "Product workflow catalog");
 assert(count(products.html, /data-plan-card="mcp-/g) === 23, "Product catalog must render exactly 23 public MCP cards.");
 assert(!existsSync(routeFile("/products/mcp-pty")), "Internal PTY route must not be published.");

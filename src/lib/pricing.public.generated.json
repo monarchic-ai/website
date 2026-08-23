@@ -6,6 +6,8 @@
     "tagline": "Capacity and support for sustained hosted workloads",
     "description": "For organizations that need higher pooled usage, support terms, and workload-specific capacity planning.",
     "featureBullets": [
+      "Unlimited projects",
+      "Access to every available MCP",
       "Shared weekly execution allowance",
       "Launch quantities will follow the fully allocated rate card",
       "Shared usage with business controls",
@@ -39,6 +41,8 @@
     "tagline": "Capacity for one active developer",
     "description": "For one developer using available hosted MCPs across local agents, CI checks, and recurring workflows.",
     "featureBullets": [
+      "Unlimited projects",
+      "Access to every available MCP",
       "Weekly execution allowance for one active developer",
       "Launch quantities will follow the fully allocated rate card",
       "Scoped API keys and account usage controls",
@@ -73,6 +77,8 @@
     "tagline": "A practical starting point for one developer",
     "description": "For an individual developer running available hosted MCPs across focused projects and recurring agent workflows.",
     "featureBullets": [
+      "Unlimited projects",
+      "Access to every available MCP",
       "Personal weekly execution allowance",
       "Launch quantities will follow the fully allocated rate card",
       "Scoped API keys and account usage controls",
@@ -106,6 +112,8 @@
     "tagline": "Shared hosted MCP capacity for small teams",
     "description": "For small teams standardizing agent access to hosted Monarchic infrastructure across development, QA, research, and go-to-market workflows.",
     "featureBullets": [
+      "Unlimited projects",
+      "Access to every available MCP",
       "Shared weekly execution allowance",
       "Launch quantities will follow the fully allocated rate card",
       "Shared usage for team workflows",

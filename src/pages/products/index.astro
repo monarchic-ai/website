@@ -179,6 +179,14 @@ function statusClasses(plan: CatalogPlan): string {
                   </div>
                   <h3 class="mt-5 text-2xl font-extrabold uppercase">{plan.displayName}</h3>
                   <p class="mt-2 text-sm leading-6 text-white/66">{plan.tagline}</p>
+                  <ul class="mt-5 grid gap-2 text-xs font-bold uppercase text-white/76">
+                    {plan.featureBullets.slice(0, 2).map((bullet) => (
+                      <li class="flex items-start gap-2">
+                        <span class="mt-1.5 h-1.5 w-1.5 shrink-0 bg-signal"></span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
                   {displayPrice?.price.priceCents != null && (
                     <div class="mt-6">
                       <p class="text-3xl font-extrabold">
