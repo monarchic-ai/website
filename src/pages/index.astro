@@ -10,7 +10,6 @@ import "../styles/global.css";
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const publicMcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableMcpCount = publicMcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
-const comingSoonMcpCount = publicMcpProducts.length - availableMcpCount;
 
 const setupSteps = [
   {
@@ -208,8 +207,8 @@ const featuredRoutes = [
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
             <p class="max-w-2xl text-base leading-7 text-white/62">
-              The public catalog lists {publicMcpProducts.length} MCPs. {availableMcpCount} are
-              available today, with {comingSoonMcpCount} more on the roadmap.
+              {availableMcpCount} MCPs are available today. More are in development, and the
+              catalog will keep expanding as new products are ready.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <a href="/products" class="inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">Full catalog</a>

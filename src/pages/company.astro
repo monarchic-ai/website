@@ -8,7 +8,6 @@ import "../styles/global.css";
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const publicMcps = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableMcpCount = publicMcps.filter((plan) => hostedMcpStatus(plan) === "available").length;
-const plannedMcpCount = publicMcps.length - availableMcpCount;
 
 const approach = [
   ["Research", "Start with a bounded question, an observable workflow, and a definition of what would count as evidence."],
@@ -196,7 +195,7 @@ const evidence = [
         <article class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
           <h2 id="posture-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Small by fact. Long-horizon by choice.</h2>
           <p class="mt-6 max-w-2xl text-sm leading-7 text-white/64">
-            Monarchic is a small company. The present catalog is finite: {availableMcpCount} MCPs are available and {plannedMcpCount} more are coming soon. Product, billing, privacy, or security questions go directly to the operator.
+            Monarchic is a small company. {availableMcpCount} MCPs are available now, with more in development and room for the roadmap to grow. Product, billing, privacy, or security questions go directly to the operator.
           </p>
           <a href="mailto:support@monarchic.io?subject=Company%20question" class="mt-8 inline-flex min-h-11 items-center border border-signal px-4 text-xs font-black uppercase text-signal-soft transition hover:bg-signal hover:text-black">
             Contact Monarchic

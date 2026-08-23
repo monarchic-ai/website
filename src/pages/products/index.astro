@@ -42,7 +42,6 @@ const inRolloutMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) 
 const plannedMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "planned");
 const availableMcpCount = availableMcpProducts.length;
 const inRolloutMcpCount = inRolloutMcpProducts.length;
-const plannedMcpCount = plannedMcpProducts.length;
 const formattedOperationCount = usagePolicy.catalog.classifiedOperationCount.toLocaleString("en-US");
 const shortRateCardVersion = usagePolicy.source.rateCardVersion.replace("hosted-mcp-catalog-", "");
 
@@ -107,7 +106,7 @@ function statusClasses(plan: CatalogPlan): string {
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Products | Monarchic"
-      description={`Compare Monarchic usage plans, ${availableMcpCount} MCPs available now, and ${plannedMcpCount} more coming soon.`}
+      description={`Compare Monarchic usage plans, ${availableMcpCount} MCPs available now, and an expanding product roadmap.`}
       path="/products"
     />
   </head>
@@ -284,7 +283,7 @@ function statusClasses(plan: CatalogPlan): string {
 
           <section id="coming-soon-mcps" class="mt-14 scroll-mt-8 border-t-2 border-white/55 pt-8">
             <p class="text-xs font-bold uppercase text-white/54">Hosted expansion</p>
-            <h3 class="mt-3 text-2xl font-extrabold uppercase">Coming soon / {plannedMcpCount}</h3>
+            <h3 class="mt-3 text-2xl font-extrabold uppercase">Coming soon</h3>
             <p class="mt-3 max-w-3xl text-sm leading-7 text-white/62">
               These MCPs are accepted for the hosted catalog and have an assigned runtime plan. Their product pages are public now, but hosted access remains closed until their deployment gates pass.
             </p>
