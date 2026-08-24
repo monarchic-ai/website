@@ -10,18 +10,18 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
 <footer
   id="footer"
   class:list={[
-    "grid gap-8 border-t px-4 py-8 sm:grid-cols-[1fr_auto] sm:items-end sm:px-6",
+    "grid gap-8 border-t px-4 py-8 sm:grid-cols-[1fr_auto] sm:items-end sm:px-6 sm:py-10",
     tone === "paper" ? "border-black bg-paper text-black" : "border-white text-white",
   ]}
 >
   <div>
-    <a href="/" class="inline-flex items-center gap-3">
+    <a href="/" class="motion-link inline-flex items-center gap-3">
       <span class:list={["inline-flex h-8 w-8 items-center justify-center", tone === "paper" ? "bg-black" : "bg-paper"]}>
         <img src="/favicon.svg" alt="" class:list={["h-6 w-6 object-cover p-0.5", tone === "paper" && "invert"]} width="24" height="24" />
       </span>
       <span class="text-xs font-extrabold uppercase">Monarchic</span>
     </a>
-    <p class:list={["mt-4 max-w-xl text-sm leading-6", tone === "paper" ? "text-black/58" : "text-white/58"]}>
+    <p class:list={["mt-4 max-w-xl text-sm leading-6", tone === "paper" ? "text-black/64" : "text-white/68"]}>
       Purpose-built MCPs, one account, and clear usage.
     </p>
   </div>
@@ -32,13 +32,13 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
       tone === "paper" ? "text-black/68" : "text-white/70",
     ]}
   >
-    <a href="/products" class="hover:underline">Products</a>
-    <a href={`${appBaseUrl}/setup`} class="hover:underline">Setup</a>
-    <a href="/research" class="hover:underline">Research</a>
-    <a href="/security" class="hover:underline">Security</a>
-    <a href="/company" class="hover:underline">Company</a>
-    <a href="/privacy" class="hover:underline">Privacy</a>
-    <a href="/terms" class="hover:underline">Terms</a>
+    <a href="/products" class="motion-link hover:text-signal">Products</a>
+    <a href={`${appBaseUrl}/setup`} class="motion-link hover:text-signal">Setup</a>
+    <a href="/research" class="motion-link hover:text-signal">Research</a>
+    <a href="/security" class="motion-link hover:text-signal">Security</a>
+    <a href="/company" class="motion-link hover:text-signal">Company</a>
+    <a href="/privacy" class="motion-link hover:text-signal">Privacy</a>
+    <a href="/terms" class="motion-link hover:text-signal">Terms</a>
   </nav>
   <p class:list={["text-xs leading-5 sm:col-span-2 sm:text-right", tone === "paper" ? "text-black/46" : "text-white/42"]}>
     &copy; {new Date().getFullYear()} Monarchic. All rights reserved. Contact <a class="underline-offset-4 hover:underline" href="mailto:support@monarchic.io">support@monarchic.io</a>.

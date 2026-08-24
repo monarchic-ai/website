@@ -15,16 +15,78 @@
     color-scheme: only dark;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+  }
+
   body {
     font-family: "Space Grotesk Variable", "Space Grotesk", system-ui, -apple-system, sans-serif;
     letter-spacing: 0;
     background: #000;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   * {
     letter-spacing: 0 !important;
   }
 
+}
+
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+.site-frame {
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+.motion-link {
+  transition-duration: 180ms;
+  transition-property: background-color, border-color, color, transform;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.motion-link:hover {
+  transform: translateY(-1px);
+}
+
+.motion-link:active {
+  transform: translateY(0);
+}
+
+.motion-arrow,
+.row-arrow {
+  display: inline-block;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.motion-link:hover .motion-arrow {
+  transform: translate(2px, -2px);
+}
+
+.interactive-row {
+  transition-duration: 220ms;
+  transition-property: background-color, color;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.interactive-row:hover .row-arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .motion-link,
+  .motion-arrow,
+  .row-arrow,
+  .interactive-row {
+    transition: none;
+  }
 }
 
 :focus-visible {

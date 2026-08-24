@@ -7,7 +7,7 @@ interface Props {
 const { active, tone = "dark" } = Astro.props;
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const navClass = (current: boolean) => [
-  "inline-flex min-h-10 items-center justify-center border px-3 py-2 text-center text-[0.65rem] font-bold uppercase transition sm:px-4 sm:text-xs",
+  "motion-link inline-flex min-h-10 items-center justify-center border px-2.5 py-2 text-center text-[0.65rem] font-bold uppercase sm:px-4 sm:text-xs",
   tone === "paper"
     ? current
       ? "border-black bg-black text-white"
@@ -21,11 +21,11 @@ const navClass = (current: boolean) => [
 <header
   id="navigation"
   class:list={[
-    "flex min-h-16 items-center justify-between gap-3 border-b px-3 sm:px-5",
-    tone === "paper" ? "border-black bg-paper text-black" : "border-white text-white",
+    "site-header sticky top-0 z-50 flex min-h-16 items-center justify-between gap-2 border-b px-3 sm:gap-3 sm:px-5",
+    tone === "paper" ? "border-black bg-paper text-black" : "border-white/24 bg-ink text-white",
   ]}
 >
-  <a href="/" class="inline-flex shrink-0 items-center gap-3">
+  <a href="/" class="motion-link inline-flex shrink-0 items-center gap-3">
     <span class:list={[
       "inline-flex h-9 w-9 items-center justify-center",
       tone === "paper" ? "bg-black" : "bg-paper",
@@ -41,13 +41,13 @@ const navClass = (current: boolean) => [
     <a
       href={appBaseUrl}
       class:list={[
-        "hidden min-h-10 items-center border px-4 text-xs font-black uppercase transition sm:inline-flex",
+        "motion-link inline-flex min-h-10 items-center border px-2.5 text-[0.65rem] font-black uppercase sm:px-4 sm:text-xs",
         tone === "paper"
           ? "border-black bg-black text-white hover:bg-signal hover:text-black"
           : "border-signal bg-signal text-black hover:bg-signal-soft",
       ]}
     >
-      Open app
+      Console
     </a>
   </nav>
 </header>

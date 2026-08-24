@@ -106,39 +106,39 @@ const featuredRoutes = [
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
-    <main class="mx-auto min-h-screen max-w-[1480px] border-x border-white/20 bg-ink">
+    <main class="site-frame mx-auto min-h-screen max-w-[1480px] border-x border-white/20 bg-ink">
       <SiteHeader />
 
       <section id="introduction" aria-labelledby="home-title">
         <div class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
-          <div class="min-w-0 px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+          <div class="min-w-0 px-4 py-9 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
             <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Purpose-built tools for MCP clients</p>
-            <h1 id="home-title" class="mt-3 max-w-5xl text-[2.45rem] font-black uppercase leading-[0.82] min-[360px]:text-[3rem] min-[420px]:text-[3.45rem] sm:text-7xl lg:text-[5.2rem] xl:text-[5.2rem]">
+            <h1 id="home-title" class="mt-4 max-w-5xl text-[2.45rem] font-black uppercase leading-[0.88] min-[360px]:text-[3rem] min-[420px]:text-[3.45rem] sm:text-7xl lg:text-[5.2rem] xl:text-[5.2rem]">
               Hosted MCPs. <br />One account.
             </h1>
-            <p class="mt-6 max-w-3xl text-xl font-medium leading-8 sm:text-2xl">
+            <p class="mt-7 max-w-3xl text-xl font-medium leading-8 text-white/88 sm:text-2xl">
               Connect repository context, durable memory, incident response, and infrastructure analysis from the clients your agents already use.
             </p>
           </div>
 
-          <div class="grid content-between gap-8 border-t border-white/20 p-5 lg:border-l lg:border-t-0">
-            <p class="text-sm leading-6 text-white/64">
+          <div class="grid content-between gap-10 border-t border-white/20 bg-[#0c0c0c] p-5 sm:p-7 lg:border-l lg:border-t-0">
+            <p class="text-sm leading-6 text-white/72">
               Start with a free 30-day evaluation. No card or automatic billing.
               Create an account key and see the usage impact of every call.
             </p>
             <div class="grid gap-2">
-              <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
-                Start free evaluation <span aria-hidden="true">↗</span>
+              <a href={`${appBaseUrl}/products/usage-evaluation`} class="motion-link inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">
+                Start free evaluation <span class="motion-arrow" aria-hidden="true">↗</span>
               </a>
-              <a href={`${appBaseUrl}/setup`} class="inline-flex min-h-12 items-center justify-between border border-white/40 px-4 text-xs font-black uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black">
-                Open setup <span aria-hidden="true">↗</span>
+              <a href={`${appBaseUrl}/setup`} class="motion-link inline-flex min-h-12 items-center justify-between border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:bg-signal hover:text-black">
+                Open setup <span class="motion-arrow" aria-hidden="true">↗</span>
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="quickstart" aria-labelledby="quickstart-title" class="border-b border-white/20">
+      <section id="quickstart" aria-labelledby="quickstart-title" class="border-b border-white/20 bg-[#0a0a0a]">
         <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <div class="px-5 py-7 sm:px-7 sm:py-9">
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">First connection</p>
@@ -147,10 +147,10 @@ const featuredRoutes = [
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
-            <p class="text-sm leading-6 text-white/64">
+            <p class="text-sm leading-6 text-white/72">
               You need an MCP-aware client, Node with pnpm available to that client, a Monarchic account, and an active plan.
             </p>
-            <a href={`${appBaseUrl}/setup`} class="mt-5 inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
+            <a href={`${appBaseUrl}/setup`} class="motion-link mt-5 inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">
               Full setup guide
             </a>
           </div>
@@ -160,13 +160,13 @@ const featuredRoutes = [
           <ol class="border-b border-white/20 lg:border-b-0 lg:border-r">
             {setupSteps.map((step, index) => (
               <li class:list={[
-                "grid grid-cols-[3rem_minmax(0,1fr)] gap-4 px-5 py-5 sm:grid-cols-[4rem_minmax(0,1fr)] sm:px-7 sm:py-6",
+                "grid grid-cols-[2.5rem_minmax(0,1fr)] gap-3 px-5 py-4 transition-colors duration-200 hover:bg-white/[0.025] sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-4 sm:px-7 sm:py-6",
                 index < setupSteps.length - 1 && "border-b border-white/20",
               ]}>
                 <span class="font-mono text-xs font-bold text-signal">{step.number}</span>
                 <div>
                   <h3 class="text-base font-black uppercase">{step.title}</h3>
-                  <p class="mt-2 max-w-xl text-sm leading-6 text-white/60">{step.detail}</p>
+                  <p class="mt-2 max-w-xl text-sm leading-6 text-white/70">{step.detail}</p>
                 </div>
               </li>
             ))}
@@ -175,20 +175,20 @@ const featuredRoutes = [
           <div class="min-w-0 bg-[#0d0d0d] p-5 sm:p-7">
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/20 pb-4">
               <div>
-                <p class="font-mono text-[0.62rem] font-bold uppercase text-white/44">Generic configuration</p>
+                <p class="font-mono text-[0.62rem] font-bold uppercase text-white/52">Generic configuration</p>
                 <p class="mt-1 text-sm font-bold">Values are generated in your dashboard</p>
               </div>
               <span class="border border-amber-300/60 px-2 py-1 font-mono text-[0.58rem] font-bold uppercase text-amber-200">Keep keys private</span>
             </div>
             <pre class="max-w-full overflow-x-auto py-5 font-mono text-[0.7rem] leading-6 text-white/74"><code>{starterConfig}</code></pre>
-            <p class="border-t border-white/20 pt-4 text-xs leading-5 text-white/48">
+            <p class="border-t border-white/20 pt-4 text-xs leading-5 text-white/58">
               These placeholders do not connect as written. Use the generated values for your account, then fully restart the client.
             </p>
             <div class="mt-6">
-              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/44">Supported setup formats</p>
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/52">Supported setup formats</p>
               <div class="mt-3 flex flex-wrap gap-2">
                 {setupClients.map((client) => (
-                  <span class="border border-white/20 px-2.5 py-2 text-[0.68rem] font-bold uppercase text-white/64">{client}</span>
+                  <span class="border border-white/24 px-2.5 py-2 text-[0.68rem] font-bold uppercase text-white/72">{client}</span>
                 ))}
               </div>
             </div>
@@ -206,12 +206,12 @@ const featuredRoutes = [
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
-            <p class="max-w-2xl text-base leading-7 text-white/62">
+            <p class="max-w-2xl text-base leading-7 text-white/72">
               {availableMcpCount} MCPs are available today. More are in development, and the
               catalog will keep expanding as new products are ready.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <a href="/products" class="inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black transition hover:bg-signal-soft">Full catalog</a>
+              <a href="/products" class="motion-link inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">Full catalog</a>
             </div>
           </div>
         </header>
@@ -219,20 +219,21 @@ const featuredRoutes = [
         <div>
           {featuredRoutes.map((route, index) => (
             <a href={route.href} class:list={[
-              "group grid items-center gap-3 px-5 py-4 transition hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[minmax(9rem,0.55fr)_minmax(0,1fr)] sm:gap-5 sm:px-7 sm:py-5",
+              "interactive-row group grid items-center gap-3 px-5 py-4 hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[minmax(9rem,0.55fr)_minmax(0,1fr)_2rem] sm:gap-5 sm:px-7 sm:py-5",
               index < featuredRoutes.length - 1 && "border-b border-white/20",
             ]}>
               <div>
                 <p class="text-xl font-black uppercase">{route.label}</p>
-                <p class="mt-1 font-mono text-[0.62rem] font-bold uppercase opacity-52">{route.role}</p>
+                <p class="mt-1 font-mono text-[0.62rem] font-bold uppercase opacity-62">{route.role}</p>
               </div>
-              <p class="max-w-2xl text-sm leading-6 opacity-64">{route.proof}</p>
+              <p class="max-w-2xl text-sm leading-6 opacity-74">{route.proof}</p>
+              <span class="row-arrow hidden text-xl sm:inline" aria-hidden="true">→</span>
             </a>
           ))}
         </div>
       </section>
 
-      <section id="company-context" aria-labelledby="company-context-title" class="border-b border-white/20">
+      <section id="company-context" aria-labelledby="company-context-title" class="border-b border-white/20 bg-[#0a0a0a]">
         <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <div class="p-5 sm:p-7">
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Automation research and development</p>
@@ -241,17 +242,17 @@ const featuredRoutes = [
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
-            <p class="text-sm leading-6 text-white/64">
+            <p class="text-sm leading-6 text-white/72">
               Monarchic is a small, independent engineering company. Our current work centers on MCP infrastructure and agent workflows, with a longer-term scope across software, science, and business operations.
             </p>
           </div>
         </header>
 
         <div class="grid lg:grid-cols-3">
-          <article class="border-b border-white/20 p-5 lg:border-b-0 lg:border-r sm:p-7">
+          <article class="border-b border-white/20 p-5 transition-colors duration-200 hover:bg-white/[0.025] lg:border-b-0 lg:border-r sm:p-7">
             <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Production and engineering verification</p>
             <h3 class="mt-3 text-xl font-black uppercase">Operational checks</h3>
-            <p class="mt-3 text-sm leading-6 text-white/60">
+            <p class="mt-3 text-sm leading-6 text-white/70">
               Hosted routes expose concrete tool calls, required access, output contracts, and current limitations. Availability is stated per product.
             </p>
             <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
@@ -259,18 +260,18 @@ const featuredRoutes = [
               <a href="/security" class="inline-flex text-xs font-black uppercase text-signal hover:text-white">Security <span class="ml-2" aria-hidden="true">→</span></a>
             </div>
           </article>
-          <article class="border-b border-white/20 p-5 lg:border-b-0 lg:border-r sm:p-7">
+          <article class="border-b border-white/20 p-5 transition-colors duration-200 hover:bg-white/[0.025] lg:border-b-0 lg:border-r sm:p-7">
             <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">External-dataset benchmarks</p>
             <h3 class="mt-3 text-xl font-black uppercase">Recognized evaluations</h3>
-            <p class="mt-3 text-sm leading-6 text-white/60">
+            <p class="mt-3 text-sm leading-6 text-white/70">
               Research pages are published only when a method, dated result, limitation, and inspectable artifact can support the claim.
             </p>
             <a href="/research" class="mt-5 inline-flex text-xs font-black uppercase text-signal hover:text-white">Read research <span class="ml-2" aria-hidden="true">→</span></a>
           </article>
-          <article class="p-5 sm:p-7">
+          <article class="p-5 transition-colors duration-200 hover:bg-white/[0.025] sm:p-7">
             <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Reproducible first-party evaluations</p>
             <h3 class="mt-3 text-xl font-black uppercase">Attributed methods</h3>
-            <p class="mt-3 text-sm leading-6 text-white/60">
+            <p class="mt-3 text-sm leading-6 text-white/70">
               Monarchic-designed capability and robustness checks stay attributed to Monarchic, with their method and limitations beside the result.
             </p>
             <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
