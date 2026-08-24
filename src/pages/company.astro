@@ -1,7 +1,6 @@
 ---
+import PublicPageFrame from "../components/PublicPageFrame.astro";
 import SeoHead from "../components/SeoHead.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import { allPlans, hostedMcpStatus } from "../lib/pricing";
 import "../styles/global.css";
 
@@ -61,8 +60,7 @@ const evidence = [
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
-    <main class="mx-auto min-h-screen max-w-[1480px] border-x border-white/20 bg-ink">
-      <SiteHeader />
+    <PublicPageFrame>
 
       <section aria-labelledby="company-title" class="border-b border-white/20">
         <div class="min-w-0 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
@@ -213,7 +211,6 @@ const evidence = [
         </article>
       </section>
 
-      <SiteFooter />
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

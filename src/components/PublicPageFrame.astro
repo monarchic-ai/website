@@ -1,0 +1,24 @@
+---
+import SiteFooter from "./SiteFooter.astro";
+import SiteHeader from "./SiteHeader.astro";
+
+interface Props {
+  active?: "products" | "research";
+  researchBrief?: string;
+  researchStatus?: string;
+}
+
+const { active, researchBrief, researchStatus } = Astro.props;
+---
+
+<main
+  data-research-brief={researchBrief}
+  data-research-status={researchStatus}
+  class="site-frame mx-auto flex min-h-screen max-w-[1480px] flex-col border-x border-white/20 bg-ink text-white"
+>
+  <SiteHeader active={active} />
+  <div class="flex-1">
+    <slot />
+  </div>
+  <SiteFooter />
+</main>

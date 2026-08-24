@@ -1,7 +1,6 @@
 ---
+import PublicPageFrame from "../../components/PublicPageFrame.astro";
 import SeoHead from "../../components/SeoHead.astro";
-import SiteFooter from "../../components/SiteFooter.astro";
-import SiteHeader from "../../components/SiteHeader.astro";
 import { explicitMemBenchmark } from "../../lib/explicitmemBenchmark";
 import { mcpResearchEntries, RESEARCH_REVIEWED_ON } from "../../lib/mcpResearch";
 import { catalogStatusLabel } from "../../lib/pricing";
@@ -45,12 +44,10 @@ const evidenceClasses = [
       path="/research"
     />
   </head>
-  <body class="min-h-screen bg-black text-white">
-    <main class="min-h-screen">
-      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
-        <SiteHeader active="research" />
+  <body class="min-h-screen bg-ink text-white">
+    <PublicPageFrame active="research">
 
-        <section class="border-b-2 border-white py-12 sm:py-16">
+        <section class="page-hero">
           <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Reviewed {RESEARCH_REVIEWED_ON}</p>
           <h1 class="mt-4 max-w-5xl text-5xl font-extrabold uppercase leading-[0.86] text-white sm:text-7xl lg:text-8xl">
             Methods, evidence, limits.
@@ -60,7 +57,7 @@ const evidenceClasses = [
           </p>
         </section>
 
-        <section aria-labelledby="evidence-classes-title" class="border-b-2 border-white py-12">
+        <section aria-labelledby="evidence-classes-title" class="page-section">
           <h2 id="evidence-classes-title" class="text-3xl font-extrabold uppercase sm:text-4xl">Three evidence classes</h2>
           <div class="mt-7 grid border border-white/45 lg:grid-cols-3">
             {evidenceClasses.map((evidence, index) => (
@@ -74,7 +71,7 @@ const evidenceClasses = [
           </div>
         </section>
 
-        <section id="published-study" class="scroll-mt-6 py-12">
+        <section id="published-study" class="page-section scroll-mt-6">
           <div class="grid gap-5 lg:grid-cols-[1fr_0.72fr] lg:items-end">
             <div>
               <p class="text-xs font-bold uppercase text-signal">Published research / {mcpResearchEntries.length}</p>
@@ -121,8 +118,6 @@ const evidenceClasses = [
           </article>
         </section>
 
-        <SiteFooter />
-      </div>
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

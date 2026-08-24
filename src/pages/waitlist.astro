@@ -1,7 +1,6 @@
 ---
+import PublicPageFrame from "../components/PublicPageFrame.astro";
 import SeoHead from "../components/SeoHead.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import WaitlistForm from "../components/WaitlistForm.svelte";
 import { allPlans } from "../lib/pricing";
 import "../styles/global.css";
@@ -29,12 +28,9 @@ const waitlistProducts = allPlans
       path="/waitlist"
     />
   </head>
-  <body class="min-h-screen bg-black text-white">
-    <main class="min-h-screen">
-      <section class="mx-auto max-w-5xl px-6 py-8 sm:py-12">
-        <SiteHeader />
-
-        <section class="grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+  <body class="min-h-screen bg-ink text-white">
+    <PublicPageFrame>
+        <section class="page-hero grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
             <h1 class="max-w-4xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl">
               Get Access<br />Updates
@@ -64,8 +60,6 @@ const waitlistProducts = allPlans
             </p>
           </div>
         </section>
-        <SiteFooter />
-      </section>
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

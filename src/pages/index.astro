@@ -1,8 +1,7 @@
 ---
 import HostedMcpScene from "../components/HostedMcpScene.astro";
+import PublicPageFrame from "../components/PublicPageFrame.astro";
 import SeoHead from "../components/SeoHead.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
 import { allPlans, hostedMcpStatus } from "../lib/pricing";
 import "../styles/global.css";
@@ -106,8 +105,7 @@ const featuredRoutes = [
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
-    <main class="site-frame mx-auto min-h-screen max-w-[1480px] border-x border-white/20 bg-ink">
-      <SiteHeader />
+    <PublicPageFrame>
 
       <section id="introduction" aria-labelledby="home-title">
         <div class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -282,7 +280,6 @@ const featuredRoutes = [
         </div>
       </section>
 
-      <SiteFooter />
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

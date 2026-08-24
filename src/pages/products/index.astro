@@ -1,8 +1,7 @@
 ---
 import ProductCatalogCard from "../../components/ProductCatalogCard.astro";
+import PublicPageFrame from "../../components/PublicPageFrame.astro";
 import SeoHead from "../../components/SeoHead.astro";
-import SiteFooter from "../../components/SiteFooter.astro";
-import SiteHeader from "../../components/SiteHeader.astro";
 import "../../styles/global.css";
 import {
   allPlans,
@@ -116,12 +115,10 @@ function statusClasses(plan: CatalogPlan): string {
       path="/products"
     />
   </head>
-  <body class="min-h-screen bg-black text-white">
-    <main class="min-h-screen">
-      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
-        <SiteHeader active="products" />
+  <body class="min-h-screen bg-ink text-white">
+    <PublicPageFrame active="products">
 
-        <section class="border-x border-b border-white/40 px-5 py-10 sm:px-8 sm:py-14 lg:px-10">
+        <section class="page-hero">
             <h1 class="max-w-4xl text-[2.8rem] font-extrabold uppercase leading-[0.86] min-[420px]:text-6xl lg:text-7xl">
               Plans and MCPs
             </h1>
@@ -145,7 +142,7 @@ function statusClasses(plan: CatalogPlan): string {
             </div>
         </section>
 
-        <nav aria-label="Product sections" class="mb-12 flex flex-nowrap items-center gap-2 overflow-x-auto border-b border-white/40 bg-black/62 py-4 sm:px-4">
+        <nav aria-label="Product sections" class="page-bar flex flex-nowrap items-center gap-2 overflow-x-auto bg-[#0a0a0a] py-4">
           <a href="#plans" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Plans</a>
           <a href="#workflow-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Find by workflow</a>
           <a href="#mcp-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Available MCPs</a>
@@ -153,7 +150,7 @@ function statusClasses(plan: CatalogPlan): string {
           <a href="#how-usage-works" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Usage</a>
         </nav>
 
-        <section id="plans" class="mb-20 scroll-mt-8">
+        <section id="plans" class="page-section scroll-mt-8">
           <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Each plan includes an account-level weekly execution allowance shared
@@ -229,7 +226,7 @@ function statusClasses(plan: CatalogPlan): string {
           </div>
         </section>
 
-        <section id="workflow-catalog" class="mb-20 scroll-mt-8">
+        <section id="workflow-catalog" class="page-section scroll-mt-8 bg-[#0a0a0a]">
           <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Find an MCP by workflow</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Start with the work you need to complete. Availability is shown beside every product; full pages document access, tool behavior, and current boundaries.
@@ -267,7 +264,7 @@ function statusClasses(plan: CatalogPlan): string {
           </div>
         </section>
 
-        <section id="mcp-catalog" class="mb-20 scroll-mt-8">
+        <section id="mcp-catalog" class="page-section scroll-mt-8">
           <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Available MCPs</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             These {availableMcpCount} products have production hosted routes.
@@ -309,7 +306,7 @@ function statusClasses(plan: CatalogPlan): string {
           </section>
         </section>
 
-        <section id="how-usage-works" class="mb-20 scroll-mt-8 border-2 border-white bg-black/76 p-6 lg:p-8">
+        <section id="how-usage-works" class="page-section scroll-mt-8 bg-[#0a0a0a]">
           <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <h2 class="text-3xl font-extrabold uppercase">Subscription price. Usage measured by the work.</h2>
@@ -382,7 +379,7 @@ function statusClasses(plan: CatalogPlan): string {
           </div>
         </section>
 
-        <section class="mb-16 grid gap-6 border-t-2 border-white py-10 sm:grid-cols-[1fr_auto] sm:items-center">
+        <section class="page-section grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
           <div>
             <p class="text-xs font-bold uppercase text-white/54">Set up a client</p>
             <h2 class="mt-3 text-3xl font-extrabold uppercase">From account to first tool call</h2>
@@ -391,8 +388,6 @@ function statusClasses(plan: CatalogPlan): string {
           <a href={`${appBaseUrl}/setup`} class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-6 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Open setup</a>
         </section>
 
-        <SiteFooter />
-      </div>
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

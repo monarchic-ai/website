@@ -1,7 +1,6 @@
 ---
+import PublicPageFrame from "../components/PublicPageFrame.astro";
 import SeoHead from "../components/SeoHead.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -38,12 +37,10 @@ const {
     <meta name="viewport" content="width=device-width" />
     <SeoHead title={title} description={description} path={path} />
   </head>
-  <body class="min-h-screen bg-black text-white">
-    <main class="min-h-screen">
-      <div class="mx-auto max-w-6xl px-5 py-6 sm:px-6 sm:py-10">
-        <SiteHeader />
+  <body class="min-h-screen bg-ink text-white">
+    <PublicPageFrame>
 
-        <section class="grid gap-8 border-b-2 border-white py-10 lg:grid-cols-[1fr_18rem] lg:items-end lg:py-14">
+        <section class="page-hero grid gap-8 lg:grid-cols-[1fr_18rem] lg:items-end">
           <div>
             <p class="text-xs font-bold uppercase text-signal">{eyebrow}</p>
             <h1 class="mt-5 max-w-4xl text-5xl font-extrabold uppercase leading-[0.9] sm:text-7xl">
@@ -67,7 +64,7 @@ const {
           </dl>
         </section>
 
-        <section id={documentId} class="grid gap-10 py-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:py-14">
+        <section id={documentId} class="page-section grid gap-10 lg:grid-cols-[14rem_minmax(0,1fr)]">
           <aside class="lg:sticky lg:top-8 lg:self-start">
             <p class="text-xs font-bold uppercase text-white/48">On this page</p>
             <nav aria-label="Document sections" class="mt-4 grid gap-2 text-xs font-bold uppercase text-white/72">
@@ -79,12 +76,10 @@ const {
           </article>
         </section>
 
-        <section id={contactId} class="grid gap-6 border-y-2 border-signal/60 bg-zinc-950 px-5 py-7 text-white sm:grid-cols-[1fr_auto] sm:items-center sm:px-7">
+        <section id={contactId} class="page-gutter my-8 grid gap-6 border-y-2 border-signal/60 bg-zinc-950 px-5 py-7 text-white sm:grid-cols-[1fr_auto] sm:items-center sm:px-7">
           <slot name="contact" />
         </section>
 
-        <SiteFooter />
-      </div>
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

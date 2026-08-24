@@ -1,7 +1,6 @@
 ---
+import PublicPageFrame from "../components/PublicPageFrame.astro";
 import SeoHead from "../components/SeoHead.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import SiteHeader from "../components/SiteHeader.astro";
 import "../styles/global.css";
 
 const requestPath = [
@@ -170,8 +169,7 @@ const providers = [
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
-    <main class="mx-auto min-h-screen max-w-[1480px] border-x border-white/20 bg-ink">
-      <SiteHeader />
+    <PublicPageFrame>
 
       <section id="security-header" aria-labelledby="security-title" class="border-b border-white/20">
         <div class="min-w-0 px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
@@ -404,7 +402,6 @@ const providers = [
         </div>
       </section>
 
-      <SiteFooter />
-    </main>
+    </PublicPageFrame>
   </body>
 </html>

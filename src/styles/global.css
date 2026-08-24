@@ -42,6 +42,61 @@
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04);
 }
 
+.page-hero {
+  border-bottom: 1px solid rgb(255 255 255 / 0.2);
+  padding: 2.25rem 1rem;
+}
+
+.page-section {
+  border-bottom: 1px solid rgb(255 255 255 / 0.2);
+  padding: 2.5rem 1rem;
+}
+
+.page-bar {
+  border-bottom: 1px solid rgb(255 255 255 / 0.2);
+  padding-inline: 1rem;
+}
+
+.page-gutter {
+  margin-inline: 1rem;
+}
+
+@media (min-width: 40rem) {
+  .page-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .page-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .page-bar {
+    padding-inline: 1.5rem;
+  }
+
+  .page-gutter {
+    margin-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .page-hero {
+    padding: 3.5rem 2rem;
+  }
+
+  .page-section {
+    padding: 3.5rem 2rem;
+  }
+
+  .page-bar {
+    padding-inline: 2rem;
+  }
+
+  .page-gutter {
+    margin-inline: 2rem;
+  }
+}
+
 .motion-link {
   transition-duration: 180ms;
   transition-property: background-color, border-color, color, transform;

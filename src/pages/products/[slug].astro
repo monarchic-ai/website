@@ -1,8 +1,7 @@
 ---
 import ProductWorkflowProof from "../../components/ProductWorkflowProof.astro";
+import PublicPageFrame from "../../components/PublicPageFrame.astro";
 import SeoHead from "../../components/SeoHead.astro";
-import SiteFooter from "../../components/SiteFooter.astro";
-import SiteHeader from "../../components/SiteHeader.astro";
 import "../../styles/global.css";
 import {
   allPlans,
@@ -102,16 +101,14 @@ function statusClasses(plan: CatalogPlan): string {
       path={`/products/${plan.slug}`}
     />
   </head>
-  <body class="min-h-screen bg-black text-white">
-    <main class="min-h-screen">
-      <div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
-        <SiteHeader active="products" />
+  <body class="min-h-screen bg-ink text-white">
+    <PublicPageFrame active="products">
 
-        <p class="mt-10 text-xs font-semibold uppercase text-white/54">
+        <p class="page-bar py-4 text-xs font-semibold uppercase text-white/54">
           <a href="/products" class="transition hover:text-signal-soft">Products</a> / {plan.displayName}
         </p>
 
-        <section class="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <section class="page-section grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div class="min-w-0">
             <div class="flex flex-wrap gap-2">
               <span class="inline-flex border border-white/60 px-3 py-1 text-[0.65rem] font-bold uppercase text-white">
@@ -348,12 +345,8 @@ function statusClasses(plan: CatalogPlan): string {
           </aside>
         </section>
 
-        {workflowProof !== null && <ProductWorkflowProof proof={workflowProof} />}
+        {workflowProof !== null && <div class="page-gutter mb-12"><ProductWorkflowProof proof={workflowProof} /></div>}
 
-        <div class="mt-16">
-          <SiteFooter />
-        </div>
-      </div>
-    </main>
+    </PublicPageFrame>
   </body>
 </html>
