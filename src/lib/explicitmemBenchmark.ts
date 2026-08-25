@@ -1,6 +1,5 @@
 export const explicitMemBenchmark = {
   benchmark: "LongMemEval-S",
-  protocol: "longmemeval-s-answer-v1",
   generated: "1 August 2026",
   questions: 500,
   passedQuestions: 499,
@@ -9,14 +8,6 @@ export const explicitMemBenchmark = {
   answerEvidenceHitRate: "78.2%",
   retrievalRecallAtK: "100%",
   retrievalReceiptCoverage: "100%",
-  averageContext: "797 tokens",
-  averageContextShort: "797 tok",
-  averageLatency: "62.5 ms",
-  contextBudget: "800 tokens",
-  runtimeProfile: "Synthesis",
-  retrievalLimit: "Top 50",
-  evidenceUrl:
-    "https://github.com/monarchic-ai/ExplicitMem-MCP/blob/main/data/longmemeval-synthesis-benchmark-evidence.json",
 } as const;
 
 export const explicitMemQuestionTypes = [
@@ -26,18 +17,6 @@ export const explicitMemQuestionTypes = [
   { label: "Single-session preference", count: 30, accuracy: "100%", passed: "30 / 30" },
   { label: "Single-session user", count: 70, accuracy: "100%", passed: "70 / 70" },
   { label: "Temporal reasoning", count: 133, accuracy: "99.2%", passed: "132 / 133" },
-] as const;
-
-export const explicitMemRunConfig = [
-  ["Benchmark", explicitMemBenchmark.benchmark],
-  ["Protocol", explicitMemBenchmark.protocol],
-  ["Judge", "Deterministic normalized answer string match"],
-  ["Runtime profile", explicitMemBenchmark.runtimeProfile],
-  ["Retrieval limit", explicitMemBenchmark.retrievalLimit],
-  ["Session character limit", "None"],
-  ["Question coverage", `All ${explicitMemBenchmark.questions} questions`],
-  ["Generated", explicitMemBenchmark.generated],
-  ["Claim scope", "This benchmark configuration"],
 ] as const;
 
 export const explicitMemStudies = [
@@ -50,24 +29,24 @@ export const explicitMemStudies = [
     metricLabel: "Answer accuracy",
     metricValue: "99.8%",
     sample: "499 / 500 answers correct",
-    method: "Deterministic normalized answer matching after top-50 retrieval and synthesis within an 800-token context budget.",
-    failure: "One temporal item computes to 12 weeks from the source while the upstream gold expects 15. The strict perfect-score gate failed.",
+    method: "The complete 500-question set was scored with deterministic normalized answer matching under a fixed evaluation profile.",
+    failure: "One temporal item differed from the upstream gold answer, so the strict perfect-score gate remained unmet.",
     limitation: "Benchmark-scoped result. It is not an LLM-judged score, a cross-dataset synthesis result, or a hosted latency claim.",
-    evidenceUrl: explicitMemBenchmark.evidenceUrl,
+    evidenceStatus: "Versioned result and failure records retained for controlled review.",
   },
   {
     id: "locomo",
     evidenceClass: "External-dataset benchmark",
     dataset: "LoCoMo",
     generated: "3 June 2026",
-    scope: "CUDA cross-encoder runtime",
+    scope: "Retrieval evaluation",
     metricLabel: "Expected-memory recall",
     metricValue: "93.52%",
     sample: "1,986 runtime cases",
-    method: "Service-ranked TypeScript runtime with an opt-in CUDA external-command cross-encoder, top-50 output, and a 12,000-token budget.",
-    failure: "The standalone evaluation reached 90.11% top-50 recall; runtime retrieved-memory recall was 88.61%, below the expected-memory recall measure.",
+    method: "A fixed retrieval profile was evaluated against 1,986 cases using expected-memory recall as the primary metric.",
+    failure: "Secondary recall measures were lower than the primary measure and remain outside this headline claim.",
     limitation: "LoCoMo-specific retrieval and context recall. It does not measure generated-answer accuracy and is not the default generic runtime.",
-    evidenceUrl: "https://github.com/monarchic-ai/ExplicitMem-MCP/blob/main/models/locomo-cross-encoder-reranker-v1.json",
+    evidenceStatus: "Versioned result and failure records retained for controlled review.",
   },
   {
     id: "cross-dataset",
@@ -78,10 +57,10 @@ export const explicitMemStudies = [
     metricLabel: "Held-out recall@400",
     metricValue: "98.93%",
     sample: "740 held-out source cases",
-    method: "A deterministic 80/20 case-hash split evaluates a sparse policy across five datasets without dataset-identity or lexical-identity features.",
-    failure: "LoCoMo candidate recall at 50 was 71.69% and at 200 was 86.93%; the readiness claim depends on the larger top-400 pool.",
+    method: "A fixed candidate-generation profile was evaluated on held-out cases drawn from five external datasets.",
+    failure: "Smaller candidate pools performed below the published recall@400 result.",
     limitation: "High-recall candidate generation for downstream ranking. It is not final top-50 ranking quality or answer accuracy.",
-    evidenceUrl: "https://github.com/monarchic-ai/ExplicitMem-MCP/blob/main/models/explicitmem-external-retrieval-v1.json",
+    evidenceStatus: "Versioned result and split records retained for controlled review.",
   },
   {
     id: "generic-answer",
@@ -92,16 +71,9 @@ export const explicitMemStudies = [
     metricLabel: "Deterministic accuracy",
     metricValue: "100%",
     sample: "256 / 256 cases passed",
-    method: "Local, external, production-shaped, unseen-generic, and generated-nonce cases run through the generic answer contract with citation and receipt checks.",
+    method: "A fixed set of local, external, production-shaped, unseen-generic, and generated cases was scored with deterministic support checks.",
     failure: "No scored failure appears in this artifact. That limits failure analysis and increases the importance of broader adversarial and provider-judged evaluation.",
     limitation: "Deterministic extractive answer support. It is not LLM-judged provider scoring or proof of open-ended answer quality.",
-    evidenceUrl: "https://github.com/monarchic-ai/ExplicitMem-MCP/blob/main/data/generic-answer-benchmark-evidence.json",
+    evidenceStatus: "Versioned result records retained for controlled review.",
   },
-] as const;
-
-export const explicitMemReproduction = [
-  "npm ci",
-  "npm run model:validate-supported-accuracy",
-  "npm run benchmark:apples:evidence -- --check",
-  "npm run benchmark:generic-answer:evidence -- --min-accuracy 0.9",
 ] as const;

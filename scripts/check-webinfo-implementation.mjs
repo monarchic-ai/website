@@ -79,8 +79,19 @@ const researchDirectories = readdirSync(resolve(root, "research"), { withFileTyp
 assert(JSON.stringify(researchDirectories) === JSON.stringify(["explicitmem"]), `Published research routes must contain only ExplicitMem; received ${JSON.stringify(researchDirectories)}.`);
 
 const explicitMem = page("/research/explicitmem");
-includes(explicitMem.text, ["LongMemEval-S", "LoCoMo", "Generic and non-LongMemEval fixtures", "Repository reproduction"], "ExplicitMem study scopes");
+includes(explicitMem.text, ["LongMemEval-S", "LoCoMo", "Generic and non-LongMemEval fixtures", "Public evidence boundary", "Controlled review"], "ExplicitMem study scopes and disclosure boundary");
 includes(explicitMem.html, ['id="longmemeval-s"', 'id="locomo"', 'id="cross-dataset"', 'id="generic-answer"'], "ExplicitMem study anchors");
+excludes(explicitMem.html, [
+  "github.com/monarchic-ai/ExplicitMem-MCP",
+  "longmemeval-s-answer-v1",
+  "model:validate-supported-accuracy",
+  "benchmark:apples:evidence",
+  "benchmark:generic-answer:evidence",
+  "CUDA",
+  "12,000-token",
+  "800-token",
+  "62.5 ms",
+], "ExplicitMem private implementation boundary");
 
 const company = page("/company");
 includes(company.text, ["Automation is the enduring scope", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");

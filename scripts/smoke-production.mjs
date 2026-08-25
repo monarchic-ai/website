@@ -459,7 +459,7 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Study register" }).waitFor();
       await page.getByText("499 / 500 answers correct", { exact: false }).waitFor();
       await page.getByText("Answer accuracy", { exact: true }).first().waitFor();
-      for (const metric of ["99.8%", "93.52%", "98.93%", "100%", "78.2%", "62.5 ms"]) {
+      for (const metric of ["99.8%", "93.52%", "98.93%", "100%", "78.2%"]) {
         await page.getByText(metric, { exact: true }).first().waitFor();
       }
       for (const studyId of ["longmemeval-s", "locomo", "cross-dataset", "generic-answer"]) {
@@ -467,12 +467,19 @@ async function runBrowserSmoke() {
       }
       await page.getByRole("heading", { name: "One upstream-gold mismatch remains" }).waitFor();
       await page.getByRole("heading", { name: "No cross-system comparison" }).waitFor();
+      await page.getByRole("heading", { name: "Public evidence boundary" }).waitFor();
       await expectTextAbsent(page, [
         "Hosted write p50",
         "Hosted read p50",
         "3.45s",
         "3.28s",
         "staging infrastructure smoke",
+        "github.com/monarchic-ai/ExplicitMem-MCP",
+        "model:validate-supported-accuracy",
+        "CUDA",
+        "12,000-token",
+        "800-token",
+        "62.5 ms",
       ]);
       await expectMeta(page, "og:type", "article");
       await expectNoHorizontalOverflow(page);
