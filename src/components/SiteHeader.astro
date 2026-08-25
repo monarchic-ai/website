@@ -39,7 +39,7 @@ const navClass = (current: boolean) => [
     <a href={`${appBaseUrl}/setup`} class={navClass(false)}>Setup</a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
     <a
-      href={appBaseUrl}
+      href={`${appBaseUrl}/app`}
       class:list={[
         "motion-link inline-flex min-h-10 items-center border px-2.5 text-[0.65rem] font-black uppercase sm:px-4 sm:text-xs",
         tone === "paper"

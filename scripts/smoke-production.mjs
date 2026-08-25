@@ -198,6 +198,10 @@ async function runBrowserSmoke() {
         page.getByRole("link", { name: "Setup", exact: true }).first(),
         `${expectedAppBaseUrl}/setup`,
       );
+      await expectHref(
+        page.getByRole("link", { name: "Console", exact: true }),
+        `${expectedAppBaseUrl}/app`,
+      );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
       await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent workflows");
       await expectMeta(page, "og:site_name", "Monarchic");

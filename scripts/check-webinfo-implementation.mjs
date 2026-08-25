@@ -30,6 +30,7 @@ includes(home.text, [
   "Production and engineering verification",
 ], "Home evidence and company context");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
+includes(home.html, [`href="${appBaseUrl}/app"`], "Authenticated console destination");
 
 const products = page("/products");
 includes(products.text, [
