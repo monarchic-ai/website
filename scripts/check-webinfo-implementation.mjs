@@ -59,7 +59,17 @@ includes(research.text, [
   "Production and engineering verification",
   "catalog entries do not need uniform research coverage",
   "Published research / 1",
+  "ExplicitMem MCP",
+  "RepoIntel MCP",
+  "IncidentOps MCP",
+  "InfraProfiler MCP",
 ], "Research publication policy");
+includes(research.html, [
+  'href="/products/mcp-explicitmem"',
+  'href="/products/mcp-repointel"',
+  'href="/products/mcp-incidentops"',
+  'href="/products/mcp-infraprofiler"',
+], "Research product associations");
 excludes(research.text, ["Every public MCP has a research record", "Questions before claims", "Pre-launch research program"], "Research placeholder claims");
 
 const researchDirectories = readdirSync(resolve(root, "research"), { withFileTypes: true })

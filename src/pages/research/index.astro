@@ -3,11 +3,22 @@ import PublicPageFrame from "../../components/PublicPageFrame.astro";
 import SeoHead from "../../components/SeoHead.astro";
 import { explicitMemBenchmark } from "../../lib/explicitmemBenchmark";
 import { mcpResearchEntries, RESEARCH_REVIEWED_ON } from "../../lib/mcpResearch";
-import { catalogStatusLabel } from "../../lib/pricing";
+import { getProductDetail } from "../../lib/productDetails";
+import { allPlans, catalogStatusLabel } from "../../lib/pricing";
 import "../../styles/global.css";
 
 const publishedStudy = mcpResearchEntries[0];
 if (!publishedStudy) throw new Error("The approved research index is empty");
+
+const availableMcpCount = allPlans.filter((plan) => plan.kind === "single-mcp" && plan.status === "available").length;
+const operationalEvidenceProducts = ["mcp-repointel", "mcp-incidentops", "mcp-infraprofiler"].map((slug) => {
+  const plan = allPlans.find((candidate) => candidate.slug === slug);
+  const detail = getProductDetail(slug);
+  if (!plan || plan.kind !== "single-mcp" || plan.status !== "available" || !detail) {
+    throw new Error(`Operational evidence product ${slug} is not available with product detail`);
+  }
+  return { plan, detail };
+});
 
 const evidenceClasses = [
   {
@@ -40,28 +51,153 @@ const evidenceClasses = [
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Research | Monarchic"
-      description="Published Monarchic studies with named methods, measured results, inspectable artifacts, and explicit limits."
+      description="Published research and operational evidence for Monarchic products, with product associations, measured results, methods, and explicit limits."
       path="/research"
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
     <PublicPageFrame active="research">
 
-        <section class="page-hero">
-          <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Reviewed {RESEARCH_REVIEWED_ON}</p>
-          <h1 class="mt-4 max-w-5xl text-5xl font-extrabold uppercase leading-[0.86] text-white sm:text-7xl lg:text-8xl">
-            Methods, evidence, limits.
-          </h1>
-          <p class="mt-7 max-w-3xl text-base leading-8 text-white/76 sm:text-lg">
-            We publish research when a claim has a fixed method, a dated result, an inspectable artifact, and a useful limitation. Product availability and research publication are assessed separately; catalog entries do not need uniform research coverage.
-          </p>
+        <section class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <div class="px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+            <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Product research / Reviewed {RESEARCH_REVIEWED_ON}</p>
+            <h1 class="mt-4 max-w-5xl text-[2.65rem] font-extrabold uppercase leading-[0.88] text-white sm:text-7xl lg:text-[5.2rem]">
+              Research for Monarchic products.
+            </h1>
+            <p class="mt-7 max-w-3xl text-lg font-medium leading-8 text-white/78 sm:text-xl">
+              ExplicitMem is the first Monarchic product with a published benchmark program. Available MCPs also expose operational evidence through concrete request, output, access, and boundary contracts.
+            </p>
+            <div class="mt-8 flex flex-col gap-2 min-[430px]:flex-row min-[430px]:flex-wrap">
+              <a href={publishedStudy.href} class="inline-flex min-h-12 items-center justify-between gap-6 border border-signal bg-signal px-5 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
+                Read ExplicitMem research <span aria-hidden="true">→</span>
+              </a>
+              <a href="/products" class="inline-flex min-h-12 items-center justify-between gap-6 border border-white/40 px-5 text-xs font-black uppercase transition hover:border-signal hover:bg-signal hover:text-black">
+                Browse products <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          <aside class="border-t border-white/20 bg-[#0c0c0c] lg:border-l lg:border-t-0" aria-label="Research coverage">
+            <div class="border-b border-white/20 px-5 py-4">
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/48">Current coverage</p>
+            </div>
+            <dl>
+              <div class="grid grid-cols-[1fr_auto] items-end gap-5 border-b border-white/20 px-5 py-5">
+                <dt class="text-sm font-bold uppercase">Published product program</dt>
+                <dd class="font-mono text-3xl font-extrabold text-signal">{mcpResearchEntries.length}</dd>
+              </div>
+              <div class="grid grid-cols-[1fr_auto] items-end gap-5 border-b border-white/20 px-5 py-5">
+                <dt class="text-sm font-bold uppercase">Available MCPs</dt>
+                <dd class="font-mono text-3xl font-extrabold text-signal">{availableMcpCount}</dd>
+              </div>
+              <div class="grid grid-cols-[1fr_auto] items-end gap-5 px-5 py-5">
+                <dt class="text-sm font-bold uppercase">Evidence classes</dt>
+                <dd class="font-mono text-3xl font-extrabold text-signal">03</dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <section id="published-study" class="page-section scroll-mt-6 bg-[#0a0a0a]">
+          <div class="grid gap-5 lg:grid-cols-[1fr_0.72fr] lg:items-end">
+            <div>
+              <p class="text-xs font-bold uppercase text-signal">Published research / {mcpResearchEntries.length}</p>
+              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-5xl">ExplicitMem MCP</h2>
+            </div>
+            <p class="text-sm leading-7 text-white/62">
+              {publishedStudy.detail.useCase}
+            </p>
+          </div>
+
+          <article
+            data-research-card={publishedStudy.productSlug}
+            data-research-status={publishedStudy.hostedStatus}
+            class="group mt-7 grid border border-white/40 bg-black/76 transition hover:border-signal focus-within:border-signal lg:grid-cols-[0.9fr_1.1fr]"
+          >
+            <div class="flex flex-col border-b border-white/40 p-5 transition group-hover:border-signal/50 sm:p-7 lg:border-r lg:border-b-0">
+              <div class="flex flex-wrap justify-between gap-3">
+                <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Product / {publishedStudy.detail.category}</p>
+                <span class="border border-signal bg-signal px-2 py-1 text-[0.62rem] font-bold uppercase text-black">{catalogStatusLabel(publishedStudy.plan)}</span>
+              </div>
+              <h3 class="mt-6 text-3xl font-extrabold uppercase leading-tight">Memory that survives long agent work</h3>
+              <p class="mt-4 max-w-xl text-sm leading-7 text-white/70">{publishedStudy.detail.buyer}</p>
+              <div class="mt-7 flex flex-wrap gap-2">
+                {publishedStudy.detail.workflows.map((workflow) => (
+                  <span class="border border-white/28 px-2.5 py-2 text-[0.62rem] font-bold uppercase text-white/64">{workflow}</span>
+                ))}
+              </div>
+              <a href={`/products/${publishedStudy.productSlug}`} class="mt-auto pt-8 text-xs font-extrabold uppercase text-signal hover:text-white">Open product details <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="flex flex-col p-5 sm:p-7">
+              <div class="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <p class="text-xs font-bold uppercase text-white/48">{publishedStudy.briefLabel} / LongMemEval-S</p>
+                  <p class="mt-3 text-6xl font-extrabold leading-none sm:text-7xl">{explicitMemBenchmark.answerAccuracy}</p>
+                  <p class="mt-2 text-xs font-bold uppercase text-white/58">Answer accuracy / {explicitMemBenchmark.questions} questions</p>
+                </div>
+                <dl class="grid min-w-48 grid-cols-2 border border-white/28 text-center">
+                  <div class="border-r border-white/28 p-3">
+                    <dt class="text-[0.58rem] font-bold uppercase text-white/46">Faithfulness</dt>
+                    <dd class="mt-2 text-lg font-extrabold">{explicitMemBenchmark.answerFaithfulness}</dd>
+                  </div>
+                  <div class="p-3">
+                    <dt class="text-[0.58rem] font-bold uppercase text-white/46">Recall@K</dt>
+                    <dd class="mt-2 text-lg font-extrabold">{explicitMemBenchmark.retrievalRecallAtK}</dd>
+                  </div>
+                </dl>
+              </div>
+              <p class="mt-7 max-w-2xl text-sm leading-7 text-white/72">Four evaluation views cover LongMemEval-S synthesis, LoCoMo retrieval, cross-dataset candidate generation, and generic-answer support.</p>
+              <p class="mt-4 max-w-2xl border-l-2 border-signal pl-4 text-xs leading-6 text-white/52">{publishedStudy.limit}</p>
+              <div class="mt-auto flex flex-wrap gap-3 pt-8">
+                <a href={publishedStudy.href} class="inline-flex min-h-11 items-center justify-center border border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Method and results</a>
+                <a href={`/products/${publishedStudy.productSlug}`} class="inline-flex min-h-11 items-center justify-center border border-white/40 px-4 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal hover:text-black">Use case and access</a>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section aria-labelledby="operational-evidence-title" class="border-b border-white/20">
+          <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_22rem]">
+            <div class="px-4 py-8 sm:px-6 lg:px-8">
+              <p class="font-mono text-[0.64rem] font-bold uppercase text-signal">Available product evidence</p>
+              <h2 id="operational-evidence-title" class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Inspect the product contract</h2>
+            </div>
+            <p class="border-t border-white/20 px-5 py-6 text-sm leading-6 text-white/64 lg:border-l lg:border-t-0">
+              Every available MCP page documents a concrete call, output shape, required access, current boundary, and runtime usage classification.
+            </p>
+          </header>
+
+          <div>
+            {operationalEvidenceProducts.map(({ plan, detail }, index) => (
+              <a href={`/products/${plan.slug}`} class:list={["group grid gap-4 px-4 py-6 transition hover:bg-signal hover:text-black sm:px-6 lg:grid-cols-[12rem_minmax(0,0.7fr)_minmax(0,1.3fr)_2rem] lg:items-center lg:px-8", index < operationalEvidenceProducts.length - 1 && "border-b border-white/20"]}>
+                <div>
+                  <p class="text-lg font-extrabold uppercase">{plan.displayName}</p>
+                  <p class="mt-1 font-mono text-[0.58rem] font-bold uppercase opacity-52">{detail.category}</p>
+                </div>
+                <p class="text-xs font-bold uppercase text-signal group-hover:text-black">Production workflow evidence</p>
+                <p class="max-w-2xl text-sm leading-6 opacity-68">{detail.useCase}</p>
+                <span class="hidden text-xl transition-transform group-hover:translate-x-1 lg:inline" aria-hidden="true">→</span>
+              </a>
+            ))}
+          </div>
+
+          <div class="grid gap-5 border-t border-white/20 bg-[#0a0a0a] px-4 py-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-6 lg:px-8">
+            <p class="max-w-3xl text-sm leading-6 text-white/64">See all {availableMcpCount} available MCPs and their product-specific workflow evidence.</p>
+            <a href="/products#mcp-catalog" class="inline-flex min-h-11 items-center justify-center border border-signal px-4 text-xs font-black uppercase text-signal transition hover:bg-signal hover:text-black">Open product catalog</a>
+          </div>
         </section>
 
         <section aria-labelledby="evidence-classes-title" class="page-section">
-          <h2 id="evidence-classes-title" class="text-3xl font-extrabold uppercase sm:text-4xl">Three evidence classes</h2>
-          <div class="mt-7 grid border border-white/45 lg:grid-cols-3">
+          <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
+            <div>
+              <p class="font-mono text-[0.64rem] font-bold uppercase text-signal">Publication policy</p>
+              <h2 id="evidence-classes-title" class="mt-3 text-3xl font-extrabold uppercase sm:text-4xl">Three evidence classes</h2>
+            </div>
+            <p class="text-sm leading-6 text-white/62">Product availability is assessed separately; catalog entries do not need uniform research coverage. Each publication stays attached to the product, method, date, and scope it actually evaluates.</p>
+          </div>
+          <div class="mt-7 grid border border-white/40 lg:grid-cols-3">
             {evidenceClasses.map((evidence, index) => (
-              <article class:list={["flex min-h-64 flex-col p-5 sm:p-6", index < evidenceClasses.length - 1 && "border-b border-white/35 lg:border-b-0 lg:border-r"]}>
+              <article class:list={["flex min-h-60 flex-col p-5 sm:p-6", index < evidenceClasses.length - 1 && "border-b border-white/30 lg:border-b-0 lg:border-r"]}>
                 <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">0{index + 1}</p>
                 <h3 class="mt-4 text-xl font-extrabold uppercase">{evidence.label}</h3>
                 <p class="mt-3 text-sm leading-7 text-white/64">{evidence.definition}</p>
@@ -69,53 +205,6 @@ const evidenceClasses = [
               </article>
             ))}
           </div>
-        </section>
-
-        <section id="published-study" class="page-section scroll-mt-6">
-          <div class="grid gap-5 lg:grid-cols-[1fr_0.72fr] lg:items-end">
-            <div>
-              <p class="text-xs font-bold uppercase text-signal">Published research / {mcpResearchEntries.length}</p>
-              <h2 class="mt-3 text-3xl font-extrabold uppercase leading-none sm:text-5xl">ExplicitMem evaluations</h2>
-            </div>
-            <p class="text-sm leading-7 text-white/62">
-              Four evaluation views cover LongMemEval-S synthesis, LoCoMo retrieval, cross-dataset candidate generation, and generic-answer support. Each keeps its own metric and caveat.
-            </p>
-          </div>
-
-          <article
-            data-research-card={publishedStudy.productSlug}
-            data-research-status={publishedStudy.hostedStatus}
-            class="group mt-7 grid border-2 border-white/70 bg-black/76 transition hover:border-signal focus-within:border-signal lg:grid-cols-[0.82fr_1.18fr]"
-          >
-            <div class="border-b-2 border-white/40 p-6 transition group-hover:border-signal/50 lg:border-r-2 lg:border-b-0">
-              <div class="flex flex-wrap justify-between gap-3">
-                <p class="text-xs font-bold uppercase text-signal">{explicitMemBenchmark.questions}-question LongMemEval-S run</p>
-                <span class="border border-signal bg-signal px-2 py-1 text-[0.62rem] font-bold uppercase text-black">{catalogStatusLabel(publishedStudy.plan)}</span>
-              </div>
-              <p class="mt-6 text-6xl font-extrabold leading-none sm:text-7xl">{explicitMemBenchmark.answerAccuracy}</p>
-              <p class="mt-3 text-xs font-bold uppercase text-white/58">Answer accuracy / fixed synthesis configuration</p>
-              <dl class="mt-8 grid grid-cols-2 gap-3">
-                <div class="border border-white/30 p-3">
-                  <dt class="text-[0.65rem] font-bold uppercase text-white/48">Faithfulness</dt>
-                  <dd class="mt-2 text-xl font-extrabold">{explicitMemBenchmark.answerFaithfulness}</dd>
-                </div>
-                <div class="border border-white/30 p-3">
-                  <dt class="text-[0.65rem] font-bold uppercase text-white/48">Recall@K</dt>
-                  <dd class="mt-2 text-xl font-extrabold">{explicitMemBenchmark.retrievalRecallAtK}</dd>
-                </div>
-              </dl>
-            </div>
-            <div class="flex flex-col p-6 sm:p-8">
-              <p class="text-xs font-bold uppercase text-white/48">{publishedStudy.briefLabel}</p>
-              <h3 class="mt-4 text-3xl font-extrabold uppercase">{publishedStudy.question}</h3>
-              <p class="mt-5 max-w-2xl text-sm leading-7 text-white/72">{publishedStudy.evaluationLens}</p>
-              <p class="mt-4 max-w-2xl border-l-2 border-signal pl-4 text-xs leading-6 text-white/52">{publishedStudy.limit}</p>
-              <div class="mt-auto flex flex-wrap gap-3 pt-8">
-                <a href={publishedStudy.href} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Method and results</a>
-                <a href={`/products/${publishedStudy.productSlug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-white/50 px-4 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Product details</a>
-              </div>
-            </div>
-          </article>
         </section>
 
     </PublicPageFrame>

@@ -435,8 +435,10 @@ async function runBrowserSmoke() {
     }, "waitlist route");
 
     await checkPage(page, `${baseUrl}/research`, async () => {
+      await page.getByRole("heading", { name: "Research for Monarchic products." }).waitFor();
       await page.getByRole("heading", { name: "Three evidence classes" }).waitFor();
-      await page.getByRole("heading", { name: "ExplicitMem evaluations" }).waitFor();
+      await page.getByRole("heading", { name: "ExplicitMem MCP" }).waitFor();
+      await page.getByRole("heading", { name: "Inspect the product contract" }).waitFor();
       const researchCards = page.locator("[data-research-card]");
       const cardCount = await researchCards.count();
       if (cardCount !== 1) {
