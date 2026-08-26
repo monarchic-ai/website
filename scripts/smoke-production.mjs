@@ -184,11 +184,14 @@ async function runBrowserSmoke() {
     });
 
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "We build automation you can inspect.", exact: true }).waitFor();
-      await page.getByRole("heading", { name: "Useful automation should show its work." }).waitFor();
-      await page.getByRole("heading", { name: "How the company works." }).waitFor();
+      await page.getByRole("heading", { name: "Build past the demo.", exact: true }).waitFor();
+      await page.getByRole("img", { name: /bounded operating loop/i }).waitFor();
+      await page.getByText("Failure assumed", { exact: true }).waitFor();
+      await page.getByText("Reference model / Not live telemetry", { exact: true }).waitFor();
+      await page.getByRole("heading", { name: "The system must show its work." }).waitFor();
+      await page.getByRole("heading", { name: "Built for contact with reality." }).waitFor();
       await page.getByRole("heading", { name: "MCPs are where the work is now." }).waitFor();
-      await page.getByRole("heading", { name: "The record sits beside the claim." }).waitFor();
+      await page.getByRole("heading", { name: "The record outranks the pitch." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
@@ -202,7 +205,7 @@ async function runBrowserSmoke() {
         "/company",
       );
       await expectHref(
-        page.getByRole("link", { name: "See current work", exact: true }),
+        page.getByRole("link", { name: "Inspect current systems", exact: true }),
         "/products",
       );
       await expectHref(
@@ -402,7 +405,8 @@ async function runBrowserSmoke() {
 
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "We build automation you can inspect.", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Build past the demo.", exact: true }).waitFor();
+      await page.getByRole("img", { name: /bounded operating loop/i }).waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await expectNoElementOverlap(
