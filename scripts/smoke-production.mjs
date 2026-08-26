@@ -229,6 +229,10 @@ async function runBrowserSmoke() {
         "The benchmark includes the method, failures, and limits.",
         "Tell us which coming-soon MCP matters next.",
         "Start a 30-day evaluation.",
+        "Connect your first MCP.",
+        "Generic configuration",
+        "Supported setup formats",
+        "Full setup guide",
       ]);
       await expectNoHorizontalOverflow(page);
     }, "home route");
