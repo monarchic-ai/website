@@ -33,10 +33,10 @@ pnpm check:webinfo-artifacts
 
 ## Current Scope
 
-The site is an Astro static site for the Monarchic brand and public product
-research surface. It currently owns:
+The site is Monarchic's Astro-based corporate site and public product research
+surface. It currently owns:
 
-- the brand home page at `/`
+- the company-led home page at `/`
 - the public products catalog at `/products`
 - individual product detail pages at `/products/[slug]`
 - the research index at `/research`

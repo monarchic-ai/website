@@ -83,12 +83,25 @@ for (const staleRoute of ["/about", "/waitlist", "/research/explicitmem", "/serv
   assert(!sitemapRoutes.includes(staleRoute), `Superseded route ${staleRoute} must not appear.`);
 }
 
+const home = siteMap.pages.find((page) => page.route === "/");
+const homePageMap = pageMaps.pages.find((page) => page.route === "/");
 const products = siteMap.pages.find((page) => page.route === "/products");
 const productDetail = siteMap.pages.find((page) => page.route === "/products/[slug]");
 const researchDetail = siteMap.pages.find((page) => page.route === "/research/[slug]");
 const privacy = siteMap.pages.find((page) => page.route === "/privacy");
 const terms = siteMap.pages.find((page) => page.route === "/terms");
 
+assertIncludes(home.requiredContent, "Monarchic’s identity as a small, independent automation research and development company", "Home company identity");
+assertIncludes(home.primaryActions, "Learn about Monarchic", "Home company action");
+assertSameOrder(
+  homePageMap.sections.map((section) => section.id),
+  ["navigation", "hero", "company-thesis", "operating-method", "current-work", "public-record", "footer"],
+  "home company-first sections",
+);
+assert(
+  !home.requiredContent.some((item) => item.includes("first-connection")),
+  "Home contract must keep setup instructions in the webapp.",
+);
 assertIncludes(products.requiredContent, "Pricing summaries and demonstrations only when verified and appropriate", "Products pricing/demo boundary");
 assertIncludes(productDetail.requiredContent, "Optional correctly labeled evidence only when genuine product evidence exists", "Product-detail evidence conditionality");
 assertIncludes(productDetail.requiredContent, "Verified pricing and demonstrations only when available", "Product-detail pricing/demo conditionality");

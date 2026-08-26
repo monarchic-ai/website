@@ -1,13 +1,13 @@
 ---
 interface Props {
-  active?: "products" | "research";
+  active?: "company" | "products" | "research";
   tone?: "dark" | "paper";
 }
 
 const { active, tone = "dark" } = Astro.props;
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const navClass = (current: boolean) => [
-  "motion-link inline-flex min-h-10 items-center justify-center border px-2.5 py-2 text-center text-[0.65rem] font-bold uppercase max-[359px]:px-1.5 max-[359px]:text-[0.56rem] sm:px-4 sm:text-xs",
+  "motion-link inline-flex min-h-10 items-center justify-center border px-2.5 py-2 text-center text-[0.65rem] font-bold uppercase max-[359px]:px-1.5 max-[359px]:text-[0.6rem] sm:px-4 sm:text-xs",
   tone === "paper"
     ? current
       ? "border-black bg-black text-white"
@@ -35,13 +35,13 @@ const navClass = (current: boolean) => [
     <span class="hidden text-[0.7rem] font-black uppercase sm:inline">Monarchic</span>
   </a>
   <nav aria-label="Primary navigation" class="flex min-w-0 items-center justify-end gap-1 sm:gap-2">
-    <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
-    <a href={`${appBaseUrl}/setup`} class={navClass(false)}>Setup</a>
+    <a aria-current={active === "company" ? "page" : undefined} href="/company" class={navClass(active === "company")}>Company</a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
+    <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
     <a
       href={`${appBaseUrl}/app`}
       class:list={[
-        "motion-link inline-flex min-h-10 items-center border px-2.5 text-[0.65rem] font-black uppercase max-[359px]:px-1.5 max-[359px]:text-[0.56rem] sm:px-4 sm:text-xs",
+        "motion-link inline-flex min-h-10 items-center border px-2.5 text-[0.65rem] font-black uppercase max-[359px]:px-1.5 max-[359px]:text-[0.6rem] sm:px-4 sm:text-xs",
         tone === "paper"
           ? "border-black bg-black text-white hover:bg-signal hover:text-black"
           : "border-signal bg-signal text-black hover:bg-signal-soft",

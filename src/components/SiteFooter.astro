@@ -22,7 +22,7 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
       <span class="text-xs font-extrabold uppercase">Monarchic</span>
     </a>
     <p class:list={["mt-4 max-w-xl text-sm leading-6", tone === "paper" ? "text-black/64" : "text-white/68"]}>
-      Purpose-built MCPs, one account, and clear usage.
+      Independent research and development for inspectable automation.
     </p>
   </div>
   <nav
@@ -32,11 +32,11 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
       tone === "paper" ? "text-black/68" : "text-white/70",
     ]}
   >
-    <a href="/products" class="motion-link hover:text-signal">Products</a>
-    <a href={`${appBaseUrl}/setup`} class="motion-link hover:text-signal">Setup</a>
-    <a href="/research" class="motion-link hover:text-signal">Research</a>
-    <a href="/security" class="motion-link hover:text-signal">Security</a>
     <a href="/company" class="motion-link hover:text-signal">Company</a>
+    <a href="/research" class="motion-link hover:text-signal">Research</a>
+    <a href="/products" class="motion-link hover:text-signal">Products</a>
+    <a href="/security" class="motion-link hover:text-signal">Security</a>
+    <a href={`${appBaseUrl}/setup`} class="motion-link hover:text-signal">Setup</a>
     <a href="/privacy" class="motion-link hover:text-signal">Privacy</a>
     <a href="/terms" class="motion-link hover:text-signal">Terms</a>
   </nav>

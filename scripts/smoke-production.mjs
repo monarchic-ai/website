@@ -8,7 +8,7 @@ const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? 
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
-const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=2`;
+const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=3`;
 const expectedAppBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
     process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
@@ -184,15 +184,26 @@ async function runBrowserSmoke() {
     });
 
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
-      await page.getByRole("heading", { name: "Map this repository and return source-cited architecture." }).waitFor();
-      await page.getByRole("heading", { name: "Architecture map ready." }).waitFor();
+      await page.getByRole("heading", { name: "We build automation you can inspect.", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Useful automation should show its work." }).waitFor();
+      await page.getByRole("heading", { name: "How the company works." }).waitFor();
+      await page.getByRole("heading", { name: "MCPs are where the work is now." }).waitFor();
+      await page.getByRole("heading", { name: "The record sits beside the claim." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
+      await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
       await expectHref(
         page.getByRole("link", { name: "Start free evaluation" }),
         `${expectedAppBaseUrl}/products/usage-evaluation`,
+      );
+      await expectHref(
+        page.getByRole("link", { name: "About Monarchic", exact: true }).first(),
+        "/company",
+      );
+      await expectHref(
+        page.getByRole("link", { name: "See current work", exact: true }),
+        "/products",
       );
       await expectHref(
         page.getByRole("link", { name: "Setup", exact: true }).first(),
@@ -203,22 +214,19 @@ async function runBrowserSmoke() {
         `${expectedAppBaseUrl}/app`,
       );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-      await expectMeta(page, "og:title", "Monarchic | Hosted MCPs for agent workflows");
+      await expectMeta(page, "og:title", "Monarchic | Automation research and development");
       await expectMeta(page, "og:site_name", "Monarchic");
       await expectMeta(page, "og:image", expectedSocialImageUrl);
       await expectMeta(page, "og:image:width", "1200");
       await expectMeta(page, "og:image:height", "630");
       await expectMeta(page, "twitter:card", "summary_large_image");
-      await page.getByRole("heading", { name: "Featured MCPs." }).waitFor();
-      await page.getByRole("heading", { name: "Tools, evidence, and operating context." }).waitFor();
-      for (const evidenceClass of [
-        "External-dataset benchmarks",
-        "Reproducible first-party evaluations",
-        "Production and engineering verification",
-      ]) {
-        await page.getByText(evidenceClass, { exact: true }).waitFor();
-      }
       await expectTextAbsent(page, [
+        "Hosted MCPs. One account.",
+        "Purpose-built tools for MCP clients",
+        "Map this repository and return source-cited architecture.",
+        "Architecture map ready.",
+        "Featured MCPs.",
+        "Tools, evidence, and operating context.",
         "Hosted staging MCP route",
         "3.45s",
         "3.28s",
@@ -394,11 +402,12 @@ async function runBrowserSmoke() {
 
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "We build automation you can inspect.", exact: true }).waitFor();
+      await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await expectNoElementOverlap(
         page.locator("#navigation > a[href='/']"),
-        page.locator("#navigation nav a[href='/products']"),
+        page.locator("#navigation nav a[href='/company']"),
       );
       await expectNoHorizontalOverflow(page);
     }, "home route at 320px");
@@ -769,7 +778,7 @@ async function checkBuildInfo(url, {
     }
   }
 
-  if (payload.socialImage !== "/social-card.png?v=2") {
+  if (payload.socialImage !== "/social-card.png?v=3") {
     throw new Error(`build-info socialImage mismatch: ${payload.socialImage}`);
   }
 

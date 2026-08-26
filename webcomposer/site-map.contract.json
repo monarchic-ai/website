@@ -1,11 +1,11 @@
 {
   "name": "Monarchic",
-  "description": "Centers Monarchic’s products, publishable evidence, and automation research direction while giving each audience a direct path to relevant product details, external applications, or product-specific waitlists.",
+  "description": "Presents Monarchic as an independent automation research and development company, with its current products, public evidence, and web application clearly separated beneath that company story.",
   "pages": [
     {
       "route": "/",
       "title": "Home",
-      "purpose": "Explain Monarchic's long-term automation vision and its current focus on a connected ecosystem of AI-focused MCP products while establishing a technically serious, long-horizon research and development firm without overstating team size or operational scale.",
+      "purpose": "Introduce Monarchic as an independent, long-horizon automation research and development company, explain how it works, and present AI agents and MCP infrastructure as its current field of work without reducing the company to one product category.",
       "audience": [
         "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
         "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
@@ -14,10 +14,10 @@
         "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
       ],
       "requiredContent": [
-        "A connected, lab-style ecosystem of MCP products rather than one narrow or disposable AI tool",
-        "A focus on making AI-assisted work smarter, aligned with user intent, reproducible, and consistently capable of solving difficult problems",
-        "A product portfolio organized by user problem",
-        "A complete first-connection path covering prerequisites, account access, scoped API keys, generated client configuration, and a bounded verification task",
+        "Monarchic’s identity as a small, independent automation research and development company",
+        "A clear distinction between the company’s enduring automation scope and its present focus on AI agents and MCP infrastructure",
+        "A concrete operating method that carries work from a bounded research question through ongoing maintenance",
+        "A selected view of current MCP work with the full product catalog kept secondary to the company story",
         "An ambitious but honest account of Monarchic’s maturity and operating scale",
         "Clear paths to Products, Research, and Company",
         "Clear product lifecycle and availability boundaries",
@@ -25,8 +25,7 @@
         "Emphasis on solving and maintaining real systems rather than one-shot prompt-to-app or unconstrained codebase generation",
         "Its current commercial focus on AI systems and MCP products",
         "Its longer-term relevance to engineering, STEM, and business automation without presenting future work as currently available",
-        "Monarchic’s identity as an automation development and research firm",
-        "Representative evidence using the three approved evidence labels",
+        "A public record that routes research, security controls, company boundaries, and product claims to the right supporting material",
         "The connected-system, deterministic-tooling, and real-system-maintenance differentiators"
       ],
       "forbiddenContent": [
@@ -45,9 +44,9 @@
         "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
-        "Explore MCP products",
-        "Open the setup guide",
-        "Review published research and evidence"
+        "Learn about Monarchic",
+        "Review published research and evidence",
+        "Explore current products"
       ]
     },
     {

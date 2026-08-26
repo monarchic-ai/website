@@ -35,27 +35,27 @@
         {
           "id": "hero",
           "template": "hero.split",
-          "purpose": "Explain the hosted MCP offer, free evaluation, and primary setup path in the first viewport."
+          "purpose": "Introduce Monarchic as an independent automation research and development company, with its present focus and enduring scope visible in the first viewport."
         },
         {
-          "id": "quickstart",
-          "template": "process.stepper",
-          "purpose": "Show the prerequisites, account flow, scoped-key boundary, generated client configuration, supported formats, and first verification task needed to connect an MCP."
-        },
-        {
-          "id": "request-example",
+          "id": "company-thesis",
           "template": "comparison.two_column",
-          "purpose": "Show a concrete RepoIntel request and the evidence-bearing response shape a connected client receives."
+          "purpose": "State the company standard for useful, inspectable automation and distinguish the enduring mission from the present technical focus."
         },
         {
-          "id": "product-landscape",
+          "id": "operating-method",
+          "template": "process.stepper",
+          "purpose": "Explain how Monarchic carries work from a bounded research question through encoding, verification, and maintenance."
+        },
+        {
+          "id": "current-work",
           "template": "feature.grid",
-          "purpose": "Help visitors identify available MCPs by workflow and continue into the full catalog."
+          "purpose": "Frame AI agents and MCP infrastructure as the company’s current field of work, then show a small selection of active products and a path to the catalog."
         },
         {
-          "id": "company-context",
+          "id": "public-record",
           "template": "proof.metric_story",
-          "purpose": "State Monarchic's automation R&D scope, evidence classes, current scale, long-term direction, and direct paths to Products, Research, Company, and Security."
+          "purpose": "Route visitors to the separate research, security, and company records that support Monarchic’s public claims."
         },
         {
           "id": "footer",

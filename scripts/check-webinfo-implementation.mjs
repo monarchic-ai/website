@@ -25,12 +25,13 @@ for (const route of canonicalRoutes) {
 const home = page("/");
 includes(home.text, [
   "Automation research and development",
-  "External-dataset benchmarks",
-  "Reproducible first-party evaluations",
-  "Production and engineering verification",
-], "Home evidence and company context");
+  "Useful automation should show its work",
+  "How the company works",
+  "MCPs are where the work is now",
+  "The record sits beside the claim",
+], "Home company identity and current-work boundary");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
-includes(home.html, [`href="${appBaseUrl}/app"`], "Authenticated console destination");
+includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");
 
 const products = page("/products");
 includes(products.text, [

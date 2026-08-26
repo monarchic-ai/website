@@ -1,5 +1,4 @@
 ---
-import HostedMcpScene from "../components/HostedMcpScene.astro";
 import PublicPageFrame from "../components/PublicPageFrame.astro";
 import SeoHead from "../components/SeoHead.astro";
 import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
@@ -10,36 +9,71 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
 const publicMcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableMcpCount = publicMcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
 
+const workingMethod = [
+  {
+    number: "01",
+    title: "Research",
+    copy: "Start with a bounded question and decide what would count as evidence before building around an answer.",
+  },
+  {
+    number: "02",
+    title: "Encode",
+    copy: "Turn the useful method into an explicit contract with named inputs, permissions, and output boundaries.",
+  },
+  {
+    number: "03",
+    title: "Verify",
+    copy: "Test the claim at its real boundary and publish the method, result, failures, and limits together.",
+  },
+  {
+    number: "04",
+    title: "Maintain",
+    copy: "Operate the system, watch how it is used, and revise it as the models and infrastructure underneath it change.",
+  },
+];
+
 const featuredRoutes = [
   {
     label: "RepoIntel",
     href: "/products/mcp-repointel",
     proof: "Maps architecture and returns source-cited repository evidence.",
-    role: "Codebase context",
+    role: "Repository intelligence",
   },
   {
     label: "ExplicitMem",
     href: "/products/mcp-explicitmem",
     proof: `${explicitMemBenchmark.answerAccuracy} accuracy (${explicitMemBenchmark.passedQuestions}/${explicitMemBenchmark.questions}) on the fixed ${explicitMemBenchmark.benchmark} run.`,
-    role: "Durable memory",
-  },
-  {
-    label: "IncidentOps",
-    href: "/products/mcp-incidentops",
-    proof: "Builds timelines, triage packets, and guarded response updates.",
-    role: "Incident response",
-  },
-  {
-    label: "InfraProfiler",
-    href: "/products/mcp-infraprofiler",
-    proof: "Finds cost, reliability, latency, and pipeline hotspots.",
-    role: "Infrastructure intelligence",
+    role: "Memory research",
   },
   {
     label: "ReleaseOps",
     href: "/products/mcp-releaseops",
     proof: "Checks release readiness and packages evidence-backed handoffs.",
     role: "Release management",
+  },
+];
+
+const publicRecord = [
+  {
+    label: "Research",
+    title: "Methods and results",
+    copy: "Dated methods, measurements, misses, and interpretation boundaries for work that supports a public claim.",
+    href: "/research",
+    action: "Read the record",
+  },
+  {
+    label: "Security",
+    title: "Controls and limits",
+    copy: "Current hosted-service controls, request boundaries, and the operational limits that still matter.",
+    href: "/security",
+    action: "Review security",
+  },
+  {
+    label: "Company",
+    title: "Scope and direction",
+    copy: "Who Monarchic is, how the company works, and where the research extends beyond its present products.",
+    href: "/company",
+    action: "About Monarchic",
   },
 ];
 
@@ -53,59 +87,126 @@ const featuredRoutes = [
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
     <SeoHead
-      title="Monarchic | Hosted MCPs for agent workflows"
-      description="Connect MCPs for repository context, durable memory, incident response, and infrastructure analysis through one account."
+      title="Monarchic | Automation research and development"
+      description="Monarchic is an independent research and development company building inspectable automation, currently focused on AI agents and MCP infrastructure."
       path="/"
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
     <PublicPageFrame>
 
-      <section id="introduction" aria-labelledby="home-title">
-        <div class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
-          <div class="min-w-0 px-4 py-9 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
-            <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Purpose-built tools for MCP clients</p>
-            <h1 id="home-title" class="mt-4 max-w-5xl text-[2.45rem] font-black uppercase leading-[0.88] min-[360px]:text-[3rem] min-[420px]:text-[3.45rem] sm:text-7xl lg:text-[5.2rem] xl:text-[5.2rem]">
-              Hosted MCPs. <br />One account.
+      <section id="introduction" aria-labelledby="home-title" data-company-first>
+        <div class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <div class="min-w-0 px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
+            <p class="font-mono text-[0.68rem] font-bold uppercase text-signal">Monarchic / Independent research + development</p>
+            <h1 id="home-title" class="mt-5 max-w-5xl text-[2.45rem] font-black uppercase leading-[0.86] min-[360px]:text-[3rem] sm:text-7xl lg:text-[5.4rem]">
+              <span class="block">We build</span>
+              <span class="block">automation</span>
+              <span class="block sm:hidden">you can</span>
+              <span class="block sm:hidden">inspect.</span>
+              <span class="hidden sm:block">you can inspect.</span>
             </h1>
-            <p class="mt-7 max-w-3xl text-xl font-medium leading-8 text-white/88 sm:text-2xl">
-              Connect repository context, durable memory, incident response, and infrastructure analysis from the clients your agents already use.
+            <p class="mt-7 max-w-3xl text-lg font-medium leading-8 text-white/82 sm:text-2xl sm:leading-9">
+              Monarchic is a small, independent company. We research, build, and operate systems that reduce repeated technical work without hiding how they reached an answer.
             </p>
           </div>
 
-          <div class="grid content-between gap-10 border-t border-white/20 bg-[#0c0c0c] p-5 sm:p-7 lg:border-l lg:border-t-0">
-            <p class="text-sm leading-6 text-white/72">
-              Start with a free 30-day evaluation. No card or automatic billing.
-              Create an account key and see the usage impact of every call.
-            </p>
+          <aside class="grid content-between gap-10 border-t border-white/20 bg-[#0c0c0c] p-5 sm:p-7 lg:border-l lg:border-t-0" aria-label="Company brief">
+            <div>
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/46">Company brief</p>
+              <dl class="mt-5 border-t border-white/20 font-mono text-[0.66rem] uppercase">
+                <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-3 border-b border-white/20 py-3">
+                  <dt class="text-white/44">Company</dt>
+                  <dd class="font-bold text-white/82">Monarchic, LLC</dd>
+                </div>
+                <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-3 border-b border-white/20 py-3">
+                  <dt class="text-white/44">Structure</dt>
+                  <dd class="font-bold text-white/82">Independent R&amp;D</dd>
+                </div>
+                <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-3 border-b border-white/20 py-3">
+                  <dt class="text-white/44">Current work</dt>
+                  <dd class="font-bold text-white/82">AI agents + MCPs</dd>
+                </div>
+                <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-3 border-b border-white/20 py-3">
+                  <dt class="text-white/44">Enduring scope</dt>
+                  <dd class="font-bold text-white/82">Practical automation</dd>
+                </div>
+              </dl>
+            </div>
             <div class="grid gap-2">
-              <a href={`${appBaseUrl}/products/usage-evaluation`} class="motion-link inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">
-                Start free evaluation <span class="motion-arrow" aria-hidden="true">↗</span>
+              <a href="/company" class="motion-link inline-flex min-h-12 items-center justify-between border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">
+                About Monarchic <span class="motion-arrow" aria-hidden="true">↗</span>
               </a>
-              <a href={`${appBaseUrl}/setup`} class="motion-link inline-flex min-h-12 items-center justify-between border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:bg-signal hover:text-black">
-                Open setup <span class="motion-arrow" aria-hidden="true">↗</span>
+              <a href="/research" class="motion-link inline-flex min-h-12 items-center justify-between border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:bg-signal hover:text-black">
+                Read the research <span class="motion-arrow" aria-hidden="true">↗</span>
               </a>
             </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="company-thesis" aria-labelledby="company-thesis-title" class="border-b border-black bg-signal text-black">
+        <div class="grid lg:grid-cols-[minmax(0,1.1fr)_minmax(22rem,0.9fr)]">
+          <header class="p-5 sm:p-7 lg:p-9">
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-black/58">Company thesis</p>
+            <h2 id="company-thesis-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
+              Useful automation should show its work.
+            </h2>
+            <p class="mt-6 max-w-3xl text-base font-medium leading-7 text-black/72 sm:text-lg sm:leading-8">
+              A system should solve a repeated problem, expose its permission boundary, and leave enough evidence for a person to check the result. That is the standard behind our research and products.
+            </p>
+          </header>
+          <div class="border-t border-black/35 lg:border-l lg:border-t-0">
+            <article class="border-b border-black/35 p-5 sm:p-7">
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-black/52">Enduring scope</p>
+              <h3 class="mt-3 text-2xl font-black uppercase">Repeatable work with visible boundaries.</h3>
+            </article>
+            <article class="p-5 sm:p-7">
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-black/52">Present focus</p>
+              <h3 class="mt-3 text-2xl font-black uppercase">AI agents and the infrastructure around them.</h3>
+            </article>
           </div>
         </div>
       </section>
 
-      <HostedMcpScene />
+      <section id="operating-method" aria-labelledby="operating-method-title" class="border-b border-white/20">
+        <header class="grid gap-5 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
+          <div>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Operating method</p>
+            <h2 id="operating-method-title" class="mt-3 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">How the company works.</h2>
+          </div>
+          <p class="max-w-2xl text-sm leading-7 text-white/64">
+            A method is useful when it survives contact with a live system. We carry the work from the first question through ongoing maintenance.
+          </p>
+        </header>
+        <ol class="grid gap-px border-t border-white/20 bg-white/20 sm:grid-cols-2 lg:grid-cols-4">
+          {workingMethod.map((item) => (
+            <li class="flex min-h-56 flex-col bg-ink p-5 sm:p-6">
+              <span class="font-mono text-xs font-bold text-signal">{item.number}</span>
+              <div class="mt-auto pt-10">
+                <h3 class="text-2xl font-black uppercase">{item.title}</h3>
+                <p class="mt-3 text-sm leading-6 text-white/64">{item.copy}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-      <section id="catalog" aria-labelledby="catalog-title" class="border-b border-white/20">
-        <header class="grid border-b border-white/20 lg:grid-cols-[1fr_1fr]">
+      <section id="current-work" aria-labelledby="current-work-title" class="border-b border-white/20 bg-[#0a0a0a]">
+        <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_24rem]">
           <div class="p-5 sm:p-7">
-            <h2 id="catalog-title" class="text-4xl font-black uppercase leading-none sm:text-5xl">
-              Featured MCPs.
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Current work / AI systems</p>
+            <h2 id="current-work-title" class="mt-3 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">
+              MCPs are where the work is now.
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
-            <p class="max-w-2xl text-base leading-7 text-white/72">
-              {availableMcpCount} MCPs are available today. More are in development, and the
-              catalog will keep expanding as new products are ready.
+            <p class="text-sm leading-7 text-white/68">
+              MCP is the current interface, not the company mission. {availableMcpCount} tools are available today for repository context, memory, delivery, infrastructure, and incident work.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <a href="/products" class="motion-link inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">Full catalog</a>
+              <a href="/products" class="motion-link inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">See current work</a>
+              <a href={`${appBaseUrl}/products/usage-evaluation`} class="motion-link inline-flex min-h-11 items-center border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:text-signal-soft">Start free evaluation</a>
             </div>
           </div>
         </header>
@@ -113,7 +214,7 @@ const featuredRoutes = [
         <div>
           {featuredRoutes.map((route, index) => (
             <a href={route.href} class:list={[
-              "interactive-row group grid items-center gap-3 px-5 py-4 hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[minmax(9rem,0.55fr)_minmax(0,1fr)_2rem] sm:gap-5 sm:px-7 sm:py-5",
+              "interactive-row group grid items-center gap-3 px-5 py-4 hover:bg-signal hover:text-black sm:min-h-28 sm:grid-cols-[minmax(10rem,0.52fr)_minmax(0,1fr)_2rem] sm:gap-5 sm:px-7 sm:py-5",
               index < featuredRoutes.length - 1 && "border-b border-white/20",
             ]}>
               <div>
@@ -127,52 +228,30 @@ const featuredRoutes = [
         </div>
       </section>
 
-      <section id="company-context" aria-labelledby="company-context-title" class="border-b border-white/20 bg-[#0a0a0a]">
-        <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_20rem]">
-          <div class="p-5 sm:p-7">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Automation research and development</p>
-            <h2 id="company-context-title" class="mt-3 max-w-4xl text-4xl font-black uppercase leading-none sm:text-5xl">
-              Tools, evidence, and operating context.
-            </h2>
+      <section id="public-record" aria-labelledby="public-record-title" class="border-b border-white/20">
+        <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
+          <div>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Public record</p>
+            <h2 id="public-record-title" class="mt-3 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">The record sits beside the claim.</h2>
           </div>
-          <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
-            <p class="text-sm leading-6 text-white/72">
-              Monarchic is a small, independent engineering company. Our current work centers on MCP infrastructure and agent workflows, with a longer-term scope across software, science, and business operations.
-            </p>
-          </div>
+          <p class="text-sm leading-7 text-white/64">
+            Research methods, current controls, and company boundaries are published separately so each kind of claim has the right evidence.
+          </p>
         </header>
-
         <div class="grid lg:grid-cols-3">
-          <article class="border-b border-white/20 p-5 transition-colors duration-200 hover:bg-white/[0.025] lg:border-b-0 lg:border-r sm:p-7">
-            <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Production and engineering verification</p>
-            <h3 class="mt-3 text-xl font-black uppercase">Operational checks</h3>
-            <p class="mt-3 text-sm leading-6 text-white/70">
-              Hosted routes expose concrete tool calls, required access, output contracts, and current limitations. Availability is stated per product.
-            </p>
-            <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
-              <a href="/products" class="inline-flex text-xs font-black uppercase text-signal hover:text-white">Inspect products <span class="ml-2" aria-hidden="true">→</span></a>
-              <a href="/security" class="inline-flex text-xs font-black uppercase text-signal hover:text-white">Security <span class="ml-2" aria-hidden="true">→</span></a>
-            </div>
-          </article>
-          <article class="border-b border-white/20 p-5 transition-colors duration-200 hover:bg-white/[0.025] lg:border-b-0 lg:border-r sm:p-7">
-            <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">External-dataset benchmarks</p>
-            <h3 class="mt-3 text-xl font-black uppercase">Recognized evaluations</h3>
-            <p class="mt-3 text-sm leading-6 text-white/70">
-              Research pages are published only when a method, dated result, limitation, and inspectable artifact can support the claim.
-            </p>
-            <a href="/research" class="mt-5 inline-flex text-xs font-black uppercase text-signal hover:text-white">Read research <span class="ml-2" aria-hidden="true">→</span></a>
-          </article>
-          <article class="p-5 transition-colors duration-200 hover:bg-white/[0.025] sm:p-7">
-            <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Reproducible first-party evaluations</p>
-            <h3 class="mt-3 text-xl font-black uppercase">Attributed methods</h3>
-            <p class="mt-3 text-sm leading-6 text-white/70">
-              Monarchic-designed capability and robustness checks stay attributed to Monarchic, with their method and limitations beside the result.
-            </p>
-            <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2">
-              <a href="/research#published-study" class="inline-flex text-xs font-black uppercase text-signal hover:text-white">Review evaluations <span class="ml-2" aria-hidden="true">→</span></a>
-              <a href="/company" class="inline-flex text-xs font-black uppercase text-signal hover:text-white">Company <span class="ml-2" aria-hidden="true">→</span></a>
-            </div>
-          </article>
+          {publicRecord.map((item, index) => (
+            <article class:list={[
+              "group flex min-h-72 flex-col p-5 sm:p-7",
+              index < publicRecord.length - 1 && "border-b border-white/20 lg:border-b-0 lg:border-r",
+            ]}>
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-white/46">{item.label}</p>
+              <h3 class="mt-7 text-2xl font-black uppercase">{item.title}</h3>
+              <p class="mt-4 text-sm leading-7 text-white/62">{item.copy}</p>
+              <a href={item.href} class="motion-link mt-auto inline-flex min-h-11 items-center justify-between border border-white/40 px-4 text-xs font-black uppercase hover:border-signal hover:text-signal-soft">
+                {item.action} <span class="motion-arrow" aria-hidden="true">↗</span>
+              </a>
+            </article>
+          ))}
         </div>
       </section>
 
