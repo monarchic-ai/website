@@ -389,6 +389,15 @@ async function runBrowserSmoke() {
     }, "company route");
 
     await page.setViewportSize({ width: 320, height: 900 });
+    await checkPage(page, `${baseUrl}/`, async () => {
+      await page.getByRole("heading", { name: "Hosted MCPs. One account.", exact: true }).waitFor();
+      await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
+      await expectNoElementOverlap(
+        page.locator("#navigation > a[href='/']"),
+        page.locator("#navigation nav a[href='/products']"),
+      );
+      await expectNoHorizontalOverflow(page);
+    }, "home route at 320px");
     await checkPage(page, `${baseUrl}/products`, async () => {
       await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
       await page.getByRole("link", { name: "Start free evaluation" }).first().waitFor();
@@ -994,6 +1003,21 @@ async function expectNoHorizontalOverflow(page) {
   }));
   if (overflow.scrollWidth > overflow.clientWidth + 1 || overflow.bodyScrollWidth > overflow.clientWidth + 1) {
     throw new Error(`Horizontal overflow detected: ${JSON.stringify(overflow)}`);
+  }
+}
+
+async function expectNoElementOverlap(first, second) {
+  await Promise.all([first.waitFor(), second.waitFor()]);
+  const [firstBox, secondBox] = await Promise.all([first.boundingBox(), second.boundingBox()]);
+  if (firstBox === null || secondBox === null) {
+    throw new Error("Expected visible elements while checking layout overlap");
+  }
+  const overlapWidth = Math.min(firstBox.x + firstBox.width, secondBox.x + secondBox.width)
+    - Math.max(firstBox.x, secondBox.x);
+  const overlapHeight = Math.min(firstBox.y + firstBox.height, secondBox.y + secondBox.height)
+    - Math.max(firstBox.y, secondBox.y);
+  if (overlapWidth > 0 && overlapHeight > 0) {
+    throw new Error(`Elements overlap: ${JSON.stringify({ firstBox, secondBox })}`);
   }
 }
 
