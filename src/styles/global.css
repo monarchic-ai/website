@@ -4,8 +4,8 @@
 @theme {
   --color-ink: #080808;
   --color-paper: #f2f0e8;
-  --color-signal: #f0bd46;
-  --color-signal-soft: #fff1bd;
+  --color-signal: #7da7d9;
+  --color-signal-soft: #dce8f6;
   --font-weight-extrabold: 700;
   --font-weight-black: 700;
 }
@@ -145,7 +145,7 @@
 }
 
 :focus-visible {
-  outline-color: #f0bd46 !important;
+  outline-color: #7da7d9 !important;
   outline-style: solid !important;
   outline-width: 2px !important;
   outline-offset: 3px;

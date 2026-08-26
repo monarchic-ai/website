@@ -9,15 +9,17 @@ const socialSvgPath = resolve(process.cwd(), "public/social-card.svg");
 const faviconPath = resolve(process.cwd(), "public/favicon.svg");
 const seoHeadPath = resolve(process.cwd(), "src/components/SeoHead.astro");
 const buildInfoPath = resolve(process.cwd(), "src/pages/build-info.json.ts");
+const globalCssPath = resolve(process.cwd(), "src/styles/global.css");
 
 let failed = false;
 
-const [png, socialSvg, favicon, seoHead, buildInfo] = await Promise.all([
+const [png, socialSvg, favicon, seoHead, buildInfo, globalCss] = await Promise.all([
   readFile(socialPngPath),
   readFile(socialSvgPath, "utf8"),
   readFile(faviconPath, "utf8"),
   readFile(seoHeadPath, "utf8"),
   readFile(buildInfoPath, "utf8"),
+  readFile(globalCssPath, "utf8"),
 ]);
 
 const dimensions = readPngDimensions(png);
@@ -45,6 +47,7 @@ for (const marker of [
   "INDEPENDENT RESEARCH + DEVELOPMENT",
   "AI AGENTS + MCP INFRASTRUCTURE",
   "PRACTICAL AUTOMATION",
+  "#7da7d9",
 ]) {
   if (socialSvg.includes(marker)) {
     ok(`social-card.svg includes ${marker}`);
@@ -60,7 +63,7 @@ if (sha256(socialSvg) !== sha256(favicon)) {
 }
 
 for (const marker of [
-  "/social-card.png?v=3",
+  "/social-card.png?v=4",
   "summary_large_image",
   'og:image:width" content="1200"',
   'og:image:height" content="630"',
@@ -73,10 +76,30 @@ for (const marker of [
   }
 }
 
-if (buildInfo.includes('socialImage: "/social-card.png?v=3"')) {
+if (buildInfo.includes('socialImage: "/social-card.png?v=4"')) {
   ok("build-info exposes social-card.png marker");
 } else {
-  fail("build-info must expose /social-card.png?v=3");
+  fail("build-info must expose /social-card.png?v=4");
+}
+
+for (const marker of [
+  "--color-signal: #7da7d9;",
+  "--color-signal-soft: #dce8f6;",
+  "outline-color: #7da7d9",
+]) {
+  if (globalCss.includes(marker)) {
+    ok(`global brand palette includes ${marker}`);
+  } else {
+    fail(`global brand palette is missing ${marker}`);
+  }
+}
+
+for (const retiredColor of ["#f0bd46", "#fff1bd"]) {
+  if (!globalCss.includes(retiredColor) && !socialSvg.includes(retiredColor)) {
+    ok(`brand surfaces exclude retired yellow ${retiredColor}`);
+  } else {
+    fail(`brand surfaces still include retired yellow ${retiredColor}`);
+  }
 }
 
 if (failed) {
