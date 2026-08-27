@@ -202,6 +202,12 @@ async function runBrowserSmoke() {
       const steppedSystemField = page.locator('[data-system-motion="stepped-machine"]');
       await steppedSystemField.waitFor();
       await steppedSystemField.locator('[data-system-core="run"]').waitFor();
+      const systemCanvasBackground = await steppedSystemField.locator(".system-field-canvas").evaluate(
+        (element) => window.getComputedStyle(element).backgroundImage,
+      );
+      if (systemCanvasBackground !== "none") {
+        throw new Error(`system field canvas must remain grid-free; received ${systemCanvasBackground}`);
+      }
       const packets = steppedSystemField.locator(".system-field-packet");
       const packetCount = await packets.count();
       if (packetCount !== 4) {
