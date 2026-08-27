@@ -219,9 +219,25 @@ async function runBrowserSmoke() {
       if (!packetTiming.includes("steps(")) {
         throw new Error(`system field packets must use stepped timing; received ${packetTiming}`);
       }
-      const staticIndustrialField = page.locator('[data-hero-background="static-topology-field"]');
-      await staticIndustrialField.waitFor();
-      const heroFieldState = await staticIndustrialField.evaluate((element) => {
+      const staticTopologyField = page.locator('[data-hero-background="static-topology-field"]');
+      await staticTopologyField.waitFor();
+      const priorityLayer = page.locator('[data-hero-priority-layer="content"]');
+      await priorityLayer.waitFor();
+      const layerOrder = await priorityLayer.evaluate((content) => {
+        const topology = content.parentElement?.querySelector(".home-hero-topology");
+        return {
+          content: Number.parseInt(window.getComputedStyle(content).zIndex, 10),
+          topology: topology ? Number.parseInt(window.getComputedStyle(topology).zIndex, 10) : Number.NaN,
+        };
+      });
+      if (
+        !Number.isFinite(layerOrder.content)
+        || !Number.isFinite(layerOrder.topology)
+        || layerOrder.content <= layerOrder.topology
+      ) {
+        throw new Error(`hero content must render above the topology; received ${JSON.stringify(layerOrder)}`);
+      }
+      const heroFieldState = await staticTopologyField.evaluate((element) => {
         const fieldElements = element.querySelectorAll(
           ".home-hero-trace, .home-hero-signal, .home-hero-datum, .home-hero-sample, .home-hero-register-bit",
         );
