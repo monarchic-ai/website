@@ -53,6 +53,7 @@ const annualPrice = findPlanPrice(plan, "annual");
 const isPurchasable = plan.kind === "usage-plan" && plan.status === "available" && Boolean(monthlyPrice?.priceId || annualPrice?.priceId);
 const isEvaluation = plan.slug === "usage-evaluation";
 const mcpHostedStatus = plan.kind === "single-mcp" ? hostedMcpStatus(plan) : null;
+const isHostedCatalogEntry = plan.kind === "usage-plan" || plan.kind === "single-mcp";
 
 const planResearch = getMcpResearchByProductSlug(plan.slug);
 
@@ -105,7 +106,9 @@ function statusClasses(plan: CatalogPlan): string {
     <PublicPageFrame active="products">
 
         <p class="page-bar py-4 text-xs font-semibold uppercase text-white/54">
-          <a href="/products" class="transition hover:text-signal-soft">Products</a> / {plan.displayName}
+          <a href="/products" class="transition hover:text-signal-soft">Products</a>
+          {isHostedCatalogEntry && <> / <a href="/products/hosted-mcps" class="transition hover:text-signal-soft">Hosted MCPs</a></>}
+          / {plan.displayName}
         </p>
 
         <section class="page-section grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px]">
@@ -176,7 +179,7 @@ function statusClasses(plan: CatalogPlan): string {
                   {plan.usageSummary ?? "This MCP uses the shared weekly execution allowance on the account plan."}
                 </p>
                 {plan.status === "available" && (
-                  <a href="/products#plans" class="mt-5 inline-flex min-h-11 items-center justify-center border border-signal px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white lg:hidden">
+                  <a href="/products/hosted-mcps#plans" class="mt-5 inline-flex min-h-11 items-center justify-center border border-signal px-4 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white lg:hidden">
                     Compare usage plans
                   </a>
                 )}
@@ -319,7 +322,7 @@ function statusClasses(plan: CatalogPlan): string {
                 <p class="text-xs font-bold uppercase text-signal">Available</p>
                 <p class="mt-4 text-2xl font-extrabold uppercase">Use it with a usage plan</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Calls draw from the weekly execution usage included with your active plan.</p>
-                <a href="/products#plans" class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
+                <a href="/products/hosted-mcps#plans" class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Compare plans
                 </a>
               </>
@@ -339,8 +342,8 @@ function statusClasses(plan: CatalogPlan): string {
                 </a>
               </>
             )}
-            <a href="/products" class="mt-3 inline-flex min-h-11 w-full items-center justify-center border border-white/50 px-4 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
-              View all products
+            <a href={isHostedCatalogEntry ? "/products/hosted-mcps" : "/products"} class="mt-3 inline-flex min-h-11 w-full items-center justify-center border border-white/50 px-4 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
+              {isHostedCatalogEntry ? "View hosted MCPs" : "View all products"}
             </a>
           </aside>
         </section>

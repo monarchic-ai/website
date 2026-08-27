@@ -9,6 +9,7 @@ const appBaseUrl = (process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app
 const canonicalRoutes = [
   "/",
   "/products",
+  "/products/hosted-mcps",
   "/products/mcp-repointel",
   "/research",
   "/research/explicitmem",
@@ -43,8 +44,21 @@ includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], 
 
 const products = page("/products");
 includes(products.text, [
+  "Products",
+  "Current product work",
+  "AI enhancements",
+  "Coming soon",
+  "Hosted MCPs",
+  "Open hosted MCP catalog",
+], "Product portfolio and hosted catalog boundary");
+includes(products.html, ['href="/products/monarchic-ai"', 'href="/products/hosted-mcps"'], "Product portfolio routes");
+assert(count(products.html, /data-product-overview-card=/g) === 2, "Product portfolio must render exactly two product cards.");
+assert(count(products.html, /data-plan-card=/g) === 0, "Product portfolio must not inline hosted catalog cards.");
+
+const hostedMcps = page("/products/hosted-mcps");
+includes(hostedMcps.text, [
   "Find an MCP by workflow",
-  "17 of 23 MCPs available",
+  "17 available / 23 catalog entries",
   "Understand and change code",
   "Ship and operate systems",
   "Plan and grow",
@@ -53,8 +67,8 @@ includes(products.text, [
   "Health and nutrition",
   "Unlimited projects",
   "Access to every available MCP",
-], "Product workflow catalog");
-assert(count(products.html, /data-plan-card="mcp-/g) === 23, "Product catalog must render exactly 23 public MCP cards.");
+], "Hosted MCP workflow catalog");
+assert(count(hostedMcps.html, /data-plan-card="mcp-/g) === 23, "Hosted MCP catalog must render exactly 23 public MCP cards.");
 assert(!existsSync(routeFile("/products/mcp-pty")), "Internal PTY route must not be published.");
 
 const availableProduct = page("/products/mcp-repointel");

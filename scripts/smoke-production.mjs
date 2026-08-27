@@ -103,6 +103,7 @@ async function runSmoke() {
     "<urlset",
     "/company",
     "/security",
+    "/products/hosted-mcps",
     ...requiredResearchRoutes,
     "/products/mcp-cicd",
   ], "sitemap.xml");
@@ -257,7 +258,7 @@ async function runBrowserSmoke() {
       );
       await expectHref(
         page.getByRole("link", { name: "Browse hosted MCPs", exact: true }),
-        "/products",
+        "/products/hosted-mcps",
       );
       await expectHref(
         page.getByRole("link", { name: "See current work", exact: true }),
@@ -315,7 +316,41 @@ async function runBrowserSmoke() {
     }, "home route");
 
     await checkPage(page, `${baseUrl}/products`, async () => {
-      await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "Products." }).waitFor();
+      await page.getByRole("heading", { name: "Current product work." }).waitFor();
+      await page.getByRole("heading", { name: "AI enhancements" }).waitFor();
+      await page.getByRole("heading", { name: "Coming soon." }).waitFor();
+      await page.getByRole("heading", { name: "Hosted MCPs" }).waitFor();
+      const productCards = page.locator("[data-product-overview-card]");
+      const productCardCount = await productCards.count();
+      if (productCardCount !== 2) {
+        throw new Error(`Expected 2 Monarchic product cards, got ${productCardCount}`);
+      }
+      if (await page.locator("[data-plan-card]").count() !== 0) {
+        throw new Error("The product overview must not render hosted MCP plan cards");
+      }
+      await expectHref(
+        page.getByRole("link", { name: "View current development" }),
+        "/products/monarchic-ai",
+      );
+      await expectHref(
+        page.getByRole("link", { name: "Open hosted MCP catalog" }),
+        "/products/hosted-mcps",
+      );
+      const portfolioPrecedesCatalog = await page.evaluate(() => {
+        const card = document.querySelector('[data-product-overview-card="ai-enhancements"]');
+        const catalog = document.querySelector("[data-hosted-mcp-catalog-link]");
+        return Boolean(card && catalog && (card.compareDocumentPosition(catalog) & Node.DOCUMENT_POSITION_FOLLOWING));
+      });
+      if (!portfolioPrecedesCatalog) {
+        throw new Error("Monarchic product cards must precede the hosted MCP catalog link");
+      }
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
+      await expectNoHorizontalOverflow(page);
+    }, "products route");
+
+    await checkPage(page, `${baseUrl}/products/hosted-mcps`, async () => {
+      await page.getByRole("heading", { name: "Hosted MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
       await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
       await page.getByRole("heading", { name: "Find an MCP by workflow" }).waitFor();
@@ -379,9 +414,9 @@ async function runBrowserSmoke() {
         "Monarchic AI",
         "Synchronized Pricing, Account Checkout",
       ]);
-      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
+      await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products/hosted-mcps`);
       await expectNoHorizontalOverflow(page);
-    }, "products route");
+    }, "hosted MCP catalog route");
 
     await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
       await page.getByRole("heading", { name: "Individual" }).waitFor();
@@ -406,9 +441,12 @@ async function runBrowserSmoke() {
       await page.getByText("Connection and contract", { exact: true }).waitFor();
       await expectHref(
         page.getByRole("link", { name: "Compare plans" }),
-        "/products#plans",
+        "/products/hosted-mcps#plans",
       );
-      await page.getByRole("link", { name: "View all products" }).waitFor();
+      await expectHref(
+        page.getByRole("link", { name: "View hosted MCPs" }),
+        "/products/hosted-mcps",
+      );
       if (await page.getByRole("link", { name: "Read benchmark" }).count() !== 0) {
         throw new Error("BrowserOps must not link to a public benchmark");
       }
@@ -482,10 +520,16 @@ async function runBrowserSmoke() {
       await expectNoHorizontalOverflow(page);
     }, "home route at 320px");
     await checkPage(page, `${baseUrl}/products`, async () => {
-      await page.getByRole("heading", { name: "Plans and MCPs" }).waitFor();
-      await page.getByRole("link", { name: "Start free evaluation" }).first().waitFor();
+      await page.getByRole("heading", { name: "Products." }).waitFor();
+      await page.getByRole("heading", { name: "AI enhancements" }).waitFor();
+      await page.getByRole("link", { name: "Open hosted MCP catalog" }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "products route at 320px");
+    await checkPage(page, `${baseUrl}/products/hosted-mcps`, async () => {
+      await page.getByRole("heading", { name: "Hosted MCPs" }).waitFor();
+      await page.getByRole("link", { name: "Start free evaluation" }).first().waitFor();
+      await expectNoHorizontalOverflow(page);
+    }, "hosted MCP catalog route at 320px");
     await checkPage(page, `${baseUrl}/products/usage-individual`, async () => {
       await page.getByRole("heading", { name: "Individual" }).waitFor();
       await expectHref(
@@ -498,7 +542,7 @@ async function runBrowserSmoke() {
       await page.locator('[data-workflow-proof="mcp-repointel"]').waitFor();
       await expectHref(
         page.getByRole("link", { name: "Compare usage plans" }),
-        "/products#plans",
+        "/products/hosted-mcps#plans",
       );
       await expectNoHorizontalOverflow(page);
     }, "RepoIntel workflow proof at 320px");

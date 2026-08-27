@@ -1,105 +1,11 @@
 ---
-import ProductCatalogCard from "../../components/ProductCatalogCard.astro";
 import PublicPageFrame from "../../components/PublicPageFrame.astro";
 import SeoHead from "../../components/SeoHead.astro";
+import { allPlans, hostedMcpStatus } from "../../lib/pricing";
 import "../../styles/global.css";
-import {
-  allPlans,
-  cadenceLabel,
-  usageAllowanceLabel,
-  findPlanPrice,
-  formatPriceUSD,
-  hostedMcpStatus,
-  planStatusLabel,
-  resolveDisplayPrice,
-  type CatalogPlan,
-} from "../../lib/pricing";
-import { researchHrefForProductSlug } from "../../lib/mcpResearch";
-import usagePolicy from "../../lib/usage-policy.generated.json" with { type: "json" };
 
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
-const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
-const rank = (order: string[], slug: string) => {
-  const index = order.indexOf(slug);
-  return index === -1 ? order.length : index;
-};
-
-const usagePlans = allPlans
-  .filter((plan) => plan.kind === "usage-plan")
-  .sort((a, b) => rank(usageOrder, a.slug) - rank(usageOrder, b.slug));
-
-const mcpProducts = allPlans
-  .filter((plan) => plan.kind === "single-mcp")
-  .sort((a, b) => {
-    const statusOrder = { available: 0, in_rollout: 1, planned: 2 } as const;
-    const availabilityOrder = (plan: CatalogPlan) => statusOrder[hostedMcpStatus(plan)];
-    return availabilityOrder(a) - availabilityOrder(b) || a.displayName.localeCompare(b.displayName);
-  });
-
-const availableMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "available");
-const inRolloutMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "in_rollout");
-const plannedMcpProducts = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "planned");
-const availableMcpCount = availableMcpProducts.length;
-const inRolloutMcpCount = inRolloutMcpProducts.length;
-const formattedOperationCount = usagePolicy.catalog.classifiedOperationCount.toLocaleString("en-US");
-const shortRateCardVersion = usagePolicy.source.rateCardVersion.replace("hosted-mcp-catalog-", "");
-
-const workflowGroups = [
-  {
-    id: "understand-code",
-    title: "Understand and change code",
-    description: "Map repositories, navigate symbols, profile hotspots, review quality, and control bounded development work.",
-    slugs: ["mcp-repointel", "mcp-codeintel", "mcp-codeprofiler", "mcp-codequality", "mcp-repo-fleet", "mcp-create-project"],
-  },
-  {
-    id: "operate-systems",
-    title: "Ship and operate systems",
-    description: "Inspect browser behavior, delivery pipelines, releases, incidents, infrastructure cost, and reliability evidence.",
-    slugs: ["mcp-browserops", "mcp-cicd", "mcp-releaseops", "mcp-incidentops", "mcp-infraprofiler"],
-  },
-  {
-    id: "plan-and-grow",
-    title: "Plan and grow",
-    description: "Turn business context into company plans, market intelligence, account research, copy, and search work.",
-    slugs: ["mcp-businessmodel", "mcp-leadgenerator", "mcp-orgintel", "mcp-orgfleet", "mcp-copydev", "mcp-seo"],
-  },
-  {
-    id: "build-product-surfaces",
-    title: "Build product surfaces",
-    description: "Define website requirements, dashboards, launch pages, and production-ready vector assets.",
-    slugs: ["mcp-webinfo", "mcp-webdashboard", "mcp-websplash", "mcp-vectordesign"],
-  },
-  {
-    id: "memory-context",
-    title: "Memory and agent context",
-    description: "Retrieve explicit long-term memory for recurring agent work.",
-    slugs: ["mcp-explicitmem"],
-  },
-  {
-    id: "health-nutrition",
-    title: "Health and nutrition",
-    description: "Run deterministic nutrition calculations and structured planning from stated inputs.",
-    slugs: ["mcp-nutrition"],
-  },
-].map((group) => ({
-  ...group,
-  products: group.slugs.map((slug) => {
-    const plan = mcpProducts.find((product) => product.slug === slug);
-    if (!plan) throw new Error(`Workflow catalog references unknown MCP: ${slug}`);
-    return plan;
-  }),
-}));
-
-const workflowCatalogSlugs = workflowGroups.flatMap((group) => group.slugs);
-if (new Set(workflowCatalogSlugs).size !== mcpProducts.length || mcpProducts.some((plan) => !workflowCatalogSlugs.includes(plan.slug))) {
-  throw new Error("Every public MCP must appear exactly once in the workflow catalog.");
-}
-
-function statusClasses(plan: CatalogPlan): string {
-  if (plan.status === "available") return "border-signal bg-signal text-black";
-  if (plan.status === "contact_sales") return "border-white/70 text-white";
-  return "border-white/35 text-white/58";
-}
+const mcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
+const availableMcpCount = mcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
 ---
 
 <html lang="en">
@@ -111,283 +17,109 @@ function statusClasses(plan: CatalogPlan): string {
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Products | Monarchic"
-      description={`Compare Monarchic usage plans, ${availableMcpCount} MCPs available now, and an expanding product roadmap.`}
+      description="Monarchic develops agent systems and the hosted execution tools underneath them. See current product work and what is coming next."
       path="/products"
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
     <PublicPageFrame active="products">
-
-        <section class="page-hero">
-            <h1 class="max-w-4xl text-[2.8rem] font-extrabold uppercase leading-[0.86] min-[420px]:text-6xl lg:text-7xl">
-              Plans and MCPs
-            </h1>
-            <p class="mt-6 max-w-3xl text-base font-medium leading-7 text-white/76 sm:text-xl sm:leading-8">
-              Choose one plan for repository context, durable memory, incident response,
-              infrastructure analysis, and every other available MCP.
-            </p>
-            <p class="mt-5 font-mono text-[0.68rem] font-bold uppercase text-signal">
-              {availableMcpCount} of {mcpProducts.length} MCPs available
-            </p>
-            <div class="mt-8 flex flex-col gap-2 min-[440px]:flex-row">
-              <a href="#plans" class="inline-flex min-h-12 items-center justify-between border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft min-[440px]:min-w-48">
-                Compare plans <span aria-hidden="true">↓</span>
-              </a>
-              <a href="#mcp-catalog" class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
-                Browse all MCPs <span aria-hidden="true">↓</span>
-              </a>
-              <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
-                Start evaluation <span aria-hidden="true">↗</span>
-              </a>
-            </div>
-        </section>
-
-        <nav aria-label="Product sections" class="page-bar flex flex-nowrap items-center gap-2 overflow-x-auto bg-[#0a0a0a] py-4">
-          <a href="#plans" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Plans</a>
-          <a href="#workflow-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Find by workflow</a>
-          <a href="#mcp-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Available MCPs</a>
-          <a href="#coming-soon-mcps" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Coming soon MCPs</a>
-          <a href="#how-usage-works" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Usage</a>
-        </nav>
-
-        <section id="plans" class="page-section scroll-mt-8">
-          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Shared usage capacity</h2>
-          <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            Each plan includes an account-level weekly execution allowance shared
-            across available MCPs. Self-service usage pauses at the included weekly
-            limit with no automatic overage charges. Contracted Enterprise capacity
-            is arranged separately.
+      <section class="page-hero grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
+        <div>
+          <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Product index / Monarchic</p>
+          <h1 class="mt-4 max-w-4xl text-[3.5rem] font-black uppercase leading-[0.84] sm:text-7xl lg:text-[6.5rem]">
+            Products.
+          </h1>
+          <p class="mt-6 max-w-3xl text-base font-medium leading-7 text-white/72 sm:text-xl sm:leading-8">
+            Monarchic builds agent systems and the infrastructure they run on. The product line is separate from our catalog of hosted MCPs.
           </p>
-          <div class="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {usagePlans.map((plan) => {
-              const displayPrice = resolveDisplayPrice(plan, "monthly");
-              const monthlyPrice = findPlanPrice(plan, "monthly");
-              const annualPrice = findPlanPrice(plan, "annual");
-              const isPurchasable = plan.status === "available" && Boolean(monthlyPrice?.priceId || annualPrice?.priceId);
-              const isEvaluation = plan.slug === "usage-evaluation";
-              return (
-                <article
-                  data-plan-card={plan.slug}
-                  class={`flex min-h-[330px] flex-col border-2 bg-black/74 p-5 transition hover:border-signal focus-within:border-signal ${plan.highlighted ? "border-signal" : "border-white/70"}`}
-                >
-                  <div class="flex flex-wrap items-start justify-between gap-3">
-                    <span class="text-[0.65rem] font-bold uppercase text-white/58">Usage plan</span>
-                    <span class={`border px-2 py-1 text-[0.62rem] font-bold uppercase ${statusClasses(plan)}`}>{planStatusLabel(plan.status)}</span>
-                  </div>
-                  <h3 class="mt-5 text-2xl font-extrabold uppercase">{plan.displayName}</h3>
-                  <p class="mt-2 text-sm leading-6 text-white/66">{plan.tagline}</p>
-                  <ul class="mt-5 grid gap-2 text-xs font-bold uppercase text-white/76">
-                    {plan.featureBullets.slice(0, 2).map((bullet) => (
-                      <li class="flex items-start gap-2">
-                        <span class="mt-1.5 h-1.5 w-1.5 shrink-0 bg-signal"></span>
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {displayPrice?.price.priceCents != null && (
-                    <div class="mt-6">
-                      <p class="text-3xl font-extrabold">
-                        {formatPriceUSD(displayPrice.price.priceCents)}
-                        <span class="ml-1 text-sm text-white/52">{cadenceLabel(displayPrice.cadence)}</span>
-                      </p>
-                      {annualPrice?.priceCents != null && (
-                        <p class="mt-2 text-xs font-bold uppercase text-white/58">
-                          Annual {formatPriceUSD(annualPrice.priceCents)}{cadenceLabel("annual")} · two months included
-                        </p>
-                      )}
-                    </div>
-                  )}
-                  {usageAllowanceLabel(plan) && (
-                    <p class="mt-4 border-l-2 border-signal pl-3 text-xs font-bold uppercase text-signal-soft">
-                      {usageAllowanceLabel(plan)}
-                    </p>
-                  )}
-                  {!isEvaluation && (
-                    <p class="mt-3 text-[0.65rem] font-bold uppercase text-white/48">
-                      {plan.overageLabel}
-                    </p>
-                  )}
-                  <div class="flex-1"></div>
-                  <div class="mt-7 grid gap-2">
-                    {isEvaluation ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Start free evaluation</a>
-                    ) : isPurchasable ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Choose plan</a>
-                    ) : plan.status === "contact_sales" && plan.salesContactUrl ? (
-                      <a href={plan.salesContactUrl} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact sales</a>
-                    ) : (
-                      <a href={`/waitlist?product=${encodeURIComponent(plan.slug)}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal/80 px-3 text-xs font-bold uppercase text-signal-soft transition hover:bg-signal/10 hover:text-white">Join waitlist</a>
-                    )}
-                    <a href={`/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border border-white/50 px-3 text-xs font-bold uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Plan details</a>
-                  </div>
-                </article>
-              );
-            })}
+        </div>
+        <dl class="grid grid-cols-2 border border-white/30 bg-black/40 font-mono uppercase lg:grid-cols-1">
+          <div class="border-r border-white/20 p-4 lg:border-b lg:border-r-0">
+            <dt class="text-[0.56rem] font-bold text-white/54">Named product</dt>
+            <dd class="mt-2 text-sm font-black text-white">01</dd>
           </div>
-        </section>
+          <div class="p-4">
+            <dt class="text-[0.56rem] font-bold text-white/54">Hosted MCPs</dt>
+            <dd class="mt-2 text-sm font-black text-signal">{availableMcpCount} available</dd>
+          </div>
+        </dl>
+      </section>
 
-        <section id="workflow-catalog" class="page-section scroll-mt-8 bg-[#0a0a0a]">
-          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Find an MCP by workflow</h2>
-          <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            Start with the work you need to complete. Availability is shown beside every product; full pages document access, tool behavior, and current boundaries.
-          </p>
-          <div class="mt-7 border border-white/45">
-            {workflowGroups.map((group, groupIndex) => (
-              <section id={group.id} class:list={["grid lg:grid-cols-[0.7fr_1.3fr]", groupIndex < workflowGroups.length - 1 && "border-b border-white/35"]}>
-                <div class="border-b border-white/25 p-5 lg:border-b-0 lg:border-r sm:p-6">
-                  <h3 class="text-lg font-extrabold uppercase">{group.title}</h3>
-                  <p class="mt-3 text-sm leading-6 text-white/58">{group.description}</p>
-                </div>
-                <div class="grid sm:grid-cols-2">
-                  {group.products.map((plan, productIndex) => {
-                    const status = hostedMcpStatus(plan);
-                    return (
-                      <a
-                        href={`/products/${plan.slug}`}
-                        class:list={[
-                          "flex min-h-20 items-center justify-between gap-4 p-4 transition hover:bg-signal hover:text-black sm:p-5",
-                          productIndex < group.products.length - 2 && "sm:border-b sm:border-white/20",
-                          productIndex < group.products.length - 1 && "border-b border-white/20",
-                          productIndex % 2 === 0 && "sm:border-r sm:border-white/20",
-                        ]}
-                      >
-                        <span class="text-sm font-extrabold uppercase">{plan.displayName}</span>
-                        <span class="shrink-0 font-mono text-[0.56rem] font-bold uppercase opacity-58">
-                          {status === "available" ? "Available" : status === "in_rollout" ? "In rollout" : "Coming soon"}
-                        </span>
-                      </a>
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
-          </div>
-        </section>
-
-        <section id="mcp-catalog" class="page-section scroll-mt-8">
-          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Available MCPs</h2>
-          <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            These {availableMcpCount} products have production hosted routes.
-            Open one to inspect its tool-call contract, evidence boundary, and
-            fixed rate-card class.
-          </p>
-          <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {availableMcpProducts.map((plan) => (
-              <ProductCatalogCard plan={plan} researchHref={researchHrefForProductSlug(plan.slug) ?? undefined} />
-            ))}
-          </div>
-
-          {inRolloutMcpCount > 0 && (
-            <section class="mt-14 border-t-2 border-signal pt-8">
-              <p class="text-xs font-bold uppercase text-signal">Hosted expansion</p>
-              <h3 class="mt-3 text-2xl font-extrabold uppercase">In rollout / {inRolloutMcpCount}</h3>
-              <p class="mt-3 max-w-3xl text-sm leading-7 text-white/62">
-                These MCPs have passed a non-production deployment gate. Public access stays closed until production readiness, tenant isolation, and cost attribution pass.
-              </p>
-              <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                {inRolloutMcpProducts.map((plan) => (
-                  <ProductCatalogCard plan={plan} researchHref={researchHrefForProductSlug(plan.slug) ?? undefined} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          <section id="coming-soon-mcps" class="mt-14 scroll-mt-8 border-t-2 border-white/55 pt-8">
-            <p class="text-xs font-bold uppercase text-white/54">Hosted expansion</p>
-            <h3 class="mt-3 text-2xl font-extrabold uppercase">Coming soon</h3>
-            <p class="mt-3 max-w-3xl text-sm leading-7 text-white/62">
-              These MCPs are accepted for the hosted catalog and have an assigned runtime plan. Their product pages are public now, but hosted access remains closed until their deployment gates pass.
-            </p>
-            <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {plannedMcpProducts.map((plan) => (
-                <ProductCatalogCard plan={plan} researchHref={researchHrefForProductSlug(plan.slug) ?? undefined} />
-              ))}
-            </div>
-          </section>
-        </section>
-
-        <section id="how-usage-works" class="page-section scroll-mt-8 bg-[#0a0a0a]">
-          <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-            <div>
-              <h2 class="text-3xl font-extrabold uppercase">Subscription price. Usage measured by the work.</h2>
-              <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-                {usagePolicy.pricing.publicClaim} Customers see one weekly
-                percentage, not an internal unit balance. Every operation uses
-                the class fixed in the versioned catalog, and every receipt
-                shows the resulting usage impact.
-              </p>
-            </div>
-            <div class="grid gap-3 text-sm leading-6 text-white/72">
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Shared</strong><span class="mt-2 block">Use one plan across every MCP currently marked Available.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Visible</strong><span class="mt-2 block">See weekly execution remaining, the refresh date, available rollover, and operation receipts.</span></div>
-              <div class="border border-white/36 bg-black/60 p-4"><strong class="block uppercase text-white">Controlled</strong><span class="mt-2 block">Self-service usage pauses at the included limit. PAYG requires a separate Enterprise contract.</span></div>
-            </div>
-          </div>
-          <div class="mt-8 border-t border-white/36 pt-7">
-            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p class="text-[0.65rem] font-bold uppercase text-signal">Current catalog classification</p>
-                <h3 class="mt-2 text-2xl font-extrabold uppercase">{formattedOperationCount} operations / three classes</h3>
-              </div>
-              <p class="font-mono text-[0.62rem] uppercase text-white/42">Rate card {shortRateCardVersion}</p>
-            </div>
-            <div class="mt-5 grid border border-white/40 lg:grid-cols-3">
-              {usagePolicy.catalog.operationClasses.map((operationClass, index) => (
-                <article class:list={["p-5", index < usagePolicy.catalog.operationClasses.length - 1 && "border-b border-white/36 lg:border-b-0 lg:border-r"]}>
-                  <div class="flex items-start justify-between gap-4">
-                    <h3 class="text-sm font-extrabold uppercase">{operationClass.label}</h3>
-                    <span class="font-mono text-lg font-extrabold text-signal">{operationClass.operationCount.toLocaleString("en-US")}</span>
-                  </div>
-                  <p class="mt-3 text-sm leading-6 text-white/58">{operationClass.description}</p>
-                </article>
-              ))}
-            </div>
-            <p class="mt-3 text-xs leading-6 text-white/42">
-              Counts describe the complete classified catalog, including products still in rollout or planned. They are catalog coverage—not an allowance quantity or a per-operation price.
-            </p>
-          </div>
-          <div class="mt-8 grid border-y border-white/36 sm:grid-cols-3">
-            <div class="border-b border-white/36 py-5 sm:border-b-0 sm:border-r sm:pr-5">
-              <p class="font-mono text-3xl font-extrabold text-signal">{usagePolicy.allowance.cadenceDays}d</p>
-              <p class="mt-2 text-xs font-bold uppercase text-white">Refresh cadence</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">A new included-usage grant arrives every seven days.</p>
-            </div>
-            <div class="border-b border-white/36 py-5 sm:border-b-0 sm:border-r sm:px-5">
-              <p class="font-mono text-3xl font-extrabold text-signal">{usagePolicy.allowance.grantExpirationDays}d</p>
-              <p class="mt-2 text-xs font-bold uppercase text-white">Maximum age</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Unused capacity can cross one refresh and then expires oldest-first.</p>
-            </div>
-            <div class="py-5 sm:pl-5">
-              <p class="font-mono text-3xl font-extrabold text-signal">Stop</p>
-              <p class="mt-2 text-xs font-bold uppercase text-white">At the limit</p>
-              <p class="mt-2 text-sm leading-6 text-white/58">Execution pauses until refresh. Self-service PAYG and automatic overage are off.</p>
-            </div>
-          </div>
-          <div class="mt-8 grid border border-signal/70 bg-signal/[0.06] lg:grid-cols-[0.72fr_1.28fr]">
-            <div class="border-b border-signal/40 p-5 lg:border-b-0 lg:border-r sm:p-6">
-              <p class="text-[0.65rem] font-bold uppercase text-signal">Allowance publication status</p>
-              <p class="mt-4 text-2xl font-extrabold uppercase leading-tight">Quantities not yet published</p>
-            </div>
-            <div class="p-5 sm:p-6">
-              <p class="max-w-3xl text-sm leading-7 text-white/70">
-                The subscription prices and usage model are published now. Exact included quantities remain behind the catalog's approval gate until direct and shared variable costs are allocated, representative workloads are replayed, and full-utilization margins pass review.
-              </p>
-              <p class="mt-4 text-xs leading-6 text-white/48">
-                Monthly and annual subscriptions receive the same nominal weekly grant. Annual billing costs ten monthly payments; storage and disclosed provider expenses remain separate.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section class="page-section grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
+      <section aria-labelledby="product-lines-title" class="border-b border-white/20">
+        <header class="grid gap-4 border-b border-white/20 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end lg:px-8">
           <div>
-            <p class="text-xs font-bold uppercase text-white/54">Set up a client</p>
-            <h2 class="mt-3 text-3xl font-extrabold uppercase">From account to first tool call</h2>
-            <p class="mt-3 max-w-2xl text-sm leading-7 text-white/70">The setup guide covers access, API keys, client configuration, verification, and troubleshooting.</p>
+            <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Monarchic products</p>
+            <h2 id="product-lines-title" class="mt-3 text-3xl font-black uppercase sm:text-4xl">Current product work.</h2>
           </div>
-          <a href={`${appBaseUrl}/setup`} class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-6 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Open setup</a>
-        </section>
+          <p class="text-sm leading-6 text-white/60">One named product is in development. The next slot remains open.</p>
+        </header>
 
+        <div class="grid gap-px bg-white/20 lg:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.65fr)]">
+          <article class="relative isolate flex min-h-[30rem] flex-col overflow-hidden bg-[#080b0f] p-5 sm:p-7 lg:min-h-[34rem] lg:p-8" data-product-overview-card="ai-enhancements">
+            <svg class="absolute inset-0 z-0 h-full w-full text-signal opacity-20" viewBox="0 0 100 100" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">
+              <path d="M48 8H62V18H78V11H96M55 32H72V43H90V34H100M44 61H60V51H76V70H92V60H100M52 84H68V76H84V90H100" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+              <path d="M49 8H50M61 18H63M71 43H73M59 51H61M83 90H85" fill="none" stroke="currentColor" stroke-width="3" vector-effect="non-scaling-stroke"></path>
+            </svg>
+            <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 font-mono text-[0.62rem] font-bold uppercase">
+              <span class="text-white/54">Product 01 / Agent systems</span>
+              <span class="border border-signal bg-signal px-2 py-1 text-black">In development</span>
+            </div>
+            <div class="relative z-10 mt-auto max-w-3xl pt-20">
+              <h3 class="max-w-3xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">AI enhancements</h3>
+              <p class="mt-5 max-w-2xl text-base leading-7 text-white/70 sm:text-lg sm:leading-8">
+                A system for long-running agent work. It preserves run state and returns artifacts for operator review.
+              </p>
+              <div class="mt-7 grid max-w-2xl gap-px border border-white/24 bg-white/20 sm:grid-cols-2">
+                <div class="bg-[#080b0f]/95 p-4">
+                  <p class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Current focus</p>
+                  <p class="mt-2 text-sm font-black uppercase">Agent workflows</p>
+                </div>
+                <div class="bg-[#080b0f]/95 p-4">
+                  <p class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Product brief</p>
+                  <p class="mt-2 text-sm font-black uppercase">Monarchic</p>
+                </div>
+              </div>
+              <a href="/products/monarchic-ai" class="motion-link mt-7 inline-flex min-h-12 items-center justify-between gap-8 border border-signal bg-signal px-5 text-xs font-black uppercase text-black hover:bg-signal-soft">
+                View current development <span class="motion-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="relative isolate flex min-h-[24rem] flex-col overflow-hidden bg-[#070707] p-5 sm:p-7 lg:min-h-[34rem] lg:p-8" data-product-overview-card="coming-soon">
+            <svg class="absolute inset-0 z-0 h-full w-full text-white opacity-[0.07]" viewBox="0 0 100 100" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">
+              <path d="M12 12H88V88H12ZM22 22H42V42H22ZM58 58H78V78H58Z" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"></path>
+            </svg>
+            <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 font-mono text-[0.62rem] font-bold uppercase">
+              <span class="text-white/54">Product 02 / Unannounced</span>
+              <span class="border border-white/36 px-2 py-1 text-white/58">No public brief</span>
+            </div>
+            <div class="relative z-10 mt-auto pt-20">
+              <p class="font-mono text-[0.58rem] font-bold uppercase text-white/50">Status / Pending</p>
+              <h3 class="mt-3 text-4xl font-black uppercase leading-[0.9] text-white/72 sm:text-5xl">Coming soon.</h3>
+              <p class="mt-5 max-w-md text-sm leading-7 text-white/58">
+                The next Monarchic product has not been announced. This card will change when there is something concrete to show.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="hosted-mcps" aria-labelledby="hosted-mcps-title" class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div class="p-5 sm:p-7 lg:p-8">
+          <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Execution catalog / Available now</p>
+          <h2 id="hosted-mcps-title" class="mt-3 text-3xl font-black uppercase sm:text-5xl">Hosted MCPs</h2>
+          <p class="mt-5 max-w-3xl text-base leading-7 text-white/64">
+            Hosted MCPs give agents bounded tools for specific jobs. {availableMcpCount} production routes are available through one account plan.
+          </p>
+        </div>
+        <a href="/products/hosted-mcps" data-hosted-mcp-catalog-link class="motion-link flex min-h-48 flex-col justify-between border-t border-white/20 bg-signal p-5 text-black hover:bg-signal-soft sm:p-7 lg:border-l lg:border-t-0 lg:p-8">
+          <span class="font-mono text-[0.62rem] font-bold uppercase text-black/56">Plans / Workflows / Catalog</span>
+          <span class="flex items-end justify-between gap-6 text-xl font-black uppercase">
+            Open hosted MCP catalog
+            <span class="motion-arrow text-2xl" aria-hidden="true">→</span>
+          </span>
+        </a>
+      </section>
     </PublicPageFrame>
   </body>
 </html>
