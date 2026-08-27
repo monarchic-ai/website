@@ -156,6 +156,7 @@
 
 .home-hero-copy::after {
   position: absolute;
+  z-index: 2;
   right: 1rem;
   bottom: 1rem;
   width: 1rem;
@@ -164,6 +165,55 @@
   border-bottom: 1px solid rgb(125 167 217 / 0.5);
   content: "";
   pointer-events: none;
+}
+
+.home-hero-copy {
+  isolation: isolate;
+}
+
+.home-hero-copy > :not(.home-hero-wavefield) {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero-wavefield {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home-hero-wave {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.055);
+  stroke-width: 1px;
+  animation: home-hero-wave-forward 10.4s steps(1, end) infinite;
+}
+
+.home-hero-wave--two,
+.home-hero-wave--four,
+.home-hero-wave--six {
+  stroke: rgb(125 167 217 / 0.12);
+  stroke-width: 1.5px;
+  animation-name: home-hero-wave-counter;
+}
+
+.home-hero-wave--two {
+  animation-delay: -2.6s;
+}
+
+.home-hero-wave--three {
+  animation-delay: -5.2s;
+}
+
+.home-hero-wave--four {
+  animation-delay: -7.8s;
+}
+
+.home-hero-wave--five {
+  animation-delay: -1.3s;
+}
+
+.home-hero-wave--six {
+  animation-delay: -6.5s;
 }
 
 .home-hero-outline {
@@ -178,50 +228,10 @@
 }
 
 .system-field-canvas {
-  background: #070b0f;
-}
-
-.system-field-wavefield {
-  z-index: 0;
-}
-
-.system-field-wave {
-  fill: none;
-  stroke: rgb(255 255 255 / 0.09);
-  stroke-width: 1px;
-  animation: system-wave-forward 10.4s steps(1, end) infinite;
-}
-
-.system-field-wave--two,
-.system-field-wave--four,
-.system-field-wave--six {
-  stroke: rgb(125 167 217 / 0.17);
-  stroke-width: 1.5px;
-  animation-name: system-wave-counter;
-}
-
-.system-field-wave--two {
-  animation-delay: -2.6s;
-}
-
-.system-field-wave--three {
-  animation-delay: -5.2s;
-}
-
-.system-field-wave--four {
-  animation-delay: -7.8s;
-}
-
-.system-field-wave--five {
-  animation-delay: -1.3s;
-}
-
-.system-field-wave--six {
-  animation-delay: -6.5s;
-}
-
-.system-field-lines {
-  z-index: 1;
+  background-image:
+    linear-gradient(rgb(125 167 217 / 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(125 167 217 / 0.075) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
 .system-field-lines path {
@@ -481,7 +491,7 @@
   }
 }
 
-@keyframes system-wave-forward {
+@keyframes home-hero-wave-forward {
   0%,
   100% {
     transform: translate(0, 0);
@@ -504,7 +514,7 @@
   }
 }
 
-@keyframes system-wave-counter {
+@keyframes home-hero-wave-counter {
   0%,
   100% {
     transform: translate(-16%, 0);
@@ -674,7 +684,7 @@
   .motion-arrow,
   .row-arrow,
   .interactive-row,
-  .system-field-wave,
+  .home-hero-wave,
   .system-field-link,
   .system-field-node,
   .system-field-carriage,
@@ -688,7 +698,7 @@
     opacity: 0.45;
   }
 
-  .system-field-wave {
+  .home-hero-wave {
     opacity: 0.72;
     transform: none;
   }

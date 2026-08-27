@@ -204,21 +204,17 @@ async function runBrowserSmoke() {
       if (!carriageTiming.includes("steps(")) {
         throw new Error(`system field motion must use stepped timing; received ${carriageTiming}`);
       }
-      const steppedWave = steppedSystemField.locator('[data-system-background="stepped-wave"]');
+      const steppedWave = page.locator('[data-hero-background="stepped-wave"]');
       await steppedWave.waitFor();
-      const waveMotion = await steppedWave.locator(".system-field-wave").first().evaluate((element) => ({
+      const waveMotion = await steppedWave.locator(".home-hero-wave").first().evaluate((element) => ({
         animationTimingFunction: window.getComputedStyle(element).animationTimingFunction,
-        canvasBackgroundImage: window.getComputedStyle(element.closest('[data-system-background="stepped-wave"]')).backgroundImage,
         heroBackgroundImage: window.getComputedStyle(element.closest(".home-lab")).backgroundImage,
       }));
       if (!waveMotion.animationTimingFunction.includes("steps(")) {
-        throw new Error(`system field wave must use stepped timing; received ${waveMotion.animationTimingFunction}`);
-      }
-      if (waveMotion.canvasBackgroundImage !== "none") {
-        throw new Error(`system field wave must replace the background grid; received ${waveMotion.canvasBackgroundImage}`);
+        throw new Error(`hero wave must use stepped timing; received ${waveMotion.animationTimingFunction}`);
       }
       if (waveMotion.heroBackgroundImage !== "none") {
-        throw new Error(`system field wave must replace the hero grid; received ${waveMotion.heroBackgroundImage}`);
+        throw new Error(`hero wave must replace the hero grid; received ${waveMotion.heroBackgroundImage}`);
       }
       await page.emulateMedia({ reducedMotion: "reduce" });
       const reducedCarriageAnimation = await steppedSystemField.locator(".system-field-carriage").evaluate(
@@ -227,11 +223,11 @@ async function runBrowserSmoke() {
       if (reducedCarriageAnimation !== "none") {
         throw new Error(`system field motion must stop for reduced motion; received ${reducedCarriageAnimation}`);
       }
-      const reducedWaveAnimation = await steppedWave.locator(".system-field-wave").first().evaluate(
+      const reducedWaveAnimation = await steppedWave.locator(".home-hero-wave").first().evaluate(
         (element) => window.getComputedStyle(element).animationName,
       );
       if (reducedWaveAnimation !== "none") {
-        throw new Error(`system field wave must stop for reduced motion; received ${reducedWaveAnimation}`);
+        throw new Error(`hero wave must stop for reduced motion; received ${reducedWaveAnimation}`);
       }
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
