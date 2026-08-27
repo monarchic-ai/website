@@ -13,23 +13,23 @@ const availableMcpCount = publicMcpProducts.filter((plan) => hostedMcpStatus(pla
 const workingMethod = [
   {
     number: "01",
-    title: "Question",
-    copy: "Define the problem and what would count as proof before the system gets a name.",
+    title: "Brief",
+    copy: "Define the job and its constraints. Decide what finished means before the run starts.",
   },
   {
     number: "02",
-    title: "Contract",
-    copy: "Name the inputs, permissions, failure states, and output boundary.",
+    title: "Plan",
+    copy: "Break the job into ordered tasks. Give each task the role and tools it needs.",
   },
   {
     number: "03",
-    title: "Pressure",
-    copy: "Test at the real edge. Keep the misses. Change the method when the evidence says to.",
+    title: "Run",
+    copy: "Execute in scoped workspaces. Keep task state, logs, and artifacts with the run.",
   },
   {
     number: "04",
-    title: "Operate",
-    copy: "Run it, watch it, and revise when the models or infrastructure move underneath it.",
+    title: "Review",
+    copy: "Test the result against the plan. A person decides whether the work is done.",
   },
 ];
 
@@ -58,21 +58,21 @@ const publicRecord = [
   {
     label: "Research",
     title: "Methods and results",
-    copy: "Methods, measurements, misses, and scope. Dated and open to inspection.",
+    copy: "See the method, dataset, measurements, and misses behind each published result.",
     href: "/research",
     action: "Read the record",
   },
   {
     label: "Security",
-    title: "Controls and limits",
-    copy: "The controls that exist now, the request boundaries, and the limits that remain.",
+    title: "Controls in place",
+    copy: "See the controls deployed today, the permissions each route needs, and the limits still open.",
     href: "/security",
     action: "Review security",
   },
   {
     label: "Company",
-    title: "Scope and direction",
-    copy: "What Monarchic is building, how it works, and where the research stops today.",
+    title: "Company and product status",
+    copy: "See what Monarchic is building, what is available now, and what remains in development.",
     href: "/company",
     action: "About Monarchic",
   },
@@ -89,7 +89,7 @@ const publicRecord = [
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Monarchic | Automation research and development"
-      description="Monarchic is an independent research and development company building inspectable automation, currently focused on AI agents and MCP infrastructure."
+      description="Monarchic is an independent R&D company building an execution system for long-running AI agent work, hosted MCP tools, and reviewable run artifacts."
       path="/"
     />
   </head>
@@ -98,54 +98,51 @@ const publicRecord = [
 
       <section id="introduction" aria-labelledby="home-title" class="home-lab border-b border-white/20" data-company-first data-system-posture>
         <div class="home-status-rail grid min-h-11 items-center gap-2 border-b border-white/20 px-4 py-2 font-mono text-[0.58rem] font-bold uppercase sm:grid-cols-[1fr_auto] sm:px-6 lg:px-8">
-          <p class="text-signal">Monarchic / Independent systems lab</p>
+          <p class="text-signal">Monarchic / Agent systems R&amp;D</p>
           <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/54">
-            <span>R&amp;D / Public surface</span>
+            <span>Hosted platform / Public website</span>
             <span>Monarchic, LLC</span>
           </div>
         </div>
 
         <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(26rem,0.65fr)]">
           <div class="home-hero-copy relative min-w-0 px-4 py-11 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-            <p class="font-mono text-[0.64rem] font-bold uppercase text-white/54">Automation research / Live-system engineering</p>
+            <p class="font-mono text-[0.64rem] font-bold uppercase text-white/54">AI agent execution / Hosted MCP infrastructure</p>
             <h1 id="home-title" class="mt-6 max-w-5xl text-[2.75rem] font-black uppercase leading-[0.82] min-[360px]:text-[3.2rem] sm:text-[5.2rem] lg:text-[6.9rem]">
-              <span class="block">Build past</span>
-              <span class="home-hero-outline block">the demo.</span>
+              <span class="block">Agents should</span>
+              <span class="home-hero-outline block">finish the job.</span>
             </h1>
             <p class="mt-8 max-w-3xl text-lg font-medium leading-8 text-white/76 sm:text-2xl sm:leading-9">
-              Monarchic is an independent R&amp;D company. We build inspectable automation for the part after the prototype, when permissions become real and evidence has to survive review.
+              Monarchic is an independent R&amp;D company building an execution system for long-running AI agent work. The plan, task state, artifacts, and review history stay with the run.
             </p>
             <p class="home-operating-assumption mt-8 max-w-2xl border-l-2 border-signal pl-4 font-mono text-xs font-bold uppercase leading-6 text-white/58 sm:text-sm">
-              Assume the first answer is wrong. Design the system so a person can find out.
+              A model response is not a completed task. The run ends when the work has been tested and reviewed.
             </p>
             <div class="mt-9 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
               <a href="/company" class="motion-link inline-flex min-h-12 items-center justify-between gap-6 border border-signal bg-signal px-5 text-xs font-black uppercase text-black hover:bg-signal-soft">
                 About Monarchic <span class="motion-arrow" aria-hidden="true">↗</span>
               </a>
               <a href="/research" class="motion-link inline-flex min-h-12 items-center justify-between gap-6 border border-white/40 px-5 text-xs font-black uppercase text-white hover:border-signal hover:bg-signal hover:text-black">
-                Read public evidence <span class="motion-arrow" aria-hidden="true">↗</span>
+                Read the research <span class="motion-arrow" aria-hidden="true">↗</span>
               </a>
             </div>
           </div>
 
-          <SystemField
-            {availableMcpCount}
-            benchmarkAccuracy={explicitMemBenchmark.answerAccuracy}
-          />
+          <SystemField {availableMcpCount} />
         </div>
 
         <dl class="home-proof-rail grid border-t border-white/20 md:grid-cols-3">
           <div class="border-b border-white/20 p-4 sm:p-5 md:border-b-0 md:border-r">
-            <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Enduring scope</dt>
-            <dd class="mt-2 text-sm font-black uppercase text-white">Practical automation</dd>
+            <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Company</dt>
+            <dd class="mt-2 text-sm font-black uppercase text-white">Independent R&amp;D</dd>
           </div>
           <div class="border-b border-white/20 p-4 sm:p-5 md:border-b-0 md:border-r">
-            <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Current field</dt>
-            <dd class="mt-2 text-sm font-black uppercase text-white">AI agents + MCP infrastructure</dd>
+            <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Current focus</dt>
+            <dd class="mt-2 text-sm font-black uppercase text-white">Agent execution systems</dd>
           </div>
           <div class="p-4 sm:p-5">
-            <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Operating posture</dt>
-            <dd class="mt-2 text-sm font-black uppercase text-white">Bounded / Inspectable / Maintained</dd>
+            <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Available now</dt>
+            <dd class="mt-2 text-sm font-black uppercase text-white">{availableMcpCount} hosted MCPs</dd>
           </div>
         </dl>
       </section>
@@ -155,22 +152,22 @@ const publicRecord = [
           <header class="home-doctrine-main bg-signal p-5 text-black sm:p-7 lg:p-9">
             <p class="font-mono text-[0.65rem] font-bold uppercase text-black/58">Company thesis</p>
             <h2 id="company-thesis-title" class="mt-4 max-w-4xl text-4xl font-black uppercase leading-[0.9] sm:text-6xl">
-              The system must show its work.
+              Long-running work needs a record.
             </h2>
             <p class="mt-6 max-w-3xl text-base font-medium leading-7 text-black/72 sm:text-lg sm:leading-8">
-              A result matters only if a person can inspect the permissions, evidence, and failure boundary behind it. That standard carries from research into the products we operate.
+              Monarchic keeps the plan, task state, logs, artifacts, and review decisions attached to a run. A person can see what happened without rebuilding it from a chat transcript.
             </p>
           </header>
           <div class="border-t border-white/20 bg-[#0b0d10] lg:border-l lg:border-t-0">
             <article class="border-b border-white/20 p-5 sm:p-7">
-              <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Design assumption</p>
-              <h3 class="mt-3 text-2xl font-black uppercase text-white">The first answer may be wrong.</h3>
-              <p class="mt-4 text-sm leading-7 text-white/58">The evidence cannot disappear with it.</p>
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Execution boundary</p>
+              <h3 class="mt-3 text-2xl font-black uppercase text-white">Workers own the workspace.</h3>
+              <p class="mt-4 text-sm leading-7 text-white/58">Repository checkout, task execution, logs, and artifacts stay scoped to the run.</p>
             </article>
             <article class="p-5 sm:p-7">
-              <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Operating limit</p>
-              <h3 class="mt-3 text-2xl font-black uppercase text-white">Autonomy stops at an unclear boundary.</h3>
-              <p class="mt-4 text-sm leading-7 text-white/58">Permission, review, and recovery stay explicit.</p>
+              <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Operator authority</p>
+              <h3 class="mt-3 text-2xl font-black uppercase text-white">People own the decision.</h3>
+              <p class="mt-4 text-sm leading-7 text-white/58">Review and run-control actions remain outside the model.</p>
             </article>
           </div>
         </div>
@@ -180,10 +177,10 @@ const publicRecord = [
         <header class="grid gap-5 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
           <div>
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Operating method</p>
-            <h2 id="operating-method-title" class="mt-3 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Built for contact with reality.</h2>
+            <h2 id="operating-method-title" class="mt-3 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">How a Monarchic run moves.</h2>
           </div>
           <p class="max-w-2xl text-sm leading-7 text-white/64">
-            Define the proof. Encode the boundary. Test the edge. Then keep the system alive when reality moves.
+            Define the job, plan the tasks, execute in scoped workers, then return the result with its evidence.
           </p>
         </header>
         <ol class="grid gap-px border-t border-white/20 bg-white/20 sm:grid-cols-2 lg:grid-cols-4">
@@ -202,17 +199,17 @@ const publicRecord = [
       <section id="current-work" aria-labelledby="current-work-title" class="border-b border-white/20 bg-[#0a0a0a]">
         <header class="grid border-b border-white/20 lg:grid-cols-[minmax(0,1fr)_24rem]">
           <div class="p-5 sm:p-7">
-            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Current field / Agent infrastructure</p>
+            <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Available now / Hosted MCP catalog</p>
             <h2 id="current-work-title" class="mt-3 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">
-              MCPs are where the work is now.
+              {availableMcpCount} hosted MCPs are available.
             </h2>
           </div>
           <div class="border-t border-white/20 p-5 lg:border-l lg:border-t-0 lg:p-7">
             <p class="text-sm leading-7 text-white/68">
-              MCP is the current interface, not the company mission. {availableMcpCount} tools are available today for real repository, memory, delivery, infrastructure, and incident work.
+              The catalog covers repository intelligence, memory, release management, infrastructure, browser work, and other specialist tasks. The long-running Monarchic workflow product that uses this catalog is still in development.
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
-              <a href="/products" class="motion-link inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">Inspect current systems</a>
+              <a href="/products" class="motion-link inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">Browse hosted MCPs</a>
               <a href={`${appBaseUrl}/products/usage-evaluation`} class="motion-link inline-flex min-h-11 items-center border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:text-signal-soft">Start free evaluation</a>
             </div>
           </div>
@@ -239,10 +236,10 @@ const publicRecord = [
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-end">
           <div>
             <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Public record</p>
-            <h2 id="public-record-title" class="mt-3 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">The record outranks the pitch.</h2>
+            <h2 id="public-record-title" class="mt-3 max-w-4xl text-4xl font-black uppercase leading-[0.92] sm:text-5xl">The public record is split on purpose.</h2>
           </div>
           <p class="text-sm leading-7 text-white/64">
-            Methods, controls, and company boundaries live in the open. Start there before trusting a claim.
+            Research is for methods and measured results. Security is for controls in place today. Company is for scope and product status.
           </p>
         </header>
         <div class="grid lg:grid-cols-3">

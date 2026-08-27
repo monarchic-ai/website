@@ -1,25 +1,24 @@
 ---
 interface Props {
   availableMcpCount: number;
-  benchmarkAccuracy: string;
 }
 
-const { availableMcpCount, benchmarkAccuracy } = Astro.props;
+const { availableMcpCount } = Astro.props;
 ---
 
 <aside class="system-field flex min-h-[34rem] min-w-0 flex-col" aria-label="Monarchic systems reference model">
   <header class="flex min-h-12 items-center justify-between gap-4 border-b border-white/20 px-4 font-mono text-[0.58rem] font-bold uppercase sm:px-5">
-    <span class="text-white/54">Control diagram / 01</span>
+    <span class="text-white/54">Run architecture / 01</span>
     <span class="inline-flex items-center gap-2 text-white/72">
       <span class="system-critical-indicator" aria-hidden="true"></span>
-      Failure assumed
+      Operator control
     </span>
   </header>
 
   <div
     class="system-field-canvas relative min-h-[25rem] flex-1 overflow-hidden"
     role="img"
-    aria-label="A bounded operating loop connects research, contracts, tools, and evidence around the Monarchic system."
+    aria-label="Monarchic run architecture connects intent, planning, scoped workers, and evidence around durable run state."
   >
     <svg class="system-field-lines absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       <circle cx="50" cy="50" r="24" vector-effect="non-scaling-stroke"></circle>
@@ -31,15 +30,15 @@ const { availableMcpCount, benchmarkAccuracy } = Astro.props;
 
     <div class="system-field-node system-field-node--research">
       <span>01</span>
-      <strong>Research</strong>
+      <strong>Intent</strong>
     </div>
     <div class="system-field-node system-field-node--contract">
       <span>02</span>
-      <strong>Contract</strong>
+      <strong>Plan</strong>
     </div>
     <div class="system-field-node system-field-node--tools">
       <span>03</span>
-      <strong>Tools</strong>
+      <strong>Workers</strong>
     </div>
     <div class="system-field-node system-field-node--evidence">
       <span>04</span>
@@ -48,24 +47,24 @@ const { availableMcpCount, benchmarkAccuracy } = Astro.props;
 
     <div class="system-field-core">
       <span>Monarchic</span>
-      <strong>System</strong>
-      <small>Bounded loop</small>
+      <strong>Run</strong>
+      <small>Durable state</small>
     </div>
 
     <span class="system-field-scan" aria-hidden="true"></span>
     <span class="absolute bottom-3 left-4 font-mono text-[0.52rem] font-bold uppercase text-white/54 sm:left-5">
-      Reference model / Not live telemetry
+      Reference architecture / Public view
     </span>
   </div>
 
   <dl class="grid border-t border-white/20 sm:grid-cols-2">
     <div class="border-b border-white/20 p-4 sm:border-b-0 sm:border-r sm:p-5">
-      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Public surface</dt>
+      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Available now</dt>
       <dd class="mt-2 text-sm font-black uppercase text-white">{availableMcpCount} hosted MCPs</dd>
     </div>
     <div class="p-4 sm:p-5">
-      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Fixed measured run</dt>
-      <dd class="mt-2 text-sm font-black uppercase text-white">{benchmarkAccuracy} ExplicitMem</dd>
+      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">In development</dt>
+      <dd class="mt-2 text-sm font-black uppercase text-white">Agent workflows</dd>
     </div>
   </dl>
 </aside>

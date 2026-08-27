@@ -25,13 +25,15 @@ for (const route of canonicalRoutes) {
 const home = page("/");
 includes(home.text, [
   "Automation research and development",
-  "Build past the demo",
-  "Failure assumed",
-  "Reference model / Not live telemetry",
-  "The system must show its work",
-  "Built for contact with reality",
-  "MCPs are where the work is now",
-  "The record outranks the pitch",
+  "independent R&D company building an execution system",
+  "Agents should finish the job",
+  "Operator control",
+  "Reference architecture / Public view",
+  "Long-running work needs a record",
+  "How a Monarchic run moves",
+  "hosted MCPs are available",
+  "workflow product that uses this catalog is still in development",
+  "The public record is split on purpose",
 ], "Home company identity and current-work boundary");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
 includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");

@@ -2,6 +2,7 @@ import { chromium } from "@playwright/test";
 import { resolve4, resolve6 } from "node:dns/promises";
 import { writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import catalogPlans from "../src/lib/pricing.coming-soon.json" with { type: "json" };
 import usagePolicy from "../src/lib/usage-policy.generated.json" with { type: "json" };
 
 const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? "https://monarchic.io");
@@ -60,6 +61,12 @@ const requiredCatalogSlugs = [
   "mcp-websplash",
 ];
 const expectedMcpCardCount = requiredCatalogSlugs.filter((slug) => slug.startsWith("mcp-")).length;
+const expectedAvailableMcpCount = catalogPlans.filter(
+  (plan) =>
+    plan.kind === "single-mcp" &&
+    plan.status === "available" &&
+    requiredCatalogSlugs.includes(plan.slug),
+).length;
 const retiredCatalogSlugs = [
   "mcp-outreachconnectors",
   "mcp-proofpack",
@@ -184,14 +191,16 @@ async function runBrowserSmoke() {
     });
 
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Build past the demo.", exact: true }).waitFor();
-      await page.getByRole("img", { name: /bounded operating loop/i }).waitFor();
-      await page.getByText("Failure assumed", { exact: true }).waitFor();
-      await page.getByText("Reference model / Not live telemetry", { exact: true }).waitFor();
-      await page.getByRole("heading", { name: "The system must show its work." }).waitFor();
-      await page.getByRole("heading", { name: "Built for contact with reality." }).waitFor();
-      await page.getByRole("heading", { name: "MCPs are where the work is now." }).waitFor();
-      await page.getByRole("heading", { name: "The record outranks the pitch." }).waitFor();
+      await page.getByRole("heading", { name: "Agents should finish the job.", exact: true }).waitFor();
+      await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
+      await page.getByText(/building an execution system for long-running AI agent work/i).waitFor();
+      await page.getByText("Operator control", { exact: true }).waitFor();
+      await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Long-running work needs a record." }).waitFor();
+      await page.getByRole("heading", { name: "How a Monarchic run moves." }).waitFor();
+      await page.getByRole("heading", { name: `${expectedAvailableMcpCount} hosted MCPs are available.` }).waitFor();
+      await page.getByText(/workflow product that uses this catalog is still in development/i).waitFor();
+      await page.getByRole("heading", { name: "The public record is split on purpose." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
@@ -205,7 +214,7 @@ async function runBrowserSmoke() {
         "/company",
       );
       await expectHref(
-        page.getByRole("link", { name: "Inspect current systems", exact: true }),
+        page.getByRole("link", { name: "Browse hosted MCPs", exact: true }),
         "/products",
       );
       await expectHref(
@@ -236,6 +245,12 @@ async function runBrowserSmoke() {
         "Agent tools that leave evidence.",
         "Autonomous engineering",
         "control plane",
+        "Build past the demo.",
+        "Assume the first answer is wrong.",
+        "The system must show its work.",
+        "Built for contact with reality.",
+        "MCPs are where the work is now.",
+        "The record outranks the pitch.",
         "From catalog to first tool call.",
         "The benchmark includes the method, failures, and limits.",
         "Tell us which coming-soon MCP matters next.",
@@ -405,8 +420,8 @@ async function runBrowserSmoke() {
 
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Build past the demo.", exact: true }).waitFor();
-      await page.getByRole("img", { name: /bounded operating loop/i }).waitFor();
+      await page.getByRole("heading", { name: "Agents should finish the job.", exact: true }).waitFor();
+      await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await expectNoElementOverlap(
