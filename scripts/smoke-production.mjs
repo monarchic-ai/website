@@ -191,15 +191,18 @@ async function runBrowserSmoke() {
     });
 
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Agents should finish the job.", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
-      await page.getByText(/building an execution system for long-running AI agent work/i).waitFor();
+      await page.getByText(/develop hosted tools and execution infrastructure for AI agents doing long-running work/i).waitFor();
       await page.getByText("Operator control", { exact: true }).waitFor();
       await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
-      await page.getByRole("heading", { name: "Long-running work needs a record." }).waitFor();
-      await page.getByRole("heading", { name: "How a Monarchic run moves." }).waitFor();
+      await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
+      await page.getByRole("heading", { name: "A person should be able to assign a real job to agents." }).waitFor();
       await page.getByRole("heading", { name: `${expectedAvailableMcpCount} hosted MCPs are available.` }).waitFor();
       await page.getByText(/workflow product that uses this catalog is still in development/i).waitFor();
+      await page.getByRole("heading", { name: "Current status. Future direction." }).waitFor();
+      await page.getByRole("heading", { name: "Long-running agent workflows" }).waitFor();
+      await page.getByRole("heading", { name: "Beyond software engineering" }).waitFor();
       await page.getByRole("heading", { name: "The public record is split on purpose." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
@@ -216,6 +219,14 @@ async function runBrowserSmoke() {
       await expectHref(
         page.getByRole("link", { name: "Browse hosted MCPs", exact: true }),
         "/products",
+      );
+      await expectHref(
+        page.getByRole("link", { name: "See current work", exact: true }),
+        "#current-work",
+      );
+      await expectHref(
+        page.getByRole("link", { name: "View product status", exact: true }),
+        "/products/monarchic-ai",
       );
       await expectHref(
         page.getByRole("link", { name: "Setup", exact: true }).first(),
@@ -251,6 +262,7 @@ async function runBrowserSmoke() {
         "Built for contact with reality.",
         "MCPs are where the work is now.",
         "The record outranks the pitch.",
+        "Agents should finish the job.",
         "From catalog to first tool call.",
         "The benchmark includes the method, failures, and limits.",
         "Tell us which coming-soon MCP matters next.",
@@ -420,7 +432,7 @@ async function runBrowserSmoke() {
 
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/`, async () => {
-      await page.getByRole("heading", { name: "Agents should finish the job.", exact: true }).waitFor();
+      await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();

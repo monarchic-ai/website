@@ -25,16 +25,19 @@ for (const route of canonicalRoutes) {
 const home = page("/");
 includes(home.text, [
   "Automation research and development",
-  "independent R&D company building an execution system",
-  "Agents should finish the job",
+  "Monarchic builds agent systems",
+  "develop hosted tools and execution infrastructure",
   "Operator control",
   "Reference architecture / Public view",
-  "Long-running work needs a record",
-  "How a Monarchic run moves",
+  "What Monarchic builds",
+  "A person should be able to assign a real job to agents",
   "hosted MCPs are available",
   "workflow product that uses this catalog is still in development",
+  "Current status. Future direction",
+  "Long-running agent workflows",
+  "Beyond software engineering",
   "The public record is split on purpose",
-], "Home company identity and current-work boundary");
+], "Home company narrative and availability boundaries");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
 includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");
 

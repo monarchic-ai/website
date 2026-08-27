@@ -35,22 +35,27 @@
         {
           "id": "hero",
           "template": "hero.split",
-          "purpose": "Introduce Monarchic as an independent automation research and development company, with its present focus and enduring scope visible in the first viewport."
+          "purpose": "Lead with Monarchic, state what the company builds, and make its current product boundary visible in the first viewport."
         },
         {
-          "id": "company-thesis",
+          "id": "what-we-build",
+          "template": "feature.grid",
+          "purpose": "Explain the tools, run state, workers, and operator review surfaces that make up Monarchic’s agent execution system."
+        },
+        {
+          "id": "company-vision",
           "template": "comparison.two_column",
-          "purpose": "State the company standard for useful, inspectable automation and distinguish the enduring mission from the present technical focus."
-        },
-        {
-          "id": "operating-method",
-          "template": "process.stepper",
-          "purpose": "Explain how Monarchic carries work from a bounded research question through encoding, verification, and maintenance."
+          "purpose": "State Monarchic’s vision for delegating real work to agents while keeping progress, evidence, and acceptance under human control."
         },
         {
           "id": "current-work",
           "template": "feature.grid",
           "purpose": "Frame AI agents and MCP infrastructure as the company’s current field of work, then show a small selection of active products and a path to the catalog."
+        },
+        {
+          "id": "future-work",
+          "template": "comparison.two_column",
+          "purpose": "Separate the in-development Monarchic workflow product from the company’s longer-term research direction."
         },
         {
           "id": "public-record",

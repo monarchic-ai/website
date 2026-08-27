@@ -92,10 +92,12 @@ const privacy = siteMap.pages.find((page) => page.route === "/privacy");
 const terms = siteMap.pages.find((page) => page.route === "/terms");
 
 assertIncludes(home.requiredContent, "Monarchic’s identity as a small, independent automation research and development company", "Home company identity");
+assertIncludes(home.requiredContent, "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control", "Home company vision");
+assertIncludes(home.requiredContent, "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry", "Home future-work boundary");
 assertIncludes(home.primaryActions, "Learn about Monarchic", "Home company action");
 assertSameOrder(
   homePageMap.sections.map((section) => section.id),
-  ["navigation", "hero", "company-thesis", "operating-method", "current-work", "public-record", "footer"],
+  ["navigation", "hero", "what-we-build", "company-vision", "current-work", "future-work", "public-record", "footer"],
   "home company-first sections",
 );
 assert(

@@ -5,7 +5,7 @@
     {
       "route": "/",
       "title": "Home",
-      "purpose": "Introduce Monarchic as an independent, long-horizon automation research and development company, explain how it works, and present AI agents and MCP infrastructure as its current field of work without reducing the company to one product category.",
+      "purpose": "Introduce Monarchic as an independent automation research and development company, explain what it builds and why, show current work, and separate in-development products from longer-term research direction.",
       "audience": [
         "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
         "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
@@ -16,7 +16,8 @@
       "requiredContent": [
         "Monarchic’s identity as a small, independent automation research and development company",
         "A clear distinction between the company’s enduring automation scope and its present focus on AI agents and MCP infrastructure",
-        "A concrete operating method that carries work from a bounded research question through ongoing maintenance",
+        "A concrete explanation of the hosted tools, durable runs, scoped workers, and operator review surfaces Monarchic builds",
+        "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control",
         "A selected view of current MCP work with the full product catalog kept secondary to the company story",
         "An ambitious but honest account of Monarchic’s maturity and operating scale",
         "Clear paths to Products, Research, and Company",
@@ -25,6 +26,7 @@
         "Emphasis on solving and maintaining real systems rather than one-shot prompt-to-app or unconstrained codebase generation",
         "Its current commercial focus on AI systems and MCP products",
         "Its longer-term relevance to engineering, STEM, and business automation without presenting future work as currently available",
+        "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry",
         "A public record that routes research, security controls, company boundaries, and product claims to the right supporting material",
         "The connected-system, deterministic-tooling, and real-system-maintenance differentiators"
       ],
