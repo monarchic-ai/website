@@ -194,7 +194,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
-      await page.getByText(/develop hosted tools and execution infrastructure for AI agents doing long-running work/i).waitFor();
+      await page.getByText(/build specialist capabilities and execution infrastructure for AI agents/i).waitFor();
       await page.getByText("Operator control", { exact: true }).waitFor();
       await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
       const steppedSystemField = page.locator('[data-system-motion="stepped-machine"]');
@@ -238,8 +238,8 @@ async function runBrowserSmoke() {
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
       await page.getByRole("heading", { name: "A person should be able to assign a job and inspect the result." }).waitFor();
-      await page.getByRole("heading", { name: `${expectedAvailableMcpCount} hosted MCPs are available.` }).waitFor();
-      await page.getByText(/workflow product that uses this catalog is still in development/i).waitFor();
+      await page.getByRole("heading", { name: `${expectedAvailableMcpCount} agent enhancements are available.` }).waitFor();
+      await page.getByText(/Each enhancement is delivered through a hosted MCP connection/i).waitFor();
       await page.getByRole("heading", { name: "Current status. Future direction." }).waitFor();
       await page.getByRole("heading", { name: "Long-running agent workflows" }).waitFor();
       await page.getByRole("heading", { name: "Beyond software engineering" }).waitFor();
@@ -257,7 +257,7 @@ async function runBrowserSmoke() {
         "/company",
       );
       await expectHref(
-        page.getByRole("link", { name: "Browse hosted MCPs", exact: true }),
+        page.getByRole("link", { name: "Explore agent enhancements", exact: true }),
         "/products/hosted-mcps",
       );
       await expectHref(
@@ -318,9 +318,8 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/products`, async () => {
       await page.getByRole("heading", { name: "Products." }).waitFor();
       await page.getByRole("heading", { name: "Current product work." }).waitFor();
-      await page.getByRole("heading", { name: "AI enhancements" }).waitFor();
+      await page.getByRole("heading", { name: "AI Agent Enhancements" }).waitFor();
       await page.getByRole("heading", { name: "Coming soon." }).waitFor();
-      await page.getByRole("heading", { name: "Hosted MCPs" }).waitFor();
       const productCards = page.locator("[data-product-overview-card]");
       const productCardCount = await productCards.count();
       if (productCardCount !== 2) {
@@ -330,30 +329,26 @@ async function runBrowserSmoke() {
         throw new Error("The product overview must not render hosted MCP plan cards");
       }
       await expectHref(
-        page.getByRole("link", { name: "View current development" }),
-        "/products/monarchic-ai",
-      );
-      await expectHref(
-        page.getByRole("link", { name: "Open hosted MCP catalog" }),
+        page.getByRole("link", { name: `Explore ${expectedAvailableMcpCount} enhancements` }),
         "/products/hosted-mcps",
       );
-      const portfolioPrecedesCatalog = await page.evaluate(() => {
-        const card = document.querySelector('[data-product-overview-card="ai-enhancements"]');
-        const catalog = document.querySelector("[data-hosted-mcp-catalog-link]");
-        return Boolean(card && catalog && (card.compareDocumentPosition(catalog) & Node.DOCUMENT_POSITION_FOLLOWING));
+      const enhancementCardOwnsCatalogLink = await page.evaluate(() => {
+        const card = document.querySelector('[data-product-overview-card="ai-agent-enhancements"]');
+        const catalog = card?.querySelector("[data-hosted-mcp-catalog-link]");
+        return Boolean(card && catalog);
       });
-      if (!portfolioPrecedesCatalog) {
-        throw new Error("Monarchic product cards must precede the hosted MCP catalog link");
+      if (!enhancementCardOwnsCatalogLink) {
+        throw new Error("The AI Agent Enhancements card must own the hosted MCP catalog link");
       }
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/products`);
       await expectNoHorizontalOverflow(page);
     }, "products route");
 
     await checkPage(page, `${baseUrl}/products/hosted-mcps`, async () => {
-      await page.getByRole("heading", { name: "Hosted MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "AI Agent Enhancements" }).waitFor();
       await page.getByRole("heading", { name: "Shared usage capacity" }).waitFor();
-      await page.getByRole("heading", { name: "Available MCPs" }).waitFor();
-      await page.getByRole("heading", { name: "Find an MCP by workflow" }).waitFor();
+      await page.getByRole("heading", { name: "Available enhancements" }).waitFor();
+      await page.getByRole("heading", { name: "Find an enhancement by workflow" }).waitFor();
       await page.getByRole("heading", { name: "Subscription price. Usage measured by the work." }).waitFor();
       await page.getByRole("heading", { name: `${expectedClassifiedOperationCount} operations / three classes` }).waitFor();
       await page.getByText("Self-service PAYG and automatic overage are off.", { exact: false }).waitFor();
@@ -521,12 +516,12 @@ async function runBrowserSmoke() {
     }, "home route at 320px");
     await checkPage(page, `${baseUrl}/products`, async () => {
       await page.getByRole("heading", { name: "Products." }).waitFor();
-      await page.getByRole("heading", { name: "AI enhancements" }).waitFor();
-      await page.getByRole("link", { name: "Open hosted MCP catalog" }).waitFor();
+      await page.getByRole("heading", { name: "AI Agent Enhancements" }).waitFor();
+      await page.getByRole("link", { name: `Explore ${expectedAvailableMcpCount} enhancements` }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "products route at 320px");
     await checkPage(page, `${baseUrl}/products/hosted-mcps`, async () => {
-      await page.getByRole("heading", { name: "Hosted MCPs" }).waitFor();
+      await page.getByRole("heading", { name: "AI Agent Enhancements" }).waitFor();
       await page.getByRole("link", { name: "Start free evaluation" }).first().waitFor();
       await expectNoHorizontalOverflow(page);
     }, "hosted MCP catalog route at 320px");

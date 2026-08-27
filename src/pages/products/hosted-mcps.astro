@@ -110,8 +110,8 @@ function statusClasses(plan: CatalogPlan): string {
     <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg?v=1" />
     <meta name="viewport" content="width=device-width" />
     <SeoHead
-      title="Hosted MCPs | Monarchic"
-      description={`Compare Monarchic usage plans and browse ${availableMcpCount} hosted MCPs available now.`}
+      title="AI Agent Enhancements | Monarchic"
+      description={`Browse ${availableMcpCount} Monarchic AI agent enhancements delivered as hosted MCPs and compare usage plans.`}
       path="/products/hosted-mcps"
     />
   </head>
@@ -119,26 +119,26 @@ function statusClasses(plan: CatalogPlan): string {
     <PublicPageFrame active="products">
 
         <p class="page-bar py-4 text-xs font-semibold uppercase text-white/54">
-          <a href="/products" class="transition hover:text-signal-soft">Products</a> / Hosted MCPs
+          <a href="/products" class="transition hover:text-signal-soft">Products</a> / AI Agent Enhancements
         </p>
 
         <section class="page-hero">
-            <h1 class="max-w-4xl text-[2.8rem] font-extrabold uppercase leading-[0.86] min-[420px]:text-6xl lg:text-7xl">
-              Hosted MCPs
+            <h1 class="max-w-4xl text-[2.15rem] font-extrabold uppercase leading-[0.86] min-[360px]:text-[2.5rem] min-[420px]:text-6xl lg:text-7xl">
+              AI Agent Enhancements
             </h1>
             <p class="mt-6 max-w-3xl text-base font-medium leading-7 text-white/76 sm:text-xl sm:leading-8">
-              One account plan covers every available hosted MCP. Compare plans,
-              then find the tools that match the work.
+              Specialist capabilities for AI agents, delivered as hosted MCPs.
+              One account plan covers every available enhancement.
             </p>
             <p class="mt-5 font-mono text-[0.68rem] font-bold uppercase text-signal">
-              {availableMcpCount} available / {mcpProducts.length} catalog entries
+              {availableMcpCount} enhancements available / {mcpProducts.length} catalog entries
             </p>
             <div class="mt-8 flex flex-col gap-2 min-[440px]:flex-row">
               <a href="#plans" class="inline-flex min-h-12 items-center justify-between border-2 border-signal bg-signal px-5 text-xs font-bold uppercase text-black transition hover:bg-signal-soft min-[440px]:min-w-48">
                 Compare plans <span aria-hidden="true">↓</span>
               </a>
               <a href="#mcp-catalog" class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
-                Browse all MCPs <span aria-hidden="true">↓</span>
+                Browse enhancements <span aria-hidden="true">↓</span>
               </a>
               <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
                 Start evaluation <span aria-hidden="true">↗</span>
@@ -149,8 +149,8 @@ function statusClasses(plan: CatalogPlan): string {
         <nav aria-label="Product sections" class="page-bar flex flex-nowrap items-center gap-2 overflow-x-auto bg-[#0a0a0a] py-4">
           <a href="#plans" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Plans</a>
           <a href="#workflow-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Find by workflow</a>
-          <a href="#mcp-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Available MCPs</a>
-          <a href="#coming-soon-mcps" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Coming soon MCPs</a>
+          <a href="#mcp-catalog" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Available enhancements</a>
+          <a href="#coming-soon-mcps" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Coming soon</a>
           <a href="#how-usage-works" class="shrink-0 border border-white/50 px-3 py-2 text-[0.68rem] font-semibold uppercase text-white/72 transition hover:border-signal hover:bg-signal hover:text-black">Usage</a>
         </nav>
 
@@ -231,7 +231,7 @@ function statusClasses(plan: CatalogPlan): string {
         </section>
 
         <section id="workflow-catalog" class="page-section scroll-mt-8 bg-[#0a0a0a]">
-          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Find an MCP by workflow</h2>
+          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Find an enhancement by workflow</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             Start with the work you need to complete. Availability is shown beside every product; full pages document access, tool behavior, and current boundaries.
           </p>
@@ -269,9 +269,9 @@ function statusClasses(plan: CatalogPlan): string {
         </section>
 
         <section id="mcp-catalog" class="page-section scroll-mt-8">
-          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Available MCPs</h2>
+          <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Available enhancements</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
-            These {availableMcpCount} products have production hosted routes.
+            These {availableMcpCount} enhancements have production hosted routes.
             Open one to inspect its tool-call contract, evidence boundary, and
             fixed rate-card class.
           </p>

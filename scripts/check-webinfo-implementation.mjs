@@ -27,13 +27,14 @@ const home = page("/");
 includes(home.text, [
   "Automation research and development",
   "Monarchic builds agent systems",
-  "develop hosted tools and execution infrastructure",
+  "build specialist capabilities and execution infrastructure",
   "Operator control",
   "Reference architecture / Public view",
   "What Monarchic builds",
   "A person should be able to assign a job and inspect the result",
-  "hosted MCPs are available",
-  "workflow product that uses this catalog is still in development",
+  "agent enhancements are available",
+  "Each enhancement is delivered through a hosted MCP connection",
+  "workflow product is still in development",
   "Current status. Future direction",
   "Long-running agent workflows",
   "Beyond software engineering",
@@ -46,19 +47,21 @@ const products = page("/products");
 includes(products.text, [
   "Products",
   "Current product work",
-  "AI enhancements",
+  "AI Agent Enhancements",
   "Coming soon",
+  "Explore 17 enhancements",
+  "Delivery",
   "Hosted MCPs",
-  "Open hosted MCP catalog",
-], "Product portfolio and hosted catalog boundary");
-includes(products.html, ['href="/products/monarchic-ai"', 'href="/products/hosted-mcps"'], "Product portfolio routes");
+], "Product portfolio positioning");
+includes(products.html, ['href="/products/hosted-mcps"'], "Product enhancement route");
 assert(count(products.html, /data-product-overview-card=/g) === 2, "Product portfolio must render exactly two product cards.");
 assert(count(products.html, /data-plan-card=/g) === 0, "Product portfolio must not inline hosted catalog cards.");
 
 const hostedMcps = page("/products/hosted-mcps");
 includes(hostedMcps.text, [
-  "Find an MCP by workflow",
-  "17 available / 23 catalog entries",
+  "AI Agent Enhancements",
+  "Find an enhancement by workflow",
+  "17 enhancements available / 23 catalog entries",
   "Understand and change code",
   "Ship and operate systems",
   "Plan and grow",
