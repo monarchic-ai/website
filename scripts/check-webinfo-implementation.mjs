@@ -125,7 +125,7 @@ excludes(explicitMem.html, [
 ], "ExplicitMem private implementation boundary");
 
 const company = page("/company");
-includes(company.text, ["We build AI engineering systems", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
+includes(company.text, ["We build AI engineering systems", "Monarchic is an AI research and development company", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
 
 const security = page("/security");
 includes(security.text, ["Current controls. Explicit limits", "How a hosted request is scoped", "Published assurance scope", "Report a suspected vulnerability"], "Security controls and disclosure");
