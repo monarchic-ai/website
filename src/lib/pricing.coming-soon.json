@@ -21,7 +21,7 @@
     "description": "Try available hosted Monarchic MCPs with a one-time trial allowance and a hard usage cap before choosing a paid plan.",
     "featureBullets": [
       "Limited 30-day evaluation usage",
-      "Verified email required",
+      "Email confirmation required",
       "No card; usage pauses at the evaluation limit"
     ],
     "usageAllowanceLabel": "Limited 30-day evaluation usage",

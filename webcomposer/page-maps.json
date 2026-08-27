@@ -45,7 +45,7 @@
         {
           "id": "company-vision",
           "template": "comparison.two_column",
-          "purpose": "State Monarchic’s vision for delegating real work to agents while keeping progress, evidence, and acceptance under human control."
+          "purpose": "State Monarchic’s vision for delegating multi-step work to agents while keeping progress, evidence, and acceptance under human control."
         },
         {
           "id": "current-work",
@@ -193,7 +193,7 @@
         {
           "id": "availability-and-access",
           "template": "row.equal",
-          "purpose": "State lifecycle, availability, limitations, readiness boundaries, and any verified pricing or demonstration without inventing unavailable details."
+          "purpose": "State lifecycle, availability, limitations, readiness boundaries, and any published pricing or recorded demonstration without inventing unavailable details."
         },
         {
           "id": "evidence",
@@ -395,7 +395,7 @@
         {
           "id": "mission-and-horizon",
           "template": "feature.grid",
-          "purpose": "Explain the enduring automation scope, present AI and MCP focus, broader audiences, and long-term fields without implying future availability."
+          "purpose": "Explain the company’s automation scope, present AI and MCP focus, broader audiences, and long-term fields without implying future availability."
         },
         {
           "id": "our-approach",
@@ -489,7 +489,7 @@
         {
           "id": "disclosure-and-claims",
           "template": "row.equal",
-          "purpose": "Provide a vulnerability-reporting path only when configured and state only certifications or compliance claims that are actually verified."
+          "purpose": "Provide a vulnerability-reporting path only when configured and state certifications or compliance claims only when a named source supports them."
         },
         {
           "id": "next-paths",
@@ -548,7 +548,7 @@
         {
           "id": "data-and-purposes",
           "template": "column.stack",
-          "purpose": "Describe verified submitted and automatically collected data, why it is processed, and how cookies, analytics, logs, forms, and consent operate."
+          "purpose": "Describe submitted and automatically collected data categories, why they are processed, and how cookies, analytics, logs, forms, and consent operate."
         },
         {
           "id": "processors-transfers-retention",

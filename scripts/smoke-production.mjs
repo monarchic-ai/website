@@ -197,7 +197,7 @@ async function runBrowserSmoke() {
       await page.getByText("Operator control", { exact: true }).waitFor();
       await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
-      await page.getByRole("heading", { name: "A person should be able to assign a real job to agents." }).waitFor();
+      await page.getByRole("heading", { name: "A person should be able to assign a job and inspect the result." }).waitFor();
       await page.getByRole("heading", { name: `${expectedAvailableMcpCount} hosted MCPs are available.` }).waitFor();
       await page.getByText(/workflow product that uses this catalog is still in development/i).waitFor();
       await page.getByRole("heading", { name: "Current status. Future direction." }).waitFor();
@@ -423,7 +423,7 @@ async function runBrowserSmoke() {
     }, "security route");
 
     await checkPage(page, `${baseUrl}/company`, async () => {
-      await page.getByRole("heading", { name: "Automation is the enduring scope." }).waitFor();
+      await page.getByRole("heading", { name: "We build automation systems." }).waitFor();
       await page.getByRole("heading", { name: "Evidence before ornament." }).waitFor();
       await page.getByText("Monarchic, LLC", { exact: false }).first().waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/company`);
@@ -469,7 +469,7 @@ async function runBrowserSmoke() {
       await expectNoHorizontalOverflow(page);
     }, "security route at 320px");
     await checkPage(page, `${baseUrl}/company`, async () => {
-      await page.getByRole("heading", { name: "Automation is the enduring scope." }).waitFor();
+      await page.getByRole("heading", { name: "We build automation systems." }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "company route at 320px");
     await page.setViewportSize({ width: 1280, height: 900 });

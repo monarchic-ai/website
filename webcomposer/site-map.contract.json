@@ -1,6 +1,10 @@
 {
   "name": "Monarchic",
   "description": "Presents Monarchic as an independent automation research and development company, with its current products, public evidence, and web application clearly separated beneath that company story.",
+  "copyRules": [
+    "Name the mechanism, boundary, or observable result instead of using credibility adjectives.",
+    "Use procedural authentication and security language: confirm an email, name the control, and date the check."
+  ],
   "pages": [
     {
       "route": "/",
@@ -15,7 +19,7 @@
       ],
       "requiredContent": [
         "Monarchic’s identity as a small, independent automation research and development company",
-        "A clear distinction between the company’s enduring automation scope and its present focus on AI agents and MCP infrastructure",
+        "A clear distinction between the company’s broad automation scope and its present focus on AI agents and MCP infrastructure",
         "A concrete explanation of the hosted tools, durable runs, scoped workers, and operator review surfaces Monarchic builds",
         "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control",
         "A selected view of current MCP work with the full product catalog kept secondary to the company story",
@@ -23,12 +27,12 @@
         "Clear paths to Products, Research, and Company",
         "Clear product lifecycle and availability boundaries",
         "Competitive deterministic architectures, system designs, and heuristics supported by clearly scoped evidence",
-        "Emphasis on solving and maintaining real systems rather than one-shot prompt-to-app or unconstrained codebase generation",
+        "Emphasis on solving and maintaining deployed systems rather than one-shot prompt-to-app or unconstrained codebase generation",
         "Its current commercial focus on AI systems and MCP products",
         "Its longer-term relevance to engineering, STEM, and business automation without presenting future work as currently available",
         "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry",
         "A public record that routes research, security controls, company boundaries, and product claims to the right supporting material",
-        "The connected-system, deterministic-tooling, and real-system-maintenance differentiators"
+        "The connected-system, deterministic-tooling, and maintained-system differentiators"
       ],
       "forbiddenContent": [
         "Hype, vague superlatives, breathless startup language, playful gimmicks, and combative competitor attacks",
@@ -43,7 +47,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Learn about Monarchic",
@@ -68,7 +72,7 @@
         "Concise use case, audience fit, differentiator, integration, and lifecycle summaries for every listed product",
         "Clear separation of production, active-development, and approved planned products",
         "Optional evidence indicators using the three approved evidence labels",
-        "Pricing summaries and demonstrations only when verified and appropriate",
+        "Pricing summaries and demonstrations only when backed by published data or recorded evidence",
         "Links to product detail pages, separate applications, external signup, or product-specific waitlists",
         "No checkout, account creation, subscription management, or implication that deployment alone equals product readiness on the corporate site"
       ],
@@ -85,7 +89,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Open a product detail",
@@ -110,7 +114,7 @@
         "Integrations and ecosystem relationships",
         "Advantages grounded in architecture, system design, heuristics, or demonstrated workflow outcomes",
         "Current lifecycle, availability, limitations, and known boundaries",
-        "Verified pricing and demonstrations only when available",
+        "Published pricing and recorded demonstrations only when available",
         "Optional correctly labeled evidence only when genuine product evidence exists",
         "A lifecycle-appropriate external application, signup, or product-specific waitlist action"
       ],
@@ -127,12 +131,12 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Open the separate product application when available",
         "Sign up externally when available",
-        "View verified pricing or a product demonstration when available",
+        "View published pricing or a recorded product demonstration when available",
         "Join the product-specific waitlist when eligible",
         "Read related evidence when available"
       ]
@@ -165,7 +169,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Read an evidence report",
@@ -206,7 +210,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Inspect supporting artifacts",
@@ -227,7 +231,7 @@
       ],
       "requiredContent": [
         "A clear distinction between long-term direction and currently available product scope",
-        "Automation as the enduring scope and AI as the present focus",
+        "Automation as the company scope and AI agents as the present focus",
         "Connected systems-lab posture rather than one-off startups",
         "Honest statement that Monarchic is small and built for a long horizon",
         "No team roster, founder mythology, or employee-scale implication",
@@ -249,7 +253,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Assess Monarchic’s technical approach, long-horizon research posture, and current scale",
@@ -269,11 +273,11 @@
       "requiredContent": [
         "Scope, covered systems, exclusions, and last-updated context",
         "Current hosted-runtime, security, and data-handling boundaries",
-        "Only verified controls across isolation, persistence, protocol behavior, testing, release, artifact promotion, telemetry, and incident handling",
+        "Only controls backed by named implementation evidence and dated checks across isolation, persistence, protocol behavior, testing, release, artifact promotion, telemetry, and incident handling",
         "Product- or lifecycle-specific differences where relevant",
         "Clear distinction between deployment, operational verification, and complete product readiness",
         "Production and engineering verification explicitly distinguished from external benchmarks and independent studies",
-        "A responsible-disclosure path only when a real destination is configured",
+        "A responsible-disclosure path only when a monitored destination is configured",
         "No unverified certifications or compliance claims",
         "Links to Products and Company for product scope and operating context"
       ],
@@ -290,7 +294,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Review security boundaries",
@@ -311,14 +315,14 @@
       "requiredContent": [
         "Monarchic, LLC identity, policy scope, effective date, and update date",
         "Clear boundary between the corporate website and separately governed product applications",
-        "Verified categories of data collected automatically or submitted by visitors",
+        "Disclosed categories of data collected automatically or submitted by visitors",
         "Actual purposes and applicable legal bases",
         "Cookie and analytics practices including consent behavior where applicable",
         "Current processors and relevant transfer information",
         "Retention periods or defensible retention criteria",
         "Applicable user rights and request procedures",
         "High-level security and data-protection practices without absolute guarantees",
-        "A real privacy-request channel configured before publication",
+        "A monitored privacy-request channel configured before publication",
         "Policy-update procedures and links to Website Terms",
         "Legal review required before final publication"
       ],
@@ -335,7 +339,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Use the configured privacy-request channel when needed",
@@ -380,7 +384,7 @@
         "Conflating the three evidence types",
         "Publishing fixture-smoke, synthetic, projected, or harness-only results as full product benchmarks",
         "Direct competitor-win claims without same-protocol comparable evidence",
-        "A top-level Solutions section before repeatable real-world outcomes and credible solution-specific evidence exist"
+        "A top-level Solutions section before repeatable deployed outcomes and credible solution-specific evidence exist"
       ],
       "primaryActions": [
         "Review the Privacy policy",

@@ -91,6 +91,8 @@ const researchDetail = siteMap.pages.find((page) => page.route === "/research/[s
 const privacy = siteMap.pages.find((page) => page.route === "/privacy");
 const terms = siteMap.pages.find((page) => page.route === "/terms");
 
+assertIncludes(siteMap.copyRules, "Name the mechanism, boundary, or observable result instead of using credibility adjectives.", "Site copy specificity rule");
+assertIncludes(siteMap.copyRules, "Use procedural authentication and security language: confirm an email, name the control, and date the check.", "Site procedural trust language rule");
 assertIncludes(home.requiredContent, "Monarchic’s identity as a small, independent automation research and development company", "Home company identity");
 assertIncludes(home.requiredContent, "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control", "Home company vision");
 assertIncludes(home.requiredContent, "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry", "Home future-work boundary");
@@ -104,9 +106,9 @@ assert(
   !home.requiredContent.some((item) => item.includes("first-connection")),
   "Home contract must keep setup instructions in the webapp.",
 );
-assertIncludes(products.requiredContent, "Pricing summaries and demonstrations only when verified and appropriate", "Products pricing/demo boundary");
+assertIncludes(products.requiredContent, "Pricing summaries and demonstrations only when backed by published data or recorded evidence", "Products pricing/demo boundary");
 assertIncludes(productDetail.requiredContent, "Optional correctly labeled evidence only when genuine product evidence exists", "Product-detail evidence conditionality");
-assertIncludes(productDetail.requiredContent, "Verified pricing and demonstrations only when available", "Product-detail pricing/demo conditionality");
+assertIncludes(productDetail.requiredContent, "Published pricing and recorded demonstrations only when available", "Product-detail pricing/demo conditionality");
 assertIncludes(researchDetail.requiredContent, "For ExplicitMem, distinct coverage of LongMemEval-S, LoCoMo, cross-dataset retrieval-policy, and generic-answer evaluations with their respective caveats", "ExplicitMem generic-route coverage");
 assertIncludes(privacy.requiredContent, "Legal review required before final publication", "Privacy publication gate");
 assertIncludes(terms.requiredContent, "Legal review required before final publication", "Terms publication gate");

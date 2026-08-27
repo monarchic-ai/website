@@ -35,7 +35,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "mcp-browserops": {
     slug: "mcp-browserops",
     category: "Browser QA",
-    buyer: "Product teams and agencies that need agents to inspect real web interfaces.",
+    buyer: "Product teams and agencies that need agents to inspect deployed web interfaces.",
     useCase: "Capture browser evidence, screenshots, console failures, network failures, and visible-page assertions.",
     outcomes: [
       "Turn UI claims into reviewable browser observations",

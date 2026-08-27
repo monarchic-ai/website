@@ -17,6 +17,11 @@ const forbidden = [
   /hosted_mcp_credits/i,
   /\/session\/usage-events/i,
 ];
+const forbiddenVisibleCopy = [
+  /\breal\b/i,
+  /\badult\b/i,
+  /\bverified\b/i,
+];
 const findings = [];
 
 for (const path of walk(outputDir)) {
@@ -32,6 +37,19 @@ for (const path of walk(outputDir)) {
       });
     }
   }
+  if (path.endsWith(".html")) {
+    const text = visibleText(body);
+    for (const pattern of forbiddenVisibleCopy) {
+      const match = pattern.exec(text);
+      if (match) {
+        findings.push({
+          path: path.slice(outputDir.length + 1),
+          pattern: `visible-copy:${pattern.source}`,
+          match: match[0],
+        });
+      }
+    }
+  }
 }
 
 if (findings.length > 0) {
@@ -41,7 +59,16 @@ if (findings.length > 0) {
   process.exit(1);
 }
 
-process.stdout.write("public usage-language artifacts contain no legacy credit copy\n");
+process.stdout.write("public artifacts contain no legacy credit copy or filler credibility labels\n");
+
+function visibleText(html) {
+  return html
+    .replace(/<!--[\s\S]*?-->/g, " ")
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ");
+}
 
 function* walk(path) {
   for (const name of readdirSync(path)) {

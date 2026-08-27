@@ -30,7 +30,7 @@ includes(home.text, [
   "Operator control",
   "Reference architecture / Public view",
   "What Monarchic builds",
-  "A person should be able to assign a real job to agents",
+  "A person should be able to assign a job and inspect the result",
   "hosted MCPs are available",
   "workflow product that uses this catalog is still in development",
   "Current status. Future direction",
@@ -104,7 +104,7 @@ excludes(explicitMem.html, [
 ], "ExplicitMem private implementation boundary");
 
 const company = page("/company");
-includes(company.text, ["Automation is the enduring scope", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
+includes(company.text, ["We build automation systems", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
 
 const security = page("/security");
 includes(security.text, ["Current controls. Explicit limits", "How a hosted request is scoped", "Published assurance scope", "Report a suspected vulnerability"], "Security controls and disclosure");
