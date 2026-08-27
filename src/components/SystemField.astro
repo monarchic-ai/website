@@ -6,7 +6,11 @@ interface Props {
 const { availableMcpCount } = Astro.props;
 ---
 
-<aside class="system-field flex min-h-[34rem] min-w-0 flex-col" aria-label="Monarchic systems reference model">
+<aside
+  class="system-field flex min-h-[34rem] min-w-0 flex-col"
+  aria-label="Monarchic systems reference model"
+  data-system-motion="stepped-machine"
+>
   <header class="flex min-h-12 items-center justify-between gap-4 border-b border-white/20 px-4 font-mono text-[0.58rem] font-bold uppercase sm:px-5">
     <span class="text-white/54">Run architecture / 01</span>
     <span class="inline-flex items-center gap-2 text-white/72">
@@ -21,37 +25,47 @@ const { availableMcpCount } = Astro.props;
     aria-label="Monarchic run architecture connects intent, planning, scoped workers, and evidence around durable run state."
   >
     <svg class="system-field-lines absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-      <circle cx="50" cy="50" r="24" vector-effect="non-scaling-stroke"></circle>
-      <circle cx="50" cy="50" r="34" vector-effect="non-scaling-stroke"></circle>
-      <path d="M22 23L41 41M78 23L59 41M22 77L41 59M78 77L59 59" vector-effect="non-scaling-stroke"></path>
-      <path class="system-field-trace" d="M22 23H78V77H22Z" vector-effect="non-scaling-stroke"></path>
-      <path d="M50 4V18M50 82V96M4 50H18M82 50H96" vector-effect="non-scaling-stroke"></path>
+      <path class="system-field-frame" d="M12 12H88V88H12Z" vector-effect="non-scaling-stroke"></path>
+      <path class="system-field-frame system-field-frame--inner" d="M38 38H62V62H38Z" vector-effect="non-scaling-stroke"></path>
+      <path
+        class="system-field-link-base"
+        d="M22 21H31V42H40M78 21H69V42H60M22 75H31V58H40M78 75H69V58H60"
+        vector-effect="non-scaling-stroke"
+      ></path>
+      <path class="system-field-link system-field-link--intent" d="M22 21H31V42H40" vector-effect="non-scaling-stroke"></path>
+      <path class="system-field-link system-field-link--plan" d="M78 21H69V42H60" vector-effect="non-scaling-stroke"></path>
+      <path class="system-field-link system-field-link--workers" d="M22 75H31V58H40" vector-effect="non-scaling-stroke"></path>
+      <path class="system-field-link system-field-link--evidence" d="M78 75H69V58H60" vector-effect="non-scaling-stroke"></path>
+      <path class="system-field-index" d="M50 4V12M50 88V96M4 50H12M88 50H96" vector-effect="non-scaling-stroke"></path>
     </svg>
 
     <div class="system-field-node system-field-node--research">
-      <span>01</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>01 / Input</span>
       <strong>Intent</strong>
     </div>
     <div class="system-field-node system-field-node--contract">
-      <span>02</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>02 / Contract</span>
       <strong>Plan</strong>
     </div>
     <div class="system-field-node system-field-node--tools">
-      <span>03</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>03 / Dispatch</span>
       <strong>Workers</strong>
     </div>
     <div class="system-field-node system-field-node--evidence">
-      <span>04</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>04 / Output</span>
       <strong>Evidence</strong>
     </div>
 
     <div class="system-field-core">
-      <span>Monarchic</span>
+      <span>Monarchic / Control</span>
       <strong>Run</strong>
       <small>Durable state</small>
     </div>
 
-    <span class="system-field-scan" aria-hidden="true"></span>
+    <span class="system-field-carriage" aria-hidden="true"></span>
+    <span class="system-field-cycle" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </span>
     <span class="absolute bottom-3 left-4 font-mono text-[0.52rem] font-bold uppercase text-white/54 sm:left-5">
       Reference architecture / Public view
     </span>

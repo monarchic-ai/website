@@ -196,6 +196,22 @@ async function runBrowserSmoke() {
       await page.getByText(/develop hosted tools and execution infrastructure for AI agents doing long-running work/i).waitFor();
       await page.getByText("Operator control", { exact: true }).waitFor();
       await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
+      const steppedSystemField = page.locator('[data-system-motion="stepped-machine"]');
+      await steppedSystemField.waitFor();
+      const carriageTiming = await steppedSystemField.locator(".system-field-carriage").evaluate(
+        (element) => window.getComputedStyle(element).animationTimingFunction,
+      );
+      if (!carriageTiming.includes("steps(")) {
+        throw new Error(`system field motion must use stepped timing; received ${carriageTiming}`);
+      }
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      const reducedCarriageAnimation = await steppedSystemField.locator(".system-field-carriage").evaluate(
+        (element) => window.getComputedStyle(element).animationName,
+      );
+      if (reducedCarriageAnimation !== "none") {
+        throw new Error(`system field motion must stop for reduced motion; received ${reducedCarriageAnimation}`);
+      }
+      await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
       await page.getByRole("heading", { name: "A person should be able to assign a job and inspect the result." }).waitFor();
       await page.getByRole("heading", { name: `${expectedAvailableMcpCount} hosted MCPs are available.` }).waitFor();
