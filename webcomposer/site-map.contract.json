@@ -1,6 +1,6 @@
 {
   "name": "Monarchic",
-  "description": "Presents Monarchic as an independent automation research and development company, with its current products, public evidence, and web application clearly separated beneath that company story.",
+  "description": "Presents Monarchic as an independent AI engineering research and development company, with its current products, public evidence, and web application clearly separated beneath that company story.",
   "copyRules": [
     "Name the mechanism, boundary, or observable result instead of using credibility adjectives.",
     "Use procedural authentication and security language: confirm an email, name the control, and date the check."
@@ -9,7 +9,7 @@
     {
       "route": "/",
       "title": "Home",
-      "purpose": "Introduce Monarchic as an independent automation research and development company, explain what it builds and why, show current work, and separate in-development products from longer-term research direction.",
+      "purpose": "Introduce Monarchic as an independent AI engineering research and development company, explain what it builds and why, show current work, and separate in-development products from longer-term research direction.",
       "audience": [
         "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
         "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
@@ -18,8 +18,8 @@
         "Nontechnical practitioners already using AI who need dependable, guided, and repeatable workflows"
       ],
       "requiredContent": [
-        "Monarchic’s identity as a small, independent automation research and development company",
-        "A clear distinction between the company’s broad automation scope and its present focus on AI agents and MCP infrastructure",
+        "Monarchic’s identity as a small, independent AI engineering research and development company",
+        "A clear distinction between the company’s broad AI engineering scope and its present focus on AI agents and MCP infrastructure",
         "A concrete explanation of the hosted tools, durable runs, scoped workers, and operator review surfaces Monarchic builds",
         "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control",
         "A selected view of current MCP work with the full product catalog kept secondary to the company story",
@@ -29,7 +29,7 @@
         "Competitive deterministic architectures, system designs, and heuristics supported by clearly scoped evidence",
         "Emphasis on solving and maintaining deployed systems rather than one-shot prompt-to-app or unconstrained codebase generation",
         "Its current commercial focus on AI systems and MCP products",
-        "Its longer-term relevance to engineering, STEM, and business automation without presenting future work as currently available",
+        "Its longer-term relevance to software engineering, scientific research, and business systems without presenting future work as currently available",
         "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry",
         "A public record that routes research, security controls, company boundaries, and product claims to the right supporting material",
         "The connected-system, deterministic-tooling, and maintained-system differentiators"
@@ -221,7 +221,7 @@
     {
       "route": "/company",
       "title": "Company",
-      "purpose": "Establish Monarchic as a technically serious, long-horizon automation research and development firm without overstating team size or operational scale and without making the story team-centric.",
+      "purpose": "Establish Monarchic as a technically serious, long-horizon AI engineering research and development company without overstating team size or operational scale and without making the story team-centric.",
       "audience": [
         "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
         "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
@@ -231,7 +231,7 @@
       ],
       "requiredContent": [
         "A clear distinction between long-term direction and currently available product scope",
-        "Automation as the company scope and AI agents as the present focus",
+        "AI engineering systems as the company scope and AI agents as the present focus",
         "Connected systems-lab posture rather than one-off startups",
         "Honest statement that Monarchic is small and built for a long horizon",
         "No team roster, founder mythology, or employee-scale implication",

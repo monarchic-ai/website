@@ -25,7 +25,7 @@ for (const route of canonicalRoutes) {
 
 const home = page("/");
 includes(home.text, [
-  "Automation research and development",
+  "AI engineering systems",
   "Monarchic builds agent systems",
   "Agent enhancements are live through hosted MCPs",
   "Design constraint / The operator can see the run",
@@ -125,7 +125,7 @@ excludes(explicitMem.html, [
 ], "ExplicitMem private implementation boundary");
 
 const company = page("/company");
-includes(company.text, ["We build automation systems", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
+includes(company.text, ["We build AI engineering systems", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
 
 const security = page("/security");
 includes(security.text, ["Current controls. Explicit limits", "How a hosted request is scoped", "Published assurance scope", "Report a suspected vulnerability"], "Security controls and disclosure");

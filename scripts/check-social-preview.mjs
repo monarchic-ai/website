@@ -42,11 +42,11 @@ if (socialSvg.includes('viewBox="0 0 1200 630"')) {
 }
 
 for (const marker of [
-  "AUTOMATION",
-  "YOU CAN INSPECT.",
+  "AI ENGINEERING SYSTEMS.",
+  "BUILT TO BE INSPECTED.",
   "INDEPENDENT RESEARCH + DEVELOPMENT",
   "AI AGENTS + MCP INFRASTRUCTURE",
-  "PRACTICAL AUTOMATION",
+  "VISIBLE METHODS + BOUNDS",
   "#7da7d9",
 ]) {
   if (socialSvg.includes(marker)) {
@@ -63,7 +63,7 @@ if (sha256(socialSvg) !== sha256(favicon)) {
 }
 
 for (const marker of [
-  "/social-card.png?v=4",
+  "/social-card.png?v=5",
   "summary_large_image",
   'og:image:width" content="1200"',
   'og:image:height" content="630"',
@@ -76,10 +76,10 @@ for (const marker of [
   }
 }
 
-if (buildInfo.includes('socialImage: "/social-card.png?v=4"')) {
+if (buildInfo.includes('socialImage: "/social-card.png?v=5"')) {
   ok("build-info exposes social-card.png marker");
 } else {
-  fail("build-info must expose /social-card.png?v=4");
+  fail("build-info must expose /social-card.png?v=5");
 }
 
 for (const marker of [

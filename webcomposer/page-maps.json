@@ -390,12 +390,12 @@
         {
           "id": "company-hero",
           "template": "hero.centered",
-          "purpose": "Identify Monarchic, distinguish the public brand from its legal operator, and state the company’s automation mission."
+          "purpose": "Identify Monarchic, distinguish the public brand from its legal operator, and state the company’s AI engineering mission."
         },
         {
           "id": "mission-and-horizon",
           "template": "feature.grid",
-          "purpose": "Explain the company’s automation scope, present AI and MCP focus, broader audiences, and long-term fields without implying future availability."
+          "purpose": "Explain the company’s AI engineering scope, present AI and MCP focus, broader audiences, and long-term fields without implying future availability."
         },
         {
           "id": "our-approach",

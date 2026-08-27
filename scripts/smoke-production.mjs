@@ -9,7 +9,7 @@ const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? 
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
-const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=4`;
+const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=5`;
 const expectedAppBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
     process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
@@ -319,7 +319,7 @@ async function runBrowserSmoke() {
         `${expectedAppBaseUrl}/app`,
       );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
-      await expectMeta(page, "og:title", "Monarchic | Automation research and development");
+      await expectMeta(page, "og:title", "Monarchic | AI engineering systems");
       await expectMeta(page, "og:site_name", "Monarchic");
       await expectMeta(page, "og:image", expectedSocialImageUrl);
       await expectMeta(page, "og:image:width", "1200");
@@ -539,7 +539,7 @@ async function runBrowserSmoke() {
 
     await checkPage(page, `${baseUrl}/company`, async () => {
       await page.locator("[data-operating-status-rail]").waitFor();
-      await page.getByRole("heading", { name: "We build automation systems." }).waitFor();
+      await page.getByRole("heading", { name: "We build AI engineering systems." }).waitFor();
       await page.getByRole("heading", { name: "Evidence before ornament." }).waitFor();
       await page.getByText("Monarchic, LLC", { exact: false }).first().waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/company`);
@@ -591,7 +591,7 @@ async function runBrowserSmoke() {
       await expectNoHorizontalOverflow(page);
     }, "security route at 320px");
     await checkPage(page, `${baseUrl}/company`, async () => {
-      await page.getByRole("heading", { name: "We build automation systems." }).waitFor();
+      await page.getByRole("heading", { name: "We build AI engineering systems." }).waitFor();
       await expectNoHorizontalOverflow(page);
     }, "company route at 320px");
     await page.setViewportSize({ width: 1280, height: 900 });
@@ -931,7 +931,7 @@ async function checkBuildInfo(url, {
     }
   }
 
-  if (payload.socialImage !== "/social-card.png?v=4") {
+  if (payload.socialImage !== "/social-card.png?v=5") {
     throw new Error(`build-info socialImage mismatch: ${payload.socialImage}`);
   }
 
