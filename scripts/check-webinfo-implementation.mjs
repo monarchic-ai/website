@@ -27,7 +27,8 @@ const home = page("/");
 includes(home.text, [
   "AI engineering systems",
   "Monarchic builds agent systems",
-  "Agent enhancements are live through hosted MCPs",
+  "Production infrastructure for capable AI agents",
+  "repository context, persistent memory, browser control, and release operations",
   "Operator controls / See each task",
   "Now / Agent enhancements",
   "Next / Agent workflows",
@@ -42,9 +43,11 @@ includes(home.text, [
   "Long-running agent workflows",
   "Beyond software engineering",
   "Research. Security. Company",
+  "Agent infrastructure / Research tools / Hosted MCPs",
 ], "Home company narrative and availability boundaries");
 excludes(home.text, ["inspectable evidence", "inspect the evidence", "review the evidence"], "Home avoids abstract trust copy");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
+includes(home.html, ['href="/company#contact"'], "Home support path");
 includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");
 
 const products = page("/products");
@@ -128,6 +131,8 @@ excludes(explicitMem.html, [
 
 const company = page("/company");
 includes(company.text, ["We build AI engineering systems", "Monarchic is an AI research and development company", "How we build", "Work underway", "Small company. Long horizon"], "Company scope and scale");
+includes(company.text, ["Support / Direct contact", "Product, billing, privacy, or security questions go directly to the operator", "Email support"], "Company support path");
+includes(company.html, ['id="contact"'], "Company support anchor");
 excludes(company.text, ["inspectable", "evidence trail", "Evidence before ornament", "Three evidence classes"], "Company avoids abstract trust copy");
 
 const security = page("/security");

@@ -194,7 +194,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
-      await page.getByText(/Agent enhancements are live through hosted MCPs/i).waitFor();
+      await page.getByText(/Production infrastructure for capable AI agents/i).waitFor();
       await page.getByText(/Operator controls \/ See each task/i).waitFor();
       await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByText("Operator control", { exact: true }).waitFor();
@@ -287,16 +287,24 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Beyond software engineering" }).waitFor();
       await page.getByRole("heading", { name: "Research. Security. Company." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
-      await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Research" }).first().waitFor();
+      await page.getByRole("link", { name: "Support", exact: true }).first().waitFor();
+      const primaryNavLabels = (await page.locator("#navigation nav > a").allTextContents()).map((label) => label.trim());
+      if (JSON.stringify(primaryNavLabels) !== JSON.stringify(["Products", "Research", "Support", "Apps"])) {
+        throw new Error(`primary navigation order is incorrect: ${primaryNavLabels.join(" / ")}`);
+      }
       await expectHref(
         page.getByRole("link", { name: "Start free evaluation" }),
         `${expectedAppBaseUrl}/products/usage-evaluation`,
       );
       await expectHref(
-        page.getByRole("link", { name: "About Monarchic", exact: true }).first(),
-        "/company",
+        page.getByRole("link", { name: "Explore products", exact: true }).first(),
+        "/products",
+      );
+      await expectHref(
+        page.getByRole("link", { name: "Support", exact: true }).first(),
+        "/company#contact",
       );
       await expectHref(
         page.getByRole("link", { name: "Explore agent enhancements", exact: true }),
@@ -553,11 +561,11 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
-      await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
+      await page.getByRole("link", { name: "Support", exact: true }).first().waitFor();
       await expectNoElementOverlap(
         page.locator("#navigation > a[href='/']"),
-        page.locator("#navigation nav a[href='/company']"),
+        page.locator("#navigation nav a[href='/products']"),
       );
       await expectNoHorizontalOverflow(page);
     }, "home route at 320px");

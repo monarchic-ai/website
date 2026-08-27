@@ -60,7 +60,7 @@ const programs = [
     />
   </head>
   <body class="min-h-screen bg-ink text-white">
-    <PublicPageFrame active="company">
+    <PublicPageFrame>
 
       <section aria-labelledby="company-title" class="border-b border-white/20">
         <div class="min-w-0 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
@@ -189,14 +189,15 @@ const programs = [
         </div>
       </section>
 
-      <section aria-labelledby="posture-title" class="grid border-b border-white/20 lg:grid-cols-2">
+      <section id="contact" aria-labelledby="posture-title" class="scroll-mt-28 grid border-b border-white/20 lg:grid-cols-2">
         <article class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-          <h2 id="posture-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Small company. Long horizon.</h2>
+          <p class="font-mono text-[0.65rem] font-bold uppercase text-signal">Support / Direct contact</p>
+          <h2 id="posture-title" class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Small company. Long horizon.</h2>
           <p class="mt-6 max-w-2xl text-sm leading-7 text-white/64">
             {availableMcpCount} MCPs are available now, and more are in development. Product, billing, privacy, or security questions go directly to the operator.
           </p>
-          <a href="mailto:support@monarchic.io?subject=Company%20question" class="mt-8 inline-flex min-h-11 items-center border border-signal px-4 text-xs font-black uppercase text-signal-soft transition hover:bg-signal hover:text-black">
-            Contact Monarchic
+          <a href="mailto:support@monarchic.io?subject=Monarchic%20support" class="mt-8 inline-flex min-h-11 items-center border border-signal px-4 text-xs font-black uppercase text-signal-soft transition hover:bg-signal hover:text-black">
+            Email support
           </a>
         </article>
         <article class="p-5 sm:p-7">
