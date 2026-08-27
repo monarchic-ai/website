@@ -315,7 +315,7 @@ async function runBrowserSmoke() {
         `${expectedAppBaseUrl}/setup`,
       );
       await expectHref(
-        page.getByRole("link", { name: "Console", exact: true }),
+        page.getByRole("link", { name: "Apps", exact: true }),
         `${expectedAppBaseUrl}/app`,
       );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);

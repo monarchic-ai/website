@@ -24,7 +24,7 @@
         "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control",
         "A selected view of current MCP work with the full product catalog kept secondary to the company story",
         "An ambitious but honest account of Monarchic’s maturity and operating scale",
-        "Clear paths to Products, Research, and Company",
+        "Clear paths to Products, Research, Company, and the separate Monarchic Apps workspace",
         "Clear product lifecycle and availability boundaries",
         "Architecture and system-design claims tied to published tests or source material",
         "Emphasis on solving and maintaining deployed systems rather than one-shot prompt-to-app or unconstrained codebase generation",
@@ -52,7 +52,8 @@
       "primaryActions": [
         "Learn about Monarchic",
         "Review published research",
-        "Explore current products"
+        "Explore current products",
+        "Open Monarchic Apps"
       ]
     },
     {
