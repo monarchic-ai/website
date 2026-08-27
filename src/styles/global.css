@@ -178,12 +178,13 @@
 
 .home-hero-wavefield {
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
 .home-hero-wave {
   fill: none;
-  stroke: rgb(255 255 255 / 0.055);
+  stroke: rgb(255 255 255 / 0.06);
   stroke-width: 1px;
   animation: home-hero-wave-forward 10.4s steps(1, end) infinite;
 }
@@ -191,7 +192,7 @@
 .home-hero-wave--two,
 .home-hero-wave--four,
 .home-hero-wave--six {
-  stroke: rgb(125 167 217 / 0.12);
+  stroke: rgb(125 167 217 / 0.14);
   stroke-width: 1.5px;
   animation-name: home-hero-wave-counter;
 }
@@ -214,6 +215,67 @@
 
 .home-hero-wave--six {
   animation-delay: -6.5s;
+}
+
+.home-hero-bitstream {
+  --wave-delay: -2.6s;
+  --bit-delay: 0s;
+  fill: none;
+  stroke: rgb(125 167 217 / 0.46);
+  stroke-width: 2px;
+  stroke-dasharray: 1.2 6.8;
+  stroke-linecap: square;
+  animation:
+    home-hero-wave-counter 10.4s steps(1, end) infinite var(--wave-delay),
+    home-hero-bitstream-shift 2.6s steps(8, end) infinite var(--bit-delay);
+}
+
+.home-hero-bitstream--four {
+  --wave-delay: -7.8s;
+  --bit-delay: -1.3s;
+}
+
+.home-hero-bitstream--six {
+  --wave-delay: -6.5s;
+  --bit-delay: -2.275s;
+}
+
+.home-hero-phase-gate {
+  fill: none;
+  stroke: rgb(125 167 217 / 0.24);
+  stroke-width: 1px;
+  transform-box: view-box;
+  animation: home-hero-phase-gate 10.4s steps(1, end) infinite;
+}
+
+.home-hero-sample,
+.home-hero-register-bit {
+  fill: var(--color-signal);
+  opacity: 0.16;
+  animation: home-hero-sample-state 2.6s steps(1, end) infinite;
+}
+
+.home-hero-sample--white {
+  fill: white;
+}
+
+.home-hero-sample:nth-child(3n + 1),
+.home-hero-register-bit:nth-child(3n + 1) {
+  animation-delay: -0.65s;
+}
+
+.home-hero-sample:nth-child(3n + 2),
+.home-hero-register-bit:nth-child(3n + 2) {
+  animation-delay: -1.3s;
+}
+
+.home-hero-sample:nth-child(3n),
+.home-hero-register-bit:nth-child(3n) {
+  animation-delay: -1.95s;
+}
+
+.home-hero-register-bit {
+  animation-duration: 5.2s;
 }
 
 .home-hero-outline {
@@ -537,6 +599,73 @@
   }
 }
 
+@keyframes home-hero-bitstream-shift {
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dashoffset: -16;
+  }
+}
+
+@keyframes home-hero-phase-gate {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: translateX(0);
+  }
+
+  20% {
+    opacity: 0.7;
+    transform: translateX(16%);
+  }
+
+  40% {
+    opacity: 0.34;
+    transform: translateX(32%);
+  }
+
+  60% {
+    opacity: 0.62;
+    transform: translateX(48%);
+  }
+
+  80% {
+    opacity: 0.28;
+    transform: translateX(64%);
+  }
+}
+
+@keyframes home-hero-sample-state {
+  0%,
+  12%,
+  100% {
+    opacity: 0.14;
+  }
+
+  13%,
+  28% {
+    opacity: 0.72;
+  }
+
+  29%,
+  58% {
+    opacity: 0.24;
+  }
+
+  59%,
+  68% {
+    opacity: 0.52;
+  }
+
+  69%,
+  99% {
+    opacity: 0.1;
+  }
+}
+
 @keyframes system-node-strike {
   0%,
   3% {
@@ -685,6 +814,10 @@
   .row-arrow,
   .interactive-row,
   .home-hero-wave,
+  .home-hero-bitstream,
+  .home-hero-phase-gate,
+  .home-hero-sample,
+  .home-hero-register-bit,
   .system-field-link,
   .system-field-node,
   .system-field-carriage,
@@ -701,6 +834,22 @@
   .home-hero-wave {
     opacity: 0.72;
     transform: none;
+  }
+
+  .home-hero-bitstream {
+    opacity: 0.34;
+    stroke-dashoffset: -8;
+    transform: none;
+  }
+
+  .home-hero-phase-gate {
+    opacity: 0.22;
+    transform: none;
+  }
+
+  .home-hero-sample,
+  .home-hero-register-bit {
+    opacity: 0.3;
   }
 
   .system-field-carriage {

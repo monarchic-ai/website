@@ -204,9 +204,9 @@ async function runBrowserSmoke() {
       if (!carriageTiming.includes("steps(")) {
         throw new Error(`system field motion must use stepped timing; received ${carriageTiming}`);
       }
-      const steppedWave = page.locator('[data-hero-background="stepped-wave"]');
-      await steppedWave.waitFor();
-      const waveMotion = await steppedWave.locator(".home-hero-wave").first().evaluate((element) => ({
+      const quantizedWave = page.locator('[data-hero-background="quantized-wave"]');
+      await quantizedWave.waitFor();
+      const waveMotion = await quantizedWave.locator(".home-hero-wave").first().evaluate((element) => ({
         animationTimingFunction: window.getComputedStyle(element).animationTimingFunction,
         heroBackgroundImage: window.getComputedStyle(element.closest(".home-lab")).backgroundImage,
       }));
@@ -216,6 +216,12 @@ async function runBrowserSmoke() {
       if (waveMotion.heroBackgroundImage !== "none") {
         throw new Error(`hero wave must replace the hero grid; received ${waveMotion.heroBackgroundImage}`);
       }
+      const digitalSignalTiming = await quantizedWave.locator(".home-hero-bitstream").first().evaluate(
+        (element) => window.getComputedStyle(element).animationTimingFunction,
+      );
+      if (!digitalSignalTiming.includes("steps(")) {
+        throw new Error(`hero bitstream must use stepped timing; received ${digitalSignalTiming}`);
+      }
       await page.emulateMedia({ reducedMotion: "reduce" });
       const reducedCarriageAnimation = await steppedSystemField.locator(".system-field-carriage").evaluate(
         (element) => window.getComputedStyle(element).animationName,
@@ -223,11 +229,17 @@ async function runBrowserSmoke() {
       if (reducedCarriageAnimation !== "none") {
         throw new Error(`system field motion must stop for reduced motion; received ${reducedCarriageAnimation}`);
       }
-      const reducedWaveAnimation = await steppedWave.locator(".home-hero-wave").first().evaluate(
+      const reducedWaveAnimation = await quantizedWave.locator(".home-hero-wave").first().evaluate(
         (element) => window.getComputedStyle(element).animationName,
       );
       if (reducedWaveAnimation !== "none") {
         throw new Error(`hero wave must stop for reduced motion; received ${reducedWaveAnimation}`);
+      }
+      const reducedDigitalSignalAnimations = await quantizedWave.locator(
+        ".home-hero-bitstream, .home-hero-phase-gate, .home-hero-sample, .home-hero-register-bit",
+      ).evaluateAll((elements) => elements.map((element) => window.getComputedStyle(element).animationName));
+      if (reducedDigitalSignalAnimations.some((animationName) => animationName !== "none")) {
+        throw new Error(`hero digital signal motion must stop for reduced motion; received ${reducedDigitalSignalAnimations.join(", ")}`);
       }
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();

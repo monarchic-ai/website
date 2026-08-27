@@ -125,14 +125,47 @@ const futureWork = [
         </div>
 
         <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(26rem,0.65fr)]">
-          <div class="home-hero-copy relative min-w-0 px-4 py-11 sm:px-6 sm:py-14 lg:px-8 lg:py-16" data-hero-background="stepped-wave">
-            <svg class="home-hero-wavefield absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <div class="home-hero-copy relative min-w-0 px-4 py-11 sm:px-6 sm:py-14 lg:px-8 lg:py-16" data-hero-background="quantized-wave">
+            <svg class="home-hero-wavefield absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">
               <path class="home-hero-wave home-hero-wave--one" d="M-24 14H-16V10H-8V18H0V14H8V6H16V22H24V14H32V10H40V18H48V14H56V6H64V22H72V14H80V10H88V18H96V14H104V6H112V22H120V14H128" vector-effect="non-scaling-stroke"></path>
               <path class="home-hero-wave home-hero-wave--two" d="M-24 29H-12V23H0V35H12V29H24V19H36V39H48V29H60V23H72V35H84V29H96V19H108V39H120V29H132" vector-effect="non-scaling-stroke"></path>
               <path class="home-hero-wave home-hero-wave--three" d="M-24 43H-18V39H-6V47H6V43H18V33H30V53H42V43H54V39H66V47H78V43H90V33H102V53H114V43H132" vector-effect="non-scaling-stroke"></path>
               <path class="home-hero-wave home-hero-wave--four" d="M-24 58H-12V52H0V64H12V58H24V48H36V68H48V58H60V52H72V64H84V58H96V48H108V68H120V58H132" vector-effect="non-scaling-stroke"></path>
               <path class="home-hero-wave home-hero-wave--five" d="M-24 73H-16V69H-8V77H0V73H8V65H16V81H24V73H32V69H40V77H48V73H56V65H64V81H72V73H80V69H88V77H96V73H104V65H112V81H120V73H128" vector-effect="non-scaling-stroke"></path>
               <path class="home-hero-wave home-hero-wave--six" d="M-24 88H-12V82H0V94H12V88H24V78H36V98H48V88H60V82H72V94H84V88H96V78H108V98H120V88H132" vector-effect="non-scaling-stroke"></path>
+
+              <path class="home-hero-bitstream home-hero-bitstream--two" d="M-24 29H-12V23H0V35H12V29H24V19H36V39H48V29H60V23H72V35H84V29H96V19H108V39H120V29H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-bitstream home-hero-bitstream--four" d="M-24 58H-12V52H0V64H12V58H24V48H36V68H48V58H60V52H72V64H84V58H96V48H108V68H120V58H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-bitstream home-hero-bitstream--six" d="M-24 88H-12V82H0V94H12V88H24V78H36V98H48V88H60V82H72V94H84V88H96V78H108V98H120V88H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
+
+              <path class="home-hero-phase-gate" d="M10 3V10M7 10H13M10 14V29M7 29H13M10 33V48M7 48H13M10 52V67M7 67H13M10 71V86M7 86H13M10 90V97" vector-effect="non-scaling-stroke"></path>
+
+              <g class="home-hero-samples">
+                <rect class="home-hero-sample home-hero-sample--white" x="7.1" y="5.2" width="1.8" height="1.5"></rect>
+                <rect class="home-hero-sample" x="23.1" y="18.2" width="2.2" height="1.7"></rect>
+                <rect class="home-hero-sample" x="35.1" y="38.2" width="1.8" height="1.6"></rect>
+                <rect class="home-hero-sample home-hero-sample--white" x="53.2" y="38.2" width="1.7" height="1.6"></rect>
+                <rect class="home-hero-sample" x="59.1" y="51.2" width="2" height="1.7"></rect>
+                <rect class="home-hero-sample" x="71.1" y="63.2" width="2.2" height="1.7"></rect>
+                <rect class="home-hero-sample home-hero-sample--white" x="79.1" y="68.2" width="1.8" height="1.6"></rect>
+                <rect class="home-hero-sample" x="95.1" y="77.2" width="2.2" height="1.7"></rect>
+                <rect class="home-hero-sample" x="83.1" y="87.2" width="1.8" height="1.6"></rect>
+              </g>
+
+              <g class="home-hero-register">
+                <rect class="home-hero-register-bit" x="82" y="5" width="1" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="83.8" y="5" width="2.3" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="86.9" y="5" width="1" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="88.7" y="5" width="3.4" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="92.9" y="5" width="1" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="94.7" y="5" width="2.8" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="82" y="7" width="2.8" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="85.6" y="7" width="1" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="87.4" y="7" width="1.6" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="89.8" y="7" width="1" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="91.6" y="7" width="2.8" height="0.8"></rect>
+                <rect class="home-hero-register-bit" x="95.2" y="7" width="2.3" height="0.8"></rect>
+              </g>
             </svg>
             <p class="font-mono text-[0.64rem] font-bold uppercase text-white/54">Monarchic, LLC / Agent execution systems</p>
             <h1 id="home-title" class="mt-6 max-w-5xl text-[2.75rem] font-black uppercase leading-[0.82] min-[360px]:text-[3.2rem] sm:text-[5.2rem] lg:text-[6.9rem]">
