@@ -22,7 +22,7 @@ export const explicitMemQuestionTypes = [
 export const explicitMemStudies = [
   {
     id: "longmemeval-s",
-    evidenceClass: "External-dataset benchmark",
+    studyType: "External benchmark",
     dataset: "LongMemEval-S",
     generated: explicitMemBenchmark.generated,
     scope: "Fixed answer synthesis",
@@ -32,11 +32,11 @@ export const explicitMemStudies = [
     method: "The complete 500-question set was scored with deterministic normalized answer matching under a fixed evaluation profile.",
     failure: "One temporal item differed from the upstream gold answer, so the strict perfect-score gate remained unmet.",
     limitation: "Benchmark-scoped result. It is not an LLM-judged score, a cross-dataset synthesis result, or a hosted latency claim.",
-    evidenceStatus: "Versioned result and failure records retained for controlled review.",
+    retainedRecords: "Versioned result and failure records retained for technical review.",
   },
   {
     id: "locomo",
-    evidenceClass: "External-dataset benchmark",
+    studyType: "External benchmark",
     dataset: "LoCoMo",
     generated: "3 June 2026",
     scope: "Retrieval evaluation",
@@ -46,11 +46,11 @@ export const explicitMemStudies = [
     method: "A fixed retrieval profile was evaluated against 1,986 cases using expected-memory recall as the primary metric.",
     failure: "Secondary recall measures were lower than the primary measure and remain outside this headline claim.",
     limitation: "LoCoMo-specific retrieval and context recall. It does not measure generated-answer accuracy and is not the default generic runtime.",
-    evidenceStatus: "Versioned result and failure records retained for controlled review.",
+    retainedRecords: "Versioned result and failure records retained for technical review.",
   },
   {
     id: "cross-dataset",
-    evidenceClass: "First-party evaluation on external datasets",
+    studyType: "Monarchic evaluation on external datasets",
     dataset: "BEAM, ConvoMem, LoCoMo, LongMemEval",
     generated: "3 June 2026",
     scope: "Cross-dataset candidate generation",
@@ -60,11 +60,11 @@ export const explicitMemStudies = [
     method: "A fixed candidate-generation profile was evaluated on held-out cases drawn from five external datasets.",
     failure: "Smaller candidate pools performed below the published recall@400 result.",
     limitation: "High-recall candidate generation for downstream ranking. It is not final top-50 ranking quality or answer accuracy.",
-    evidenceStatus: "Versioned result and split records retained for controlled review.",
+    retainedRecords: "Versioned result and split records retained for technical review.",
   },
   {
     id: "generic-answer",
-    evidenceClass: "First-party evaluation",
+    studyType: "Monarchic evaluation",
     dataset: "Generic and non-LongMemEval fixtures",
     generated: "6 June 2026",
     scope: "Generic answer support",
@@ -74,6 +74,6 @@ export const explicitMemStudies = [
     method: "A fixed set of local, external, production-shaped, unseen-generic, and generated cases was scored with deterministic support checks.",
     failure: "No scored failure appears in this artifact. That limits failure analysis and increases the importance of broader adversarial and provider-judged evaluation.",
     limitation: "Deterministic extractive answer support. It is not LLM-judged provider scoring or proof of open-ended answer quality.",
-    evidenceStatus: "Versioned result records retained for controlled review.",
+    retainedRecords: "Versioned result records retained for technical review.",
   },
 ] as const;

@@ -7,7 +7,7 @@
     "monarchic-webapp/src/lib",
     "website/src/lib"
   ],
-  "artifactDigest": "sha256:b0f342e4ddd36ab804c4c5d0c746cbe831a77742cadd5c2dde003066e869b8e8",
+  "artifactDigest": "sha256:a511b91c369ef51be5cd20dcab28fb072320eaa7b079b1330aa9fe9393b7b120",
   "files": [
     {
       "name": "pricing.ts",
@@ -23,11 +23,11 @@
     },
     {
       "name": "pricing.coming-soon.json",
-      "sha256": "89be3e3a7ab09aa70b3e3109a5f8492494981e2aec06a124b8e535e2255f56f7"
+      "sha256": "a90b767e061fe6a999f7f0bbe0cd3f9ad89d20db591b3bf5a1003b7eef4b66b1"
     },
     {
       "name": "productDetails.ts",
-      "sha256": "00cc9a3dcb25fee239a71571488facc808608de2101416c8afb9461c740f8801"
+      "sha256": "a6ce028f74849e534ca2263784b1a7aa1bc8591eab69f03f34e4390cfd0cb987"
     }
   ]
 }

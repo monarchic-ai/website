@@ -9,39 +9,39 @@ const publicMcps = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableMcpCount = publicMcps.filter((plan) => hostedMcpStatus(plan) === "available").length;
 
 const approach = [
-  ["Research", "Start with a bounded question, an observable workflow, and a definition of what would count as evidence."],
-  ["Encode", "Turn the useful parts into explicit tool contracts, permission boundaries, and repeatable operations."],
-  ["Verify", "Test outputs against named methods and keep failures, limits, and evidence status beside the result."],
-  ["Maintain", "Operate the route, measure usage, and revise the product as the underlying systems change."],
+  ["Define", "Set the technical problem, operating environment, and failure conditions."],
+  ["Build", "Specify the tools, permissions, inputs, outputs, and runtime behavior."],
+  ["Test", "Run repeatable cases, fix failures, and record what the system cannot do yet."],
+  ["Operate", "Deploy the product, measure how it behaves, and maintain it as models and infrastructure change."],
 ];
 
 const system = [
-  ["Research", "Questions, methods, results, and visible limits.", "/research", "Read the record"],
-  ["Tooling", "Structured contracts that make specialist work callable by an agent.", `${appBaseUrl}/setup`, "Open setup"],
-  ["Products", "Hosted MCP routes, scoped access, and account-level usage.", "/products", "View products"],
+  ["Research", "Technical questions, test methods, results, and failures.", "/research", "Read the research"],
+  ["Tooling", "Agent capabilities with named inputs, outputs, and permissions.", `${appBaseUrl}/setup`, "Open setup"],
+  ["Products", "Hosted MCP connections, account access, and usage records.", "/products", "View products"],
 ];
 
-const evidence = [
+const programs = [
   {
-    label: "External dataset",
-    title: "Recognized benchmarks.",
-    copy: "ExplicitMem publishes its fixed dataset, method, measurements, one scored miss, and interpretation boundary together.",
+    label: "Available now",
+    title: "Agent enhancements.",
+    copy: `${availableMcpCount} hosted MCPs add repository context, memory, operations, browser work, and analysis to existing agents.`,
+    href: "/products/hosted-mcps",
+    action: "View agent enhancements",
+  },
+  {
+    label: "Published research",
+    title: "Agent memory.",
+    copy: "ExplicitMem tests how agents store and retrieve named memory across sessions. The report covers LongMemEval-S, LoCoMo, retrieval policy, and generic-answer behavior.",
     href: "/research/explicitmem",
-    action: "Inspect the benchmark",
+    action: "Read ExplicitMem research",
   },
   {
-    label: "First-party evaluation",
-    title: "Our methods stay attributed.",
-    copy: "Capability, robustness, corpus, and deterministic-gate evaluations are labeled as Monarchic work and published with their method. They are not presented as independent research.",
-    href: "/research",
-    action: "Review research records",
-  },
-  {
-    label: "Engineering verification",
-    title: "Operational checks stay scoped.",
-    copy: "Security checks, automated tests, isolation, persistence, artifact promotion, protocol checks, and production measurements support operational claims—not independent benchmark claims.",
-    href: "/security",
-    action: "Review engineering trust",
+    label: "In development",
+    title: "Long-running agent work.",
+    copy: "The Monarchic webapp is being built to launch jobs, keep task state between model calls, run scoped workers, and return results for review.",
+    href: "/products/monarchic-ai",
+    action: "View product status",
   },
 ];
 ---
@@ -55,7 +55,7 @@ const evidence = [
     <meta name="viewport" content="width=device-width" />
     <SeoHead
       title="Company | Monarchic"
-      description="Monarchic is an AI research and development company building inspectable systems for AI agents and long-running work."
+      description="Monarchic is an AI research and development company building tools for AI agents and the infrastructure that keeps their work running."
       path="/company"
     />
   </head>
@@ -69,7 +69,7 @@ const evidence = [
             We build AI engineering systems.
           </h1>
           <p class="mt-7 max-w-3xl text-lg font-medium leading-8 text-white/78 sm:text-2xl sm:leading-9">
-            Monarchic is an AI research and development company. We build agent capabilities, execution infrastructure, and the tools that make both inspectable.
+            Monarchic is an AI research and development company. We build tools for AI agents and the infrastructure that keeps their work running.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="/products" class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-5 text-xs font-black uppercase text-black transition hover:bg-signal-soft">
@@ -85,21 +85,21 @@ const evidence = [
 
       <section aria-labelledby="mission-title" class="grid border-b border-white/20 lg:grid-cols-[22rem_minmax(0,1fr)]">
         <header class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-          <h2 id="mission-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Build useful systems. Publish the boundaries.</h2>
+          <h2 id="mission-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Research that becomes software.</h2>
         </header>
         <div class="grid sm:grid-cols-2">
           <article class="border-b border-white/20 p-5 sm:border-b-0 sm:border-r sm:p-7">
             <p class="font-mono text-[0.62rem] font-bold uppercase text-white/42">Company scope</p>
-            <h3 class="mt-5 text-2xl font-black uppercase">AI engineering with an evidence trail.</h3>
+            <h3 class="mt-5 text-2xl font-black uppercase">AI engineering from tools to runtime.</h3>
             <p class="mt-4 text-sm leading-7 text-white/64">
-              We build systems that give agents specialist capabilities, durable execution, and explicit operating boundaries. Their outputs, methods, and limits should be inspectable.
+              We build the software around AI agents: specialist tools, persistent runs, isolated workers, and operator controls.
             </p>
           </article>
           <article class="p-5 sm:p-7">
             <p class="font-mono text-[0.62rem] font-bold uppercase text-white/42">Present focus</p>
             <h3 class="mt-5 text-2xl font-black uppercase">AI agents and MCP infrastructure.</h3>
             <p class="mt-4 text-sm leading-7 text-white/64">
-              Today that means specialist MCP tools for repository context, memory, operations, and analysis. The next layer is infrastructure for long-running agent work.
+              Today that means hosted MCPs for repository context, memory, operations, browser work, and analysis. Next is a webapp for long-running agent work.
             </p>
           </article>
           <article class="border-t border-white/20 p-5 sm:col-span-2 sm:p-7">
@@ -117,10 +117,10 @@ const evidence = [
       <section aria-labelledby="approach-title" class="border-b border-white/20">
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[1fr_0.72fr] lg:items-end">
           <div>
-            <h2 id="approach-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Evidence before ornament.</h2>
+            <h2 id="approach-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">How we build.</h2>
           </div>
           <p class="max-w-2xl text-sm leading-7 text-white/62">
-            Evidence-first systems research, deterministic architecture where possible, explicit heuristics where it is not, and reproducible methods proportionate to the claim.
+            The work moves from a technical question to a maintained product.
           </p>
         </header>
         <ol class="grid sm:grid-cols-2 lg:grid-cols-4">
@@ -143,9 +143,9 @@ const evidence = [
       <section aria-labelledby="system-title" class="border-b border-black bg-signal text-black">
         <div class="grid lg:grid-cols-[22rem_minmax(0,1fr)]">
           <header class="border-b border-black p-5 sm:p-7 lg:border-b-0 lg:border-r">
-            <h2 id="system-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">One connected system.</h2>
+            <h2 id="system-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Research, tooling, products.</h2>
             <p class="mt-5 text-sm leading-7 text-black/66">
-              Research sharpens the tool. Operating the tool reveals the next research question.
+              The same work continues from experiment to hosted product.
             </p>
           </header>
           <div class="grid md:grid-cols-3">
@@ -163,20 +163,20 @@ const evidence = [
         </div>
       </section>
 
-      <section aria-labelledby="evidence-title" class="border-b border-white/20">
+      <section aria-labelledby="programs-title" class="border-b border-white/20">
         <header class="grid gap-5 border-b border-white/20 p-5 sm:p-7 lg:grid-cols-[1fr_0.72fr] lg:items-end">
           <div>
-            <h2 id="evidence-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Three evidence classes. Clearly labeled.</h2>
+            <h2 id="programs-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Work underway.</h2>
           </div>
           <p class="text-sm leading-7 text-white/62">
-            A recognized external-dataset benchmark, an attributed first-party evaluation, and production or engineering verification are useful in different ways. We do not collapse them into one kind of proof.
+            Hosted MCPs are available now. ExplicitMem has published research. The long-running workflow product is still in development.
           </p>
         </header>
         <div class="grid lg:grid-cols-3">
-          {evidence.map((item, index) => (
+          {programs.map((item, index) => (
             <article class:list={[
               "group flex min-h-[360px] flex-col p-5 sm:p-7",
-              index < evidence.length - 1 && "border-b border-white/20 lg:border-b-0 lg:border-r",
+              index < programs.length - 1 && "border-b border-white/20 lg:border-b-0 lg:border-r",
             ]}>
               <p class="font-mono text-[0.62rem] font-bold uppercase text-white/50">{item.label}</p>
               <h3 class="mt-8 text-3xl font-black uppercase leading-none">{item.title}</h3>
@@ -191,9 +191,9 @@ const evidence = [
 
       <section aria-labelledby="posture-title" class="grid border-b border-white/20 lg:grid-cols-2">
         <article class="border-b border-white/20 p-5 sm:p-7 lg:border-b-0 lg:border-r">
-          <h2 id="posture-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Small by fact. Long-horizon by choice.</h2>
+          <h2 id="posture-title" class="text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Small company. Long horizon.</h2>
           <p class="mt-6 max-w-2xl text-sm leading-7 text-white/64">
-            Monarchic is a small company. {availableMcpCount} MCPs are available now, with more in development and room for the roadmap to grow. Product, billing, privacy, or security questions go directly to the operator.
+            {availableMcpCount} MCPs are available now, and more are in development. Product, billing, privacy, or security questions go directly to the operator.
           </p>
           <a href="mailto:support@monarchic.io?subject=Company%20question" class="mt-8 inline-flex min-h-11 items-center border border-signal px-4 text-xs font-black uppercase text-signal-soft transition hover:bg-signal hover:text-black">
             Contact Monarchic
@@ -201,12 +201,12 @@ const evidence = [
         </article>
         <article class="p-5 sm:p-7">
           <p class="font-mono text-[0.65rem] font-bold uppercase text-white/42">Long-term direction</p>
-          <h2 class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Beyond any single protocol.</h2>
+          <h2 class="mt-4 text-4xl font-black uppercase leading-[0.92] sm:text-5xl">Beyond MCP.</h2>
           <p class="mt-6 max-w-2xl text-sm leading-7 text-white/64">
             We expect interfaces, models, and infrastructure to change. Our long-term research covers agent systems for software engineering, scientific research, and business operations. Those are fields of inquiry, not a claim that products exist for each today.
           </p>
           <a href="/security" class="mt-8 inline-flex min-h-11 items-center border border-white/45 px-4 text-xs font-black uppercase transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">
-            Review the trust boundary
+            Read security details
           </a>
         </article>
       </section>

@@ -172,7 +172,7 @@
     "description": "CI/CD MCP diagnoses delivery pipelines, evaluates release gates, and exports pipeline architecture through the hosted catalog.",
     "featureBullets": [
       "Diagnose failed and slow pipeline runs",
-      "Evaluate release readiness from provider evidence",
+      "Evaluate release readiness from provider state",
       "Export pipeline graphs for architecture analysis"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
@@ -186,15 +186,15 @@
     "kind": "single-mcp",
     "slug": "mcp-browserops",
     "displayName": "BrowserOps MCP",
-    "tagline": "Browser evidence and UI verification",
+    "tagline": "Browser runs and UI verification",
     "description": "BrowserOps MCP captures screenshots, console failures, network failures, and visible-page assertions through an isolated hosted browser runtime.",
     "featureBullets": [
-      "Capture browser evidence for UI reviews",
+      "Capture screenshots and browser logs for UI reviews",
       "Check visible content, console output, and network failures",
       "Package screenshots and observations for handoff"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Browser verification uses the frozen browser operation class. Evidence storage and disclosed provider expenses are metered separately.",
+    "usageSummary": "Browser verification uses the frozen browser operation class. Screenshot storage and disclosed provider expenses are metered separately.",
     "lifecycle": "production",
     "hostedStatus": "available",
     "status": "available",
@@ -208,7 +208,7 @@
     "description": "BusinessModel MCP turns company research into a reviewable business model and can gate engineering work until that model is approved.",
     "featureBullets": [
       "Produce reviewable company synthesis reports",
-      "Keep business evidence attached to decisions",
+      "Keep research sources attached to decisions",
       "Gate downstream execution until approval"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
@@ -240,11 +240,11 @@
     "kind": "single-mcp",
     "slug": "mcp-explicitmem",
     "displayName": "ExplicitMem MCP",
-    "tagline": "Durable, inspectable memory for long-running agents",
-    "description": "ExplicitMem MCP stores and retrieves explicit memory across agent sessions while keeping the remembered objects and retrieval evidence inspectable.",
+    "tagline": "Memory that survives across agent sessions",
+    "description": "ExplicitMem MCP stores named memory objects and retrieves them in later agent sessions with their source records attached.",
     "featureBullets": [
       "Persist facts, preferences, goals, and working context",
-      "Retrieve bounded context with evidence",
+      "Retrieve bounded context with source records",
       "Audit memory objects and changes"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
@@ -258,10 +258,10 @@
     "kind": "single-mcp",
     "slug": "mcp-incidentops",
     "displayName": "IncidentOps MCP",
-    "tagline": "Incident evidence, triage, and response coordination",
-    "description": "IncidentOps MCP combines operational evidence into timelines, triage, response packets, rollback plans, and guarded provider updates.",
+    "tagline": "Incident timelines, triage, and response coordination",
+    "description": "IncidentOps MCP combines alerts, logs, deploys, owners, and response notes into timelines, response packets, rollback plans, and guarded provider updates.",
     "featureBullets": [
-      "Build incident timelines from multiple evidence sources",
+      "Build incident timelines from alerts, logs, and deploy records",
       "Create response packets and recovery checks",
       "Keep external updates guarded and reviewable"
     ],
@@ -277,7 +277,7 @@
     "slug": "mcp-infraprofiler",
     "displayName": "InfraProfiler MCP",
     "tagline": "Infrastructure, cost, and pipeline intelligence",
-    "description": "InfraProfiler MCP connects infrastructure and delivery evidence so teams can rank cost, reliability, saturation, and deployment bottlenecks.",
+    "description": "InfraProfiler MCP connects infrastructure telemetry and delivery data so teams can rank cost, reliability, saturation, and deployment bottlenecks.",
     "featureBullets": [
       "Rank infrastructure and delivery hotspots",
       "Trace cost, reliability, and latency signals",
@@ -294,11 +294,11 @@
     "kind": "single-mcp",
     "slug": "mcp-leadgenerator",
     "displayName": "LeadGenerator MCP",
-    "tagline": "Evidence-backed lead targeting and buyer research",
+    "tagline": "Account targeting and buyer research",
     "description": "LeadGenerator MCP turns an approved business model and validated enrichment into ranked organizations, buyer personas, people, and outreach angles.",
     "featureBullets": [
       "Build ranked target-account lists",
-      "Connect buyer research to source evidence",
+      "Connect buyer research to its sources",
       "Prepare practical outreach angles"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
@@ -331,8 +331,8 @@
     "kind": "single-mcp",
     "slug": "mcp-releaseops",
     "displayName": "ReleaseOps MCP",
-    "tagline": "Release readiness, evidence, and handoff",
-    "description": "ReleaseOps MCP turns release readiness into structured checks, manifests, changelog scope, and reviewer-friendly evidence packs.",
+    "tagline": "Release checks and reviewer handoff",
+    "description": "ReleaseOps MCP turns release readiness into structured checks, manifests, changelog scope, and a reviewer handoff pack.",
     "featureBullets": [
       "Evaluate release readiness",
       "Catch missing documentation and artifacts",
@@ -368,11 +368,11 @@
     "slug": "mcp-repointel",
     "displayName": "RepoIntel MCP",
     "tagline": "Repository maps, documentation, and targeted code intelligence",
-    "description": "RepoIntel MCP gives agents repository maps, generated documentation, workflow context, and targeted evidence for large codebases.",
+    "description": "RepoIntel MCP gives agents repository maps, generated documentation, workflow context, and source-file citations for large codebases.",
     "featureBullets": [
       "Orient agents in unfamiliar repositories",
       "Query generated architecture and workflow context",
-      "Ground plans in indexed repository evidence"
+      "Ground plans in indexed source files"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
     "usageSummary": "Available through the hosted catalog. Calls count against the shared allowance on the account plan.",
@@ -389,7 +389,7 @@
     "description": "SEO MCP discovers routes, inspects live pages, plans internal links, and runs repeatable ranking-pipeline checks.",
     "featureBullets": [
       "Discover and inspect public routes",
-      "Plan internal links from site evidence",
+      "Plan internal links from discovered routes and page content",
       "Run repeatable ranking checks"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
@@ -532,7 +532,7 @@
     "tagline": "Structured vector design sessions and export",
     "description": "VectorDesign MCP lets agents build and revise vector artwork through structured design sessions, then validate and export the result. Hosted deployment is planned.",
     "featureBullets": [
-      "Build vector graphics through inspectable design operations",
+      "Build vector graphics through structured design operations",
       "Keep session state available across related calls",
       "Validate artwork before export"
     ],
@@ -565,15 +565,15 @@
     "kind": "single-mcp",
     "slug": "mcp-webinfo",
     "displayName": "WebInfo MCP",
-    "tagline": "Website research, evidence, and content decisions",
-    "description": "WebInfo MCP gathers website research, records source evidence, and turns approved findings into reusable content decisions. Hosted deployment is planned.",
+    "tagline": "Website research and content decisions",
+    "description": "WebInfo MCP gathers website research, records its sources, and turns approved findings into reusable content decisions. Hosted deployment is planned.",
     "featureBullets": [
-      "Keep website research tied to source evidence",
+      "Keep website research tied to its sources",
       "Separate draft findings from approved content decisions",
       "Reuse approved research across page-planning tools"
     ],
     "usageAllowanceLabel": "Included with an active usage plan",
-    "usageSummary": "Hosted deployment is planned. Research calls will use frozen rate-card classes; stored evidence and provider expenses are metered separately.",
+    "usageSummary": "Hosted deployment is planned. Research calls will use frozen rate-card classes; stored research records and provider expenses are metered separately.",
     "lifecycle": "wip",
     "hostedStatus": "planned",
     "status": "coming_soon",

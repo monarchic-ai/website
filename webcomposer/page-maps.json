@@ -45,7 +45,7 @@
         {
           "id": "company-vision",
           "template": "comparison.two_column",
-          "purpose": "State Monarchic’s vision for delegating multi-step work to agents while keeping progress, evidence, and acceptance under human control."
+          "purpose": "State Monarchic’s vision for delegating multi-step work to agents while keeping task state, results, and acceptance under human control."
         },
         {
           "id": "current-work",
@@ -400,7 +400,7 @@
         {
           "id": "our-approach",
           "template": "process.stepper",
-          "purpose": "Present Our approach as an evidence-first system of research, deterministic engineering, architecture, heuristics, reproducibility, and disciplined product development."
+          "purpose": "Present the path from a technical question through system design, repeatable tests, deployment, and maintenance."
         },
         {
           "id": "research-to-product-system",
@@ -408,14 +408,14 @@
           "purpose": "Show how research, underlying tooling, and commercial MCP products reinforce one another as a connected program rather than isolated releases."
         },
         {
-          "id": "evidence-in-practice",
-          "template": "proof.metric_story",
-          "purpose": "Ground the operating method in correctly classified evidence and direct visitors toward published research and engineering verification."
+          "id": "current-programs",
+          "template": "feature.grid",
+          "purpose": "Show the hosted MCPs available now, the published ExplicitMem research program, and the long-running workflow product in development."
         },
         {
           "id": "scope-and-operating-posture",
           "template": "row.equal",
-          "purpose": "Separate current products from long-term direction and describe Monarchic’s small, technically ambitious, long-horizon operating posture without implying unsupported scale."
+          "purpose": "Separate current products from long-term direction and describe Monarchic’s small team and long-term research direction without implying unsupported scale."
         },
         {
           "id": "next-paths",
@@ -425,7 +425,7 @@
         {
           "id": "footer",
           "template": "footer.multi_column",
-          "purpose": "Close the page with navigation, trust, and contact context."
+          "purpose": "Close the page with navigation and contact context."
         }
       ]
     },

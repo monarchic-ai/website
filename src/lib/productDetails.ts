@@ -12,7 +12,7 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "monarchic-ai",
     category: "Agent Workflows",
     buyer: "Teams that need long-running agent work to stay observable, reviewable, and connected to account controls.",
-    useCase: "Coordinate long-running agent workflows above the hosted MCP catalog while preserving run state, evidence artifacts, and operator review points.",
+    useCase: "Coordinate long-running agent workflows above the hosted MCP catalog while preserving run state, output artifacts, and operator review points.",
     outcomes: [
       "Keep multi-step agent work visible across long-running sessions",
       "Attach reviewable artifacts and decisions to each run",
@@ -27,7 +27,7 @@ export const productDetails: Record<string, ProductDetail> = {
     useCase: "Diagnose pipeline failures and delays, evaluate release gates, and trace how delivery changes affect downstream systems.",
     outcomes: [
       "Find queue delays, cache misses, false dependencies, and critical-path bottlenecks",
-      "Evaluate release readiness against live provider evidence",
+      "Evaluate release readiness against live provider state",
       "Export pipeline architecture for change-impact analysis",
     ],
     workflows: ["Pipeline diagnosis", "Release gates", "Change impact", "Architecture export"],
@@ -36,7 +36,7 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "mcp-browserops",
     category: "Browser QA",
     buyer: "Product teams and agencies that need agents to inspect deployed web interfaces.",
-    useCase: "Capture browser evidence, screenshots, console failures, network failures, and visible-page assertions.",
+    useCase: "Capture screenshots, console failures, network failures, and visible-page assertions from an isolated browser run.",
     outcomes: [
       "Turn UI claims into reviewable browser observations",
       "Attach screenshots to design and release reviews",
@@ -51,7 +51,7 @@ export const productDetails: Record<string, ProductDetail> = {
     useCase: "Synthesize a company opportunity and hold downstream execution until the business model has been reviewed.",
     outcomes: [
       "Create a reviewable company synthesis",
-      "Keep market evidence attached to product decisions",
+      "Keep market research sources attached to product decisions",
       "Export a structured company blueprint after approval",
     ],
     workflows: ["Company synthesis", "Gate review", "Blueprint creation", "Market research"],
@@ -72,10 +72,10 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "mcp-explicitmem",
     category: "Agent Memory",
     buyer: "Teams running agents over long projects where context must survive sessions.",
-    useCase: "Store explicit memory objects and retrieve bounded working context without relying on hidden chat history.",
+    useCase: "Store named memory objects and retrieve them in later agent sessions without relying on chat history that disappears between sessions.",
     outcomes: [
       "Persist facts, preferences, goals, and project context",
-      "Retrieve relevant context with source evidence",
+      "Retrieve relevant context with the source memory objects",
       "Audit what an agent remembered and how it changed",
     ],
     workflows: ["Write memory", "Search memory", "Retrieve context", "Audit objects"],
@@ -86,17 +86,17 @@ export const productDetails: Record<string, ProductDetail> = {
     buyer: "Engineering and operations teams coordinating production incidents.",
     useCase: "Combine alerts, deploys, logs, ownership, and response notes into a coherent incident picture.",
     outcomes: [
-      "Build an evidence-backed incident timeline",
+      "Build an incident timeline from alerts, deploys, logs, and response notes",
       "Prepare response, rollback, recovery, and communication plans",
       "Keep provider updates explicit and reviewable",
     ],
-    workflows: ["Evidence ingestion", "Incident triage", "Response packet", "Guarded updates"],
+    workflows: ["Source ingestion", "Incident triage", "Response packet", "Guarded updates"],
   },
   "mcp-infraprofiler": {
     slug: "mcp-infraprofiler",
     category: "Infrastructure Intelligence",
     buyer: "Platform, SRE, and engineering teams reducing infrastructure cost, risk, and delivery latency.",
-    useCase: "Connect infrastructure telemetry and pipeline evidence, then rank the bottlenecks that matter most.",
+    useCase: "Connect infrastructure telemetry and pipeline data, then rank the bottlenecks that matter most.",
     outcomes: [
       "Prioritize cost, reliability, saturation, and delivery hotspots",
       "Connect pipeline behavior to runtime infrastructure and ownership",
@@ -111,7 +111,7 @@ export const productDetails: Record<string, ProductDetail> = {
     useCase: "Turn validated business and enrichment data into ranked organizations, buyer personas, people, and outreach angles.",
     outcomes: [
       "Build a focused target-account list",
-      "Connect lead recommendations to their source evidence",
+      "Connect lead recommendations to their sources",
       "Prepare buyer-specific outreach angles",
     ],
     workflows: ["Validate enrichment", "Generate targets", "Rank accounts", "Package campaign research"],
@@ -134,7 +134,7 @@ export const productDetails: Record<string, ProductDetail> = {
     buyer: "Engineering teams coordinating changelogs, artifacts, release checks, and reviewer handoff.",
     useCase: "Turn release readiness into structured checks and exportable review artifacts.",
     outcomes: [
-      "Catch documentation drift and missing release evidence",
+      "Catch documentation drift and missing release artifacts",
       "Prepare a reviewer-friendly release pack",
       "Keep release work bounded and auditable",
     ],
@@ -156,13 +156,13 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "mcp-repointel",
     category: "Repository Intelligence",
     buyer: "Engineering teams using agents across medium and large codebases.",
-    useCase: "Give agents repository maps, generated documentation, workflow context, and targeted code evidence.",
+    useCase: "Give agents repository maps, generated documentation, workflow context, and source-file citations.",
     outcomes: [
       "Reduce the time needed to understand an unfamiliar codebase",
-      "Ground implementation plans in indexed evidence",
+      "Ground implementation plans in indexed source files",
       "Keep architecture and workflow context available across tasks",
     ],
-    workflows: ["Repository summary", "Generated wiki", "Evidence lookup", "Workflow discovery"],
+    workflows: ["Repository summary", "Generated wiki", "Source lookup", "Workflow discovery"],
   },
   "mcp-seo": {
     slug: "mcp-seo",
@@ -206,7 +206,7 @@ export const productDetails: Record<string, ProductDetail> = {
     buyer: "Teams building nutrition workflows that need deterministic calculations and explicit constraints.",
     useCase: "Validate nutrition inputs, run deterministic calculations, and build structured plans from stated requirements.",
     outcomes: [
-      "Keep calculation inputs and outputs inspectable",
+      "Keep calculation inputs and results together",
       "Catch incomplete requirements before planning",
       "Build plans from explicit nutrition constraints",
     ],
@@ -219,7 +219,7 @@ export const productDetails: Record<string, ProductDetail> = {
     useCase: "Keep a durable repository index and warm language-server sessions available for symbol lookup, references, diagnostics, and code navigation.",
     outcomes: [
       "Answer code-navigation questions without rebuilding the index on every call",
-      "Use language-server evidence alongside repository structure",
+      "Use language-server results alongside repository structure",
       "Keep each tenant's repositories and sessions isolated",
     ],
     workflows: ["Index repository", "Find symbols", "Trace references", "Inspect diagnostics"],
@@ -230,7 +230,7 @@ export const productDetails: Record<string, ProductDetail> = {
     buyer: "Engineering and platform teams that want repeatable profiling without giving agents an unrestricted shell.",
     useCase: "Detect a repository's stack, choose an appropriate profiling toolbox, and run bounded read-only probes in an isolated job.",
     outcomes: [
-      "Choose profiling tools from detected project evidence",
+      "Choose profiling tools from the detected project stack",
       "Keep expensive analysis out of lightweight discovery calls",
       "Return results and tool failures in one structured report",
     ],
@@ -264,9 +264,9 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "mcp-vectordesign",
     category: "Visual Design",
     buyer: "Product and brand teams that want agents to create editable vector assets through a structured interface.",
-    useCase: "Build, revise, validate, and export vector artwork while preserving an inspectable design session.",
+    useCase: "Build and revise vector artwork while preserving session state through validation and export.",
     outcomes: [
-      "Keep vector edits structured and reviewable",
+      "Keep vector edits in a structured session",
       "Continue related design work across multiple calls",
       "Validate assets before handing them to implementation",
     ],
@@ -288,11 +288,11 @@ export const productDetails: Record<string, ProductDetail> = {
     slug: "mcp-webinfo",
     category: "Web Research",
     buyer: "Product, content, and design teams that need sourced website decisions before composition work begins.",
-    useCase: "Gather website research, retain source evidence, and promote reviewed findings into reusable content decisions.",
+    useCase: "Gather website research, retain its sources, and promote reviewed findings into reusable content decisions.",
     outcomes: [
       "Keep research tied to the pages and sources it came from",
       "Distinguish draft findings from approved decisions",
-      "Feed approved evidence into downstream web planning",
+      "Feed approved findings into downstream web planning",
     ],
     workflows: ["Collect sources", "Record findings", "Approve decisions", "Publish project context"],
   },

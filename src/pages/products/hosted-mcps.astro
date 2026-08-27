@@ -54,7 +54,7 @@ const workflowGroups = [
   {
     id: "operate-systems",
     title: "Ship and operate systems",
-    description: "Inspect browser behavior, delivery pipelines, releases, incidents, infrastructure cost, and reliability evidence.",
+    description: "Inspect browser behavior, delivery pipelines, releases, incidents, infrastructure cost, and reliability failures.",
     slugs: ["mcp-browserops", "mcp-cicd", "mcp-releaseops", "mcp-incidentops", "mcp-infraprofiler"],
   },
   {
@@ -272,8 +272,8 @@ function statusClasses(plan: CatalogPlan): string {
           <h2 class="text-3xl font-extrabold uppercase sm:text-4xl">Available enhancements</h2>
           <p class="mt-4 max-w-3xl text-sm leading-7 text-white/70">
             These {availableMcpCount} enhancements have production hosted routes.
-            Open one to inspect its tool-call contract, evidence boundary, and
-            fixed rate-card class.
+            Open one to review its tool-call contract, current limits, and fixed
+            rate-card class.
           </p>
           <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {availableMcpProducts.map((plan) => (

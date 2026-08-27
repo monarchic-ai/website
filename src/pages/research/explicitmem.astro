@@ -16,7 +16,7 @@ const headlineMetrics = [
   ["Questions", String(explicitMemBenchmark.questions)],
   ["Answer accuracy", explicitMemBenchmark.answerAccuracy],
   ["Answer faithfulness", explicitMemBenchmark.answerFaithfulness],
-  ["Answer evidence hit rate", explicitMemBenchmark.answerEvidenceHitRate],
+  ["Answer source hit rate", explicitMemBenchmark.answerEvidenceHitRate],
   ["Retrieval recall@K", explicitMemBenchmark.retrievalRecallAtK],
   ["Retrieval receipts", explicitMemBenchmark.retrievalReceiptCoverage],
 ] as const;
@@ -82,7 +82,7 @@ const headlineMetrics = [
             {explicitMemStudies.map((study, index) => (
               <article id={study.id} class:list={["grid lg:grid-cols-[0.62fr_1.38fr]", index < explicitMemStudies.length - 1 && "border-b border-white/35"]}>
                 <div class="border-b border-white/30 p-5 lg:border-b-0 lg:border-r sm:p-6">
-                  <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">0{index + 1} / {study.evidenceClass}</p>
+                  <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">0{index + 1} / {study.studyType}</p>
                   <h3 class="mt-3 text-xl font-extrabold uppercase">{study.dataset}</h3>
                   <p class="mt-2 text-xs font-bold uppercase text-white/44">{study.scope}</p>
                   <p class="mt-5 text-4xl font-extrabold leading-none">{study.metricValue}</p>
@@ -95,7 +95,7 @@ const headlineMetrics = [
                     <p class="mt-3 text-sm leading-7 text-white/70">{study.method}</p>
                   </div>
                   <div class="border-b border-white/25 p-5 sm:p-6">
-                    <p class="text-[0.62rem] font-bold uppercase text-white/46">Failure evidence</p>
+                    <p class="text-[0.62rem] font-bold uppercase text-white/46">Observed failure</p>
                     <p class="mt-3 text-sm leading-7 text-white/70">{study.failure}</p>
                   </div>
                   <div class="p-5 sm:border-r sm:p-6">
@@ -103,8 +103,8 @@ const headlineMetrics = [
                     <p class="mt-3 text-sm leading-7 text-white/70">{study.limitation}</p>
                   </div>
                   <div class="p-5 sm:p-6">
-                    <p class="text-[0.62rem] font-bold uppercase text-white/46">Evidence handling</p>
-                    <p class="mt-3 text-sm leading-7 text-white/70">{study.evidenceStatus}</p>
+                    <p class="text-[0.62rem] font-bold uppercase text-white/46">Retained records</p>
+                    <p class="mt-3 text-sm leading-7 text-white/70">{study.retainedRecords}</p>
                   </div>
                 </div>
               </article>
@@ -164,8 +164,8 @@ const headlineMetrics = [
           <article class="border-2 border-white bg-black/70 p-5">
             <h2 class="text-2xl font-extrabold uppercase">One upstream-gold mismatch remains</h2>
             <p class="mt-4 text-sm leading-7 text-white/74">
-              The only scored miss is evidence-localized and differs from the
-              upstream gold answer on one temporal item. The strict 100%
+              The only scored miss occurs on one temporal item where the result
+              differs from the upstream gold answer. The strict 100%
               threshold remains unmet.
             </p>
           </article>
@@ -182,7 +182,7 @@ const headlineMetrics = [
         <section class="page-gutter mb-12 grid border-2 border-white bg-black/76 lg:grid-cols-[0.72fr_1.28fr]">
           <div class="border-b-2 border-white p-5 lg:border-r-2 lg:border-b-0 sm:p-6">
             <p class="text-xs font-bold uppercase text-signal">Disclosure policy</p>
-            <h2 class="mt-3 text-3xl font-extrabold uppercase">Public evidence boundary</h2>
+            <h2 class="mt-3 text-3xl font-extrabold uppercase">What we publish</h2>
           </div>
           <div class="grid sm:grid-cols-2">
             <div class="border-b border-white/30 p-5 sm:border-r sm:border-b-0 sm:p-6">
@@ -191,7 +191,7 @@ const headlineMetrics = [
             </div>
             <div class="p-5 sm:p-6">
               <p class="text-[0.62rem] font-bold uppercase text-white/46">Controlled review</p>
-              <p class="mt-3 text-sm leading-7 text-white/70">Detailed implementation, internal artifact paths, validation commands, model dependencies, and deployment configuration remain private. Qualified customers and auditors can request an evidence review.</p>
+              <p class="mt-3 text-sm leading-7 text-white/70">Detailed implementation, internal artifact paths, validation commands, model dependencies, and deployment configuration remain private. Qualified customers and auditors can request a technical review.</p>
             </div>
           </div>
         </section>
@@ -199,7 +199,7 @@ const headlineMetrics = [
         <section class="page-gutter mb-12 grid gap-6 border-2 border-signal/70 bg-black/78 p-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p class="text-xs font-bold uppercase text-signal">Source and interpretation</p>
-            <h2 class="mt-3 text-2xl font-extrabold uppercase">Read the result as benchmark-scoped evidence</h2>
+            <h2 class="mt-3 text-2xl font-extrabold uppercase">Read the result within its benchmark</h2>
             <p class="mt-4 max-w-3xl text-sm leading-7 text-white/72">
               Evaluation records are versioned by study date and metric. LongMemEval-S, LoCoMo, cross-dataset retrieval, and generic-answer support remain separate claims. None establishes hosted latency or direct superiority over another memory product.
             </p>

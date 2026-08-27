@@ -19,7 +19,7 @@ export interface ProductWorkflowProof {
 export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
   "mcp-browserops": {
     slug: "mcp-browserops",
-    title: "Open a page and return browser evidence",
+    title: "Open a page and return browser observations",
     request: "Check the example page and return what a browser can actually observe.",
     calls: [{
       tool: "browser_observe_url",
@@ -34,7 +34,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         ],
       },
     }],
-    execution: "Starts an isolated browser task, loads one bounded URL, and returns an observation receipt with page and runtime evidence.",
+    execution: "Starts an isolated browser task, loads one bounded URL, and returns an observation receipt with the page state and runtime failures.",
     outputKind: "Representative contract excerpt",
     output: {
       contract: "browserops.observation_receipt.v1.0",
@@ -66,7 +66,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
   },
   "mcp-cicd": {
     slug: "mcp-cicd",
-    title: "Diagnose a delivery pipeline from bounded evidence",
+    title: "Diagnose a delivery pipeline from supplied run data",
     request: "Show me the likely bottlenecks and release risks in the demo pipeline.",
     calls: [{ tool: "diagnose_pipeline_run", arguments: {} }],
     execution: "Runs the deterministic demonstration diagnosis and returns stage, dependency, and release-gate findings without contacting a provider.",
@@ -74,7 +74,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
     output: {
       contract: "cicd-mcp.pipeline-diagnosis.v1",
       status: "complete",
-      findings: ["critical-path stage identified", "release evidence gap identified"],
+      findings: ["critical-path stage identified", "release requirement missing"],
       providerCalls: 0,
     },
     permission: "Requires an authenticated, entitled account. The demonstration call needs no GitHub, GitLab, or cloud credential.",
@@ -133,7 +133,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
       freshness: { status: "current" },
     },
     permission: "Requires an authenticated, entitled account and a tenant-scoped retained repository. Repository identity and storage paths are resolved by hosted orchestration.",
-    boundary: "The map reflects the retained revision and the capabilities of its language servers. It does not claim runtime coverage or semantic certainty beyond indexed evidence.",
+    boundary: "The map reflects the retained revision and the capabilities of its language servers. It does not claim runtime coverage or semantic certainty beyond indexed source files.",
     usageExplanation: "The completed map receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
   "mcp-codeprofiler": {
@@ -149,7 +149,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         mode: "standard",
       },
     }],
-    execution: "Inspects bounded retained source evidence, detects the stack, and returns an explicit measurement plan before any profiler job is dispatched.",
+    execution: "Inspects a bounded retained source snapshot, detects the stack, and returns a measurement plan before any profiler job is dispatched.",
     outputKind: "Representative contract excerpt",
     output: {
       status: "ready",
@@ -160,8 +160,8 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
       ],
       confidence: 0.9,
     },
-    permission: "Requires an authenticated, entitled account and bounded tenant-scoped source evidence. The assessment operation is read-only and does not start an external profiler.",
-    boundary: "Assessment recommends measurements; it does not prove a bottleneck. Approved profiling jobs remain bounded, read-only, and return untrusted tool output as evidence.",
+    permission: "Requires an authenticated, entitled account and a bounded tenant-scoped source snapshot. The assessment operation is read-only and does not start an external profiler.",
+    boundary: "Assessment recommends measurements; it does not prove a bottleneck. Approved profiling jobs remain bounded and read-only, and their tool output remains untrusted.",
     usageExplanation: "The completed assessment receives a measured receipt. Allowance quantities remain unpublished until the fully allocated rate card is frozen.",
   },
   "mcp-copydev": {
@@ -176,7 +176,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         audience: "founders",
       },
     }],
-    execution: "Runs a deterministic language review and returns the vague phrases, why they are weak, and what evidence would make them specific.",
+    execution: "Runs a deterministic language review and returns the vague phrases, why they are weak, and which facts would make them specific.",
     outputKind: "Representative contract excerpt",
     output: {
       contract: "copydev.vagueness-report.v1",
@@ -225,7 +225,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         max_accounts: 1,
       },
     }],
-    execution: "Scores only the supplied organization against the supplied business model and returns its fit evidence without live enrichment.",
+    execution: "Scores only the supplied organization against the supplied business model and returns its fit reasons without live enrichment.",
     outputKind: "Representative contract excerpt",
     output: {
       contract: "leadgenerator.provided-lead-score.v1",
@@ -370,8 +370,8 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
   },
   "mcp-incidentops": {
     slug: "mcp-incidentops",
-    title: "Turn normalized incident evidence into a responder handoff",
-    request: "Given this alert, log, deploy, and owner evidence, should we roll back and what should the responder do next?",
+    title: "Turn incident records into a responder handoff",
+    request: "Given this alert, log, deploy, and owner data, should we roll back and what should the responder do next?",
     calls: [
       {
         tool: "build_incident_response_packet",
@@ -434,7 +434,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         },
       },
     ],
-    execution: "Audits the supplied evidence, ranks the current hypothesis, and assembles rollback, recovery, communication, closure, and follow-up artifacts.",
+    execution: "Reviews the supplied records, ranks the current hypothesis, and assembles rollback, recovery, communication, closure, and follow-up artifacts.",
     outputKind: "Representative contract excerpt",
     output: {
       schema: "incidentops.response-packet.v1",
@@ -500,7 +500,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         },
       },
     ],
-    execution: "Builds the critical path from caller-supplied timing evidence, identifies queue, cache, network, and stage bottlenecks, then projects bounded optimizations.",
+    execution: "Builds the critical path from caller-supplied timings, identifies queue, cache, network, and stage bottlenecks, then projects bounded optimizations.",
     outputKind: "Representative contract excerpt",
     output: {
       run: {
@@ -584,7 +584,7 @@ export const productWorkflowProofs: Record<string, ProductWorkflowProof> = {
         arguments: { repo: "explicitmem-mcp-ff694657" },
       },
     ],
-    execution: "Resolves an already-indexed repository ID and returns its stored summary, entry points, component and workflow counts, and evidence references.",
+    execution: "Resolves an already-indexed repository ID and returns its stored summary, entry points, component and workflow counts, and source-file citations.",
     outputKind: "Representative contract excerpt",
     output: {
       repoId: "explicitmem-mcp-ff694657",

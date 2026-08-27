@@ -24,7 +24,6 @@ export interface McpResearchEntry {
   researchSlug: string;
   href: string;
   briefLabel: "Published benchmark";
-  evidenceLabel: "Dated benchmark";
   publishedBenchmark: true;
 }
 
@@ -49,7 +48,6 @@ const explicitMemResearch: McpResearchEntry = {
   researchSlug: "explicitmem",
   href: "/research/explicitmem",
   briefLabel: "Published benchmark",
-  evidenceLabel: "Dated benchmark",
   publishedBenchmark: true,
 };
 

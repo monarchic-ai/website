@@ -60,7 +60,7 @@ export async function GET() {
         manifestDigest: catalogManifest.artifactDigest,
         artifactDigest: await catalogArtifactDigest(),
       },
-      socialImage: "/social-card.png?v=5",
+      socialImage: "/social-card.png?v=6",
     }),
     {
       headers: {

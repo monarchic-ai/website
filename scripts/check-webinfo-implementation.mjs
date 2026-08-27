@@ -28,21 +28,22 @@ includes(home.text, [
   "AI engineering systems",
   "Monarchic builds agent systems",
   "Agent enhancements are live through hosted MCPs",
-  "Design constraint / The operator can see the run",
+  "Operator controls / See each task",
   "Now / Agent enhancements",
   "Next / Agent workflows",
   "Operator control",
   "Reference architecture / Public view",
   "What Monarchic builds",
-  "A person should be able to assign a job and inspect the result",
+  "A person should be able to assign a job and review the result",
   "agent enhancements are available",
   "Each enhancement is delivered through a hosted MCP connection",
   "workflow product is still in development",
   "Current status. Future direction",
   "Long-running agent workflows",
   "Beyond software engineering",
-  "The public record is split on purpose",
+  "Research. Security. Company",
 ], "Home company narrative and availability boundaries");
+excludes(home.text, ["inspectable evidence", "inspect the evidence", "review the evidence"], "Home avoids abstract trust copy");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
 includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");
 
@@ -79,15 +80,15 @@ assert(count(hostedMcps.html, /data-plan-card="mcp-/g) === 23, "Hosted MCP catal
 assert(!existsSync(routeFile("/products/mcp-pty")), "Internal PTY route must not be published.");
 
 const availableProduct = page("/products/mcp-repointel");
-includes(availableProduct.text, ["Why it exists", "Connection and contract", "Current boundary", "Concrete workflow / priced call"], "Available product decision context");
+includes(availableProduct.text, ["Why it exists", "Connection and contract", "Current limits", "Concrete workflow / priced call"], "Available product decision context");
 const plannedProduct = page("/products/mcp-webinfo");
 includes(plannedProduct.text, ["Why it exists", "Connection and contract", "no public hosted endpoint is available yet"], "Planned product boundary");
 
 const research = page("/research");
 includes(research.text, [
-  "External-dataset benchmarks",
-  "First-party evaluations",
-  "Production and engineering verification",
+  "External benchmarks",
+  "Monarchic evaluations",
+  "Engineering checks",
   "catalog entries do not need uniform research coverage",
   "Published research / 1",
   "ExplicitMem MCP",
@@ -101,7 +102,7 @@ includes(research.html, [
   'href="/products/mcp-incidentops"',
   'href="/products/mcp-infraprofiler"',
 ], "Research product associations");
-excludes(research.text, ["Every public MCP has a research record", "Questions before claims", "Pre-launch research program"], "Research placeholder claims");
+excludes(research.text, ["Every public MCP has a research record", "Questions before claims", "Pre-launch research program", "Three evidence classes", "workflow evidence", "evidence boundary"], "Research avoids abstract proof language");
 
 const researchDirectories = readdirSync(resolve(root, "research"), { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
@@ -110,7 +111,8 @@ const researchDirectories = readdirSync(resolve(root, "research"), { withFileTyp
 assert(JSON.stringify(researchDirectories) === JSON.stringify(["explicitmem"]), `Published research routes must contain only ExplicitMem; received ${JSON.stringify(researchDirectories)}.`);
 
 const explicitMem = page("/research/explicitmem");
-includes(explicitMem.text, ["LongMemEval-S", "LoCoMo", "Generic and non-LongMemEval fixtures", "Public evidence boundary", "Controlled review"], "ExplicitMem study scopes and disclosure boundary");
+includes(explicitMem.text, ["LongMemEval-S", "LoCoMo", "Generic and non-LongMemEval fixtures", "What we publish", "technical review"], "ExplicitMem study scopes and publication boundary");
+excludes(explicitMem.text, ["Public evidence boundary", "Failure evidence", "Evidence handling", "benchmark-scoped evidence", "evidence review"], "ExplicitMem avoids abstract proof language");
 includes(explicitMem.html, ['id="longmemeval-s"', 'id="locomo"', 'id="cross-dataset"', 'id="generic-answer"'], "ExplicitMem study anchors");
 excludes(explicitMem.html, [
   "github.com/monarchic-ai/ExplicitMem-MCP",
@@ -125,7 +127,8 @@ excludes(explicitMem.html, [
 ], "ExplicitMem private implementation boundary");
 
 const company = page("/company");
-includes(company.text, ["We build AI engineering systems", "Monarchic is an AI research and development company", "Three evidence classes. Clearly labeled", "Small by fact. Long-horizon by choice"], "Company scope and scale");
+includes(company.text, ["We build AI engineering systems", "Monarchic is an AI research and development company", "How we build", "Work underway", "Small company. Long horizon"], "Company scope and scale");
+excludes(company.text, ["inspectable", "evidence trail", "Evidence before ornament", "Three evidence classes"], "Company avoids abstract trust copy");
 
 const security = page("/security");
 includes(security.text, ["Current controls. Explicit limits", "How a hosted request is scoped", "Published assurance scope", "Report a suspected vulnerability"], "Security controls and disclosure");

@@ -379,7 +379,7 @@
   animation-delay: 2.4s;
 }
 
-.system-field-node--evidence {
+.system-field-node--result {
   right: 6%;
   bottom: 15%;
   animation-delay: 3.5s;
@@ -403,8 +403,8 @@
   animation-delay: 2.4s;
 }
 
-.system-field-link--evidence,
-.system-field-packet--evidence,
+.system-field-link--result,
+.system-field-packet--result,
 .system-field-cycle > span:nth-child(4) {
   animation-delay: 3.5s;
 }

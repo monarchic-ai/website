@@ -18,8 +18,7 @@ const outputJson = JSON.stringify(proof.output, null, 2);
     <p class="text-[0.65rem] font-bold uppercase text-signal">Concrete workflow / priced call</p>
     <h2 class="mt-3 max-w-4xl text-2xl font-extrabold uppercase leading-tight sm:text-3xl">{proof.title}</h2>
     <p class="mt-4 max-w-3xl text-sm leading-7 text-white/66">
-      One inspectable path from the human request to the hosted usage receipt.
-      Output is marked as exact or as a contract excerpt below.
+      The request, exact tool-call payload, returned output, and usage receipt are shown below.
     </p>
   </header>
 
@@ -40,7 +39,7 @@ const outputJson = JSON.stringify(proof.output, null, 2);
 
     <section class="min-w-0 border-b border-white/35 p-5 lg:border-b-0 lg:border-r">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Evidence + output</p>
+        <p class="font-mono text-[0.62rem] font-bold uppercase text-signal">Output</p>
         <span class="border border-white/35 px-2 py-1 text-[0.56rem] font-bold uppercase text-white/56">{proof.outputKind}</span>
       </div>
       <pre class="mt-4 max-h-80 max-w-full overflow-auto border border-white/28 bg-black p-3 text-[0.68rem] leading-5 text-white/72"><code>{outputJson}</code></pre>
@@ -65,7 +64,7 @@ const outputJson = JSON.stringify(proof.output, null, 2);
       <p class="mt-3 text-xs leading-6 text-white/68">{proof.permission}</p>
     </div>
     <div class="p-5">
-      <p class="text-[0.62rem] font-bold uppercase text-signal">Current boundary</p>
+      <p class="text-[0.62rem] font-bold uppercase text-signal">Current limits</p>
       <p class="mt-3 text-xs leading-6 text-white/68">{proof.boundary}</p>
     </div>
   </footer>

@@ -1,6 +1,6 @@
 {
   "name": "Monarchic",
-  "description": "Presents Monarchic as an independent AI research and development company building AI engineering systems, with its current products, public evidence, and web application clearly separated beneath that company story.",
+  "description": "Presents Monarchic as an independent AI research and development company building AI engineering systems, with its current products, published research, and web application clearly separated beneath that company story.",
   "copyRules": [
     "Name the mechanism, boundary, or observable result instead of using credibility adjectives.",
     "Use procedural authentication and security language: confirm an email, name the control, and date the check."
@@ -26,12 +26,12 @@
         "An ambitious but honest account of Monarchic’s maturity and operating scale",
         "Clear paths to Products, Research, and Company",
         "Clear product lifecycle and availability boundaries",
-        "Competitive deterministic architectures, system designs, and heuristics supported by clearly scoped evidence",
+        "Architecture and system-design claims tied to published tests or source material",
         "Emphasis on solving and maintaining deployed systems rather than one-shot prompt-to-app or unconstrained codebase generation",
         "Its current commercial focus on AI systems and MCP products",
         "Its longer-term relevance to software engineering, scientific research, and business systems without presenting future work as currently available",
         "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry",
-        "A public record that routes research, security controls, company boundaries, and product claims to the right supporting material",
+        "A public record that routes research, security controls, company status, and product claims to the right supporting material",
         "The connected-system, deterministic-tooling, and maintained-system differentiators"
       ],
       "forbiddenContent": [
@@ -51,7 +51,7 @@
       ],
       "primaryActions": [
         "Learn about Monarchic",
-        "Review published research and evidence",
+        "Review published research",
         "Explore current products"
       ]
     },
@@ -221,7 +221,7 @@
     {
       "route": "/company",
       "title": "Company",
-      "purpose": "Establish Monarchic as a technically serious, long-horizon AI research and development company without overstating team size or operational scale and without making the story team-centric.",
+      "purpose": "Establish Monarchic as a small AI research and development company working on a long horizon without overstating team size or operational scale and without making the story team-centric.",
       "audience": [
         "Software developers and engineering teams using or evaluating AI-assisted development to improve intelligence, quality, speed, and reliability",
         "Engineering leaders, AI researchers, and technical evaluators assessing system architecture, benchmark methodology, integration fit, security, and organizational adoption",
@@ -235,7 +235,7 @@
         "Connected systems-lab posture rather than one-off startups",
         "Honest statement that Monarchic is small and built for a long horizon",
         "No team roster, founder mythology, or employee-scale implication",
-        "Our approach as a section covering evidence-first systems research, deterministic tooling, and product development",
+        "Our approach as a section covering research questions, system design, repeatable tests, and product maintenance",
         "Public brand Monarchic and legal operator Monarchic, LLC",
         "Relationship between research, deterministic tooling, and commercial MCP products",
         "The audiences Monarchic ultimately serves across engineering, STEM research, business operations, and guided nontechnical workflows"

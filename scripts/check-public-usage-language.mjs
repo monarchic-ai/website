@@ -21,6 +21,10 @@ const forbiddenVisibleCopy = [
   /\breal\b/i,
   /\badult\b/i,
   /\bverified\b/i,
+  /\binspect(?:able|ible)\b/i,
+  /\bevidence[- ]backed\b/i,
+  /\bevidence (?:class(?:es)?|boundary|trail)\b/i,
+  /\bworkflow evidence\b/i,
 ];
 const findings = [];
 

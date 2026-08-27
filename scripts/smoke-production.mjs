@@ -9,7 +9,7 @@ const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? 
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
-const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=5`;
+const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=6`;
 const expectedAppBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
     process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
@@ -195,7 +195,7 @@ async function runBrowserSmoke() {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
       await page.getByText(/Agent enhancements are live through hosted MCPs/i).waitFor();
-      await page.getByText(/Design constraint \/ The operator can see the run/i).waitFor();
+      await page.getByText(/Operator controls \/ See each task/i).waitFor();
       await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByText("Operator control", { exact: true }).waitFor();
       await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
@@ -279,13 +279,13 @@ async function runBrowserSmoke() {
       }
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
-      await page.getByRole("heading", { name: "A person should be able to assign a job and inspect the result." }).waitFor();
+      await page.getByRole("heading", { name: "A person should be able to assign a job and review the result." }).waitFor();
       await page.getByRole("heading", { name: `${expectedAvailableMcpCount} agent enhancements are available.` }).waitFor();
       await page.getByText(/Each enhancement is delivered through a hosted MCP connection/i).waitFor();
       await page.getByRole("heading", { name: "Current status. Future direction." }).waitFor();
       await page.getByRole("heading", { name: "Long-running agent workflows" }).waitFor();
       await page.getByRole("heading", { name: "Beyond software engineering" }).waitFor();
-      await page.getByRole("heading", { name: "The public record is split on purpose." }).waitFor();
+      await page.getByRole("heading", { name: "Research. Security. Company." }).waitFor();
       await page.getByText("ReleaseOps", { exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Company", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
@@ -336,6 +336,9 @@ async function runBrowserSmoke() {
         "3.45s",
         "3.28s",
         "Agent tools that leave evidence.",
+        "inspectable evidence",
+        "inspect the evidence",
+        "review the evidence",
         "Autonomous engineering",
         "control plane",
         "Build past the demo.",
@@ -519,7 +522,7 @@ async function runBrowserSmoke() {
         await workflow.getByText("At runtime", { exact: true }).waitFor();
         await workflow.getByText("Recorded on the operation receipt", { exact: true }).waitFor();
         await workflow.getByText("Required access", { exact: true }).waitFor();
-        await workflow.getByText("Current boundary", { exact: true }).waitFor();
+        await workflow.getByText("Current limits", { exact: true }).waitFor();
         await expectNoHorizontalOverflow(page);
       }, `${proof.slug} workflow proof`);
     }
@@ -540,7 +543,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/company`, async () => {
       await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByRole("heading", { name: "We build AI engineering systems." }).waitFor();
-      await page.getByRole("heading", { name: "Evidence before ornament." }).waitFor();
+      await page.getByRole("heading", { name: "How we build." }).waitFor();
       await page.getByText("Monarchic, LLC", { exact: false }).first().waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/company`);
       await expectNoHorizontalOverflow(page);
@@ -615,9 +618,9 @@ async function runBrowserSmoke() {
 
     await checkPage(page, `${baseUrl}/research`, async () => {
       await page.getByRole("heading", { name: "Research for Monarchic products." }).waitFor();
-      await page.getByRole("heading", { name: "Three evidence classes" }).waitFor();
+      await page.getByRole("heading", { name: "What we publish" }).waitFor();
       await page.getByRole("heading", { name: "ExplicitMem MCP" }).waitFor();
-      await page.getByRole("heading", { name: "Inspect the product contract" }).waitFor();
+      await page.getByRole("heading", { name: "Read the product contract" }).waitFor();
       const researchCards = page.locator("[data-research-card]");
       const cardCount = await researchCards.count();
       if (cardCount !== 1) {
@@ -646,7 +649,7 @@ async function runBrowserSmoke() {
       }
       await page.getByRole("heading", { name: "One upstream-gold mismatch remains" }).waitFor();
       await page.getByRole("heading", { name: "No cross-system comparison" }).waitFor();
-      await page.getByRole("heading", { name: "Public evidence boundary" }).waitFor();
+      await page.getByRole("heading", { name: "What we publish" }).waitFor();
       await expectTextAbsent(page, [
         "Hosted write p50",
         "Hosted read p50",
@@ -931,7 +934,7 @@ async function checkBuildInfo(url, {
     }
   }
 
-  if (payload.socialImage !== "/social-card.png?v=5") {
+  if (payload.socialImage !== "/social-card.png?v=6") {
     throw new Error(`build-info socialImage mismatch: ${payload.socialImage}`);
   }
 
