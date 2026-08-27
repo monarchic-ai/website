@@ -204,23 +204,28 @@ async function runBrowserSmoke() {
       if (!carriageTiming.includes("steps(")) {
         throw new Error(`system field motion must use stepped timing; received ${carriageTiming}`);
       }
-      const quantizedWave = page.locator('[data-hero-background="quantized-wave"]');
-      await quantizedWave.waitFor();
-      const waveMotion = await quantizedWave.locator(".home-hero-wave").first().evaluate((element) => ({
-        animationTimingFunction: window.getComputedStyle(element).animationTimingFunction,
-        heroBackgroundImage: window.getComputedStyle(element.closest(".home-lab")).backgroundImage,
-      }));
-      if (!waveMotion.animationTimingFunction.includes("steps(")) {
-        throw new Error(`hero wave must use stepped timing; received ${waveMotion.animationTimingFunction}`);
+      const staticIndustrialField = page.locator('[data-hero-background="static-industrial-field"]');
+      await staticIndustrialField.waitFor();
+      const heroFieldState = await staticIndustrialField.evaluate((element) => {
+        const fieldElements = element.querySelectorAll(
+          ".home-hero-wave, .home-hero-bitstream, .home-hero-datum, .home-hero-sample, .home-hero-register-bit",
+        );
+        return {
+          animationNames: Array.from(
+            fieldElements,
+            (fieldElement) => window.getComputedStyle(fieldElement).animationName,
+          ),
+          heroBackgroundImage: window.getComputedStyle(element.closest(".home-lab")).backgroundImage,
+        };
+      });
+      if (
+        heroFieldState.animationNames.length === 0 ||
+        heroFieldState.animationNames.some((animationName) => animationName !== "none")
+      ) {
+        throw new Error(`hero industrial field must remain static; received ${heroFieldState.animationNames.join(", ")}`);
       }
-      if (waveMotion.heroBackgroundImage !== "none") {
-        throw new Error(`hero wave must replace the hero grid; received ${waveMotion.heroBackgroundImage}`);
-      }
-      const digitalSignalTiming = await quantizedWave.locator(".home-hero-bitstream").first().evaluate(
-        (element) => window.getComputedStyle(element).animationTimingFunction,
-      );
-      if (!digitalSignalTiming.includes("steps(")) {
-        throw new Error(`hero bitstream must use stepped timing; received ${digitalSignalTiming}`);
+      if (heroFieldState.heroBackgroundImage !== "none") {
+        throw new Error(`hero industrial field must replace the hero grid; received ${heroFieldState.heroBackgroundImage}`);
       }
       await page.emulateMedia({ reducedMotion: "reduce" });
       const reducedCarriageAnimation = await steppedSystemField.locator(".system-field-carriage").evaluate(
@@ -228,18 +233,6 @@ async function runBrowserSmoke() {
       );
       if (reducedCarriageAnimation !== "none") {
         throw new Error(`system field motion must stop for reduced motion; received ${reducedCarriageAnimation}`);
-      }
-      const reducedWaveAnimation = await quantizedWave.locator(".home-hero-wave").first().evaluate(
-        (element) => window.getComputedStyle(element).animationName,
-      );
-      if (reducedWaveAnimation !== "none") {
-        throw new Error(`hero wave must stop for reduced motion; received ${reducedWaveAnimation}`);
-      }
-      const reducedDigitalSignalAnimations = await quantizedWave.locator(
-        ".home-hero-bitstream, .home-hero-phase-gate, .home-hero-sample, .home-hero-register-bit",
-      ).evaluateAll((elements) => elements.map((element) => window.getComputedStyle(element).animationName));
-      if (reducedDigitalSignalAnimations.some((animationName) => animationName !== "none")) {
-        throw new Error(`hero digital signal motion must stop for reduced motion; received ${reducedDigitalSignalAnimations.join(", ")}`);
       }
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
