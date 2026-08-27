@@ -9,7 +9,7 @@ const baseUrl = withoutTrailingSlash(process.env.MONARCHIC_WEBSITE_SMOKE_URL ?? 
 const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
-const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=6`;
+const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=7`;
 const expectedAppBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
     process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
@@ -934,7 +934,7 @@ async function checkBuildInfo(url, {
     }
   }
 
-  if (payload.socialImage !== "/social-card.png?v=6") {
+  if (payload.socialImage !== "/social-card.png?v=7") {
     throw new Error(`build-info socialImage mismatch: ${payload.socialImage}`);
   }
 

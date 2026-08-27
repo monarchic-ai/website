@@ -4,8 +4,8 @@
 @theme {
   --color-ink: #080808;
   --color-paper: #f2f0e8;
-  --color-signal: #7da7d9;
-  --color-signal-soft: #dce8f6;
+  --color-signal: #ffd21a;
+  --color-signal-soft: #ffec99;
   --font-weight-extrabold: 700;
   --font-weight-black: 700;
 }
@@ -143,7 +143,7 @@
   z-index: -1;
   inset: 0;
   background-image:
-    linear-gradient(115deg, transparent 0 56%, rgb(125 167 217 / 0.055) 56% 56.15%, transparent 56.15%),
+    linear-gradient(115deg, transparent 0 56%, rgb(255 210 26 / 0.055) 56% 56.15%, transparent 56.15%),
     linear-gradient(90deg, transparent 0 72%, rgb(255 255 255 / 0.04) 72% 72.08%, transparent 72.08%);
   content: "";
   pointer-events: none;
@@ -160,7 +160,7 @@
   flex: 0 0 auto;
   border: 1px solid var(--color-signal);
   background: var(--color-signal);
-  box-shadow: 0 0 0 2px rgb(125 167 217 / 0.1);
+  box-shadow: 0 0 0 2px rgb(255 210 26 / 0.1);
 }
 
 .home-hero-copy::after {
@@ -170,8 +170,8 @@
   bottom: 1rem;
   width: 1rem;
   height: 1rem;
-  border-right: 1px solid rgb(125 167 217 / 0.5);
-  border-bottom: 1px solid rgb(125 167 217 / 0.5);
+  border-right: 1px solid rgb(255 210 26 / 0.5);
+  border-bottom: 1px solid rgb(255 210 26 / 0.5);
   content: "";
   pointer-events: none;
 }
@@ -215,13 +215,13 @@
 .home-hero-trace--two,
 .home-hero-trace--four,
 .home-hero-trace--six {
-  stroke: rgb(125 167 217 / 0.18);
+  stroke: rgb(255 210 26 / 0.18);
   stroke-width: 1.25px;
 }
 
 .home-hero-signal {
   fill: none;
-  stroke: rgb(125 167 217 / 0.44);
+  stroke: rgb(255 210 26 / 0.44);
   stroke-width: 1.5px;
   stroke-dasharray: 1.2 7.6;
   stroke-linecap: square;
@@ -239,7 +239,7 @@
 
 .home-hero-datum {
   fill: none;
-  stroke: rgb(125 167 217 / 0.3);
+  stroke: rgb(255 210 26 / 0.3);
   stroke-width: 1px;
 }
 
@@ -290,7 +290,7 @@
 }
 
 .system-field-lines .system-field-frame--inner {
-  stroke: rgb(125 167 217 / 0.56);
+  stroke: rgb(255 210 26 / 0.56);
   stroke-dasharray: 2 2;
 }
 
@@ -316,7 +316,7 @@
 }
 
 .system-field-lines .system-field-index {
-  stroke: rgb(125 167 217 / 0.7);
+  stroke: rgb(255 210 26 / 0.7);
   stroke-width: 2px;
 }
 
@@ -329,7 +329,7 @@
   border: 1px solid rgb(255 255 255 / 0.28);
   background: rgb(4 6 8 / 0.96);
   padding: 0.65rem 0.75rem;
-  box-shadow: 4px 4px 0 rgb(125 167 217 / 0.12);
+  box-shadow: 4px 4px 0 rgb(255 210 26 / 0.12);
   color: rgb(255 255 255 / 0.86);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   text-transform: uppercase;
@@ -420,7 +420,7 @@
   place-content: center;
   border: 2px solid var(--color-signal);
   background: #050709;
-  box-shadow: 8px 8px 0 #020304, 8px 8px 0 1px rgb(125 167 217 / 0.62), inset 0 0 0 1px rgb(125 167 217 / 0.18);
+  box-shadow: 8px 8px 0 #020304, 8px 8px 0 1px rgb(255 210 26 / 0.62), inset 0 0 0 1px rgb(255 210 26 / 0.18);
   text-align: center;
   text-transform: uppercase;
   transform: translate(-50%, -50%);
@@ -430,7 +430,7 @@
 .system-field-core::before {
   position: absolute;
   inset: -0.65rem;
-  border: 1px solid rgb(125 167 217 / 0.48);
+  border: 1px solid rgb(255 210 26 / 0.48);
   content: "";
   pointer-events: none;
 }
@@ -438,8 +438,8 @@
 .system-field-core::after {
   position: absolute;
   inset: 0.4rem;
-  border-top: 1px solid rgb(125 167 217 / 0.24);
-  border-bottom: 1px solid rgb(125 167 217 / 0.24);
+  border-top: 1px solid rgb(255 210 26 / 0.24);
+  border-bottom: 1px solid rgb(255 210 26 / 0.24);
   content: "";
   pointer-events: none;
 }
@@ -609,7 +609,7 @@
   100% {
     border-color: rgb(255 255 255 / 0.28);
     background: rgb(4 6 8 / 0.96);
-    box-shadow: 4px 4px 0 rgb(125 167 217 / 0.12);
+    box-shadow: 4px 4px 0 rgb(255 210 26 / 0.12);
     color: rgb(255 255 255 / 0.86);
     transform: translate(0, 0);
   }
@@ -695,7 +695,7 @@
   100% {
     border-color: var(--color-signal);
     background: #050709;
-    box-shadow: 8px 8px 0 #020304, 8px 8px 0 1px rgb(125 167 217 / 0.62), inset 0 0 0 1px rgb(125 167 217 / 0.18);
+    box-shadow: 8px 8px 0 #020304, 8px 8px 0 1px rgb(255 210 26 / 0.62), inset 0 0 0 1px rgb(255 210 26 / 0.18);
     color: white;
     transform: translate(-50%, -50%);
   }
@@ -764,7 +764,7 @@
 }
 
 :focus-visible {
-  outline-color: #7da7d9 !important;
+  outline-color: #ffd21a !important;
   outline-style: solid !important;
   outline-width: 2px !important;
   outline-offset: 3px;

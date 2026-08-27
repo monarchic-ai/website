@@ -47,7 +47,7 @@ for (const marker of [
   "INDEPENDENT RESEARCH + DEVELOPMENT",
   "AI AGENTS + MCP INFRASTRUCTURE",
   "LONG-RUNNING AGENT WORK",
-  "#7da7d9",
+  "#ffd21a",
 ]) {
   if (socialSvg.includes(marker)) {
     ok(`social-card.svg includes ${marker}`);
@@ -63,7 +63,7 @@ if (sha256(socialSvg) !== sha256(favicon)) {
 }
 
 for (const marker of [
-  "/social-card.png?v=6",
+  "/social-card.png?v=7",
   "summary_large_image",
   'og:image:width" content="1200"',
   'og:image:height" content="630"',
@@ -76,16 +76,16 @@ for (const marker of [
   }
 }
 
-if (buildInfo.includes('socialImage: "/social-card.png?v=6"')) {
+if (buildInfo.includes('socialImage: "/social-card.png?v=7"')) {
   ok("build-info exposes social-card.png marker");
 } else {
-  fail("build-info must expose /social-card.png?v=6");
+  fail("build-info must expose /social-card.png?v=7");
 }
 
 for (const marker of [
-  "--color-signal: #7da7d9;",
-  "--color-signal-soft: #dce8f6;",
-  "outline-color: #7da7d9",
+  "--color-signal: #ffd21a;",
+  "--color-signal-soft: #ffec99;",
+  "outline-color: #ffd21a",
 ]) {
   if (globalCss.includes(marker)) {
     ok(`global brand palette includes ${marker}`);
@@ -94,11 +94,11 @@ for (const marker of [
   }
 }
 
-for (const retiredColor of ["#f0bd46", "#fff1bd"]) {
+for (const retiredColor of ["#7da7d9", "#dce8f6", "#f0bd46", "#fff1bd"]) {
   if (!globalCss.includes(retiredColor) && !socialSvg.includes(retiredColor)) {
-    ok(`brand surfaces exclude retired yellow ${retiredColor}`);
+    ok(`brand surfaces exclude retired accent ${retiredColor}`);
   } else {
-    fail(`brand surfaces still include retired yellow ${retiredColor}`);
+    fail(`brand surfaces still include retired accent ${retiredColor}`);
   }
 }
 
