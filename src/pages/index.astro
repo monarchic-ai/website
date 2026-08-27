@@ -116,27 +116,19 @@ const futureWork = [
     <PublicPageFrame>
 
       <section id="introduction" aria-labelledby="home-title" class="home-lab border-b border-white/20" data-company-first data-system-posture>
-        <div class="home-status-rail grid min-h-11 items-center gap-2 border-b border-white/20 px-4 py-2 font-mono text-[0.58rem] font-bold uppercase sm:grid-cols-[1fr_auto] sm:px-6 lg:px-8">
-          <p class="text-signal">Monarchic / Independent automation R&amp;D</p>
-          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/54">
-            <span>Now / Agent enhancements</span>
-            <span>Next / Agent workflows</span>
-          </div>
-        </div>
+        <div class="home-hero-stage grid lg:min-h-[47rem] lg:grid-cols-[minmax(0,1.35fr)_minmax(26rem,0.65fr)] xl:min-h-[50rem]">
+          <div class="home-hero-copy relative min-w-0 px-4 py-11 sm:px-6 sm:py-14 lg:px-8 lg:py-16" data-hero-background="static-topology-field">
+            <svg class="home-hero-topology absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">
+              <path class="home-hero-trace home-hero-trace--one" d="M-24 14H-16V10H-8V18H0V14H8V6H16V22H24V14H32V10H40V18H48V14H56V6H64V22H72V14H80V10H88V18H96V14H104V6H112V22H120V14H128" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-trace home-hero-trace--two" d="M-24 29H-12V23H0V35H12V29H24V19H36V39H48V29H60V23H72V35H84V29H96V19H108V39H120V29H132" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-trace home-hero-trace--three" d="M-24 43H-18V39H-6V47H6V43H18V33H30V53H42V43H54V39H66V47H78V43H90V33H102V53H114V43H132" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-trace home-hero-trace--four" d="M-24 58H-12V52H0V64H12V58H24V48H36V68H48V58H60V52H72V64H84V58H96V48H108V68H120V58H132" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-trace home-hero-trace--five" d="M-24 73H-16V69H-8V77H0V73H8V65H16V81H24V73H32V69H40V77H48V73H56V65H64V81H72V73H80V69H88V77H96V73H104V65H112V81H120V73H128" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-trace home-hero-trace--six" d="M-24 88H-12V82H0V94H12V88H24V78H36V98H48V88H60V82H72V94H84V88H96V78H108V98H120V88H132" vector-effect="non-scaling-stroke"></path>
 
-        <div class="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(26rem,0.65fr)]">
-          <div class="home-hero-copy relative min-w-0 px-4 py-11 sm:px-6 sm:py-14 lg:px-8 lg:py-16" data-hero-background="static-industrial-field">
-            <svg class="home-hero-wavefield absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true">
-              <path class="home-hero-wave home-hero-wave--one" d="M-24 14H-16V10H-8V18H0V14H8V6H16V22H24V14H32V10H40V18H48V14H56V6H64V22H72V14H80V10H88V18H96V14H104V6H112V22H120V14H128" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-wave home-hero-wave--two" d="M-24 29H-12V23H0V35H12V29H24V19H36V39H48V29H60V23H72V35H84V29H96V19H108V39H120V29H132" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-wave home-hero-wave--three" d="M-24 43H-18V39H-6V47H6V43H18V33H30V53H42V43H54V39H66V47H78V43H90V33H102V53H114V43H132" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-wave home-hero-wave--four" d="M-24 58H-12V52H0V64H12V58H24V48H36V68H48V58H60V52H72V64H84V58H96V48H108V68H120V58H132" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-wave home-hero-wave--five" d="M-24 73H-16V69H-8V77H0V73H8V65H16V81H24V73H32V69H40V77H48V73H56V65H64V81H72V73H80V69H88V77H96V73H104V65H112V81H120V73H128" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-wave home-hero-wave--six" d="M-24 88H-12V82H0V94H12V88H24V78H36V98H48V88H60V82H72V94H84V88H96V78H108V98H120V88H132" vector-effect="non-scaling-stroke"></path>
-
-              <path class="home-hero-bitstream home-hero-bitstream--two" d="M-24 29H-12V23H0V35H12V29H24V19H36V39H48V29H60V23H72V35H84V29H96V19H108V39H120V29H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-bitstream home-hero-bitstream--four" d="M-24 58H-12V52H0V64H12V58H24V48H36V68H48V58H60V52H72V64H84V58H96V48H108V68H120V58H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
-              <path class="home-hero-bitstream home-hero-bitstream--six" d="M-24 88H-12V82H0V94H12V88H24V78H36V98H48V88H60V82H72V94H84V88H96V78H108V98H120V88H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-signal home-hero-signal--two" d="M-24 29H-12V23H0V35H12V29H24V19H36V39H48V29H60V23H72V35H84V29H96V19H108V39H120V29H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-signal home-hero-signal--four" d="M-24 58H-12V52H0V64H12V58H24V48H36V68H48V58H60V52H72V64H84V58H96V48H108V68H120V58H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
+              <path class="home-hero-signal home-hero-signal--six" d="M-24 88H-12V82H0V94H12V88H24V78H36V98H48V88H60V82H72V94H84V88H96V78H108V98H120V88H132" pathLength="100" vector-effect="non-scaling-stroke"></path>
 
               <path class="home-hero-datum" d="M10 3V10M7 10H13M10 14V29M7 29H13M10 33V48M7 48H13M10 52V67M7 67H13M10 71V86M7 86H13M10 90V97" vector-effect="non-scaling-stroke"></path>
 
@@ -173,10 +165,10 @@ const futureWork = [
               <span class="home-hero-outline block">agent systems.</span>
             </h1>
             <p class="mt-8 max-w-3xl text-lg font-medium leading-8 text-white/76 sm:text-2xl sm:leading-9">
-              We build specialist capabilities and execution infrastructure for AI agents. Our first enhancements are available through hosted MCPs; the Monarchic workflow product is in development.
+              Agent enhancements are live through hosted MCPs. Next: durable workflows with persistent state, inspectable evidence, and operator control.
             </p>
             <p class="home-operating-assumption mt-8 max-w-2xl border-l-2 border-signal pl-4 font-mono text-xs font-bold uppercase leading-6 text-white/58 sm:text-sm">
-              Our goal: let a person hand off a job while keeping the run visible and under their control.
+              Design constraint / The operator can see the run, inspect the evidence, and stop it.
             </p>
             <div class="mt-9 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
               <a href="/company" class="motion-link inline-flex min-h-12 items-center justify-between gap-6 border border-signal bg-signal px-5 text-xs font-black uppercase text-black hover:bg-signal-soft">

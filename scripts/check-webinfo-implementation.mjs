@@ -27,7 +27,10 @@ const home = page("/");
 includes(home.text, [
   "Automation research and development",
   "Monarchic builds agent systems",
-  "build specialist capabilities and execution infrastructure",
+  "Agent enhancements are live through hosted MCPs",
+  "Design constraint / The operator can see the run",
+  "Now / Agent enhancements",
+  "Next / Agent workflows",
   "Operator control",
   "Reference architecture / Public view",
   "What Monarchic builds",
@@ -44,6 +47,7 @@ includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 
 includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");
 
 const products = page("/products");
+includes(products.text, ["Now / Agent enhancements", "Next / Agent workflows"], "Site-wide operating status rail");
 includes(products.text, [
   "Products",
   "Current product work",

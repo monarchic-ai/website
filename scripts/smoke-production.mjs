@@ -194,22 +194,36 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
-      await page.getByText(/build specialist capabilities and execution infrastructure for AI agents/i).waitFor();
+      await page.getByText(/Agent enhancements are live through hosted MCPs/i).waitFor();
+      await page.getByText(/Design constraint \/ The operator can see the run/i).waitFor();
+      await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByText("Operator control", { exact: true }).waitFor();
       await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
       const steppedSystemField = page.locator('[data-system-motion="stepped-machine"]');
       await steppedSystemField.waitFor();
+      await steppedSystemField.locator('[data-system-core="run"]').waitFor();
+      const packets = steppedSystemField.locator(".system-field-packet");
+      const packetCount = await packets.count();
+      if (packetCount !== 4) {
+        throw new Error(`system field must render four routed packets; received ${packetCount}`);
+      }
       const carriageTiming = await steppedSystemField.locator(".system-field-carriage").evaluate(
         (element) => window.getComputedStyle(element).animationTimingFunction,
       );
       if (!carriageTiming.includes("steps(")) {
         throw new Error(`system field motion must use stepped timing; received ${carriageTiming}`);
       }
-      const staticIndustrialField = page.locator('[data-hero-background="static-industrial-field"]');
+      const packetTiming = await packets.first().evaluate(
+        (element) => window.getComputedStyle(element).animationTimingFunction,
+      );
+      if (!packetTiming.includes("steps(")) {
+        throw new Error(`system field packets must use stepped timing; received ${packetTiming}`);
+      }
+      const staticIndustrialField = page.locator('[data-hero-background="static-topology-field"]');
       await staticIndustrialField.waitFor();
       const heroFieldState = await staticIndustrialField.evaluate((element) => {
         const fieldElements = element.querySelectorAll(
-          ".home-hero-wave, .home-hero-bitstream, .home-hero-datum, .home-hero-sample, .home-hero-register-bit",
+          ".home-hero-trace, .home-hero-signal, .home-hero-datum, .home-hero-sample, .home-hero-register-bit",
         );
         return {
           animationNames: Array.from(
@@ -234,6 +248,12 @@ async function runBrowserSmoke() {
       );
       if (reducedCarriageAnimation !== "none") {
         throw new Error(`system field motion must stop for reduced motion; received ${reducedCarriageAnimation}`);
+      }
+      const reducedPacketAnimation = await packets.first().evaluate(
+        (element) => window.getComputedStyle(element).animationName,
+      );
+      if (reducedPacketAnimation !== "none") {
+        throw new Error(`system field packet motion must stop for reduced motion; received ${reducedPacketAnimation}`);
       }
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
@@ -316,6 +336,7 @@ async function runBrowserSmoke() {
     }, "home route");
 
     await checkPage(page, `${baseUrl}/products`, async () => {
+      await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByRole("heading", { name: "Products." }).waitFor();
       await page.getByRole("heading", { name: "Current product work." }).waitFor();
       await page.getByRole("heading", { name: "AI Agent Enhancements" }).waitFor();
@@ -495,6 +516,7 @@ async function runBrowserSmoke() {
     }, "security route");
 
     await checkPage(page, `${baseUrl}/company`, async () => {
+      await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByRole("heading", { name: "We build automation systems." }).waitFor();
       await page.getByRole("heading", { name: "Evidence before ornament." }).waitFor();
       await page.getByText("Monarchic, LLC", { exact: false }).first().waitFor();

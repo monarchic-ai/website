@@ -149,9 +149,18 @@
   pointer-events: none;
 }
 
-.home-status-rail,
+.operating-status-rail,
 .home-proof-rail {
   background: rgb(3 4 6 / 0.88);
+}
+
+.operating-status-mark {
+  width: 0.36rem;
+  height: 0.36rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-signal);
+  background: var(--color-signal);
+  box-shadow: 0 0 0 2px rgb(125 167 217 / 0.1);
 }
 
 .home-hero-copy::after {
@@ -171,58 +180,58 @@
   isolation: isolate;
 }
 
-.home-hero-copy > :not(.home-hero-wavefield) {
+.home-hero-copy > :not(.home-hero-topology) {
   position: relative;
   z-index: 1;
 }
 
-.home-hero-wavefield {
+.home-hero-topology {
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
 }
 
-.home-hero-wave {
+.home-hero-trace {
   fill: none;
-  stroke: rgb(255 255 255 / 0.045);
+  stroke: rgb(255 255 255 / 0.09);
   stroke-width: 1px;
 }
 
-.home-hero-wave--two,
-.home-hero-wave--four,
-.home-hero-wave--six {
-  stroke: rgb(125 167 217 / 0.1);
+.home-hero-trace--two,
+.home-hero-trace--four,
+.home-hero-trace--six {
+  stroke: rgb(125 167 217 / 0.18);
   stroke-width: 1.25px;
 }
 
-.home-hero-bitstream {
+.home-hero-signal {
   fill: none;
-  stroke: rgb(125 167 217 / 0.3);
+  stroke: rgb(125 167 217 / 0.44);
   stroke-width: 1.5px;
   stroke-dasharray: 1.2 7.6;
   stroke-linecap: square;
 }
 
-.home-hero-bitstream--four {
-  opacity: 0.78;
+.home-hero-signal--four {
+  opacity: 0.84;
   stroke-dashoffset: -2.6;
 }
 
-.home-hero-bitstream--six {
-  opacity: 0.6;
+.home-hero-signal--six {
+  opacity: 0.68;
   stroke-dashoffset: -5.2;
 }
 
 .home-hero-datum {
   fill: none;
-  stroke: rgb(125 167 217 / 0.16);
+  stroke: rgb(125 167 217 / 0.3);
   stroke-width: 1px;
 }
 
 .home-hero-sample,
 .home-hero-register-bit {
   fill: var(--color-signal);
-  opacity: 0.16;
+  opacity: 0.24;
 }
 
 .home-hero-sample--white {
@@ -231,17 +240,17 @@
 
 .home-hero-sample:nth-child(3n + 1),
 .home-hero-register-bit:nth-child(3n + 1) {
-  opacity: 0.28;
+  opacity: 0.42;
 }
 
 .home-hero-sample:nth-child(3n + 2),
 .home-hero-register-bit:nth-child(3n + 2) {
-  opacity: 0.12;
+  opacity: 0.18;
 }
 
 .home-hero-sample:nth-child(3n),
 .home-hero-register-bit:nth-child(3n) {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
 .home-hero-outline {
@@ -257,28 +266,28 @@
 
 .system-field-canvas {
   background-image:
-    linear-gradient(rgb(125 167 217 / 0.075) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(125 167 217 / 0.075) 1px, transparent 1px);
+    linear-gradient(rgb(125 167 217 / 0.105) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(125 167 217 / 0.105) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 .system-field-lines path {
   fill: none;
-  stroke: rgb(255 255 255 / 0.19);
+  stroke: rgb(255 255 255 / 0.27);
   stroke-width: 1px;
 }
 
 .system-field-lines .system-field-frame {
-  stroke: rgb(255 255 255 / 0.25);
+  stroke: rgb(255 255 255 / 0.36);
 }
 
 .system-field-lines .system-field-frame--inner {
-  stroke: rgb(125 167 217 / 0.34);
+  stroke: rgb(125 167 217 / 0.56);
   stroke-dasharray: 2 2;
 }
 
 .system-field-lines .system-field-link-base {
-  stroke: rgb(255 255 255 / 0.2);
+  stroke: rgb(255 255 255 / 0.34);
   stroke-width: 1.25px;
 }
 
@@ -287,6 +296,15 @@
   stroke: var(--color-signal);
   stroke-width: 2.5px;
   animation: system-link-strike var(--system-cycle) steps(1, end) infinite;
+}
+
+.system-field-lines .system-field-packet {
+  opacity: 0;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-dasharray: 3 97;
+  stroke-linecap: square;
+  animation: system-packet-route var(--system-cycle) steps(14, end) infinite;
 }
 
 .system-field-lines .system-field-index {
@@ -360,21 +378,25 @@
 }
 
 .system-field-link--intent,
+.system-field-packet--intent,
 .system-field-cycle > span:nth-child(1) {
   animation-delay: 0.2s;
 }
 
 .system-field-link--plan,
+.system-field-packet--plan,
 .system-field-cycle > span:nth-child(2) {
   animation-delay: 1.3s;
 }
 
 .system-field-link--workers,
+.system-field-packet--workers,
 .system-field-cycle > span:nth-child(3) {
   animation-delay: 2.4s;
 }
 
 .system-field-link--evidence,
+.system-field-packet--evidence,
 .system-field-cycle > span:nth-child(4) {
   animation-delay: 3.5s;
 }
@@ -385,16 +407,33 @@
   top: 50%;
   left: 50%;
   display: grid;
-  width: 7.8rem;
-  min-height: 6.3rem;
+  width: 8.8rem;
+  min-height: 7.2rem;
   place-content: center;
   border: 2px solid var(--color-signal);
   background: #050709;
-  box-shadow: 6px 6px 0 #020304, 6px 6px 0 1px rgb(125 167 217 / 0.45);
+  box-shadow: 8px 8px 0 #020304, 8px 8px 0 1px rgb(125 167 217 / 0.62), inset 0 0 0 1px rgb(125 167 217 / 0.18);
   text-align: center;
   text-transform: uppercase;
   transform: translate(-50%, -50%);
   animation: system-core-strike var(--system-cycle) steps(1, end) 4.55s infinite;
+}
+
+.system-field-core::before {
+  position: absolute;
+  inset: -0.65rem;
+  border: 1px solid rgb(125 167 217 / 0.48);
+  content: "";
+  pointer-events: none;
+}
+
+.system-field-core::after {
+  position: absolute;
+  inset: 0.4rem;
+  border-top: 1px solid rgb(125 167 217 / 0.24);
+  border-bottom: 1px solid rgb(125 167 217 / 0.24);
+  content: "";
+  pointer-events: none;
 }
 
 .system-field-core span,
@@ -409,7 +448,7 @@
 .system-field-core strong {
   margin-block: 0.18rem;
   color: inherit;
-  font-size: 0.88rem;
+  font-size: 1.12rem;
   line-height: 1;
 }
 
@@ -516,6 +555,26 @@
   16%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes system-packet-route {
+  0%,
+  2% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+
+  3%,
+  14% {
+    opacity: 1;
+    stroke-dashoffset: -97;
+  }
+
+  15%,
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -97;
   }
 }
 
@@ -628,7 +687,7 @@
   100% {
     border-color: var(--color-signal);
     background: #050709;
-    box-shadow: 6px 6px 0 #020304, 6px 6px 0 1px rgb(125 167 217 / 0.45);
+    box-shadow: 8px 8px 0 #020304, 8px 8px 0 1px rgb(125 167 217 / 0.62), inset 0 0 0 1px rgb(125 167 217 / 0.18);
     color: white;
     transform: translate(-50%, -50%);
   }
@@ -652,8 +711,8 @@
   }
 
   .system-field-core {
-    width: 6.5rem;
-    min-height: 5.7rem;
+    width: 7rem;
+    min-height: 6rem;
   }
 }
 
@@ -666,7 +725,8 @@
   .motion-arrow,
   .row-arrow,
   .interactive-row,
-  .system-field-link,
+  .system-field-lines .system-field-link,
+  .system-field-lines .system-field-packet,
   .system-field-node,
   .system-field-carriage,
   .system-field-cycle > span,
@@ -675,8 +735,13 @@
     transition: none;
   }
 
-  .system-field-link {
+  .system-field-lines .system-field-link {
     opacity: 0.45;
+  }
+
+  .system-field-lines .system-field-packet {
+    opacity: 0.55;
+    stroke-dashoffset: -52;
   }
 
   .system-field-carriage {
