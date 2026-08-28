@@ -78,9 +78,26 @@ function buildPublicPolicy(root) {
   requireValue(launch.payg?.operatorEnablementRequired === true, "enterprise PAYG operator enablement must be required");
   requireValue(launch.payg?.spendingCapRequired === true, "enterprise PAYG spending cap must be required");
   requireValue(launch.payg?.includedUsageExhaustion === "pause_until_refresh", "usage must pause until refresh");
-  requireValue(gate.ratesApproved === false, "rate publication changed; review the website export contract before syncing");
-  requireValue(gate.allowanceQuantitiesApproved === false, "allowance publication changed; review the website export contract before syncing");
-  requireValue(gate.billingActivationApproved === false, "billing activation gate changed; review the website export contract before syncing");
+  requireValue(
+    gate.schemaVersion === "monarchic.mcp-pricing-publication-gate.v2",
+    "unsupported publication gate schema; review the website export contract before syncing",
+  );
+  requireValue(
+    gate.decisions?.measuredOperationSettlement?.approved === false,
+    "operation settlement approval changed; review the website export contract before syncing",
+  );
+  requireValue(
+    gate.decisions?.publicQuantityAndRateClaims?.approved === false,
+    "public quantity or rate approval changed; review the website export contract before syncing",
+  );
+  requireValue(
+    gate.decisions?.fixedSubscriptionCheckout?.approved === false,
+    "fixed subscription checkout approval changed; review the website export contract before syncing",
+  );
+  requireValue(
+    gate.decisions?.enterprisePayg?.approved === false,
+    "enterprise PAYG approval changed; review the website export contract before syncing",
+  );
   requireValue(rateCard.rateCardVersion === launch.rateCardVersion, "launch policy and rate card versions differ");
   requireValue(rateCard.operations?.length === launch.classifiedOperationCount, "classified operation count differs from the rate card");
 

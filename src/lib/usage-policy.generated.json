@@ -2,10 +2,10 @@
   "schemaVersion": "monarchic.website-public-usage-policy.v2",
   "source": {
     "repository": "monarchic-mcp-catalog",
-    "commit": "39a778895eec9a5d41f2b11afb3bebd27e2422c9",
-    "policyVersion": "adaptive-subscription-launch-2026-08-23-v5",
-    "rateCardVersion": "hosted-mcp-catalog-2026-08-10-v2",
-    "rateCardSha256": "fd986da945629202a83d633221a4634b23b0ca0183f82e6c0591c6862879c812"
+    "commit": "58072611250ed56bf313972a4c9e0b24d642298a",
+    "policyVersion": "adaptive-subscription-launch-2026-08-26-v14",
+    "rateCardVersion": "hosted-mcp-catalog-2026-08-28-v7",
+    "rateCardSha256": "0ebd00430224958451f78dd8749ae30dbaff3329e056d71d6dc3a9a38b00a191"
   },
   "pricing": {
     "model": "fixed_subscription",
@@ -54,24 +54,24 @@
     "spendingCapRequired": true
   },
   "catalog": {
-    "classifiedOperationCount": 972,
+    "classifiedOperationCount": 80,
     "operationClasses": [
       {
         "id": "standard",
         "label": "Standard",
-        "operationCount": 399,
+        "operationCount": 39,
         "description": "Lower-complexity operations in the current rate card."
       },
       {
         "id": "advanced",
         "label": "Advanced",
-        "operationCount": 569,
+        "operationCount": 39,
         "description": "Higher-complexity analysis and workflow operations."
       },
       {
         "id": "browser",
         "label": "Browser",
-        "operationCount": 4,
+        "operationCount": 2,
         "description": "Managed browser execution with captured evidence."
       }
     ]
