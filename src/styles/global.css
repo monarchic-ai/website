@@ -176,6 +176,11 @@
   touch-action: pan-y;
 }
 
+.home-brain-visual:focus-visible {
+  outline: 2px solid #ffd21a;
+  outline-offset: -2px;
+}
+
 .home-brain-canvas {
   z-index: 0;
   pointer-events: none;
