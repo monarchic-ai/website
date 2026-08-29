@@ -43,8 +43,8 @@ const navClass = (current: boolean) => [
       class:list={[
         "motion-link inline-flex min-h-10 items-center border px-2.5 text-[0.65rem] font-black uppercase max-[359px]:px-1.5 max-[359px]:text-[0.6rem] sm:px-4 sm:text-xs",
         tone === "paper"
-          ? "border-black bg-black text-white hover:bg-signal hover:text-black"
-          : "border-signal bg-signal text-black hover:bg-signal-soft",
+          ? "border-black bg-transparent text-black hover:bg-signal focus-visible:bg-signal"
+          : "border-white/60 bg-transparent text-white hover:border-signal hover:bg-signal hover:text-black focus-visible:border-signal focus-visible:bg-signal focus-visible:text-black",
       ]}
     >
       Apps
