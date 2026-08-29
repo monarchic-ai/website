@@ -170,16 +170,18 @@
   content: "";
 }
 
-.home-model-visual {
+.home-brain-visual {
   isolation: isolate;
+  cursor: crosshair;
+  touch-action: pan-y;
 }
 
-.home-model-core {
+.home-brain-canvas {
   z-index: 0;
-  filter: contrast(1.04) saturate(1.03);
+  pointer-events: none;
 }
 
-.home-model-visual::after {
+.home-brain-visual::after {
   position: absolute;
   z-index: 1;
   inset: 0;
@@ -189,6 +191,21 @@
     linear-gradient(90deg, rgb(0 0 0 / 0.22), transparent 12% 88%, rgb(0 0 0 / 0.22));
   content: "";
   pointer-events: none;
+}
+
+.brain-status-mark {
+  box-shadow: 0 0 0 2px rgb(255 210 26 / 0.12), 0 0 1rem rgb(255 210 26 / 0.22);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.home-brain-visual[data-brain-state="tracking"] .brain-status-mark {
+  box-shadow: 0 0 0 3px rgb(255 210 26 / 0.18), 0 0 1.2rem rgb(255 210 26 / 0.54);
+  transform: scale(1.18);
+}
+
+.home-brain-visual[data-brain-state="pulse"] .brain-status-mark {
+  box-shadow: 0 0 0 5px rgb(255 210 26 / 0.16), 0 0 1.6rem rgb(255 210 26 / 0.76);
+  transform: scale(1.34);
 }
 
 .home-lab {
@@ -793,6 +810,7 @@
   .motion-arrow,
   .row-arrow,
   .interactive-row,
+  .brain-status-mark,
   .system-field-lines .system-field-link,
   .system-field-lines .system-field-packet,
   .system-field-node,
