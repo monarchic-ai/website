@@ -49,6 +49,7 @@ includes(home.text, [
 ], "Home company narrative and availability boundaries");
 excludes(home.text, ["inspectable evidence", "inspect the evidence", "review the evidence"], "Home avoids abstract trust copy");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
+includes(home.html, ['data-editorial-index'], "Home editorial index plate");
 includes(home.html, ['href="/company#contact"'], "Home support path");
 includes(home.html, [
   `href="${appBaseUrl}/app"`,

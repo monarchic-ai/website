@@ -199,6 +199,7 @@ async function runBrowserSmoke() {
       await brainCanvas.waitFor();
       await page.getByText(/Production infrastructure for capable AI agents/i).waitFor();
       await page.getByText(/hosted systems · one account · operator-controlled/i).waitFor();
+      await page.locator("[data-editorial-index]").waitFor();
       await page.locator("[data-operating-status-rail]").waitFor();
       await page.getByText(/99.8% answer accuracy on LongMemEval-S/i).waitFor();
       await page.locator("#brain-field-caption").waitFor({ state: "attached" });
@@ -501,6 +502,9 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
       await page.locator("[data-brain-field]").waitFor();
+      if (await page.locator("[data-editorial-index]").isVisible()) {
+        throw new Error("editorial index plate must stay hidden at 320px");
+      }
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Support", exact: true }).first().waitFor();
       await expectNoElementOverlap(
