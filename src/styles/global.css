@@ -74,10 +74,22 @@
 }
 
 .site-primary-nav {
+  position: relative;
   display: grid;
   width: min(46.375rem, 59vw);
   min-width: 37rem;
   grid-template-columns: 200fr 184fr 186fr 172fr;
+}
+
+.site-primary-nav::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 1px;
+  height: 1.875rem;
+  background: rgb(255 255 255 / 0.32);
+  content: "";
+  transform: translateY(-50%);
 }
 
 .site-nav-link {
@@ -133,6 +145,10 @@
   background: rgb(8 8 8 / 0.38);
 }
 
+.site-header--paper .site-primary-nav::after {
+  background: rgb(8 8 8 / 0.38);
+}
+
 .site-header--paper .site-nav-link:hover,
 .site-header--paper .site-nav-link:focus-visible {
   background: rgb(8 8 8 / 0.06);
@@ -167,7 +183,8 @@
     font-size: 0.76rem;
   }
 
-  .site-nav-link::before {
+  .site-nav-link::before,
+  .site-primary-nav::after {
     height: 1.5rem;
   }
 
