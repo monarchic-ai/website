@@ -102,8 +102,7 @@ const DEPTH_LEVELS = 7;
 const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
 const STRUCTURAL_DEPTH_ALPHA = [0.06, 0.12, 0.22, 0.34, 0.5, 0.76, 1] as const;
-const INTERNAL_RENDER_SCALE = 2;
-const MAX_BACKING_PIXELS = 4_500_000;
+const MAX_DEVICE_PIXEL_RATIO = 2;
 const MOBILE_DENSITY_CUTOFF = 0.075;
 const MOBILE_NARROW_DENSITY_CUTOFF = 0.055;
 const PARTICLE_FIBER_COUNT = 10;
@@ -1607,7 +1606,7 @@ const pathPointAt = (
 
 const createGlowSprite = () => {
   const sprite = document.createElement("canvas");
-  const spriteSize = 20 * INTERNAL_RENDER_SCALE;
+  const spriteSize = 20 * MAX_DEVICE_PIXEL_RATIO;
   const spriteCenter = spriteSize * 0.5;
   sprite.width = spriteSize;
   sprite.height = spriteSize;
@@ -1744,6 +1743,15 @@ const mountBrain = async (field: HTMLElement) => {
   let pitch = -0.055;
   let statusTimer = 0;
 
+  const targetPixelRatio = () =>
+    Math.max(
+      1,
+      Math.min(
+        window.devicePixelRatio || 1,
+        MAX_DEVICE_PIXEL_RATIO,
+      ),
+    );
+
   const updateStatus = (
     label: string,
     state: "idle" | "tracking" | "pulse",
@@ -1753,16 +1761,10 @@ const mountBrain = async (field: HTMLElement) => {
   };
 
   const resize = () => {
-    const bounds = field.getBoundingClientRect();
+    const bounds = canvas.getBoundingClientRect();
     width = Math.max(1, bounds.width);
     height = Math.max(1, bounds.height);
-    pixelRatio = Math.max(
-      1,
-      Math.min(
-        INTERNAL_RENDER_SCALE,
-        Math.sqrt(MAX_BACKING_PIXELS / (width * height)),
-      ),
-    );
+    pixelRatio = targetPixelRatio();
     const backingWidth = Math.round(width * pixelRatio);
     const backingHeight = Math.round(height * pixelRatio);
     if (
@@ -1780,7 +1782,7 @@ const mountBrain = async (field: HTMLElement) => {
   };
 
   const fieldPoint = (clientX: number, clientY: number) => {
-    const bounds = field.getBoundingClientRect();
+    const bounds = canvas.getBoundingClientRect();
     return {
       x: clamp(clientX - bounds.left, 0, bounds.width),
       y: clamp(clientY - bounds.top, 0, bounds.height),
@@ -1874,6 +1876,7 @@ const mountBrain = async (field: HTMLElement) => {
     const centerX = width * (mobile ? 0.44 : 0.42);
     const centerY = height * 0.47;
     const cameraDistance = 7.8;
+    const onePhysicalPixel = 1 / pixelRatio;
     const structuralPaths = Array.from(
       {
         length:
@@ -2024,6 +2027,12 @@ const mountBrain = async (field: HTMLElement) => {
         ) {
           const strandOffset = strandIndex - centerStrand;
           const centerDistance = Math.abs(strandOffset);
+          const redundantCerebrumStrand =
+            fiber.region === "cerebrum" &&
+            ((fiber.bundleTier === "dim" && strandIndex % 2 === 1) ||
+              (fiber.bundleTier === "medium" &&
+                (strandIndex + fiber.bundleId) % 5 === 0));
+          if (redundantCerebrumStrand) continue;
           let strandOpacityBand: number;
           if (fiber.bundleTier === "active") {
             strandOpacityBand =
@@ -2104,9 +2113,10 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             188 + depthBand * 4,
             18,
-            (fadeBand === 0 ? 0.004 : 0.014) * depthStrength,
+            (fadeBand === 0 ? 0.003 : 0.01) * depthStrength,
           );
-          context.lineWidth = widthBand === 0 ? 2.2 : 2.8;
+          context.lineWidth =
+            (widthBand === 0 ? 2.2 : 2.8) * onePhysicalPixel;
           context.stroke(activePaths[index]);
         }
       }
@@ -2115,7 +2125,7 @@ const mountBrain = async (field: HTMLElement) => {
 
     context.lineCap = "butt";
     context.lineJoin = "miter";
-    const structuralAlpha = [0.054, 0.08, 0.12, 0.18];
+    const structuralAlpha = [0.075, 0.1, 0.13, 0.18];
     for (
       let opacityBand = 0;
       opacityBand < OPACITY_LEVELS;
@@ -2142,7 +2152,8 @@ const mountBrain = async (field: HTMLElement) => {
             22 + depthBand * 2,
             structuralAlpha[opacityBand] * depthStrength,
           );
-          context.lineWidth = widthBand === 0 ? 0.3 : 0.42;
+          context.lineWidth =
+            (widthBand === 0 ? 1 : 1.2) * onePhysicalPixel;
           context.stroke(structuralPaths[index]);
         }
       }
@@ -2172,7 +2183,8 @@ const mountBrain = async (field: HTMLElement) => {
             (fadeBand === 0 ? 0.11 : 0.28) *
               depthStrength,
           );
-          context.lineWidth = widthBand === 0 ? 0.44 : 0.58;
+          context.lineWidth =
+            (widthBand === 0 ? 1.15 : 1.35) * onePhysicalPixel;
           context.stroke(activePaths[index]);
         }
       }
@@ -2283,6 +2295,7 @@ const mountBrain = async (field: HTMLElement) => {
   const frame = (time: number) => {
     animationFrame = 0;
     if (!inViewport || document.visibilityState === "hidden") return;
+    if (Math.abs(pixelRatio - targetPixelRatio()) > 0.001) resize();
     if (reducedMotion.matches || time - lastFrame >= 32) {
       lastFrame = time;
       draw(time);
@@ -2334,6 +2347,20 @@ const mountBrain = async (field: HTMLElement) => {
 
   reducedMotion.addEventListener("change", scheduleFrame);
   document.addEventListener("visibilitychange", scheduleFrame);
+  let pixelRatioQuery: MediaQueryList | undefined;
+  const watchPixelRatio = () => {
+    pixelRatioQuery?.removeEventListener("change", handlePixelRatioChange);
+    pixelRatioQuery = window.matchMedia(
+      `(resolution: ${window.devicePixelRatio || 1}dppx)`,
+    );
+    pixelRatioQuery.addEventListener("change", handlePixelRatioChange);
+  };
+  const handlePixelRatioChange = () => {
+    resize();
+    watchPixelRatio();
+  };
+  window.addEventListener("resize", resize);
+  watchPixelRatio();
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(field);
   const intersectionObserver = new IntersectionObserver(
