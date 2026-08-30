@@ -2,10 +2,10 @@
   "schemaVersion": "monarchic.website-public-usage-policy.v2",
   "source": {
     "repository": "monarchic-mcp-catalog",
-    "commit": "58072611250ed56bf313972a4c9e0b24d642298a",
-    "policyVersion": "adaptive-subscription-launch-2026-08-26-v14",
-    "rateCardVersion": "hosted-mcp-catalog-2026-08-28-v7",
-    "rateCardSha256": "0ebd00430224958451f78dd8749ae30dbaff3329e056d71d6dc3a9a38b00a191"
+    "commit": "f406d9dc608fc1d5db1d0985dac81d7aa5c16f49",
+    "policyVersion": "adaptive-subscription-launch-2026-08-29-v16",
+    "rateCardVersion": "hosted-mcp-catalog-2026-08-29-v8",
+    "rateCardSha256": "716e674257e6c1fcb65ae77428cb54ed09ca7490ab7a8afe0efafae8380db388"
   },
   "pricing": {
     "model": "fixed_subscription",
