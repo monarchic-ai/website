@@ -35,7 +35,6 @@ type Hub = {
   position: Vector3;
   radius: number;
   strength: number;
-  code: string;
 };
 
 type NeuralNode = {
@@ -91,12 +90,12 @@ const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const SHELL_LEVELS = 6;
 
 const HUBS: Hub[] = [
-  { position: { x: 0.02, y: 0.04, z: 0.34 }, radius: 0.62, strength: 1, code: "CORE / 00" },
-  { position: { x: -1.08, y: 0.38, z: 0.58 }, radius: 0.58, strength: 0.9, code: "NODE / 01" },
-  { position: { x: -0.1, y: 0.55, z: 0.7 }, radius: 0.52, strength: 1, code: "NODE / 02" },
-  { position: { x: -0.2, y: -0.66, z: 0.62 }, radius: 0.5, strength: 0.88, code: "NODE / 03" },
-  { position: { x: 1.2, y: 0.12, z: 0.5 }, radius: 0.56, strength: 0.8, code: "NODE / 04" },
-  { position: { x: 1.28, y: -1.13, z: 0.31 }, radius: 0.42, strength: 0.72, code: "NODE / 05" },
+  { position: { x: 0.02, y: 0.04, z: 0.34 }, radius: 0.62, strength: 1 },
+  { position: { x: -1.08, y: 0.38, z: 0.58 }, radius: 0.58, strength: 0.92 },
+  { position: { x: -0.1, y: 0.55, z: 0.7 }, radius: 0.52, strength: 0.68 },
+  { position: { x: -0.2, y: -0.66, z: 0.62 }, radius: 0.5, strength: 0.84 },
+  { position: { x: 1.2, y: 0.12, z: 0.5 }, radius: 0.56, strength: 0.58 },
+  { position: { x: 1.28, y: -1.13, z: 0.31 }, radius: 0.42, strength: 0.48 },
 ];
 
 const SULCUS_GUIDES: Curve3[] = [
@@ -617,21 +616,21 @@ const rotatePoint = (point: Vector3, yaw: number, pitch: number, roll: number): 
 };
 
 const quietShellColors = [
-  "rgb(92 55 0 / 0.018)",
-  "rgb(112 67 0 / 0.03)",
-  "rgb(139 84 0 / 0.05)",
-  "rgb(170 105 0 / 0.085)",
-  "rgb(207 140 0 / 0.14)",
-  "rgb(240 174 0 / 0.24)",
+  "rgb(92 55 0 / 0.006)",
+  "rgb(112 67 0 / 0.012)",
+  "rgb(139 84 0 / 0.026)",
+  "rgb(170 105 0 / 0.06)",
+  "rgb(207 140 0 / 0.15)",
+  "rgb(244 179 0 / 0.3)",
 ] as const;
 
 const activeShellColors = [
-  "rgb(116 70 0 / 0.025)",
-  "rgb(143 86 0 / 0.05)",
-  "rgb(177 108 0 / 0.09)",
-  "rgb(210 143 0 / 0.16)",
-  "rgb(242 181 0 / 0.27)",
-  "rgb(255 203 24 / 0.43)",
+  "rgb(116 70 0 / 0.008)",
+  "rgb(143 86 0 / 0.018)",
+  "rgb(177 108 0 / 0.045)",
+  "rgb(210 143 0 / 0.12)",
+  "rgb(242 181 0 / 0.29)",
+  "rgb(255 207 30 / 0.52)",
 ] as const;
 
 const mountBrain = (field: HTMLElement) => {
@@ -799,7 +798,7 @@ const mountBrain = (field: HTMLElement) => {
 
     const facetBuckets = Array.from({ length: SHELL_LEVELS }, () => new Path2D());
     geometry.faces.forEach((face) => {
-      if (face.phase < face.dissolve * 0.44) return;
+      if (face.phase < face.dissolve * 0.28) return;
       const depth = (projected[face.a * 3 + 2] + projected[face.b * 3 + 2] + projected[face.c * 3 + 2]) / 3;
       const front = smoothstep(-0.35, 0.95, depth);
       const bucket = Math.min(SHELL_LEVELS - 1, Math.floor(front * SHELL_LEVELS));
@@ -825,7 +824,7 @@ const mountBrain = (field: HTMLElement) => {
     const pulsePaths = activePulses.map(() => new Path2D());
 
     geometry.edges.forEach((edge) => {
-      if (edge.phase < edge.dissolve * 0.5) return;
+      if (edge.phase < edge.dissolve * 0.31) return;
       const ax = projected[edge.a * 3];
       const ay = projected[edge.a * 3 + 1];
       const bx = projected[edge.b * 3];
@@ -921,11 +920,36 @@ const mountBrain = (field: HTMLElement) => {
       const depth = projectedNodes[index * 3 + 2];
       if (depth < -0.35 && !node.hub) return;
       const flicker = reducedMotion.matches ? 1 : 0.82 + Math.sin(time * 0.001 + node.phase) * 0.18;
-      const size = node.size * (node.hub ? 1 : 0.72 + smoothstep(-0.2, 0.8, depth) * 0.35);
-      context.fillStyle = node.hub
-        ? `rgb(255 203 24 / ${0.82 * flicker})`
-        : `rgb(232 164 0 / ${0.26 * flicker + smoothstep(-0.2, 0.8, depth) * 0.26})`;
-      context.fillRect(projectedNodes[index * 3] - size * 0.5, projectedNodes[index * 3 + 1] - size * 0.5, size, size);
+      const front = smoothstep(-0.42, 0.88, depth);
+      const x = projectedNodes[index * 3];
+      const y = projectedNodes[index * 3 + 1];
+
+      if (node.hub) {
+        const hub = HUBS[index];
+        const routeHead = index > 0 ? (cycleElapsed - (index - 1) * 135) / 3050 : -1;
+        const arrival = routeHead >= 0.72 && routeHead <= 1.14
+          ? smoothstep(0.72, 0.97, routeHead) * (1 - smoothstep(1, 1.14, routeHead))
+          : 0;
+        const depthFade = 0.42 + front * 0.58;
+        const size = node.size * (0.88 + hub.strength * 0.18 + arrival * 0.22);
+        const alpha = clamp((0.34 + hub.strength * 0.42 + arrival * 0.2) * depthFade * flicker, 0, 0.96);
+        const green = Math.round(174 + hub.strength * 47);
+        const blue = Math.round(8 + hub.strength * 68);
+        context.fillStyle = `rgb(255 ${green} ${blue} / ${alpha})`;
+        context.fillRect(x - size * 0.5, y - size * 0.5, size, size);
+
+        if (index > 0) {
+          const markerSize = 5.6 + hub.strength * 3.2 + arrival * 2;
+          context.strokeStyle = `rgb(255 203 24 / ${(0.12 + hub.strength * 0.24 + arrival * 0.26) * depthFade})`;
+          context.lineWidth = 0.58;
+          context.strokeRect(x - markerSize * 0.5, y - markerSize * 0.5, markerSize, markerSize);
+        }
+        return;
+      }
+
+      const size = node.size * (0.72 + front * 0.35);
+      context.fillStyle = `rgb(232 164 0 / ${0.26 * flicker + front * 0.26})`;
+      context.fillRect(x - size * 0.5, y - size * 0.5, size, size);
     });
 
     geometry.routes.forEach((route, routeIndex) => {
@@ -984,21 +1008,6 @@ const mountBrain = (field: HTMLElement) => {
     context.strokeStyle = "rgb(255 197 18 / 0.58)";
     context.lineWidth = 0.75;
     context.strokeRect(coreX - 5.5, coreY - 5.5, 11, 11);
-
-    if (width >= 560) {
-      const labelX = coreX + 52;
-      const labelY = coreY - 36;
-      context.beginPath();
-      context.moveTo(coreX + 6, coreY - 6);
-      context.lineTo(labelX - 8, labelY + 3);
-      context.lineTo(labelX + 4, labelY + 3);
-      context.strokeStyle = "rgb(255 197 18 / 0.36)";
-      context.lineWidth = 0.65;
-      context.stroke();
-      context.fillStyle = "rgb(255 203 24 / 0.64)";
-      context.font = "700 8px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
-      context.fillText(HUBS[0].code, labelX + 8, labelY + 6);
-    }
 
     drawCornerBrackets(minimumX, minimumY, maximumX, maximumY);
   };
