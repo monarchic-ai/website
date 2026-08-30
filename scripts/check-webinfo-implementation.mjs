@@ -29,10 +29,12 @@ includes(home.text, [
   "Monarchic builds agent systems",
   "Production infrastructure for capable AI agents",
   "repository context, persistent memory, browser control, and release operations",
-  "Operator controls / See each task",
-  "Now / Agent enhancements",
-  "Next / Agent workflows",
-  "Operator control",
+  "hosted systems · one account · operator-controlled",
+  "Latest research",
+  "99.8% answer accuracy on LongMemEval-S",
+  "Products",
+  "Platform",
+  "Research",
   "Reference architecture / Public view",
   "What Monarchic builds",
   "A person should be able to assign a job and review the result",
@@ -48,10 +50,15 @@ includes(home.text, [
 excludes(home.text, ["inspectable evidence", "inspect the evidence", "review the evidence"], "Home avoids abstract trust copy");
 includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 'href="/security"'], "Home canonical paths");
 includes(home.html, ['href="/company#contact"'], "Home support path");
-includes(home.html, [`href="${appBaseUrl}/app"`, `href="${appBaseUrl}/setup"`], "Webapp-only destinations");
+includes(home.html, [
+  `href="${appBaseUrl}/app"`,
+  `href="${appBaseUrl}/login"`,
+  `href="${appBaseUrl}/signup"`,
+  `href="${appBaseUrl}/setup"`,
+], "Webapp-only destinations");
 
 const products = page("/products");
-includes(products.text, ["Now / Agent enhancements", "Next / Agent workflows"], "Site-wide operating status rail");
+includes(products.text, ["Latest research", "99.8% answer accuracy on LongMemEval-S"], "Site-wide research announcement rail");
 includes(products.text, [
   "Products",
   "Current product work",

@@ -34,4 +34,14 @@ const navClass = (current: boolean) => [
     <a aria-current={active === "support" ? "page" : undefined} href="/company#contact" class={navClass(active === "support")}><span>Support</span></a>
     <a href={`${appBaseUrl}/app`} class={navClass(false)}><span>Apps</span></a>
   </nav>
+  <div class="site-header-actions">
+    <a
+      href={`${appBaseUrl}/login`}
+      class:list={[
+        "site-header-action site-header-sign-in",
+        tone === "paper" ? "text-black/64 hover:text-black" : "text-white/68 hover:text-white",
+      ]}
+    >Sign in</a>
+    <a href={`${appBaseUrl}/signup`} class="site-header-action site-header-cta">Get started</a>
+  </div>
 </header>

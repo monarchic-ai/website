@@ -193,91 +193,35 @@ async function runBrowserSmoke() {
 
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
-      await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
+      const interactiveBrain = page.locator("[data-brain-field]");
+      await interactiveBrain.waitFor();
+      const brainCanvas = interactiveBrain.locator("[data-brain-canvas]");
+      await brainCanvas.waitFor();
       await page.getByText(/Production infrastructure for capable AI agents/i).waitFor();
-      await page.getByText(/Operator controls \/ See each task/i).waitFor();
+      await page.getByText(/hosted systems · one account · operator-controlled/i).waitFor();
       await page.locator("[data-operating-status-rail]").waitFor();
-      await page.getByText("Operator control", { exact: true }).waitFor();
-      await page.getByText("Reference architecture / Public view", { exact: true }).waitFor();
-      const steppedSystemField = page.locator('[data-system-motion="stepped-machine"]');
-      await steppedSystemField.waitFor();
-      await steppedSystemField.locator('[data-system-core="run"]').waitFor();
-      const systemCanvasBackground = await steppedSystemField.locator(".system-field-canvas").evaluate(
-        (element) => window.getComputedStyle(element).backgroundImage,
-      );
-      if (systemCanvasBackground !== "none") {
-        throw new Error(`system field canvas must remain grid-free; received ${systemCanvasBackground}`);
-      }
-      const packets = steppedSystemField.locator(".system-field-packet");
-      const packetCount = await packets.count();
-      if (packetCount !== 4) {
-        throw new Error(`system field must render four routed packets; received ${packetCount}`);
-      }
-      const carriageTiming = await steppedSystemField.locator(".system-field-carriage").evaluate(
-        (element) => window.getComputedStyle(element).animationTimingFunction,
-      );
-      if (!carriageTiming.includes("steps(")) {
-        throw new Error(`system field motion must use stepped timing; received ${carriageTiming}`);
-      }
-      const packetTiming = await packets.first().evaluate(
-        (element) => window.getComputedStyle(element).animationTimingFunction,
-      );
-      if (!packetTiming.includes("steps(")) {
-        throw new Error(`system field packets must use stepped timing; received ${packetTiming}`);
-      }
-      const staticTopologyField = page.locator('[data-hero-background="static-topology-field"]');
-      await staticTopologyField.waitFor();
-      const priorityLayer = page.locator('[data-hero-priority-layer="content"]');
-      await priorityLayer.waitFor();
-      const layerOrder = await priorityLayer.evaluate((content) => {
-        const topology = content.parentElement?.querySelector(".home-hero-topology");
-        return {
-          content: Number.parseInt(window.getComputedStyle(content).zIndex, 10),
-          topology: topology ? Number.parseInt(window.getComputedStyle(topology).zIndex, 10) : Number.NaN,
-        };
+      await page.getByText(/99.8% answer accuracy on LongMemEval-S/i).waitFor();
+      await page.locator("#brain-field-caption").waitFor({ state: "attached" });
+      const brainBounds = await brainCanvas.evaluate((element) => {
+        const bounds = element.getBoundingClientRect();
+        return { width: bounds.width, height: bounds.height };
       });
-      if (
-        !Number.isFinite(layerOrder.content)
-        || !Number.isFinite(layerOrder.topology)
-        || layerOrder.content <= layerOrder.topology
-      ) {
-        throw new Error(`hero content must render above the topology; received ${JSON.stringify(layerOrder)}`);
+      if (brainBounds.width <= 0 || brainBounds.height <= 0) {
+        throw new Error(`interactive brain canvas must have visible dimensions; received ${JSON.stringify(brainBounds)}`);
       }
-      const heroFieldState = await staticTopologyField.evaluate((element) => {
-        const fieldElements = element.querySelectorAll(
-          ".home-hero-trace, .home-hero-signal, .home-hero-datum, .home-hero-sample, .home-hero-register-bit",
-        );
-        return {
-          animationNames: Array.from(
-            fieldElements,
-            (fieldElement) => window.getComputedStyle(fieldElement).animationName,
-          ),
-          heroBackgroundImage: window.getComputedStyle(element.closest(".home-lab")).backgroundImage,
-        };
+      const heroColumns = await page.locator(".home-editorial-stage").evaluate((element) => {
+        const [copy, model] = element.children;
+        const copyWidth = copy?.getBoundingClientRect().width ?? 0;
+        const modelWidth = model?.getBoundingClientRect().width ?? 0;
+        return { copyWidth, modelWidth, copyRatio: copyWidth / (copyWidth + modelWidth) };
       });
-      if (
-        heroFieldState.animationNames.length === 0 ||
-        heroFieldState.animationNames.some((animationName) => animationName !== "none")
-      ) {
-        throw new Error(`hero industrial field must remain static; received ${heroFieldState.animationNames.join(", ")}`);
+      if (heroColumns.copyRatio < 0.42 || heroColumns.copyRatio > 0.46) {
+        throw new Error(`desktop hero copy must occupy approximately 44%; received ${JSON.stringify(heroColumns)}`);
       }
-      if (heroFieldState.heroBackgroundImage !== "none") {
-        throw new Error(`hero industrial field must replace the hero grid; received ${heroFieldState.heroBackgroundImage}`);
-      }
-      await page.emulateMedia({ reducedMotion: "reduce" });
-      const reducedCarriageAnimation = await steppedSystemField.locator(".system-field-carriage").evaluate(
-        (element) => window.getComputedStyle(element).animationName,
-      );
-      if (reducedCarriageAnimation !== "none") {
-        throw new Error(`system field motion must stop for reduced motion; received ${reducedCarriageAnimation}`);
-      }
-      const reducedPacketAnimation = await packets.first().evaluate(
-        (element) => window.getComputedStyle(element).animationName,
-      );
-      if (reducedPacketAnimation !== "none") {
-        throw new Error(`system field packet motion must stop for reduced motion; received ${reducedPacketAnimation}`);
-      }
-      await page.emulateMedia({ reducedMotion: "no-preference" });
+      const divisionRail = page.locator(".home-system-rail");
+      await divisionRail.getByRole("heading", { name: "Products", exact: true }).waitFor();
+      await divisionRail.getByRole("heading", { name: "Platform", exact: true }).waitFor();
+      await divisionRail.getByRole("heading", { name: "Research", exact: true }).waitFor();
       await page.getByRole("heading", { name: "What Monarchic builds." }).waitFor();
       await page.getByRole("heading", { name: "A person should be able to assign a job and review the result." }).waitFor();
       await page.getByRole("heading", { name: `${expectedAvailableMcpCount} agent enhancements are available.` }).waitFor();
@@ -311,10 +255,6 @@ async function runBrowserSmoke() {
         "/products/hosted-mcps",
       );
       await expectHref(
-        page.getByRole("link", { name: "See current work", exact: true }),
-        "#current-work",
-      );
-      await expectHref(
         page.getByRole("link", { name: "View product status", exact: true }),
         "/products/monarchic-ai",
       );
@@ -325,6 +265,14 @@ async function runBrowserSmoke() {
       await expectHref(
         page.getByRole("link", { name: "Apps", exact: true }),
         `${expectedAppBaseUrl}/app`,
+      );
+      await expectHref(
+        page.getByRole("link", { name: "Sign in", exact: true }),
+        `${expectedAppBaseUrl}/login`,
+      );
+      await expectHref(
+        page.getByRole("link", { name: "Get started", exact: true }),
+        `${expectedAppBaseUrl}/signup`,
       );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
       await expectMeta(page, "og:title", "Monarchic | AI engineering systems");
@@ -560,12 +508,14 @@ async function runBrowserSmoke() {
     await page.setViewportSize({ width: 320, height: 900 });
     await checkPage(page, `${baseUrl}/`, async () => {
       await page.getByRole("heading", { name: "Monarchic builds agent systems.", exact: true }).waitFor();
-      await page.getByRole("img", { name: /Monarchic run architecture/i }).waitFor();
+      await page.locator("[data-brain-field]").waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Support", exact: true }).first().waitFor();
+      await page.getByRole("link", { name: "Sign in", exact: true }).waitFor();
+      await page.getByRole("link", { name: "Get started", exact: true }).waitFor();
       await expectNoElementOverlap(
         page.locator("#navigation > a[href='/']"),
-        page.locator("#navigation nav a[href='/products']"),
+        page.getByRole("link", { name: "Sign in", exact: true }),
       );
       await expectNoHorizontalOverflow(page);
     }, "home route at 320px");
