@@ -113,7 +113,7 @@ const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 2;
 const OUTBOUND_OPACITY_LEVELS = 5;
-const OUTBOUND_FIBER_COUNT = 6;
+const OUTBOUND_FIBER_COUNT = 8;
 const STRUCTURAL_DEPTH_ALPHA = [0.04, 0.09, 0.18, 0.31, 0.49, 0.75, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const MOBILE_DENSITY_CUTOFF = 0.075;
@@ -197,17 +197,17 @@ const CEREBRUM_LOBES: Lobe[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 1.08, y: -0.55, z: -0.04 },
-  radius: { x: 0.78, y: 0.48, z: 0.53 },
+  center: { x: 1.01, y: -0.49, z: -0.04 },
+  radius: { x: 0.74, y: 0.55, z: 0.53 },
 };
 
 const BRAINSTEM = {
   top: { x: 0.48, y: -0.46 },
   bottom: { x: 0.35, y: -1.01 },
-  topRadius: { x: 0.24, z: 0.2 },
+  topRadius: { x: 0.28, z: 0.23 },
   centerZ: 0.07,
   curve: 0.045,
-  endScale: 0.45,
+  endScale: 0.38,
 } as const;
 
 const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
@@ -1681,12 +1681,12 @@ const styleFibers = (fibers: Fiber[]) => {
     x: number;
     y: number;
   }> = [
-    { family: "crown-longitudinal", x: -0.62, y: 0.92 },
     { family: "frontal-diagonal", x: -0.82, y: 0.34 },
     { family: "cortical-arc", x: 0.02, y: 0.72 },
     { family: "crown-descending", x: 0.42, y: 0.64 },
     { family: "deep", x: 0.08, y: 0.18 },
     { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
+    { family: "posterior-fan", x: 1, y: 0.45 },
   ];
   const highwayFibers: Fiber[] = [];
   const highwaySet = new Set<Fiber>();
@@ -1836,9 +1836,28 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
 
   const bundleKey = mixRenderKey(fiber.bundleId ^ 0x52454e44);
   const suppressible = fiber.escapeStart < 0;
+  const boundaryFamily =
+    fiber.family === "cortical-arc" ||
+    fiber.family === "crown-longitudinal" ||
+    fiber.family === "temporal-longitudinal" ||
+    fiber.family === "posterior-fan";
+  let upperRightPointCount = 0;
+  for (let offset = 0; offset < fiber.points.length; offset += 3) {
+    if (fiber.points[offset] > 0.55 && fiber.points[offset + 1] > 0.5) {
+      upperRightPointCount += 1;
+    }
+  }
+  const upperRightOccupancy =
+    upperRightPointCount / Math.max(1, fiber.points.length / 3);
+  const upperRightCrosshatch =
+    fiber.bundleTier !== "active" &&
+    !boundaryFamily &&
+    upperRightOccupancy >= 0.25 &&
+    mixRenderKey(bundleKey ^ 0x55505252) % 6 === 0;
   const suppressed =
     suppressible &&
-    ((fiber.bundleTier === "dim" && bundleKey % 4 === 0) ||
+    (upperRightCrosshatch ||
+      (fiber.bundleTier === "dim" && bundleKey % 4 === 0) ||
       (fiber.bundleTier === "medium" && bundleKey % 10 === 0));
   const pattern: readonly number[] =
     fiber.escapeStart >= 0
@@ -1854,11 +1873,6 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
               bundleKey % MEDIUM_CEREBRUM_STRAND_PATTERNS.length
             ]
           : [0, 1, 2, 3, 4];
-  const boundaryFamily =
-    fiber.family === "cortical-arc" ||
-    fiber.family === "crown-longitudinal" ||
-    fiber.family === "temporal-longitudinal" ||
-    fiber.family === "posterior-fan";
   const coverageKey = renderUnit(bundleKey ^ 0x4c454e47);
   const placementKey = renderUnit(bundleKey ^ 0x504c4143);
   const baseCoverage =
@@ -2701,7 +2715,7 @@ const mountBrain = async (field: HTMLElement) => {
 
     context.lineCap = "butt";
     context.lineJoin = "miter";
-    const structuralAlpha = [0.075, 0.1, 0.13, 0.18];
+    const structuralAlpha = [0.075, 0.112, 0.145, 0.18];
     for (
       let opacityBand = 0;
       opacityBand < OPACITY_LEVELS;
