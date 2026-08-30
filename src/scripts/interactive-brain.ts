@@ -62,6 +62,8 @@ type FiberRenderPlan = {
   strandVisible: Uint8Array;
   strandOffset: Float32Array;
   strandDrift: Float32Array;
+  strandBend: Float32Array;
+  strandBendPhase: Float32Array;
   strandStart: Float32Array;
   strandEnd: Float32Array;
 };
@@ -111,7 +113,7 @@ const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 2;
 const OUTBOUND_OPACITY_LEVELS = 5;
-const OUTBOUND_FIBER_COUNT = 8;
+const OUTBOUND_FIBER_COUNT = 6;
 const STRUCTURAL_DEPTH_ALPHA = [0.04, 0.09, 0.18, 0.31, 0.49, 0.75, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const MOBILE_DENSITY_CUTOFF = 0.075;
@@ -195,17 +197,17 @@ const CEREBRUM_LOBES: Lobe[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 1.13, y: -0.63, z: -0.06 },
-  radius: { x: 0.72, y: 0.42, z: 0.49 },
+  center: { x: 1.08, y: -0.55, z: -0.04 },
+  radius: { x: 0.78, y: 0.48, z: 0.53 },
 };
 
 const BRAINSTEM = {
   top: { x: 0.48, y: -0.46 },
   bottom: { x: 0.35, y: -1.01 },
-  topRadius: { x: 0.18, z: 0.16 },
+  topRadius: { x: 0.24, z: 0.2 },
   centerZ: 0.07,
   curve: 0.045,
-  endScale: 0.58,
+  endScale: 0.45,
 } as const;
 
 const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
@@ -1369,28 +1371,35 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.cerebellar);
   let generatedBundles = 0;
-  const foliaStarts = [-0.9, -0.25, 0.42] as const;
+  const foliaStarts = [-1, -0.333, 0.333] as const;
   const foliaOffsets = [
-    { x: -0.07, y: 0.06, scale: 0.94 },
-    { x: 0.07, y: 0.03, scale: 1 },
-    { x: 0, y: -0.08, scale: 0.91 },
+    { x: -0.02, y: 0.014, scale: 0.96 },
+    { x: 0.018, y: 0.008, scale: 1 },
+    { x: 0, y: -0.018, scale: 0.94 },
   ] as const;
-  for (let shell = 0; shell < 12; shell += 1) {
-    const shellPosition = (shell + 0.5) / 12;
-    const shellScale = lerp(0.24, 0.94, shellPosition);
+  for (let shell = 0; shell < 14; shell += 1) {
+    const shellPosition = (shell + 0.5) / 14;
+    const shellScale = lerp(0.22, 0.97, shellPosition);
     const shellPhase = random() * TAU;
-    const shellCenterX = Math.sin(shell * 1.61) * 0.045;
-    const shellCenterY = Math.cos(shell * 1.37) * 0.035;
+    const shellCenterX = Math.sin(shell * 1.61) * 0.06;
+    const shellCenterY = Math.cos(shell * 1.37) * 0.07;
+    const shellRotation = Math.sin(shellPhase) * 0.12;
+    const brokenSector = (shell * 2 + 1) % foliaStarts.length;
     for (let sector = 0; sector < foliaStarts.length; sector += 1) {
       for (let lane = 0; lane < 4; lane += 1) {
-        const depthIndex = (lane * 3 + shell + sector * 2) % 4;
+        const depthIndex = (lane * 3 + shell) % 4;
         const normalizedZ = lerp(-0.48, 0.48, (depthIndex + 0.5) / 4);
         const section = Math.sqrt(Math.max(0.22, 1 - normalizedZ ** 2));
         const startAngle =
-          (foliaStarts[sector] + lerp(-0.075, 0.075, random())) *
+          (foliaStarts[sector] +
+            shellRotation +
+            lerp(-0.04, 0.04, random())) *
           Math.PI;
-        const arcSpan = lerp(0.38, 0.55, random()) * Math.PI;
-        const verticalScale = lerp(0.72, 0.92, shellPosition);
+        const arcSpan =
+          lerp(0.5, 0.62, random()) *
+          (sector === brokenSector ? lerp(0.5, 0.68, random()) : 1) *
+          Math.PI;
+        const verticalScale = lerp(0.78, 0.96, shellPosition);
         const regionalScale = foliaOffsets[sector].scale;
         const phase = shellPhase + sector * 0.74 + lane * 0.16;
         const controls: Vector3[] = [];
@@ -1398,7 +1407,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           const position = step / 12;
           const angle = startAngle + arcSpan * position;
           const radiusPulse =
-            1 + 0.035 * Math.sin(TAU * position + phase);
+            1 + 0.018 * Math.sin(TAU * position + phase);
           const normalizedX =
             shellCenterX +
             foliaOffsets[sector].x +
@@ -1407,7 +1416,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
               regionalScale *
               section *
               radiusPulse +
-            0.018 * Math.sin(Math.PI * position + phase);
+            0.01 * Math.sin(Math.PI * position + phase);
           const localY =
             shellCenterY +
             foliaOffsets[sector].y +
@@ -1417,9 +1426,9 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
               verticalScale *
               section *
               radiusPulse +
-            0.014 * Math.cos(TAU * position + phase);
+            0.008 * Math.cos(TAU * position + phase);
           const localZ =
-            normalizedZ + 0.016 * Math.sin(Math.PI * position + phase);
+            normalizedZ + 0.01 * Math.sin(Math.PI * position + phase);
           controls.push(
             constrainToLobe(
               {
@@ -1455,7 +1464,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     }
   }
 
-  for (let index = 0; index < 24; index += 1) {
+  for (let index = 0; index < 16; index += 1) {
     const direction = index % 2 === 0 ? 1 : -1;
     const normalizedX = lerp(-0.42, 0.42, random());
     const normalizedY = lerp(-0.48, 0.44, random());
@@ -1465,7 +1474,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     const startAngle =
       (direction > 0 ? -0.42 : 0.58) * Math.PI +
       lerp(-0.12, 0.12, random());
-    const arcSpan = lerp(0.55, 0.85, random()) * Math.PI;
+    const arcSpan = lerp(0.45, 0.7, random()) * Math.PI;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 12; step += 1) {
       const position = step / 12;
@@ -1623,7 +1632,7 @@ const styleFibers = (fibers: Fiber[]) => {
   fibers.forEach((fiber) => {
     if (
       fiber.family === "cerebellar-curl" &&
-      fiber.qualityRank < 0.78
+      fiber.qualityRank < 0.4
     ) {
       fiber.bundleTier = "medium";
     }
@@ -1673,10 +1682,10 @@ const styleFibers = (fibers: Fiber[]) => {
     y: number;
   }> = [
     { family: "crown-longitudinal", x: -0.62, y: 0.92 },
-    { family: "crown-longitudinal", x: 0.55, y: 0.88 },
+    { family: "frontal-diagonal", x: -0.82, y: 0.34 },
     { family: "cortical-arc", x: 0.02, y: 0.72 },
+    { family: "crown-descending", x: 0.42, y: 0.64 },
     { family: "deep", x: 0.08, y: 0.18 },
-    { family: "association", x: -0.08, y: 0.08 },
     { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
   ];
   const highwayFibers: Fiber[] = [];
@@ -1799,6 +1808,8 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
   const strandVisible = new Uint8Array(fiber.strandCount);
   const strandOffset = new Float32Array(fiber.strandCount);
   const strandDrift = new Float32Array(fiber.strandCount);
+  const strandBend = new Float32Array(fiber.strandCount);
+  const strandBendPhase = new Float32Array(fiber.strandCount);
   const strandStart = new Float32Array(fiber.strandCount);
   const strandEnd = new Float32Array(fiber.strandCount);
   const centerStrand = Math.floor(fiber.strandCount / 2);
@@ -1816,6 +1827,8 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
       strandVisible,
       strandOffset,
       strandDrift,
+      strandBend,
+      strandBendPhase,
       strandStart,
       strandEnd,
     };
@@ -1853,7 +1866,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
       ? lerp(0.68, 0.9, coverageKey)
       : fiber.bundleTier === "medium"
         ? lerp(0.82, 0.97, coverageKey)
-        : lerp(0.92, 1, coverageKey);
+        : lerp(0.78, 0.96, coverageKey);
   const coverage = Math.min(
     1,
     baseCoverage + (boundaryFamily ? 0.06 : 0),
@@ -1870,17 +1883,19 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     const signedOffset = strandIndex - centerStrand;
     const centerActiveStrand =
       fiber.bundleTier === "active" && strandIndex === centerStrand;
-    const offsetScale = lerp(
-      0.78,
-      1.12,
-      renderUnit(strandKey ^ 0x4f464653),
-    );
+    const offsetScale =
+      fiber.bundleTier === "active"
+        ? lerp(0.94, 1.08, renderUnit(strandKey ^ 0x4f464653))
+        : lerp(0.78, 1.12, renderUnit(strandKey ^ 0x4f464653));
     const offsetBias =
-      (renderUnit(strandKey ^ 0x42494153) - 0.5) * 0.16;
+      (renderUnit(strandKey ^ 0x42494153) - 0.5) *
+      (fiber.bundleTier === "active" ? 0.08 : 0.16);
     const startJitter =
-      (renderUnit(strandKey ^ 0x53544152) - 0.5) * 0.024;
+      (renderUnit(strandKey ^ 0x53544152) - 0.5) *
+      (fiber.bundleTier === "active" ? 0.1 : 0.024);
     const endJitter =
-      (renderUnit(strandKey ^ 0x454e4421) - 0.5) * 0.034;
+      (renderUnit(strandKey ^ 0x454e4421) - 0.5) *
+      (fiber.bundleTier === "active" ? 0.14 : 0.034);
 
     strandVisible[strandIndex] = 1;
     strandOffset[strandIndex] =
@@ -1890,7 +1905,15 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     strandDrift[strandIndex] =
       signedOffset === 0
         ? 0
-        : (renderUnit(strandKey ^ 0x44524946) - 0.5) * 0.2;
+        : (renderUnit(strandKey ^ 0x44524946) - 0.5) *
+          (fiber.bundleTier === "active" ? 0.32 : 0.2);
+    strandBend[strandIndex] =
+      centerActiveStrand
+        ? 0
+        : lerp(0.3, 0.6, renderUnit(strandKey ^ 0x42454e44)) *
+          (renderUnit(strandKey ^ 0x43555256) < 0.5 ? -1 : 1);
+    strandBendPhase[strandIndex] =
+      renderUnit(strandKey ^ 0x50484153) * TAU;
     strandStart[strandIndex] = centerActiveStrand
       ? 0
       : clamp(baseStart + startJitter, 0, 0.28);
@@ -1904,6 +1927,8 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     strandVisible,
     strandOffset,
     strandDrift,
+    strandBend,
+    strandBendPhase,
     strandStart,
     strandEnd,
   };
@@ -2070,6 +2095,9 @@ const mountBrain = async (field: HTMLElement) => {
 
   const fibers = await createFiberField();
   const renderPlans = fibers.map(createFiberRenderPlan);
+  const renderPlanByFiber = new Map(
+    fibers.map((fiber, index) => [fiber, renderPlans[index]]),
+  );
   field.dataset.brainState = "idle";
   status.textContent = "MODEL FIELD / LIVE";
   const particleCerebrum = fibers.filter(
@@ -2091,9 +2119,28 @@ const mountBrain = async (field: HTMLElement) => {
     ...particleCerebellum.slice(3),
     ...particleStem.slice(1),
   ];
-  const outboundFibers = fibers
+  const outboundCandidates = fibers
     .filter((fiber) => fiber.escapeStart >= 0)
-    .slice(0, OUTBOUND_FIBER_COUNT);
+    .sort(
+      (left, right) =>
+        left.points[left.escapeStart * 3 + 1] -
+        right.points[right.escapeStart * 3 + 1],
+    );
+  const outboundFibers = Array.from(
+    {
+      length: Math.min(
+        OUTBOUND_FIBER_COUNT,
+        outboundCandidates.length,
+      ),
+    },
+    (_, index) =>
+      outboundCandidates[
+        Math.round(
+          (index * (outboundCandidates.length - 1)) /
+            Math.max(1, OUTBOUND_FIBER_COUNT - 1),
+        )
+      ],
+  );
   const outboundFiberSet = new Set(outboundFibers);
   const mobileOutboundFiberSet = new Set(
     outboundFibers.filter((_, index) => index % 2 === 0),
@@ -2300,8 +2347,8 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.region !== "cerebellum"
           ? cerebralMobileCutoff
           : fiber.family === "cerebellar-folia"
-            ? 0.36
-            : 0.62;
+            ? 0.48
+            : 0.34;
       fiber.visible =
         !mobile ||
         fiber.region === "stem" ||
@@ -2487,15 +2534,36 @@ const mountBrain = async (field: HTMLElement) => {
           if (fade < 0.04) continue;
           const baseStrandOffset = strandIndex - centerStrand;
           const centerDistance = Math.abs(baseStrandOffset);
-          const previousStrandOffset = useStrandPlan
+          const previousBaseStrandOffset = useStrandPlan
             ? renderPlan.strandOffset[strandIndex] +
               renderPlan.strandDrift[strandIndex] *
                 (previousPosition * 2 - 1)
             : baseStrandOffset;
-          const nextStrandOffset = useStrandPlan
+          const nextBaseStrandOffset = useStrandPlan
             ? renderPlan.strandOffset[strandIndex] +
               renderPlan.strandDrift[strandIndex] * (nextPosition * 2 - 1)
             : baseStrandOffset;
+          const previousBend =
+            fiber.bundleTier === "active"
+              ? renderPlan.strandBend[strandIndex] *
+                Math.sin(Math.PI * previousPosition) *
+                Math.sin(
+                  Math.PI * previousPosition +
+                    renderPlan.strandBendPhase[strandIndex],
+                )
+              : 0;
+          const nextBend =
+            fiber.bundleTier === "active"
+              ? renderPlan.strandBend[strandIndex] *
+                Math.sin(Math.PI * nextPosition) *
+                Math.sin(
+                  Math.PI * nextPosition +
+                    renderPlan.strandBendPhase[strandIndex],
+                )
+              : 0;
+          const previousStrandOffset =
+            previousBaseStrandOffset + previousBend;
+          const nextStrandOffset = nextBaseStrandOffset + nextBend;
           const fadeLoss =
             fade < 0.18 ? 3 : fade < 0.42 ? 2 : fade < 0.72 ? 1 : 0;
           let strandOpacityBand: number;
@@ -2519,9 +2587,18 @@ const mountBrain = async (field: HTMLElement) => {
               widthBand) *
               CORTEX_LIGHT_LEVELS +
               cortexLightBand);
+          const activeBundleSpreadFloor = onePhysicalPixel * 1.55;
+          const renderPreviousSpread =
+            fiber.region === "cerebrum" && fiber.bundleTier === "active"
+              ? Math.max(previousSpread, activeBundleSpreadFloor)
+              : previousSpread;
+          const renderNextSpread =
+            fiber.region === "cerebrum" && fiber.bundleTier === "active"
+              ? Math.max(nextSpread, activeBundleSpreadFloor)
+              : nextSpread;
           const previousOffsetPixels =
-            previousStrandOffset * previousSpread;
-          const nextOffsetPixels = nextStrandOffset * nextSpread;
+            previousStrandOffset * renderPreviousSpread;
+          const nextOffsetPixels = nextStrandOffset * renderNextSpread;
           if (!isEscapeSegment) {
             const structuralPath = structuralPaths[structuralIndex];
             structuralPath.moveTo(
@@ -2591,7 +2668,10 @@ const mountBrain = async (field: HTMLElement) => {
             );
           }
 
-          const highlightedActiveStrand = centerDistance <= 1;
+          const highlightedActiveStrand =
+            fiber.region === "cerebrum"
+              ? centerDistance <= 2
+              : centerDistance <= 1;
           if (
             fiber.particle &&
             highlightedActiveStrand &&
@@ -2618,40 +2698,6 @@ const mountBrain = async (field: HTMLElement) => {
         }
       }
     });
-
-    context.lineCap = "round";
-    context.lineJoin = "round";
-
-    context.save();
-    context.globalCompositeOperation = "lighter";
-    for (let fadeBand = 0; fadeBand < 2; fadeBand += 1) {
-      for (
-        let depthBand = 0;
-        depthBand < DEPTH_LEVELS;
-        depthBand += 1
-      ) {
-        const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
-        for (
-          let widthBand = 0;
-          widthBand < WIDTH_LEVELS;
-          widthBand += 1
-        ) {
-          const index =
-            ((fadeBand * DEPTH_LEVELS + depthBand) * WIDTH_LEVELS +
-              widthBand);
-          context.strokeStyle = rgba(
-            255,
-            188 + depthBand * 4,
-            18,
-            (fadeBand === 0 ? 0.003 : 0.01) * depthStrength,
-          );
-          context.lineWidth =
-            (widthBand === 0 ? 2.2 : 2.8) * onePhysicalPixel;
-          context.stroke(activePaths[index]);
-        }
-      }
-    }
-    context.restore();
 
     context.lineCap = "butt";
     context.lineJoin = "miter";
@@ -2756,11 +2802,15 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             204 + depthBand * 4,
             34 + depthBand * 2,
-            (fadeBand === 0 ? 0.11 : 0.28) *
-              depthStrength,
+            (widthBand === 1
+              ? fadeBand === 0
+                ? 0.1
+                : 0.24
+              : fadeBand === 0
+                ? 0.035
+                : 0.085) * depthStrength,
           );
-          context.lineWidth =
-            (widthBand === 0 ? 1.15 : 1.35) * onePhysicalPixel;
+          context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
         }
       }
@@ -2829,7 +2879,51 @@ const mountBrain = async (field: HTMLElement) => {
       });
     });
 
+    const bundleParticlePoint = (
+      fiber: Fiber,
+      position: number,
+      signedLane: number,
+    ) => {
+      const point = pathPointAt(fiber, position);
+      if (fiber.region !== "cerebrum") return point;
+      const before = pathPointAt(fiber, Math.max(0, position - 0.012));
+      const after = pathPointAt(fiber, Math.min(1, position + 0.012));
+      const deltaX = after.x - before.x;
+      const deltaY = after.y - before.y;
+      const tangentLength = Math.max(0.001, Math.hypot(deltaX, deltaY));
+      const normalX = -deltaY / tangentLength;
+      const normalY = deltaX / tangentLength;
+      const renderPlan = renderPlanByFiber.get(fiber);
+      if (!renderPlan) return point;
+      const centerStrand = Math.floor(fiber.strandCount / 2);
+      const strandIndex = clamp(
+        centerStrand + signedLane,
+        0,
+        fiber.strandCount - 1,
+      );
+      const strandOffset =
+        renderPlan.strandOffset[strandIndex] +
+        renderPlan.strandDrift[strandIndex] * (position * 2 - 1) +
+        renderPlan.strandBend[strandIndex] *
+          Math.sin(Math.PI * position) *
+          Math.sin(
+            Math.PI * position +
+              renderPlan.strandBendPhase[strandIndex],
+          );
+      const perspective = cameraDistance / (cameraDistance - point.z);
+      const spread = Math.max(
+        fiber.strandSpread * modelScale * perspective,
+        onePhysicalPixel * 1.55,
+      );
+      return {
+        x: point.x + normalX * strandOffset * spread,
+        y: point.y + normalY * strandOffset * spread,
+        z: point.z,
+      };
+    };
+
     const particleLimit = mobile ? 6 : PARTICLE_FIBER_COUNT;
+    const particleLaneSequence = [-2, 0, 1, -1, 2, 0] as const;
     let particleCount = 0;
     let hotCount = 0;
     particleFibers.forEach((fiber) => {
@@ -2843,7 +2937,13 @@ const mountBrain = async (field: HTMLElement) => {
       const progress = reducedMotion.matches
         ? fiber.phase
         : (fiber.phase + time * fiber.speed) % 1;
-      const point = pathPointAt(fiber, progress);
+      const lane =
+        fiber.region === "cerebrum"
+          ? particleLaneSequence[
+              particleCount % particleLaneSequence.length
+            ]
+          : 0;
+      const point = bundleParticlePoint(fiber, progress, lane);
       const front = smoothstep(-0.92, 0.92, point.z);
       if (front < 0.08) return;
       const hot = fiber.hot && hotCount < 3;
@@ -2856,6 +2956,30 @@ const mountBrain = async (field: HTMLElement) => {
         0.34 + front * 0.5,
         hot ? 1.25 : 0.9,
       );
+      if (!mobile && fiber.region === "cerebrum") {
+        const secondaryProgress = (progress + 0.31) % 1;
+        const secondaryLane = lane === 0 ? 2 : -lane;
+        const secondaryPoint = bundleParticlePoint(
+          fiber,
+          secondaryProgress,
+          secondaryLane,
+        );
+        const secondaryFront = smoothstep(
+          -0.92,
+          0.92,
+          secondaryPoint.z,
+        );
+        if (secondaryFront >= 0.08) {
+          drawParticle(
+            context,
+            glowSprite,
+            secondaryPoint,
+            false,
+            0.18 + secondaryFront * 0.28,
+            0.62,
+          );
+        }
+      }
       particleCount += 1;
     });
 
