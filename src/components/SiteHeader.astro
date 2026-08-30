@@ -29,9 +29,9 @@ const navClass = (current: boolean) => [
     <span aria-hidden="true">Monarchic</span>
   </a>
   <nav aria-label="Primary navigation" class="site-primary-nav">
-    <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
-    <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
-    <a aria-current={active === "support" ? "page" : undefined} href="/company#contact" class={navClass(active === "support")}>Support</a>
-    <a href={`${appBaseUrl}/app`} class={navClass(false)}>Apps</a>
+    <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}><span>Products</span></a>
+    <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}><span>Research</span></a>
+    <a aria-current={active === "support" ? "page" : undefined} href="/company#contact" class={navClass(active === "support")}><span>Support</span></a>
+    <a href={`${appBaseUrl}/app`} class={navClass(false)}><span>Apps</span></a>
   </nav>
 </header>
