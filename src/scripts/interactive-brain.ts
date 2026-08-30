@@ -91,12 +91,20 @@ const SHELL_LEVELS = 6;
 
 const HUBS: Hub[] = [
   { position: { x: 0.02, y: 0.04, z: 0.34 }, radius: 0.62, strength: 1 },
-  { position: { x: -1.08, y: 0.38, z: 0.58 }, radius: 0.58, strength: 0.92 },
+  { position: { x: -1.08, y: 0.38, z: 0.58 }, radius: 0.58, strength: 0.74 },
   { position: { x: -0.1, y: 0.55, z: 0.7 }, radius: 0.52, strength: 0.68 },
   { position: { x: -0.2, y: -0.66, z: 0.62 }, radius: 0.5, strength: 0.84 },
-  { position: { x: 1.2, y: 0.12, z: 0.5 }, radius: 0.56, strength: 0.58 },
-  { position: { x: 1.17, y: -1.07, z: 0.27 }, radius: 0.37, strength: 0.46 },
+  { position: { x: 1.2, y: 0.12, z: 0.5 }, radius: 0.56, strength: 0.46 },
+  { position: { x: 1.06, y: -0.97, z: 0.25 }, radius: 0.35, strength: 0.46 },
 ];
+
+const CENTRAL_CORTEX_FIELD: Hub = {
+  position: { x: 0.26, y: 0.04, z: 0.92 },
+  radius: 0.82,
+  strength: 0.34,
+};
+
+const CENTRAL_LATTICE_CENTER: Vector3 = { x: 0.22, y: 0.02, z: 0.86 };
 
 const SULCUS_GUIDES: Curve3[] = [
   [
@@ -253,14 +261,15 @@ const cerebrumPoint = (direction: Vector3): Vector3 => {
     z: 1.04 * direction.z,
   };
 
-  const frontal = Math.exp(-(((position.x + 1.28) / 0.78) ** 2) - ((position.y - 0.18) / 0.9) ** 2);
-  const temporal = Math.exp(-(((position.x + 0.12) / 1.08) ** 2) - ((position.y + 0.76) / 0.34) ** 2);
+  const frontal = Math.exp(-(((position.x + 1.42) / 0.98) ** 2) - ((position.y - 0.24) / 1) ** 2);
+  const crown = Math.exp(-(((position.x + 0.3) / 1.34) ** 2) - ((position.y - 1.08) / 0.46) ** 2);
+  const temporal = Math.exp(-(((position.x + 0.18) / 1.12) ** 2) - ((position.y + 0.88) / 0.56) ** 2);
   const occipital = Math.exp(-(((position.x - 1.55) / 0.55) ** 2) - ((position.y - 0.02) / 0.82) ** 2);
 
   position = {
-    x: position.x - frontal * 0.1 - occipital * 0.08,
-    y: position.y + frontal * 0.07 - temporal * 0.17,
-    z: position.z * (1 + temporal * 0.08),
+    x: position.x - frontal * 0.16 - temporal * 0.035 - occipital * 0.08,
+    y: position.y + frontal * 0.1 + crown * 0.12 - temporal * 0.23,
+    z: position.z * (1 + temporal * 0.07),
   };
 
   return position;
@@ -271,9 +280,9 @@ const cerebellumPoint = (direction: Vector3): Vector3 => {
   const latitude = Math.asin(clamp(direction.y, -1, 1));
   const ripple = 1 + Math.sin(longitude * 9 + latitude * 2) * 0.022;
   return {
-    x: 1.19 + direction.x * 0.7 * ripple,
-    y: -1.08 + direction.y * 0.52 * ripple,
-    z: direction.z * 0.6 * ripple,
+    x: 1.08 + direction.x * 0.68 * ripple,
+    y: -0.98 + direction.y * 0.5 * ripple,
+    z: direction.z * 0.58 * ripple,
   };
 };
 
@@ -291,7 +300,7 @@ const fibonacciDirections = (count: number, seed: number) => {
   return directions;
 };
 
-const clusteredDirections = (hub: Hub, count: number, seed: number) => {
+const clusteredDirections = (hub: Hub, count: number, seed: number, spread = 0.16) => {
   const random = seededRandom(seed);
   const center = normalize({
     x: hub.position.x / 2.22,
@@ -307,8 +316,8 @@ const clusteredDirections = (hub: Hub, count: number, seed: number) => {
       add(
         center,
         add(
-          multiply(tangentOne, gaussian(random) * 0.16),
-          multiply(tangentTwo, gaussian(random) * 0.16),
+          multiply(tangentOne, gaussian(random) * spread),
+          multiply(tangentTwo, gaussian(random) * spread),
         ),
       ),
     ),
@@ -444,7 +453,8 @@ const addIrregularStem = (geometry: Geometry, edgeKeys: Set<string>) => {
   const mapper = (direction: Vector3): Vector3 => {
     const progress = clamp((direction.y + 1) * 0.5, 0, 1);
     const angle = Math.atan2(direction.z, direction.x);
-    const radius = 0.3 * (1 - progress * 0.64);
+    const topFlare = 1 - smoothstep(0, 0.34, progress);
+    const radius = 0.3 * (1 - progress * 0.64) + topFlare * 0.065;
     const centerX = 0.5 - progress * 0.15 - Math.sin(progress * Math.PI) * 0.06;
     return {
       x: centerX + Math.cos(angle) * radius,
@@ -555,7 +565,7 @@ const createNeuralLattice = (geometry: Geometry) => {
 
   HUBS.slice(1).forEach((hub, offset) => {
     const region = offset + 1;
-    const nodeCount = region === 5 ? 10 : 15;
+    const nodeCount = region === 5 ? 10 : region === 3 ? 15 : 12;
     for (let index = 0; index < nodeCount; index += 1) {
       geometry.nodes.push({
         position: {
@@ -571,14 +581,16 @@ const createNeuralLattice = (geometry: Geometry) => {
     }
   });
 
-  for (let index = 0; index < 24; index += 1) {
+  const centralNodeIndices: number[] = [];
+  for (let index = 0; index < 33; index += 1) {
     const angle = index * GOLDEN_ANGLE + (random() - 0.5) * 0.24;
-    const radius = 0.18 + Math.cbrt(random()) * 0.65;
+    const radius = 0.24 + Math.cbrt(random()) * 0.58;
+    centralNodeIndices.push(geometry.nodes.length);
     geometry.nodes.push({
       position: {
-        x: HUBS[0].position.x + Math.cos(angle) * radius * 1.14,
-        y: HUBS[0].position.y + Math.sin(angle) * radius * 0.78,
-        z: HUBS[0].position.z + 0.08 + gaussian(random) * 0.09,
+        x: CENTRAL_LATTICE_CENTER.x + Math.cos(angle) * radius * 1.14,
+        y: CENTRAL_LATTICE_CENTER.y + Math.sin(angle) * radius * 0.78,
+        z: CENTRAL_LATTICE_CENTER.z + gaussian(random) * 0.08,
       },
       region: 0,
       hub: false,
@@ -590,6 +602,23 @@ const createNeuralLattice = (geometry: Geometry) => {
   const linkKeys = new Set<string>();
   geometry.nodes.forEach((node, nodeIndex) => {
     if (node.hub) return;
+
+    if (node.region === 0) {
+      const localCandidates = centralNodeIndices
+        .filter((candidateIndex) => candidateIndex !== nodeIndex)
+        .map((candidateIndex) => ({
+          candidateIndex,
+          distance: distanceSquared(node.position, geometry.nodes[candidateIndex].position),
+        }))
+        .sort((left, right) => left.distance - right.distance)
+        .slice(0, 2);
+      localCandidates.forEach((candidate, rank) => {
+        if (candidate.distance > 0.16 || (rank === 1 && random() >= 0.3)) return;
+        addNeuralLink(geometry, linkKeys, nodeIndex, candidate.candidateIndex, random);
+      });
+      return;
+    }
+
     const hubIndex = node.region;
     const hubPosition = HUBS[hubIndex].position;
     const distanceToHub = distanceSquared(node.position, hubPosition);
@@ -619,31 +648,56 @@ const createNeuralLattice = (geometry: Geometry) => {
       )
       .sort((left, right) => left.distance - right.distance)
       .slice(1, 3);
-    const probabilities = node.region === 0 ? [0.7, 0.3] : [0.66, 0.18];
-    const maximumDistance = node.region === 0 ? 0.18 : 0.16;
+    const probabilities = [0.66, 0.18];
+    const maximumDistance = 0.16;
     localCandidates.forEach((candidate, rank) => {
       if (candidate.distance > maximumDistance || random() >= probabilities[rank]) return;
       addNeuralLink(geometry, linkKeys, nodeIndex, candidate.candidateIndex, random);
     });
   });
+  const centralAnchor = centralNodeIndices
+    .map((candidateIndex) => ({
+      candidateIndex,
+      distance: distanceSquared(geometry.nodes[candidateIndex].position, HUBS[0].position),
+    }))
+    .sort((left, right) => left.distance - right.distance)[0]?.candidateIndex;
+  if (centralAnchor !== undefined) addNeuralLink(geometry, linkKeys, 0, centralAnchor, random);
 
-  const routePairs = [
-    [0, 1],
-    [0, 4],
-    [1, 2],
-    [1, 3],
-    [4, 5],
+  const routeSpecs = [
+    {
+      from: 0,
+      to: 1,
+      controlOne: { x: -0.28, y: 0.18, z: 0.96 },
+      controlTwo: { x: -0.74, y: 0.48, z: 1.04 },
+    },
+    {
+      from: 0,
+      to: 4,
+      controlOne: { x: 0.32, y: 0.12, z: 1 },
+      controlTwo: { x: 0.82, y: 0.28, z: 0.96 },
+    },
+    {
+      from: 1,
+      to: 2,
+      controlOne: { x: -0.92, y: 0.75, z: 0.92 },
+      controlTwo: { x: -0.46, y: 0.92, z: 1.03 },
+    },
+    {
+      from: 1,
+      to: 3,
+      controlOne: { x: -0.98, y: -0.02, z: 0.96 },
+      controlTwo: { x: -0.62, y: -0.52, z: 1.06 },
+    },
+    {
+      from: 4,
+      to: 5,
+      controlOne: { x: 1.38, y: -0.18, z: 0.85 },
+      controlTwo: { x: 1.42, y: -0.7, z: 0.68 },
+    },
   ] as const;
-  routePairs.forEach(([from, to], routeIndex) => {
+  routeSpecs.forEach(({ from, to, controlOne, controlTwo }) => {
     const start = HUBS[from].position;
     const end = HUBS[to].position;
-    const trunk = from === 0;
-    const controlOne = add(multiply(start, 0.7), multiply(end, 0.3));
-    const controlTwo = add(multiply(start, 0.28), multiply(end, 0.72));
-    controlOne.z += trunk ? 0.28 : 0.1;
-    controlTwo.z += trunk ? 0.2 : 0.07;
-    controlOne.y += routeIndex % 2 === 0 ? 0.1 : -0.07;
-    controlTwo.y += routeIndex % 2 === 0 ? 0.07 : -0.05;
     const curve: Curve3 = [start, controlOne, controlTwo, end];
     geometry.routes.push({
       from,
@@ -666,9 +720,14 @@ const createBrainGeometry = () => {
   };
   const edgeKeys = new Set<string>();
   const cortexDirections = fibonacciDirections(420, 0x434f5254);
+  const clusterCounts = [30, 30, 45, 30] as const;
+  const clusterSpreads = [0.22, 0.23, 0.16, 0.22] as const;
   HUBS.slice(1, 5).forEach((hub, index) => {
-    cortexDirections.push(...clusteredDirections(hub, 45, 0x48423130 + index));
+    cortexDirections.push(
+      ...clusteredDirections(hub, clusterCounts[index], 0x48423130 + index, clusterSpreads[index]),
+    );
   });
+  cortexDirections.push(...clusteredDirections(CENTRAL_CORTEX_FIELD, 45, 0x43454e54, 0.38));
   const cortexIndices = addSurfaceGroup(
     geometry,
     cortexDirections,
@@ -1003,6 +1062,33 @@ const mountBrain = (field: HTMLElement) => {
       context.lineWidth = 0.36 + index * 0.1;
       context.stroke(path);
     });
+
+    const corticalContourPath = new Path2D();
+    const contourArcs = [
+      [0.84, 1.76],
+      [2.24, 3.16],
+      [3.66, 4.46],
+    ] as const;
+    contourArcs.forEach(([start, end]) => {
+      for (let step = 0; step <= 34; step += 1) {
+        const angle = start + (end - start) * (step / 34);
+        const direction = normalize({
+          x: Math.cos(angle),
+          y: Math.sin(angle),
+          z: Math.cos(angle) * Math.tan(yaw),
+        });
+        const point = projectPoint(cerebrumPoint(direction));
+        if (step === 0) corticalContourPath.moveTo(point.x, point.y);
+        else corticalContourPath.lineTo(point.x, point.y);
+      }
+    });
+    context.save();
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.strokeStyle = "rgb(255 194 12 / 0.36)";
+    context.lineWidth = 0.58;
+    context.stroke(corticalContourPath);
+    context.restore();
 
     const coreX = projectedNodes[0];
     const coreY = projectedNodes[1];
