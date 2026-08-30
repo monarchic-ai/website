@@ -152,9 +152,16 @@ const CEREBRUM_LOBES: Lobe[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 0.76, y: -0.53, z: -0.02 },
-  radius: { x: 0.65, y: 0.33, z: 0.46 },
+  center: { x: 1.14, y: -0.72, z: -0.02 },
+  radius: { x: 0.62, y: 0.34, z: 0.46 },
 };
+
+const BRAINSTEM = {
+  top: { x: 0.58, y: -0.44 },
+  bottom: { x: 0.47, y: -0.96 },
+  topRadius: { x: 0.24, z: 0.19 },
+  endScale: 0.28,
+} as const;
 
 const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
   {
@@ -164,11 +171,11 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     seed: FAMILY_SEEDS.association,
     minimum: { x: -1.85, y: -0.28, z: -0.82 },
     maximum: { x: 1.78, y: 0.88, z: 0.82 },
-    fieldMinimum: 0.18,
-    fieldMaximum: 0.66,
-    lengthMinimum: 1.05,
-    lengthMaximum: 2.7,
-    lengthExponent: 0.85,
+    fieldMinimum: 0.08,
+    fieldMaximum: 0.5,
+    lengthMinimum: 0.65,
+    lengthMaximum: 1.75,
+    lengthExponent: 1.8,
   },
   {
     family: "deep",
@@ -177,11 +184,11 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     seed: FAMILY_SEEDS.deep,
     minimum: { x: -1.12, y: -0.44, z: -0.58 },
     maximum: { x: 1.14, y: 0.7, z: 0.58 },
-    fieldMinimum: 0.52,
-    fieldMaximum: 0.92,
-    lengthMinimum: 0.9,
-    lengthMaximum: 2.2,
-    lengthExponent: 0.9,
+    fieldMinimum: 0.46,
+    fieldMaximum: 0.9,
+    lengthMinimum: 0.55,
+    lengthMaximum: 1.42,
+    lengthExponent: 1.65,
   },
   {
     family: "temporal-longitudinal",
@@ -191,36 +198,36 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     minimum: { x: -1.18, y: -0.94, z: -0.72 },
     maximum: { x: 0.92, y: -0.18, z: 0.72 },
     fieldMinimum: 0.02,
-    fieldMaximum: 0.22,
-    lengthMinimum: 1.2,
-    lengthMaximum: 2.4,
-    lengthExponent: 0.8,
+    fieldMaximum: 0.36,
+    lengthMinimum: 0.5,
+    lengthMaximum: 1.2,
+    lengthExponent: 1.8,
   },
   {
     family: "crown-longitudinal",
-    bundleCount: 160,
+    bundleCount: 40,
     bundleSpread: 0.0075,
     seed: FAMILY_SEEDS.crownLongitudinal,
     minimum: { x: -1.75, y: 0.72, z: -0.84 },
     maximum: { x: 1.72, y: 1.42, z: 0.84 },
     fieldMinimum: 0.01,
     fieldMaximum: 0.16,
-    lengthMinimum: 1.15,
-    lengthMaximum: 2.5,
-    lengthExponent: 0.82,
+    lengthMinimum: 0.55,
+    lengthMaximum: 1.2,
+    lengthExponent: 1.8,
   },
   {
     family: "crown-descending",
-    bundleCount: 170,
+    bundleCount: 290,
     bundleSpread: 0.009,
     seed: FAMILY_SEEDS.crownDescending,
     minimum: { x: -1.65, y: 0.4, z: -0.8 },
     maximum: { x: 1.45, y: 1.17, z: 0.8 },
     fieldMinimum: 0.12,
     fieldMaximum: 0.58,
-    lengthMinimum: 0.85,
-    lengthMaximum: 1.9,
-    lengthExponent: 0.88,
+    lengthMinimum: 0.45,
+    lengthMaximum: 1.1,
+    lengthExponent: 1.75,
   },
   {
     family: "frontal-diagonal",
@@ -231,9 +238,9 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: -0.48, y: 1.18, z: 0.78 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.38,
-    lengthMinimum: 0.95,
-    lengthMaximum: 2.3,
-    lengthExponent: 0.82,
+    lengthMinimum: 0.55,
+    lengthMaximum: 1.55,
+    lengthExponent: 1.8,
   },
   {
     family: "frontal-loop",
@@ -244,9 +251,9 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: -0.48, y: 1.18, z: 0.78 },
     fieldMinimum: 0.025,
     fieldMaximum: 0.4,
-    lengthMinimum: 0.85,
-    lengthMaximum: 2,
-    lengthExponent: 0.85,
+    lengthMinimum: 0.55,
+    lengthMaximum: 1.22,
+    lengthExponent: 1.8,
   },
   {
     family: "temporal-loop",
@@ -257,9 +264,9 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: 0.92, y: -0.18, z: 0.72 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.38,
-    lengthMinimum: 0.75,
-    lengthMaximum: 1.8,
-    lengthExponent: 0.88,
+    lengthMinimum: 0.45,
+    lengthMaximum: 1.08,
+    lengthExponent: 1.85,
   },
   {
     family: "posterior-fan",
@@ -270,9 +277,9 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: 2.12, y: 1.18, z: 0.76 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.38,
-    lengthMinimum: 0.85,
-    lengthMaximum: 1.8,
-    lengthExponent: 0.85,
+    lengthMinimum: 0.55,
+    lengthMaximum: 1.35,
+    lengthExponent: 1.75,
   },
   {
     family: "local-cortical",
@@ -283,9 +290,9 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: 2.12, y: 1.4, z: 0.86 },
     fieldMinimum: 0.005,
     fieldMaximum: 0.16,
-    lengthMinimum: 0.65,
-    lengthMaximum: 1.45,
-    lengthExponent: 0.9,
+    lengthMinimum: 0.35,
+    lengthMaximum: 0.8,
+    lengthExponent: 1.55,
   },
 ];
 
@@ -440,6 +447,49 @@ const cerebrumField = (point: Vector3) => {
   return intersectFields([lobeUnion, floor, frontalCap, notch]);
 };
 
+const cerebellumField = (point: Vector3) =>
+  fieldForLobes(point, [CEREBELLUM]);
+
+const brainstemField = (point: Vector3) => {
+  const verticalSpan = BRAINSTEM.top.y - BRAINSTEM.bottom.y;
+  const position = clamp(
+    (BRAINSTEM.top.y - point.y) / verticalSpan,
+    0,
+    1,
+  );
+  const centerX =
+    lerp(BRAINSTEM.top.x, BRAINSTEM.bottom.x, position) -
+    0.022 * Math.sin(Math.PI * position);
+  const taper = lerp(
+    1,
+    BRAINSTEM.endScale,
+    smoothstep(0.18, 1, position),
+  );
+  const radiusX = BRAINSTEM.topRadius.x * taper;
+  const radiusZ = BRAINSTEM.topRadius.z * taper;
+  const offsetX = point.x - centerX;
+  const radial: FieldSample = {
+    value:
+      1 -
+      (offsetX / radiusX) ** 2 -
+      (point.z / radiusZ) ** 2,
+    inward: normalize({
+      x: (-2 * offsetX) / (radiusX * radiusX),
+      y: 0,
+      z: (-2 * point.z) / (radiusZ * radiusZ),
+    }),
+  };
+  const top: FieldSample = {
+    value: (BRAINSTEM.top.y - point.y) * 4,
+    inward: { x: 0, y: -1, z: 0 },
+  };
+  const bottom: FieldSample = {
+    value: (point.y - BRAINSTEM.bottom.y) * 4,
+    inward: { x: 0, y: 1, z: 0 },
+  };
+  return intersectFields([radial, top, bottom]);
+};
+
 const projectTangent = (axis: Vector3, normal: Vector3) => {
   const projected = subtract(axis, multiply(normal, dot(axis, normal)));
   if (vectorLength(projected) > 0.0001) return normalize(projected);
@@ -460,10 +510,8 @@ const familyAxis = (
   }
   if (family === "deep") {
     return normalize({
-      x: 0.9,
-      y:
-        0.34 * Math.sin(point.x * 1.1 + phase) +
-        0.12 * Math.cos(phase),
+      x: 0.94,
+      y: 0.2 * Math.sin(point.x * 1.1 + phase),
       z: 0.27 * Math.cos(point.x * 0.8 + phase),
     });
   }
@@ -649,7 +697,7 @@ const traceDirection = (
       next.y > bounds.maximum.y ||
       next.z < bounds.minimum.z ||
       next.z > bounds.maximum.z ||
-      field(next).value < -0.025
+      field(next).value < 0.005
     ) {
       break;
     }
@@ -716,11 +764,21 @@ const trajectoryArcLength = (points: Vector3[]) => {
 };
 
 const minimumArcLength = (family: CerebrumFamily) => {
-  if (family === "local-cortical") return 0.55;
-  if (family === "frontal-loop" || family === "temporal-loop") {
-    return 0.7;
+  if (family === "local-cortical") return 0.28;
+  if (
+    family === "frontal-loop" ||
+    family === "temporal-loop" ||
+    family === "crown-descending"
+  ) {
+    return 0.38;
   }
-  return 0.82;
+  if (
+    family === "temporal-longitudinal" ||
+    family === "crown-longitudinal"
+  ) {
+    return 0.42;
+  }
+  return 0.5;
 };
 
 const interpolateVector = (
@@ -1048,11 +1106,23 @@ const offsetParallelStrand = (
     const previousIndex = Math.max(0, pointIndex - 1) * 3;
     const nextIndex = Math.min(pointCount - 1, pointIndex + 1) * 3;
     const offset = pointIndex * 3;
-    const source = {
+    let source = {
       x: trunk[offset],
       y: trunk[offset + 1],
       z: trunk[offset + 2],
     };
+    if (field) {
+      for (let attempt = 0; attempt < 6; attempt += 1) {
+        const sample = field(source);
+        if (sample.value >= 0.005) break;
+        const correction = clamp(
+          0.012 + (0.005 - sample.value) * 0.24,
+          0.012,
+          0.055,
+        );
+        source = add(source, multiply(sample.inward, correction));
+      }
+    }
     const tangent = normalize({
       x: trunk[nextIndex] - trunk[previousIndex],
       y: trunk[nextIndex + 1] - trunk[previousIndex + 1],
@@ -1095,11 +1165,20 @@ const offsetParallelStrand = (
         multiply(binormal, secondaryMagnitude),
       ),
     );
-    if (field && field(candidate).value < -0.015) {
-      candidate = add(
-        source,
-        multiply(subtract(candidate, source), 0.28),
-      );
+    if (field && field(candidate).value < 0.005) {
+      const offsetVector = subtract(candidate, source);
+      let insideScale = 0;
+      let outsideScale = 1;
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        const testScale = (insideScale + outsideScale) * 0.5;
+        const testPoint = add(source, multiply(offsetVector, testScale));
+        if (field(testPoint).value >= 0.005) {
+          insideScale = testScale;
+        } else {
+          outsideScale = testScale;
+        }
+      }
+      candidate = add(source, multiply(offsetVector, insideScale));
     }
     points[offset] = candidate.x;
     points[offset + 1] = candidate.y;
@@ -1300,6 +1379,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         "cerebellum",
         "cerebellar",
         0.006,
+        cerebellumField,
       ),
     );
     if ((index + 1) % GEOMETRY_BATCH_SIZE === 0) {
@@ -1307,19 +1387,19 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     }
   }
 
-  for (let index = 0; index < 26; index += 1) {
-    const lane = (index + 0.5) / 26;
-    const depth = lerp(-0.26, 0.26, ((index * 7) % 26) / 25);
+  for (let index = 0; index < 18; index += 1) {
+    const lane = (index + 0.5) / 18;
+    const depth = lerp(-0.24, 0.24, ((index * 7) % 18) / 17);
     const phase = random() * TAU;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 6; step += 1) {
       const progress = step / 6;
       controls.push({
         x:
-          lerp(lerp(0.3, 0.58, lane), lerp(0.38, 0.5, lane), progress) +
+          lerp(lerp(0.72, 0.9, lane), lerp(0.58, 0.66, lane), progress) +
           Math.sin(progress * Math.PI + phase) * 0.025,
         y:
-          lerp(lerp(-0.48, -0.38, lane), lerp(-0.34, -0.28, lane), progress) +
+          lerp(lerp(-0.7, -0.52, lane), lerp(-0.46, -0.38, lane), progress) +
           Math.sin(progress * Math.PI) * 0.018,
         z: lerp(depth, depth * 0.38, progress),
       });
@@ -1349,20 +1429,24 @@ const createStemFibers = async (createBundle: BundleFactory) => {
   for (let index = 0; index < 80; index += 1) {
     const initialAngle = index * GOLDEN_ANGLE + random() * 0.12;
     const radial = Math.sqrt((index + 0.5) / 80);
-    const offsetX = Math.cos(initialAngle) * 0.22 * radial;
-    const offsetZ = Math.sin(initialAngle) * 0.18 * radial;
+    const offsetX = Math.cos(initialAngle) * BRAINSTEM.topRadius.x * radial;
+    const offsetZ = Math.sin(initialAngle) * BRAINSTEM.topRadius.z * radial;
     const phase = random() * TAU;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 8; step += 1) {
       const position = step / 8;
       const center = {
         x:
-          lerp(0.44, 0.35, position) -
+          lerp(BRAINSTEM.top.x, BRAINSTEM.bottom.x, position) -
           0.022 * Math.sin(Math.PI * position),
-        y: lerp(-0.36, -0.98, position),
+        y: lerp(BRAINSTEM.top.y, BRAINSTEM.bottom.y, position),
         z: 0,
       };
-      const taper = lerp(1, 0.28, smoothstep(0.18, 1, position));
+      const taper = lerp(
+        1,
+        BRAINSTEM.endScale,
+        smoothstep(0.18, 1, position),
+      );
       controls.push({
         x:
           center.x +
@@ -1379,7 +1463,13 @@ const createStemFibers = async (createBundle: BundleFactory) => {
       24,
     );
     fibers.push(
-      ...createBundle(trunk, "stem", "stem", 0.006),
+      ...createBundle(
+        trunk,
+        "stem",
+        "stem",
+        0.006,
+        brainstemField,
+      ),
     );
     if ((index + 1) % GEOMETRY_BATCH_SIZE === 0) {
       await yieldToBrowser();
@@ -1939,7 +2029,7 @@ const mountBrain = async (field: HTMLElement) => {
 
     context.lineCap = "round";
     context.lineJoin = "round";
-    const passiveAlpha = [0.022, 0.041, 0.064, 0.09];
+    const passiveAlpha = [0.011, 0.0205, 0.032, 0.045];
     for (
       let opacityBand = 0;
       opacityBand < OPACITY_LEVELS;
@@ -2000,7 +2090,7 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             172 + depthBand * 4,
             0,
-            (fadeBand === 0 ? 0.008 : 0.018) *
+            (fadeBand === 0 ? 0.004 : 0.009) *
               depthStrength,
           );
           context.lineWidth =
@@ -2010,7 +2100,7 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             183 + depthBand * 4,
             10,
-            (fadeBand === 0 ? 0.1 : 0.22) *
+            (fadeBand === 0 ? 0.05 : 0.11) *
               depthStrength,
           );
           context.lineWidth =
