@@ -101,6 +101,9 @@ const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const DEPTH_LEVELS = 7;
 const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
+const STRUCTURAL_DEPTH_ALPHA = [0.06, 0.12, 0.22, 0.34, 0.5, 0.76, 1] as const;
+const INTERNAL_RENDER_SCALE = 2;
+const MAX_BACKING_PIXELS = 4_500_000;
 const MOBILE_DENSITY_CUTOFF = 0.075;
 const MOBILE_NARROW_DENSITY_CUTOFF = 0.055;
 const PARTICLE_FIBER_COUNT = 10;
@@ -1444,16 +1447,27 @@ const styleFibers = (fibers: Fiber[]) => {
   const random = seededRandom(FAMILY_SEEDS.style);
   fibers.forEach((fiber) => {
     const activityKey = random();
-    fiber.active = false;
     fiber.particle = false;
     fiber.hot = false;
     fiber.activityKey = activityKey;
-    fiber.opacityBand = activityKey < 0.4 ? 2 : 1;
-    fiber.bundleTier = activityKey < 0.4 ? "medium" : "dim";
+    fiber.bundleTier =
+      activityKey < 0.04
+        ? "active"
+        : activityKey < 0.19
+          ? "medium"
+          : "dim";
+    fiber.opacityBand =
+      fiber.bundleTier === "active"
+        ? 2
+        : fiber.bundleTier === "medium"
+          ? 1
+          : 0;
+    fiber.active = fiber.bundleTier === "active";
     fiber.phase = random();
     fiber.speed = 1 / lerp(2500, 6000, random());
     fiber.qualityRank = random();
     if (fiber.escapeStart >= 0) {
+      fiber.active = false;
       fiber.opacityBand = 0;
       fiber.bundleTier = "dim";
     }
@@ -1474,13 +1488,6 @@ const styleFibers = (fibers: Fiber[]) => {
 
   fibers.forEach((fiber) => {
     if (fiber.region === "stem") fiber.qualityRank = 0;
-    if (
-      (fiber.region === "stem" || fiber.region === "cerebellum") &&
-      fiber.bundleTier === "dim" &&
-      fiber.activityKey < 0.5
-    ) {
-      fiber.opacityBand = 1;
-    }
   });
 
   const particleRandom = seededRandom(FAMILY_SEEDS.particles);
@@ -1490,6 +1497,7 @@ const styleFibers = (fibers: Fiber[]) => {
       .filter(
         (fiber) =>
           fiber.region === region &&
+          fiber.bundleTier === "active" &&
           fiber.escapeStart < 0 &&
           fiber.points.length >= 24,
       )
@@ -1599,24 +1607,26 @@ const pathPointAt = (
 
 const createGlowSprite = () => {
   const sprite = document.createElement("canvas");
-  sprite.width = 20;
-  sprite.height = 20;
+  const spriteSize = 20 * INTERNAL_RENDER_SCALE;
+  const spriteCenter = spriteSize * 0.5;
+  sprite.width = spriteSize;
+  sprite.height = spriteSize;
   const spriteContext = sprite.getContext("2d");
   if (!spriteContext) return sprite;
   const gradient = spriteContext.createRadialGradient(
-    10,
-    10,
+    spriteCenter,
+    spriteCenter,
     0,
-    10,
-    10,
-    10,
+    spriteCenter,
+    spriteCenter,
+    spriteCenter,
   );
   gradient.addColorStop(0, "rgba(255, 232, 128, 0.9)");
   gradient.addColorStop(0.18, "rgba(255, 191, 18, 0.5)");
   gradient.addColorStop(0.5, "rgba(255, 165, 0, 0.13)");
   gradient.addColorStop(1, "rgba(255, 146, 0, 0)");
   spriteContext.fillStyle = gradient;
-  spriteContext.fillRect(0, 0, 20, 20);
+  spriteContext.fillRect(0, 0, spriteSize, spriteSize);
   return sprite;
 };
 
@@ -1631,6 +1641,8 @@ const drawParticle = (
   context.save();
   context.globalCompositeOperation = "lighter";
   context.globalAlpha = alpha;
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
   context.drawImage(
     sprite,
     point.x - 8,
@@ -1744,9 +1756,22 @@ const mountBrain = async (field: HTMLElement) => {
     const bounds = field.getBoundingClientRect();
     width = Math.max(1, bounds.width);
     height = Math.max(1, bounds.height);
-    pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = Math.round(width * pixelRatio);
-    canvas.height = Math.round(height * pixelRatio);
+    pixelRatio = Math.max(
+      1,
+      Math.min(
+        INTERNAL_RENDER_SCALE,
+        Math.sqrt(MAX_BACKING_PIXELS / (width * height)),
+      ),
+    );
+    const backingWidth = Math.round(width * pixelRatio);
+    const backingHeight = Math.round(height * pixelRatio);
+    if (
+      canvas.width !== backingWidth ||
+      canvas.height !== backingHeight
+    ) {
+      canvas.width = backingWidth;
+      canvas.height = backingHeight;
+    }
     pointer.x = pointer.x || width * 0.5;
     pointer.y = pointer.y || height * 0.47;
     pointer.targetX = pointer.targetX || pointer.x;
@@ -1810,6 +1835,10 @@ const mountBrain = async (field: HTMLElement) => {
       0,
       0,
     );
+    context.globalAlpha = 1;
+    context.globalCompositeOperation = "source-over";
+    context.filter = "none";
+    context.shadowBlur = 0;
     context.fillStyle = "#000";
     context.fillRect(0, 0, width, height);
 
@@ -1845,7 +1874,7 @@ const mountBrain = async (field: HTMLElement) => {
     const centerX = width * (mobile ? 0.44 : 0.42);
     const centerY = height * 0.47;
     const cameraDistance = 7.8;
-    const passivePaths = Array.from(
+    const structuralPaths = Array.from(
       {
         length:
           OPACITY_LEVELS * DEPTH_LEVELS * WIDTH_LEVELS,
@@ -1929,7 +1958,16 @@ const mountBrain = async (field: HTMLElement) => {
           endpointFade(fiber, pointIndex - 1, pointCount),
           endpointFade(fiber, pointIndex, pointCount),
         );
-        if (fade < 0.025) continue;
+        if (fade < 0.04) continue;
+        const rearBundleKey = fiber.bundleId % 10;
+        const cullRearBundle =
+          (fiber.bundleTier === "dim" &&
+            ((depthBand === 0 && rearBundleKey < 5) ||
+              (depthBand === 1 && rearBundleKey < 3))) ||
+          (fiber.bundleTier === "medium" &&
+            depthBand === 0 &&
+            rearBundleKey < 2);
+        if (cullRearBundle) continue;
         const fadeLoss =
           fade < 0.18 ? 3 : fade < 0.42 ? 2 : fade < 0.72 ? 1 : 0;
         const previousNormalStart = Math.max(0, pointIndex - 2) * 3;
@@ -2002,19 +2040,19 @@ const mountBrain = async (field: HTMLElement) => {
           ) as OpacityBand;
           const widthBand: WidthBand =
             fiber.bundleTier !== "dim" && centerDistance === 0 ? 1 : 0;
-          const passiveIndex =
+          const structuralIndex =
             ((opacityBand * DEPTH_LEVELS + depthBand) * WIDTH_LEVELS +
               widthBand);
-          const passivePath = passivePaths[passiveIndex];
+          const structuralPath = structuralPaths[structuralIndex];
           const previousOffsetPixels = strandOffset * previousSpread;
           const nextOffsetPixels = strandOffset * nextSpread;
-          passivePath.moveTo(
+          structuralPath.moveTo(
             fiber.projected[previousOffset] +
               previousNormalX * previousOffsetPixels,
             fiber.projected[previousOffset + 1] +
               previousNormalY * previousOffsetPixels,
           );
-          passivePath.lineTo(
+          structuralPath.lineTo(
             fiber.projected[offset] + nextNormalX * nextOffsetPixels,
             fiber.projected[offset + 1] + nextNormalY * nextOffsetPixels,
           );
@@ -2044,7 +2082,40 @@ const mountBrain = async (field: HTMLElement) => {
 
     context.lineCap = "round";
     context.lineJoin = "round";
-    const passiveAlpha = [0.055, 0.09, 0.135, 0.18];
+
+    context.save();
+    context.globalCompositeOperation = "lighter";
+    for (let fadeBand = 0; fadeBand < 2; fadeBand += 1) {
+      for (
+        let depthBand = 0;
+        depthBand < DEPTH_LEVELS;
+        depthBand += 1
+      ) {
+        const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
+        for (
+          let widthBand = 0;
+          widthBand < WIDTH_LEVELS;
+          widthBand += 1
+        ) {
+          const index =
+            ((fadeBand * DEPTH_LEVELS + depthBand) * WIDTH_LEVELS +
+              widthBand);
+          context.strokeStyle = rgba(
+            255,
+            188 + depthBand * 4,
+            18,
+            (fadeBand === 0 ? 0.004 : 0.014) * depthStrength,
+          );
+          context.lineWidth = widthBand === 0 ? 2.2 : 2.8;
+          context.stroke(activePaths[index]);
+        }
+      }
+    }
+    context.restore();
+
+    context.lineCap = "butt";
+    context.lineJoin = "miter";
+    const structuralAlpha = [0.054, 0.08, 0.12, 0.18];
     for (
       let opacityBand = 0;
       opacityBand < OPACITY_LEVELS;
@@ -2055,9 +2126,7 @@ const mountBrain = async (field: HTMLElement) => {
         depthBand < DEPTH_LEVELS;
         depthBand += 1
       ) {
-        const depthStrength =
-          0.34 +
-          (depthBand / (DEPTH_LEVELS - 1)) * 0.66;
+        const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
         for (
           let widthBand = 0;
           widthBand < WIDTH_LEVELS;
@@ -2068,21 +2137,17 @@ const mountBrain = async (field: HTMLElement) => {
               WIDTH_LEVELS +
               widthBand);
           context.strokeStyle = rgba(
-            244,
-            161 + depthBand * 3,
-            0,
-            passiveAlpha[opacityBand] * depthStrength,
+            255,
+            190 + depthBand * 3,
+            22 + depthBand * 2,
+            structuralAlpha[opacityBand] * depthStrength,
           );
-          context.lineWidth =
-            (widthBand === 0 ? 0.18 : 0.26) +
-            depthBand * 0.005;
-          context.stroke(passivePaths[index]);
+          context.lineWidth = widthBand === 0 ? 0.3 : 0.42;
+          context.stroke(structuralPaths[index]);
         }
       }
     }
 
-    context.save();
-    context.globalCompositeOperation = "lighter";
     for (let fadeBand = 0; fadeBand < 2; fadeBand += 1) {
       for (
         let depthBand = 0;
@@ -2090,8 +2155,7 @@ const mountBrain = async (field: HTMLElement) => {
         depthBand += 1
       ) {
         const depthStrength =
-          0.32 +
-          (depthBand / (DEPTH_LEVELS - 1)) * 0.68;
+          0.22 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.78;
         for (
           let widthBand = 0;
           widthBand < WIDTH_LEVELS;
@@ -2103,28 +2167,16 @@ const mountBrain = async (field: HTMLElement) => {
               widthBand);
           context.strokeStyle = rgba(
             255,
-            172 + depthBand * 4,
-            0,
-            (fadeBand === 0 ? 0.004 : 0.009) *
+            204 + depthBand * 4,
+            34 + depthBand * 2,
+            (fadeBand === 0 ? 0.11 : 0.28) *
               depthStrength,
           );
-          context.lineWidth =
-            widthBand === 0 ? 1.4 : 1.8;
-          context.stroke(activePaths[index]);
-          context.strokeStyle = rgba(
-            255,
-            183 + depthBand * 4,
-            10,
-            (fadeBand === 0 ? 0.05 : 0.11) *
-              depthStrength,
-          );
-          context.lineWidth =
-            widthBand === 0 ? 0.46 : 0.62;
+          context.lineWidth = widthBand === 0 ? 0.44 : 0.58;
           context.stroke(activePaths[index]);
         }
       }
     }
-    context.restore();
 
     const activePulses = pulses.filter(
       (pulse) => time - pulse.startedAt < 2200,
@@ -2159,6 +2211,8 @@ const mountBrain = async (field: HTMLElement) => {
       });
       context.save();
       context.globalCompositeOperation = "lighter";
+      context.lineCap = "round";
+      context.lineJoin = "round";
       context.strokeStyle = rgba(255, 174, 0, 0.045 * fade);
       context.lineWidth = 3.2;
       context.stroke(pulsePath);
