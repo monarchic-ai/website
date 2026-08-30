@@ -10,6 +10,7 @@ type FiberRegion = "cerebrum" | "cerebellum" | "stem";
 
 type CerebrumFamily =
   | "association"
+  | "cortical-arc"
   | "deep"
   | "temporal-longitudinal"
   | "crown-longitudinal"
@@ -20,11 +21,18 @@ type CerebrumFamily =
   | "posterior-fan"
   | "local-cortical";
 
-type FiberFamily = CerebrumFamily | "cerebellar" | "stem";
+type FiberFamily =
+  | CerebrumFamily
+  | "cerebellar-folia"
+  | "cerebellar-curl"
+  | "cerebellar-stitch"
+  | "stem";
 
 type OpacityBand = 0 | 1 | 2 | 3;
 
 type WidthBand = 0 | 1;
+
+type BundleTier = "dim" | "medium" | "active";
 
 type Fiber = {
   points: Float32Array;
@@ -37,13 +45,14 @@ type Fiber = {
   hot: boolean;
   activityKey: number;
   opacityBand: OpacityBand;
-  widthBand: WidthBand;
   phase: number;
   speed: number;
   qualityRank: number;
   bundleId: number;
-  strandIndex: number;
   strandCount: number;
+  strandSpread: number;
+  boundaryScale: Float32Array;
+  bundleTier: BundleTier;
   escapeStart: number;
   visible: boolean;
 };
@@ -92,11 +101,11 @@ const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const DEPTH_LEVELS = 7;
 const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
-const MOBILE_DENSITY_CUTOFF = 0.18;
-const MOBILE_CEREBELLUM_DENSITY_CUTOFF = 0.28;
-const PARTICLE_FIBER_COUNT = 48;
-const ACTIVE_BUNDLE_STRANDS = 5;
-const DIM_BUNDLE_STRANDS = 2;
+const MOBILE_DENSITY_CUTOFF = 0.075;
+const MOBILE_NARROW_DENSITY_CUTOFF = 0.055;
+const PARTICLE_FIBER_COUNT = 10;
+const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
+const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
 const GEOMETRY_BATCH_SIZE = 48;
 
 type CooperativeScheduler = {
@@ -117,6 +126,7 @@ const yieldToBrowser = () => {
 
 const FAMILY_SEEDS = {
   association: 0x4153534f,
+  corticalArc: 0x43544152,
   deep: 0x44454550,
   temporalLongitudinal: 0x544c4f4e,
   crownLongitudinal: 0x43524c4e,
@@ -166,29 +176,42 @@ const BRAINSTEM = {
 const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
   {
     family: "association",
-    bundleCount: 280,
+    bundleCount: 180,
     bundleSpread: 0.01,
     seed: FAMILY_SEEDS.association,
     minimum: { x: -1.85, y: -0.28, z: -0.82 },
     maximum: { x: 1.78, y: 0.88, z: 0.82 },
     fieldMinimum: 0.08,
     fieldMaximum: 0.5,
-    lengthMinimum: 0.65,
-    lengthMaximum: 1.75,
-    lengthExponent: 1.8,
+    lengthMinimum: 0.85,
+    lengthMaximum: 1.7,
+    lengthExponent: 1.4,
+  },
+  {
+    family: "cortical-arc",
+    bundleCount: 100,
+    bundleSpread: 0.007,
+    seed: FAMILY_SEEDS.corticalArc,
+    minimum: { x: -1.45, y: 0.28, z: -0.8 },
+    maximum: { x: 1.42, y: 1.22, z: 0.8 },
+    fieldMinimum: 0.1,
+    fieldMaximum: 0.5,
+    lengthMinimum: 1.2,
+    lengthMaximum: 2.1,
+    lengthExponent: 1.3,
   },
   {
     family: "deep",
-    bundleCount: 150,
+    bundleCount: 100,
     bundleSpread: 0.0095,
     seed: FAMILY_SEEDS.deep,
     minimum: { x: -1.12, y: -0.44, z: -0.58 },
     maximum: { x: 1.14, y: 0.7, z: 0.58 },
     fieldMinimum: 0.46,
     fieldMaximum: 0.9,
-    lengthMinimum: 0.55,
-    lengthMaximum: 1.42,
-    lengthExponent: 1.65,
+    lengthMinimum: 1.1,
+    lengthMaximum: 2.2,
+    lengthExponent: 1.3,
   },
   {
     family: "temporal-longitudinal",
@@ -199,87 +222,87 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: 0.92, y: -0.18, z: 0.72 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.36,
-    lengthMinimum: 0.5,
-    lengthMaximum: 1.2,
-    lengthExponent: 1.8,
+    lengthMinimum: 0.8,
+    lengthMaximum: 1.5,
+    lengthExponent: 1.4,
   },
   {
     family: "crown-longitudinal",
-    bundleCount: 40,
+    bundleCount: 80,
     bundleSpread: 0.0075,
     seed: FAMILY_SEEDS.crownLongitudinal,
     minimum: { x: -1.75, y: 0.72, z: -0.84 },
     maximum: { x: 1.72, y: 1.42, z: 0.84 },
     fieldMinimum: 0.01,
     fieldMaximum: 0.16,
-    lengthMinimum: 0.55,
-    lengthMaximum: 1.2,
-    lengthExponent: 1.8,
+    lengthMinimum: 0.9,
+    lengthMaximum: 1.65,
+    lengthExponent: 1.35,
   },
   {
     family: "crown-descending",
-    bundleCount: 290,
+    bundleCount: 260,
     bundleSpread: 0.009,
     seed: FAMILY_SEEDS.crownDescending,
     minimum: { x: -1.65, y: 0.4, z: -0.8 },
     maximum: { x: 1.45, y: 1.17, z: 0.8 },
     fieldMinimum: 0.12,
     fieldMaximum: 0.58,
-    lengthMinimum: 0.45,
-    lengthMaximum: 1.1,
-    lengthExponent: 1.75,
+    lengthMinimum: 0.7,
+    lengthMaximum: 1.4,
+    lengthExponent: 1.4,
   },
   {
     family: "frontal-diagonal",
-    bundleCount: 145,
+    bundleCount: 150,
     bundleSpread: 0.0095,
     seed: FAMILY_SEEDS.frontalDiagonal,
     minimum: { x: -2.02, y: -0.46, z: -0.78 },
     maximum: { x: -0.48, y: 1.18, z: 0.78 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.38,
-    lengthMinimum: 0.55,
-    lengthMaximum: 1.55,
-    lengthExponent: 1.8,
+    lengthMinimum: 0.8,
+    lengthMaximum: 1.65,
+    lengthExponent: 1.4,
   },
   {
     family: "frontal-loop",
-    bundleCount: 125,
+    bundleCount: 120,
     bundleSpread: 0.009,
     seed: FAMILY_SEEDS.frontalLoop,
     minimum: { x: -2.02, y: -0.46, z: -0.78 },
     maximum: { x: -0.48, y: 1.18, z: 0.78 },
     fieldMinimum: 0.025,
     fieldMaximum: 0.4,
-    lengthMinimum: 0.55,
-    lengthMaximum: 1.22,
-    lengthExponent: 1.8,
+    lengthMinimum: 0.65,
+    lengthMaximum: 1.4,
+    lengthExponent: 1.45,
   },
   {
     family: "temporal-loop",
-    bundleCount: 125,
+    bundleCount: 130,
     bundleSpread: 0.008,
     seed: FAMILY_SEEDS.temporalLoop,
     minimum: { x: -1.18, y: -0.94, z: -0.72 },
     maximum: { x: 0.92, y: -0.18, z: 0.72 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.38,
-    lengthMinimum: 0.45,
-    lengthMaximum: 1.08,
-    lengthExponent: 1.85,
+    lengthMinimum: 0.55,
+    lengthMaximum: 1.25,
+    lengthExponent: 1.5,
   },
   {
     family: "posterior-fan",
-    bundleCount: 65,
+    bundleCount: 100,
     bundleSpread: 0.009,
     seed: FAMILY_SEEDS.posteriorFan,
     minimum: { x: 0.48, y: -0.58, z: -0.76 },
     maximum: { x: 2.12, y: 1.18, z: 0.76 },
     fieldMinimum: 0.02,
     fieldMaximum: 0.38,
-    lengthMinimum: 0.55,
-    lengthMaximum: 1.35,
-    lengthExponent: 1.75,
+    lengthMinimum: 0.75,
+    lengthMaximum: 1.5,
+    lengthExponent: 1.45,
   },
   {
     family: "local-cortical",
@@ -290,8 +313,8 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: 2.12, y: 1.4, z: 0.86 },
     fieldMinimum: 0.005,
     fieldMaximum: 0.16,
-    lengthMinimum: 0.35,
-    lengthMaximum: 0.8,
+    lengthMinimum: 0.45,
+    lengthMaximum: 0.95,
     lengthExponent: 1.55,
   },
 ];
@@ -503,9 +526,20 @@ const familyAxis = (
 ): Vector3 => {
   if (family === "association") {
     return normalize({
+      x: 0.82,
+      y:
+        0.28 * Math.sin(point.x * 1.3 + phase) +
+        0.12 * Math.sin(point.y * 1.6 - phase),
+      z: 0.16 * Math.cos(point.x + phase),
+    });
+  }
+  if (family === "cortical-arc") {
+    return normalize({
       x: 1,
-      y: 0.12 * Math.sin(point.x * 1.35 + phase),
-      z: 0.2 * Math.cos(point.x * 0.9 + phase),
+      y:
+        -0.36 * (point.x - 0.05) +
+        0.06 * Math.sin(point.x * 1.3 + phase),
+      z: 0.14 * Math.cos(point.x * 0.9 + phase),
     });
   }
   if (family === "deep") {
@@ -517,56 +551,58 @@ const familyAxis = (
   }
   if (family === "temporal-longitudinal") {
     return normalize({
-      x: 0.92,
-      y: 0.28 + 0.12 * Math.cos(point.x + phase),
-      z: 0.22 * Math.sin(point.x + phase),
+      x: 0.94,
+      y: 0.13 + 0.14 * Math.cos(point.x * 1.2 + phase),
+      z: 0.12 * Math.sin(point.x + phase),
     });
   }
   if (family === "crown-longitudinal") {
     return normalize({
       x: 1,
-      y: 0.16 * Math.sin(point.x * 1.45 + phase),
-      z: 0.2 * Math.cos(point.x + phase),
+      y:
+        -0.24 * (point.x - 0.05) +
+        0.05 * Math.sin(point.x * 1.5 + phase),
+      z: 0.12 * Math.cos(point.x + phase),
     });
   }
   if (family === "crown-descending") {
     return normalize({
       x:
-        0.68 * Math.sin(point.y * 2.15 + phase) +
-        0.16 * Math.sin(point.x * 1.4 - phase),
-      y: -0.78,
-      z: 0.18 * Math.cos(point.y + phase),
+        0.22 * Math.sin(point.y * 1.5 + phase) +
+        0.12 * Math.sin(point.x * 1.2 - phase),
+      y: -1,
+      z: 0.14 * Math.cos(point.y + phase),
     });
   }
   if (family === "frontal-diagonal") {
     return normalize({
-      x: 0.58 + 0.08 * Math.sin(point.y + phase),
-      y: 0.82,
-      z: 0.2 * Math.cos(point.x + phase),
+      x: 0.55 + 0.12 * Math.sin(point.y + phase),
+      y: 0.83,
+      z: 0.14 * Math.cos(point.x + phase),
     });
   }
   if (family === "frontal-loop") {
-    const relative = subtract(point, { x: -1.05, y: 0.18, z: 0 });
+    const relative = subtract(point, { x: -1.15, y: 0.18, z: 0 });
     return normalize({
-      x: 0.5 - relative.y * 0.75 + 0.08 * Math.sin(phase),
-      y: 0.34 + relative.x * 0.56,
-      z: 0.2 * Math.sin(point.y * 1.2 + phase),
+      x: 0.12 - 0.74 * relative.y,
+      y: 0.68 * relative.x,
+      z: 0.12 * Math.sin(point.y + phase),
     });
   }
   if (family === "temporal-loop") {
     const relative = subtract(point, { x: -0.15, y: -0.52, z: 0 });
     return normalize({
-      x: 0.38 - relative.y * 0.82,
-      y: 0.2 + relative.x * 0.48,
-      z: 0.18 * Math.cos(point.x + phase),
+      x: 0.22 - 0.82 * relative.y,
+      y: 0.14 + 0.5 * relative.x,
+      z: 0.13 * Math.cos(point.x + phase),
     });
   }
   if (family === "posterior-fan") {
-    const relative = subtract(point, { x: 0.52, y: -0.18, z: 0 });
+    const relative = subtract(point, { x: 1.22, y: 0.24, z: 0 });
     return normalize({
-      x: 0.58 + Math.max(0, relative.x) * 0.16,
-      y: 0.72 * relative.y + 0.5 * Math.sin(phase),
-      z: 0.22 * Math.sin(point.y + phase),
+      x: 0.08 - 0.82 * relative.y,
+      y: 0.58 * relative.x,
+      z: 0.13 * Math.sin(point.y + phase),
     });
   }
   const sample = cerebrumField(point);
@@ -764,21 +800,22 @@ const trajectoryArcLength = (points: Vector3[]) => {
 };
 
 const minimumArcLength = (family: CerebrumFamily) => {
-  if (family === "local-cortical") return 0.28;
+  if (family === "local-cortical") return 0.38;
   if (
     family === "frontal-loop" ||
     family === "temporal-loop" ||
     family === "crown-descending"
   ) {
-    return 0.38;
+    return 0.5;
   }
   if (
     family === "temporal-longitudinal" ||
     family === "crown-longitudinal"
   ) {
-    return 0.42;
+    return 0.55;
   }
-  return 0.5;
+  if (family === "cortical-arc" || family === "deep") return 0.78;
+  return 0.6;
 };
 
 const interpolateVector = (
@@ -1041,14 +1078,29 @@ const createFiber = (
   region: FiberRegion,
   family: FiberFamily,
   bundleId: number,
-  strandIndex: number,
   strandCount: number,
+  strandSpread: number,
+  field?: (point: Vector3) => FieldSample,
   escapeStart = -1,
 ): Fiber => {
   const pointCount = points.length / 3;
   const pointFade = new Float32Array(pointCount);
+  const boundaryScale = new Float32Array(pointCount);
   for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
     const position = pointIndex / Math.max(1, pointCount - 1);
+    const offset = pointIndex * 3;
+    boundaryScale[pointIndex] =
+      field && (escapeStart < 0 || pointIndex <= escapeStart)
+        ? smoothstep(
+            0.005,
+            0.095,
+            field({
+              x: points[offset],
+              y: points[offset + 1],
+              z: points[offset + 2],
+            }).value,
+          )
+        : 1;
     if (region === "stem") {
       pointFade[pointIndex] = 1 - smoothstep(0.84, 1, position);
       continue;
@@ -1075,116 +1127,17 @@ const createFiber = (
     hot: false,
     activityKey: 0,
     opacityBand: 0,
-    widthBand: 0,
     phase: 0,
     speed: 0,
     qualityRank: 0,
     bundleId,
-    strandIndex,
     strandCount,
+    strandSpread,
+    boundaryScale,
+    bundleTier: "dim",
     escapeStart,
     visible: true,
   };
-};
-
-const offsetParallelStrand = (
-  trunk: Float32Array,
-  strandIndex: number,
-  strandCount: number,
-  spread: number,
-  field?: (point: Vector3) => FieldSample,
-) => {
-  const pointCount = trunk.length / 3;
-  const points = new Float32Array(trunk.length);
-  const centered = strandIndex - (strandCount - 1) * 0.5;
-  const secondarySign = strandIndex % 2 === 0 ? -1 : 1;
-  const secondaryMagnitude =
-    Math.ceil(Math.abs(centered)) * spread * 0.32 * secondarySign;
-  let transportedNormal: Vector3 | undefined;
-
-  for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
-    const previousIndex = Math.max(0, pointIndex - 1) * 3;
-    const nextIndex = Math.min(pointCount - 1, pointIndex + 1) * 3;
-    const offset = pointIndex * 3;
-    let source = {
-      x: trunk[offset],
-      y: trunk[offset + 1],
-      z: trunk[offset + 2],
-    };
-    if (field) {
-      for (let attempt = 0; attempt < 6; attempt += 1) {
-        const sample = field(source);
-        if (sample.value >= 0.005) break;
-        const correction = clamp(
-          0.012 + (0.005 - sample.value) * 0.24,
-          0.012,
-          0.055,
-        );
-        source = add(source, multiply(sample.inward, correction));
-      }
-    }
-    const tangent = normalize({
-      x: trunk[nextIndex] - trunk[previousIndex],
-      y: trunk[nextIndex + 1] - trunk[previousIndex + 1],
-      z: trunk[nextIndex + 2] - trunk[previousIndex + 2],
-    });
-    let normal: Vector3;
-    if (transportedNormal) {
-      const projectedNormal = subtract(
-        transportedNormal,
-        multiply(tangent, dot(transportedNormal, tangent)),
-      );
-      normal =
-        vectorLength(projectedNormal) > 0.0001
-          ? normalize(projectedNormal)
-          : normalize(
-              cross(
-                tangent,
-                Math.abs(tangent.z) < 0.86
-                  ? { x: 0, y: 0, z: 1 }
-                  : { x: 0, y: 1, z: 0 },
-              ),
-            );
-    } else {
-      const reference =
-        Math.abs(tangent.z) < 0.86
-          ? { x: 0, y: 0, z: 1 }
-          : { x: 0, y: 1, z: 0 };
-      normal = normalize(cross(tangent, reference));
-    }
-    transportedNormal = normal;
-    const binormal = normalize(cross(tangent, normal));
-    const position = pointIndex / Math.max(1, pointCount - 1);
-    const drift =
-      1 + 0.12 * Math.sin(position * TAU + strandIndex * 1.7);
-    const primaryOffset = centered * spread * drift;
-    let candidate = add(
-      source,
-      add(
-        multiply(normal, primaryOffset),
-        multiply(binormal, secondaryMagnitude),
-      ),
-    );
-    if (field && field(candidate).value < 0.005) {
-      const offsetVector = subtract(candidate, source);
-      let insideScale = 0;
-      let outsideScale = 1;
-      for (let attempt = 0; attempt < 5; attempt += 1) {
-        const testScale = (insideScale + outsideScale) * 0.5;
-        const testPoint = add(source, multiply(offsetVector, testScale));
-        if (field(testPoint).value >= 0.005) {
-          insideScale = testScale;
-        } else {
-          outsideScale = testScale;
-        }
-      }
-      candidate = add(source, multiply(offsetVector, insideScale));
-    }
-    points[offset] = candidate.x;
-    points[offset + 1] = candidate.y;
-    points[offset + 2] = candidate.z;
-  }
-  return points;
 };
 
 const createBundleFactory = (): BundleFactory => {
@@ -1199,48 +1152,33 @@ const createBundleFactory = (): BundleFactory => {
   ) => {
     const bundleId = nextBundleId;
     nextBundleId += 1;
-    const tierSlot = bundleId % 10;
     const strandCount =
-      tierSlot === 0
-        ? ACTIVE_BUNDLE_STRANDS
-        : tierSlot <= 3
-          ? 1
-          : DIM_BUNDLE_STRANDS;
-    const bundleSpread =
-      strandCount === DIM_BUNDLE_STRANDS ? spread * 2.2 : spread;
-    const centerStrand = Math.floor((strandCount - 1) * 0.5);
-    const fibers: Fiber[] = [];
-    for (let strandIndex = 0; strandIndex < strandCount; strandIndex += 1) {
-      let points = offsetParallelStrand(
-        trunk,
-        strandIndex,
-        strandCount,
-        bundleSpread,
-        field,
+      region === "cerebrum"
+        ? CEREBRUM_STRAND_CYCLE[bundleId % CEREBRUM_STRAND_CYCLE.length]
+        : LOWER_STRAND_CYCLE[bundleId % LOWER_STRAND_CYCLE.length];
+    let points = trunk;
+    let escapeStart = -1;
+    if (escapeTail) {
+      const extended = appendEscapeTail(
+        points,
+        escapeTail.random,
+        escapeTail.phase,
       );
-      let escapeStart = -1;
-      if (escapeTail && strandIndex === centerStrand) {
-        const extended = appendEscapeTail(
-          points,
-          escapeTail.random,
-          escapeTail.phase,
-        );
-        points = extended.points;
-        escapeStart = extended.escapeStart;
-      }
-      fibers.push(
-        createFiber(
-          points,
-          region,
-          family,
-          bundleId,
-          strandIndex,
-          strandCount,
-          escapeStart,
-        ),
-      );
+      points = extended.points;
+      escapeStart = extended.escapeStart;
     }
-    return fibers;
+    return [
+      createFiber(
+        points,
+        region,
+        family,
+        bundleId,
+        strandCount,
+        spread * (region === "cerebrum" ? 0.54 : 0.72),
+        field,
+        escapeStart,
+      ),
+    ];
   };
 };
 
@@ -1252,7 +1190,7 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
     for (let index = 0; index < config.bundleCount; index += 1) {
       let phase = 0;
       let trajectory: Vector3[] = [];
-      for (let attempt = 0; attempt < 4; attempt += 1) {
+      for (let attempt = 0; attempt < 6; attempt += 1) {
         const seed = sampleSeed(
           random,
           config.minimum,
@@ -1279,9 +1217,9 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
       }
       let points: Float32Array = resampleTrajectory(
         smoothTrajectory(trajectory),
-        0.065,
-        12,
-        48,
+        0.082,
+        11,
+        40,
       );
       const escaping = config.family === "posterior-fan" && index < 4;
       if (config.family === "posterior-fan") {
@@ -1314,108 +1252,118 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
 const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.cerebellar);
-  for (let index = 0; index < 224; index += 1) {
-    const layer = Math.floor(index / 14);
-    const lane = index % 14;
-    const normalizedY =
-      lerp(-0.8, 0.78, layer / 15) + (random() - 0.5) * 0.028;
-    const depth =
-      lerp(-0.58, 0.58, ((lane * 9) % 14) / 13) *
-      CEREBELLUM.radius.z;
-    const sectionScale = Math.sqrt(
-      Math.max(
-        0.12,
-        1 -
-          normalizedY * normalizedY -
-          (depth / CEREBELLUM.radius.z) ** 2 * 0.58,
-      ),
-    );
-    const halfWidth = CEREBELLUM.radius.x * sectionScale * 0.9;
-    const halfSpan = halfWidth * lerp(0.66, 0.9, random());
-    const centerOffset =
-      (random() - 0.5) * Math.max(0, halfWidth - halfSpan) * 0.7;
-    const startX = CEREBELLUM.center.x + centerOffset - halfSpan;
-    const endX = CEREBELLUM.center.x + centerOffset + halfSpan;
-    const baseY =
-      CEREBELLUM.center.y + normalizedY * CEREBELLUM.radius.y;
-    const upperLayer = layer >= 8;
-    const arch =
-      lerp(0.018, 0.05, random()) *
-      (random() < 0.5 ? -1 : 1) *
-      (upperLayer ? 0.38 : 1);
-    const turns = lerp(1, 1.75, random());
+  let generatedBundles = 0;
+  for (let layer = 0; layer < 16; layer += 1) {
+    const normalizedY = lerp(-0.72, 0.7, (layer + 0.5) / 16);
+    const bandPhase = random() * TAU;
+    const bandArch = lerp(-0.16, 0.16, random());
+    const bandSlope = lerp(-0.035, 0.035, random());
+    for (let lane = 0; lane < 12; lane += 1) {
+      const depthIndex = (lane * 5 + layer * 3) % 12;
+      const normalizedZ = lerp(-0.6, 0.6, (depthIndex + 0.5) / 12);
+      const section = Math.sqrt(
+        Math.max(
+          0.08,
+          1 - normalizedY * normalizedY - normalizedZ * normalizedZ,
+        ),
+      );
+      const halfSpan = section * lerp(0.28, 0.56, random());
+      const centerRange = Math.max(0, section - halfSpan);
+      const normalizedCenter = lerp(-centerRange, centerRange, random()) * 0.5;
+      const phase = bandPhase + lane * 0.075;
+      const bundleAngle =
+        [0.35, -0.26, 0.5, -0.4][layer % 4] +
+        (lane - 5.5) * 0.012;
+      const controls: Vector3[] = [];
+      for (let step = 0; step <= 10; step += 1) {
+        const position = step / 10;
+        const signedPosition = position * 2 - 1;
+        const longitudinal = halfSpan * signedPosition;
+        const normalizedX =
+          normalizedCenter +
+          longitudinal * Math.cos(bundleAngle) * 0.82 +
+          section * 0.025 * Math.sin(TAU * position + phase);
+        const localY =
+          normalizedY +
+          longitudinal * Math.sin(bundleAngle) * 0.58 +
+          bandArch * (1 - signedPosition * signedPosition) +
+          bandSlope * signedPosition +
+          0.045 * Math.sin(TAU * position + phase);
+        const localZ =
+          normalizedZ + 0.035 * Math.sin(Math.PI * position + phase);
+        controls.push(
+          constrainToLobe(
+            {
+              x: CEREBELLUM.center.x + normalizedX * CEREBELLUM.radius.x,
+              y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
+              z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
+            },
+            CEREBELLUM,
+            0.91,
+          ),
+        );
+      }
+      fibers.push(
+        ...createBundle(
+          resampleTrajectory(smoothTrajectory(controls), 0.035, 14, 26),
+          "cerebellum",
+          "cerebellar-folia",
+          0.0045,
+          cerebellumField,
+        ),
+      );
+      generatedBundles += 1;
+      if (generatedBundles % GEOMETRY_BATCH_SIZE === 0) {
+        await yieldToBrowser();
+      }
+    }
+  }
+
+  for (let index = 0; index < 32; index += 1) {
+    const curl = index < 20;
     const phase = random() * TAU;
+    const normalizedX = lerp(-0.48, 0.48, random());
+    const normalizedY = lerp(-0.48, 0.48, random());
+    const normalizedZ = lerp(-0.5, 0.5, random());
+    const halfSpan = curl ? lerp(0.14, 0.3, random()) : lerp(0.1, 0.22, random());
+    const direction = random() < 0.5 ? -1 : 1;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 8; step += 1) {
       const position = step / 8;
+      const signedPosition = position * 2 - 1;
+      const localX = curl
+        ? normalizedX +
+          halfSpan * signedPosition * 0.82 +
+          0.08 * Math.sin(TAU * position + phase)
+        : normalizedX + halfSpan * signedPosition * 0.6;
+      const localY = curl
+        ? normalizedY +
+          direction * 0.16 * Math.sin(Math.PI * position) +
+          0.055 * Math.sin(TAU * position + phase)
+        : normalizedY +
+          direction * halfSpan * signedPosition +
+          0.055 * Math.sin(Math.PI * position + phase);
+      const localZ =
+        normalizedZ + 0.04 * Math.sin(TAU * position + phase);
       controls.push(
         constrainToLobe(
           {
-            x: lerp(startX, endX, position),
-            y:
-              baseY +
-              Math.sin(position * Math.PI) * arch +
-              Math.sin(position * Math.PI * turns + phase) *
-                (upperLayer ? 0.007 : 0.016),
-            z:
-              CEREBELLUM.center.z +
-              depth +
-              Math.sin(position * Math.PI + phase) * 0.024,
+            x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
+            y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
+            z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
           },
           CEREBELLUM,
           0.91,
         ),
       );
     }
-    const trunk = resampleTrajectory(
-      smoothTrajectory(controls),
-      0.04,
-      14,
-      32,
-    );
     fibers.push(
       ...createBundle(
-        trunk,
+        resampleTrajectory(smoothTrajectory(controls), 0.035, 12, 22),
         "cerebellum",
-        "cerebellar",
-        0.006,
+        curl ? "cerebellar-curl" : "cerebellar-stitch",
+        0.0045,
         cerebellumField,
-      ),
-    );
-    if ((index + 1) % GEOMETRY_BATCH_SIZE === 0) {
-      await yieldToBrowser();
-    }
-  }
-
-  for (let index = 0; index < 18; index += 1) {
-    const lane = (index + 0.5) / 18;
-    const depth = lerp(-0.24, 0.24, ((index * 7) % 18) / 17);
-    const phase = random() * TAU;
-    const controls: Vector3[] = [];
-    for (let step = 0; step <= 6; step += 1) {
-      const progress = step / 6;
-      controls.push({
-        x:
-          lerp(lerp(0.72, 0.9, lane), lerp(0.58, 0.66, lane), progress) +
-          Math.sin(progress * Math.PI + phase) * 0.025,
-        y:
-          lerp(lerp(-0.7, -0.52, lane), lerp(-0.46, -0.38, lane), progress) +
-          Math.sin(progress * Math.PI) * 0.018,
-        z: lerp(depth, depth * 0.38, progress),
-      });
-    }
-    const trunk = resampleTrajectory(
-      smoothTrajectory(controls),
-      0.04,
-      10,
-      20,
-    );
-    fibers.push(
-      ...createBundle(
-        trunk,
-        "cerebellum",
-        "cerebellar",
-        0.006,
       ),
     );
   }
@@ -1426,15 +1374,26 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
 const createStemFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.stem);
-  for (let index = 0; index < 80; index += 1) {
+  for (let index = 0; index < 96; index += 1) {
+    const shoulder = index >= 72;
+    const localIndex = shoulder ? index - 72 : index;
     const initialAngle = index * GOLDEN_ANGLE + random() * 0.12;
-    const radial = Math.sqrt((index + 0.5) / 80);
-    const offsetX = Math.cos(initialAngle) * BRAINSTEM.topRadius.x * radial;
-    const offsetZ = Math.sin(initialAngle) * BRAINSTEM.topRadius.z * radial;
+    const radial = Math.sqrt((localIndex + 0.5) / (shoulder ? 24 : 72));
+    const side = localIndex % 2 === 0 ? -1 : 1;
+    const normalizedShoulderX = side * lerp(0.62, 0.88, random());
+    const normalizedShoulderZ =
+      lerp(-0.42, 0.42, random()) *
+      Math.sqrt(Math.max(0.08, 1 - normalizedShoulderX ** 2));
+    const offsetX =
+      (shoulder ? normalizedShoulderX : Math.cos(initialAngle) * radial * 0.86) *
+      BRAINSTEM.topRadius.x;
+    const offsetZ =
+      (shoulder ? normalizedShoulderZ : Math.sin(initialAngle) * radial * 0.86) *
+      BRAINSTEM.topRadius.z;
     const phase = random() * TAU;
     const controls: Vector3[] = [];
-    for (let step = 0; step <= 8; step += 1) {
-      const position = step / 8;
+    for (let step = 0; step <= 9; step += 1) {
+      const position = step / 9;
       const center = {
         x:
           lerp(BRAINSTEM.top.x, BRAINSTEM.bottom.x, position) -
@@ -1447,27 +1406,30 @@ const createStemFibers = async (createBundle: BundleFactory) => {
         BRAINSTEM.endScale,
         smoothstep(0.18, 1, position),
       );
+      const shoulderRelease = shoulder
+        ? lerp(1, 0.55, smoothstep(0.08, 0.38, position))
+        : 1;
       controls.push({
         x:
           center.x +
-          offsetX * taper +
+          offsetX * taper * shoulderRelease +
           Math.sin(position * Math.PI + phase) * 0.008,
         y: center.y,
-        z: center.z + offsetZ * taper,
+        z: center.z + offsetZ * taper * shoulderRelease,
       });
     }
     const trunk = resampleTrajectory(
       smoothTrajectory(controls),
-      0.04,
-      12,
-      24,
+      0.035,
+      14,
+      26,
     );
     fibers.push(
       ...createBundle(
         trunk,
         "stem",
         "stem",
-        0.006,
+        0.0048,
         brainstemField,
       ),
     );
@@ -1480,111 +1442,83 @@ const createStemFibers = async (createBundle: BundleFactory) => {
 
 const styleFibers = (fibers: Fiber[]) => {
   const random = seededRandom(FAMILY_SEEDS.style);
-  const bundleMap = new Map<number, Fiber[]>();
   fibers.forEach((fiber) => {
-    const bundle = bundleMap.get(fiber.bundleId) ?? [];
-    bundle.push(fiber);
-    bundleMap.set(fiber.bundleId, bundle);
-  });
-  const bundles = Array.from(bundleMap.values());
-  bundles.forEach((bundle) => {
     const activityKey = random();
-    const phase = random();
-    const speed = 1 / lerp(2500, 6000, random());
-    const qualityRank = random();
-    const centerStrand = (bundle[0].strandCount - 1) * 0.5;
-    bundle.forEach((fiber) => {
-      const centerDistance = Math.abs(fiber.strandIndex - centerStrand);
-      fiber.active = false;
-      fiber.particle = false;
-      fiber.hot = false;
-      fiber.opacityBand =
-        fiber.strandCount === ACTIVE_BUNDLE_STRANDS
-          ? centerDistance <= 1
-            ? 3
-            : 2
-          : fiber.strandCount === 1
-            ? 2
-            : activityKey < 0.48
-              ? 0
-              : 1;
-      fiber.widthBand = centerDistance === 0 ? 1 : 0;
-      fiber.active =
-        fiber.strandCount === ACTIVE_BUNDLE_STRANDS &&
-        centerDistance === 0;
-      fiber.activityKey = activityKey;
-      fiber.phase = (phase + fiber.strandIndex * 0.027) % 1;
-      fiber.speed = speed * (1 + fiber.strandIndex * 0.012);
-      fiber.qualityRank = qualityRank;
-    });
+    fiber.active = false;
+    fiber.particle = false;
+    fiber.hot = false;
+    fiber.activityKey = activityKey;
+    fiber.opacityBand = activityKey < 0.4 ? 2 : 1;
+    fiber.bundleTier = activityKey < 0.4 ? "medium" : "dim";
+    fiber.phase = random();
+    fiber.speed = 1 / lerp(2500, 6000, random());
+    fiber.qualityRank = random();
+    if (fiber.escapeStart >= 0) {
+      fiber.opacityBand = 0;
+      fiber.bundleTier = "dim";
+    }
   });
 
   const stratifyFamily = (family: FiberFamily) => {
-    const ranked = bundles
-      .filter((bundle) => bundle[0].family === family)
-      .sort(
-        (left, right) =>
-          left[0].qualityRank - right[0].qualityRank,
-      );
-    ranked.forEach((bundle, rank) => {
+    const ranked = fibers
+      .filter((fiber) => fiber.family === family)
+      .sort((left, right) => left.qualityRank - right.qualityRank);
+    ranked.forEach((fiber, rank) => {
       const qualityRank = (rank + 0.5) / Math.max(1, ranked.length);
-      bundle.forEach((fiber) => {
-        fiber.qualityRank = qualityRank;
-      });
+      fiber.qualityRank = qualityRank;
     });
   };
-  Array.from(new Set(bundles.map((bundle) => bundle[0].family))).forEach(
+  Array.from(new Set(fibers.map((fiber) => fiber.family))).forEach(
     stratifyFamily,
   );
 
-  bundles.forEach((bundle) => {
-    if (bundle[0].region === "stem") {
-      bundle.forEach((fiber) => {
-        fiber.qualityRank = 0;
-      });
-    }
+  fibers.forEach((fiber) => {
+    if (fiber.region === "stem") fiber.qualityRank = 0;
     if (
-      (bundle[0].region === "stem" ||
-        bundle[0].region === "cerebellum") &&
-      bundle[0].opacityBand === 0
+      (fiber.region === "stem" || fiber.region === "cerebellum") &&
+      fiber.bundleTier === "dim" &&
+      fiber.activityKey < 0.5
     ) {
-      bundle.forEach((fiber) => {
-        fiber.opacityBand = 1;
-      });
-    }
-    if (bundle.some((fiber) => fiber.escapeStart >= 0)) {
-      bundle.forEach((fiber) => {
-        fiber.active = false;
-        fiber.opacityBand = 0;
-        fiber.widthBand = 0;
-      });
+      fiber.opacityBand = 1;
     }
   });
 
   const particleRandom = seededRandom(FAMILY_SEEDS.particles);
   const particleFibers: Fiber[] = [];
   const selectParticles = (region: FiberRegion, count: number) => {
-    const selected = bundles
+    const selected = fibers
       .filter(
-        (bundle) =>
-          bundle[0].region === region &&
-          bundle.some((fiber) => fiber.active),
+        (fiber) =>
+          fiber.region === region &&
+          fiber.escapeStart < 0 &&
+          fiber.points.length >= 24,
       )
-      .map((bundle) => ({ bundle, key: particleRandom() }))
+      .map((fiber) => {
+        let averageZ = 0;
+        for (let offset = 2; offset < fiber.points.length; offset += 3) {
+          averageZ += fiber.points[offset];
+        }
+        averageZ /= Math.max(1, fiber.points.length / 3);
+        return {
+          fiber,
+          key: particleRandom() - clamp(averageZ, -0.5, 0.5) * 0.18,
+        };
+      })
       .sort((left, right) => left.key - right.key)
       .slice(0, count)
-      .map(({ bundle }) => bundle.find((fiber) => fiber.active) ?? bundle[0]);
+      .map(({ fiber }) => fiber);
     particleFibers.push(...selected);
   };
-  selectParticles("cerebrum", 40);
-  selectParticles("cerebellum", 6);
-  selectParticles("stem", 2);
-  particleFibers
-    .slice(0, PARTICLE_FIBER_COUNT)
-    .forEach((fiber, rank) => {
-      fiber.particle = true;
-      fiber.hot = rank < 7;
-    });
+  selectParticles("cerebrum", 7);
+  selectParticles("cerebellum", 2);
+  selectParticles("stem", 1);
+  particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber, rank) => {
+    fiber.bundleTier = "active";
+    fiber.opacityBand = 3;
+    fiber.active = true;
+    fiber.particle = true;
+    fiber.hot = rank < 3;
+  });
 };
 
 const createFiberField = async () => {
@@ -1928,14 +1862,22 @@ const mountBrain = async (field: HTMLElement) => {
     let maximumY = Number.NEGATIVE_INFINITY;
 
     fibers.forEach((fiber) => {
+      const cerebralMobileCutoff =
+        width < 360
+          ? MOBILE_NARROW_DENSITY_CUTOFF
+          : MOBILE_DENSITY_CUTOFF;
+      const mobileQualityCutoff =
+        fiber.region !== "cerebellum"
+          ? cerebralMobileCutoff
+          : fiber.family === "cerebellar-folia"
+            ? 0.25
+            : 0.62;
       fiber.visible =
         !mobile ||
         fiber.active ||
-        fiber.strandCount === ACTIVE_BUNDLE_STRANDS ||
+        fiber.bundleTier === "active" ||
         fiber.qualityRank <=
-          (fiber.region === "cerebellum"
-            ? MOBILE_CEREBELLUM_DENSITY_CUTOFF
-            : MOBILE_DENSITY_CUTOFF);
+          mobileQualityCutoff;
       if (!fiber.visible) return;
 
       const pointCount = fiber.points.length / 3;
@@ -1990,46 +1932,119 @@ const mountBrain = async (field: HTMLElement) => {
         if (fade < 0.025) continue;
         const fadeLoss =
           fade < 0.18 ? 3 : fade < 0.42 ? 2 : fade < 0.72 ? 1 : 0;
-        const opacityBand = Math.max(
-          0,
-          fiber.opacityBand - fadeLoss,
+        const previousNormalStart = Math.max(0, pointIndex - 2) * 3;
+        const previousNormalEnd = offset;
+        const previousDeltaX =
+          fiber.projected[previousNormalEnd] -
+          fiber.projected[previousNormalStart];
+        const previousDeltaY =
+          fiber.projected[previousNormalEnd + 1] -
+          fiber.projected[previousNormalStart + 1];
+        const previousLength = Math.max(
+          0.001,
+          Math.hypot(previousDeltaX, previousDeltaY),
         );
-        const passiveIndex =
-          ((opacityBand * DEPTH_LEVELS + depthBand) *
-            WIDTH_LEVELS +
-            fiber.widthBand);
-        const passivePath = passivePaths[passiveIndex];
-        passivePath.moveTo(
-          fiber.projected[previousOffset],
-          fiber.projected[previousOffset + 1],
+        const nextNormalEnd = Math.min(pointCount - 1, pointIndex + 1) * 3;
+        const nextDeltaX =
+          fiber.projected[nextNormalEnd] -
+          fiber.projected[previousOffset];
+        const nextDeltaY =
+          fiber.projected[nextNormalEnd + 1] -
+          fiber.projected[previousOffset + 1];
+        const nextLength = Math.max(
+          0.001,
+          Math.hypot(nextDeltaX, nextDeltaY),
         );
-        passivePath.lineTo(
-          fiber.projected[offset],
-          fiber.projected[offset + 1],
-        );
+        const previousNormalX = -previousDeltaY / previousLength;
+        const previousNormalY = previousDeltaX / previousLength;
+        const nextNormalX = -nextDeltaY / nextLength;
+        const nextNormalY = nextDeltaX / nextLength;
+        const previousPerspective =
+          cameraDistance /
+          (cameraDistance - fiber.projected[previousOffset + 2]);
+        const nextPerspective =
+          cameraDistance /
+          (cameraDistance - fiber.projected[offset + 2]);
+        const previousSpread =
+          fiber.strandSpread *
+          modelScale *
+          previousPerspective *
+          fiber.boundaryScale[pointIndex - 1];
+        const nextSpread =
+          fiber.strandSpread *
+          modelScale *
+          nextPerspective *
+          fiber.boundaryScale[pointIndex];
+        const isEscapeSegment =
+          fiber.escapeStart >= 0 && pointIndex > fiber.escapeStart;
+        const strandCount = isEscapeSegment ? 1 : fiber.strandCount;
+        const centerStrand = Math.floor(strandCount / 2);
+        for (
+          let strandIndex = 0;
+          strandIndex < strandCount;
+          strandIndex += 1
+        ) {
+          const strandOffset = strandIndex - centerStrand;
+          const centerDistance = Math.abs(strandOffset);
+          let strandOpacityBand: number;
+          if (fiber.bundleTier === "active") {
+            strandOpacityBand =
+              centerDistance === 0 ? 3 : centerDistance <= 1 ? 2 : 1;
+          } else if (fiber.bundleTier === "medium") {
+            strandOpacityBand =
+              centerDistance === 0 ? 2 : centerDistance <= 2 ? 1 : 0;
+          } else {
+            strandOpacityBand = fiber.opacityBand;
+          }
+          const opacityBand = Math.max(
+            0,
+            strandOpacityBand - fadeLoss,
+          ) as OpacityBand;
+          const widthBand: WidthBand =
+            fiber.bundleTier !== "dim" && centerDistance === 0 ? 1 : 0;
+          const passiveIndex =
+            ((opacityBand * DEPTH_LEVELS + depthBand) * WIDTH_LEVELS +
+              widthBand);
+          const passivePath = passivePaths[passiveIndex];
+          const previousOffsetPixels = strandOffset * previousSpread;
+          const nextOffsetPixels = strandOffset * nextSpread;
+          passivePath.moveTo(
+            fiber.projected[previousOffset] +
+              previousNormalX * previousOffsetPixels,
+            fiber.projected[previousOffset + 1] +
+              previousNormalY * previousOffsetPixels,
+          );
+          passivePath.lineTo(
+            fiber.projected[offset] + nextNormalX * nextOffsetPixels,
+            fiber.projected[offset + 1] + nextNormalY * nextOffsetPixels,
+          );
 
-        if (fiber.active && fade >= 0.1) {
-          const fadeBand = fade >= 0.56 ? 1 : 0;
-          const activeIndex =
-            ((fadeBand * DEPTH_LEVELS + depthBand) *
-              WIDTH_LEVELS +
-              fiber.widthBand);
-          const activePath = activePaths[activeIndex];
-          activePath.moveTo(
-            fiber.projected[previousOffset],
-            fiber.projected[previousOffset + 1],
-          );
-          activePath.lineTo(
-            fiber.projected[offset],
-            fiber.projected[offset + 1],
-          );
+          if (
+            fiber.active &&
+            strandOffset === 0 &&
+            fade >= 0.1
+          ) {
+            const fadeBand = fade >= 0.56 ? 1 : 0;
+            const activeIndex =
+              ((fadeBand * DEPTH_LEVELS + depthBand) * WIDTH_LEVELS +
+                widthBand);
+            const activePath = activePaths[activeIndex];
+            activePath.moveTo(
+              fiber.projected[previousOffset],
+              fiber.projected[previousOffset + 1],
+            );
+            activePath.lineTo(
+              fiber.projected[offset],
+              fiber.projected[offset + 1],
+            );
+          }
         }
       }
     });
 
     context.lineCap = "round";
     context.lineJoin = "round";
-    const passiveAlpha = [0.011, 0.0205, 0.032, 0.045];
+    const passiveAlpha = [0.055, 0.09, 0.135, 0.18];
     for (
       let opacityBand = 0;
       opacityBand < OPACITY_LEVELS;
@@ -2059,8 +2074,8 @@ const mountBrain = async (field: HTMLElement) => {
             passiveAlpha[opacityBand] * depthStrength,
           );
           context.lineWidth =
-            (widthBand === 0 ? 0.27 : 0.39) +
-            depthBand * 0.009;
+            (widthBand === 0 ? 0.18 : 0.26) +
+            depthBand * 0.005;
           context.stroke(passivePaths[index]);
         }
       }
@@ -2094,7 +2109,7 @@ const mountBrain = async (field: HTMLElement) => {
               depthStrength,
           );
           context.lineWidth =
-            widthBand === 0 ? 1.7 : 2.2;
+            widthBand === 0 ? 1.4 : 1.8;
           context.stroke(activePaths[index]);
           context.strokeStyle = rgba(
             255,
@@ -2104,7 +2119,7 @@ const mountBrain = async (field: HTMLElement) => {
               depthStrength,
           );
           context.lineWidth =
-            widthBand === 0 ? 0.54 : 0.72;
+            widthBand === 0 ? 0.46 : 0.62;
           context.stroke(activePaths[index]);
         }
       }
@@ -2172,7 +2187,7 @@ const mountBrain = async (field: HTMLElement) => {
       });
     });
 
-    const particleLimit = mobile ? 8 : 14;
+    const particleLimit = mobile ? 6 : PARTICLE_FIBER_COUNT;
     let particleCount = 0;
     let hotCount = 0;
     particleFibers.forEach((fiber) => {
