@@ -38,6 +38,128 @@
   scroll-margin-top: 5rem;
 }
 
+.site-header {
+  display: flex;
+  min-height: 4.25rem;
+  align-items: stretch;
+  border-bottom: 1px solid rgb(255 255 255 / 0.32);
+}
+
+.site-wordmark {
+  display: inline-flex;
+  width: clamp(20rem, 32.55vw, 31.25rem);
+  min-height: 4.25rem;
+  flex: 0 1 clamp(20rem, 32.55vw, 31.25rem);
+  align-items: center;
+  padding-inline: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-size: 0.96rem;
+  font-weight: 650;
+  letter-spacing: 0.19em !important;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.site-primary-nav {
+  display: grid;
+  width: min(47.5rem, 59vw);
+  min-width: 37rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.site-nav-link {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgb(255 255 255 / 0.28);
+  font-family: "Arial Narrow", "Aptos Narrow", "Space Grotesk Variable", sans-serif;
+  font-size: 0.76rem;
+  font-stretch: condensed;
+  font-weight: 520;
+  letter-spacing: -0.015em !important;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.site-nav-link::after {
+  position: absolute;
+  right: 50%;
+  bottom: -1px;
+  left: 50%;
+  height: 2px;
+  background: var(--color-signal);
+  content: "";
+  transition: right 180ms ease, left 180ms ease;
+}
+
+.site-nav-link:hover,
+.site-nav-link:focus-visible {
+  background: rgb(255 255 255 / 0.07);
+}
+
+.site-nav-link:hover::after,
+.site-nav-link:focus-visible::after,
+.site-nav-link--current::after {
+  right: 0;
+  left: 0;
+}
+
+.site-wordmark:focus-visible,
+.site-nav-link:focus-visible {
+  z-index: 1;
+  outline: 2px solid var(--color-signal);
+  outline-offset: -3px;
+}
+
+.site-header--paper {
+  border-bottom-color: rgb(8 8 8 / 0.5);
+}
+
+.site-header--paper .site-nav-link {
+  border-left-color: rgb(8 8 8 / 0.38);
+}
+
+.site-header--paper .site-nav-link:hover,
+.site-header--paper .site-nav-link:focus-visible {
+  background: rgb(8 8 8 / 0.06);
+}
+
+@media (max-width: 59.999rem) {
+  [id] {
+    scroll-margin-top: 7rem;
+  }
+
+  .site-header {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .site-wordmark {
+    width: 100%;
+    min-height: 3.5rem;
+    padding-inline: 1rem;
+    font-size: 0.78rem;
+  }
+
+  .site-primary-nav {
+    width: 100%;
+    min-width: 0;
+    border-top: 1px solid rgb(255 255 255 / 0.28);
+  }
+
+  .site-nav-link {
+    min-height: 2.75rem;
+    padding-inline: 0.35rem;
+    font-size: 0.65rem;
+  }
+
+  .site-header--paper .site-primary-nav {
+    border-top-color: rgb(8 8 8 / 0.38);
+  }
+}
+
 .site-frame {
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04);
 }

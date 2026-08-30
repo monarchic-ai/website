@@ -7,47 +7,31 @@ interface Props {
 const { active, tone = "dark" } = Astro.props;
 const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const navClass = (current: boolean) => [
-  "motion-link inline-flex min-h-10 items-center justify-center border px-2.5 py-2 text-center text-[0.65rem] font-bold uppercase max-[359px]:px-1.5 max-[359px]:text-[0.6rem] sm:px-4 sm:text-xs",
+  "site-nav-link",
   tone === "paper"
     ? current
-      ? "border-black bg-black text-white"
-      : "border-transparent text-black/62 hover:border-black hover:bg-signal hover:text-black"
+      ? "site-nav-link--current text-black"
+      : "text-black/64 hover:text-black"
     : current
-      ? "border-signal bg-signal text-black"
-      : "border-white/50 text-white/72 hover:border-signal hover:bg-signal hover:text-black focus-visible:border-signal focus-visible:bg-signal focus-visible:text-black",
+      ? "site-nav-link--current text-white"
+      : "text-white/68 hover:text-white",
 ].join(" ");
 ---
 
 <header
   id="navigation"
   class:list={[
-    "site-header sticky top-0 z-50 flex min-h-16 items-center justify-between gap-2 border-b px-3 max-[359px]:gap-1 max-[359px]:px-2 sm:gap-3 sm:px-5",
-    tone === "paper" ? "border-black bg-paper text-black" : "border-white/24 bg-ink text-white",
+    "site-header sticky top-0 z-50",
+    tone === "paper" ? "site-header--paper bg-paper text-black" : "bg-black text-white",
   ]}
 >
-  <a href="/" class="motion-link inline-flex shrink-0 items-center gap-3">
-    <span class:list={[
-      "inline-flex h-9 w-9 items-center justify-center max-[359px]:h-8 max-[359px]:w-8",
-      tone === "paper" ? "bg-black" : "bg-paper",
-    ]}>
-      <img src="/favicon.svg" alt="" class:list={["h-7 w-7 object-cover p-0.5 max-[359px]:h-6 max-[359px]:w-6", tone === "paper" && "invert"]} width="28" height="28" />
-    </span>
-    <span class="hidden text-[0.7rem] font-black uppercase sm:inline">Monarchic</span>
+  <a href="/" aria-label="Monarchic home" class="site-wordmark motion-link">
+    <span aria-hidden="true">Monarchic</span>
   </a>
-  <nav aria-label="Primary navigation" class="flex min-w-0 items-center justify-end gap-1 sm:gap-2">
+  <nav aria-label="Primary navigation" class="site-primary-nav">
     <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}>Products</a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}>Research</a>
     <a aria-current={active === "support" ? "page" : undefined} href="/company#contact" class={navClass(active === "support")}>Support</a>
-    <a
-      href={`${appBaseUrl}/app`}
-      class:list={[
-        "motion-link inline-flex min-h-10 items-center border px-2.5 text-[0.65rem] font-black uppercase max-[359px]:px-1.5 max-[359px]:text-[0.6rem] sm:px-4 sm:text-xs",
-        tone === "paper"
-          ? "border-black bg-transparent text-black hover:bg-signal focus-visible:bg-signal"
-          : "border-white/60 bg-transparent text-white hover:border-signal hover:bg-signal hover:text-black focus-visible:border-signal focus-visible:bg-signal focus-visible:text-black",
-      ]}
-    >
-      Apps
-    </a>
+    <a href={`${appBaseUrl}/app`} class={navClass(false)}>Apps</a>
   </nav>
 </header>
