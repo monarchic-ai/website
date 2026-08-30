@@ -52,8 +52,6 @@ includes(home.html, ['href="/products"', 'href="/research"', 'href="/company"', 
 includes(home.html, ['href="/company#contact"'], "Home support path");
 includes(home.html, [
   `href="${appBaseUrl}/app"`,
-  `href="${appBaseUrl}/login"`,
-  `href="${appBaseUrl}/signup"`,
   `href="${appBaseUrl}/setup"`,
 ], "Webapp-only destinations");
 

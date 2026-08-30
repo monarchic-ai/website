@@ -266,14 +266,6 @@ async function runBrowserSmoke() {
         page.getByRole("link", { name: "Apps", exact: true }),
         `${expectedAppBaseUrl}/app`,
       );
-      await expectHref(
-        page.getByRole("link", { name: "Sign in", exact: true }),
-        `${expectedAppBaseUrl}/login`,
-      );
-      await expectHref(
-        page.getByRole("link", { name: "Get started", exact: true }),
-        `${expectedAppBaseUrl}/signup`,
-      );
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/`);
       await expectMeta(page, "og:title", "Monarchic | AI engineering systems");
       await expectMeta(page, "og:site_name", "Monarchic");
@@ -511,11 +503,9 @@ async function runBrowserSmoke() {
       await page.locator("[data-brain-field]").waitFor();
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Support", exact: true }).first().waitFor();
-      await page.getByRole("link", { name: "Sign in", exact: true }).waitFor();
-      await page.getByRole("link", { name: "Get started", exact: true }).waitFor();
       await expectNoElementOverlap(
         page.locator("#navigation > a[href='/']"),
-        page.getByRole("link", { name: "Sign in", exact: true }),
+        page.locator("#navigation nav a[href='/products']"),
       );
       await expectNoHorizontalOverflow(page);
     }, "home route at 320px");
