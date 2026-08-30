@@ -95,7 +95,7 @@ const HUBS: Hub[] = [
   { position: { x: -0.1, y: 0.55, z: 0.7 }, radius: 0.52, strength: 0.68 },
   { position: { x: -0.2, y: -0.66, z: 0.62 }, radius: 0.5, strength: 0.84 },
   { position: { x: 1.2, y: 0.12, z: 0.5 }, radius: 0.56, strength: 0.58 },
-  { position: { x: 1.28, y: -1.13, z: 0.31 }, radius: 0.42, strength: 0.48 },
+  { position: { x: 1.17, y: -1.07, z: 0.27 }, radius: 0.37, strength: 0.46 },
 ];
 
 const SULCUS_GUIDES: Curve3[] = [
@@ -122,6 +122,27 @@ const SULCUS_GUIDES: Curve3[] = [
     { x: 0.84, y: 0.7, z: 0.93 },
     { x: 1.12, y: 0.45, z: 0.88 },
     { x: 1.49, y: 0.2, z: 0.62 },
+  ],
+];
+
+const PEDUNCLE_GUIDES: Curve3[] = [
+  [
+    { x: 0.62, y: -1.04, z: 0.18 },
+    { x: 0.46, y: -0.98, z: 0.34 },
+    { x: 0.24, y: -0.87, z: 0.52 },
+    { x: 0.02, y: -0.78, z: 0.58 },
+  ],
+  [
+    { x: 0.52, y: -1.08, z: 0.02 },
+    { x: 0.39, y: -0.99, z: 0.2 },
+    { x: 0.16, y: -0.9, z: 0.36 },
+    { x: -0.05, y: -0.8, z: 0.4 },
+  ],
+  [
+    { x: 0.42, y: -1.04, z: -0.12 },
+    { x: 0.3, y: -0.98, z: 0.02 },
+    { x: 0.08, y: -0.9, z: 0.16 },
+    { x: -0.12, y: -0.82, z: 0.2 },
   ],
 ];
 
@@ -248,11 +269,11 @@ const cerebrumPoint = (direction: Vector3): Vector3 => {
 const cerebellumPoint = (direction: Vector3): Vector3 => {
   const longitude = Math.atan2(direction.z, direction.x);
   const latitude = Math.asin(clamp(direction.y, -1, 1));
-  const ripple = 1 + Math.sin(longitude * 9 + latitude * 2) * 0.025;
+  const ripple = 1 + Math.sin(longitude * 9 + latitude * 2) * 0.022;
   return {
-    x: 1.3 + direction.x * 0.79 * ripple,
-    y: -1.14 + direction.y * 0.59 * ripple,
-    z: 0.02 + direction.z * 0.69 * ripple,
+    x: 1.19 + direction.x * 0.7 * ripple,
+    y: -1.08 + direction.y * 0.52 * ripple,
+    z: direction.z * 0.6 * ripple,
   };
 };
 
@@ -352,14 +373,19 @@ const addSurfaceGroup = (
       .slice(0, 7);
 
     nearest.slice(0, 3).forEach(({ candidate }) => addSurfaceEdge(vertexIndex, candidate));
-    nearest.slice(3).forEach(({ candidate }, rank) => {
+    nearest.slice(3).forEach(({ candidate, distance }, rank) => {
+      if (region === "cortex" && distance > 0.18) return;
       const regionBias = region === "cerebellum" ? 0.18 : region === "stem" ? 0.12 : 0;
-      const keepChance = 0.06 + regionBias + vertex.activity * 0.48 - rank * 0.035;
+      const keepChance =
+        0.02 +
+        regionBias +
+        smoothstep(0.18, 0.72, vertex.activity) * 0.58 -
+        rank * 0.05;
       if (random() < keepChance) addSurfaceEdge(vertexIndex, candidate);
     });
   });
 
-  if (region === "stem") return;
+  if (region === "stem") return indices;
 
   const faceKeys = new Set<string>();
   indices.forEach((vertexIndex) => {
@@ -407,28 +433,98 @@ const addSurfaceGroup = (
       });
     });
   });
+
+  return indices;
 };
 
 const addIrregularStem = (geometry: Geometry, edgeKeys: Set<string>) => {
   const random = seededRandom(0x5354454d);
   const directions: Vector3[] = [];
+  const pointCount = 58;
   const mapper = (direction: Vector3): Vector3 => {
     const progress = clamp((direction.y + 1) * 0.5, 0, 1);
     const angle = Math.atan2(direction.z, direction.x);
-    const radius = 0.29 * (1 - progress * 0.4);
+    const radius = 0.3 * (1 - progress * 0.64);
+    const centerX = 0.5 - progress * 0.15 - Math.sin(progress * Math.PI) * 0.06;
     return {
-      x: 0.77 + progress * 0.31 + Math.sin(progress * Math.PI) * 0.05 + Math.cos(angle) * radius,
-      y: -1.1 - progress * 1.08,
-      z: 0.03 + Math.sin(angle) * radius * 0.9,
+      x: centerX + Math.cos(angle) * radius,
+      y: -1.03 - progress * 0.81,
+      z: 0.02 + Math.sin(angle) * radius * 0.86,
     };
   };
 
-  for (let index = 0; index < 74; index += 1) {
-    const progress = (index + 0.5) / 74;
+  for (let index = 0; index < pointCount; index += 1) {
+    const progress = (index + 0.5) / pointCount;
     const angle = index * GOLDEN_ANGLE + (random() - 0.5) * 0.14;
     directions.push({ x: Math.cos(angle), y: progress * 2 - 1, z: Math.sin(angle) });
   }
-  addSurfaceGroup(geometry, directions, mapper, "stem", 0x53544d32, edgeKeys);
+  return addSurfaceGroup(geometry, directions, mapper, "stem", 0x53544d32, edgeKeys);
+};
+
+const addCerebrumBridge = (
+  geometry: Geometry,
+  edgeKeys: Set<string>,
+  cortexIndices: number[],
+  stemIndices: number[],
+) => {
+  const random = seededRandom(0x42524944);
+  const stemTop = stemIndices.filter((index) => geometry.vertices[index].position.y > -1.23);
+  const underside = cortexIndices.filter((index) => {
+    const position = geometry.vertices[index].position;
+    return (
+      position.x > 0.05 &&
+      position.x < 0.95 &&
+      position.y < -1 &&
+      position.y > -1.5 &&
+      Math.abs(position.z) < 0.88
+    );
+  });
+  const usedCortex = new Set<number>();
+  const addBridgeEdge = (a: number, b: number, activity: number) => {
+    const minimum = Math.min(a, b);
+    const maximum = Math.max(a, b);
+    const key = `${minimum}:${maximum}`;
+    if (edgeKeys.has(key)) return;
+    edgeKeys.add(key);
+    geometry.edges.push({ a, b, activity, dissolve: 0, phase: random() });
+  };
+
+  Array.from({ length: Math.min(10, stemTop.length) }, (_, index) =>
+    stemTop[Math.round((index / Math.max(1, Math.min(10, stemTop.length) - 1)) * (stemTop.length - 1))],
+  ).forEach((stemIndex) => {
+    const cortexIndex = underside
+      .filter((index) => !usedCortex.has(index))
+      .map((index) => ({
+        index,
+        distance: distanceSquared(
+          geometry.vertices[stemIndex].position,
+          geometry.vertices[index].position,
+        ),
+      }))
+      .sort((left, right) => left.distance - right.distance)[0]?.index;
+    if (cortexIndex === undefined) return;
+
+    usedCortex.add(cortexIndex);
+    const stemVertex = geometry.vertices[stemIndex];
+    const cortexVertex = geometry.vertices[cortexIndex];
+    const bridgePosition = add(
+      multiply(stemVertex.position, 0.56),
+      multiply(cortexVertex.position, 0.44),
+    );
+    bridgePosition.y += 0.035;
+    bridgePosition.z += 0.1;
+    const bridgeIndex = geometry.vertices.length;
+    const activity = Math.max(stemVertex.activity, cortexVertex.activity, 0.5);
+    geometry.vertices.push({
+      position: bridgePosition,
+      normal: normalize(add(stemVertex.normal, cortexVertex.normal)),
+      activity,
+      dissolve: 0,
+      region: "stem",
+    });
+    addBridgeEdge(stemIndex, bridgeIndex, activity);
+    addBridgeEdge(bridgeIndex, cortexIndex, activity);
+  });
 };
 
 const addNeuralLink = (
@@ -459,13 +555,13 @@ const createNeuralLattice = (geometry: Geometry) => {
 
   HUBS.slice(1).forEach((hub, offset) => {
     const region = offset + 1;
-    const nodeCount = region === 5 ? 8 : 11;
+    const nodeCount = region === 5 ? 10 : 15;
     for (let index = 0; index < nodeCount; index += 1) {
       geometry.nodes.push({
         position: {
-          x: hub.position.x + gaussian(random) * (region === 5 ? 0.22 : 0.3),
-          y: hub.position.y + gaussian(random) * (region === 5 ? 0.18 : 0.24),
-          z: hub.position.z + gaussian(random) * 0.18,
+          x: hub.position.x + gaussian(random) * (region === 5 ? 0.18 : 0.24),
+          y: hub.position.y + gaussian(random) * (region === 5 ? 0.14 : 0.18),
+          z: hub.position.z + gaussian(random) * (region === 5 ? 0.12 : 0.13),
         },
         region,
         hub: false,
@@ -475,18 +571,14 @@ const createNeuralLattice = (geometry: Geometry) => {
     }
   });
 
-  for (let index = 0; index < 22; index += 1) {
-    const direction = normalize({
-      x: random() * 2 - 1,
-      y: random() * 2 - 1,
-      z: random() * 2 - 1,
-    });
-    const radius = 0.28 + Math.cbrt(random()) * 0.62;
+  for (let index = 0; index < 24; index += 1) {
+    const angle = index * GOLDEN_ANGLE + (random() - 0.5) * 0.24;
+    const radius = 0.18 + Math.cbrt(random()) * 0.65;
     geometry.nodes.push({
       position: {
-        x: direction.x * 1.56 * radius,
-        y: direction.y * 1.02 * radius,
-        z: direction.z * 0.68 * radius + 0.08,
+        x: HUBS[0].position.x + Math.cos(angle) * radius * 1.14,
+        y: HUBS[0].position.y + Math.sin(angle) * radius * 0.78,
+        z: HUBS[0].position.z + 0.08 + gaussian(random) * 0.09,
       },
       region: 0,
       hub: false,
@@ -516,7 +608,7 @@ const createNeuralLattice = (geometry: Geometry) => {
 
     addNeuralLink(geometry, linkKeys, nodeIndex, candidates[0]?.candidateIndex ?? hubIndex, random);
 
-    const nearestExtra = geometry.nodes
+    const localCandidates = geometry.nodes
       .map((candidate, candidateIndex) => ({
         candidate,
         candidateIndex,
@@ -525,26 +617,37 @@ const createNeuralLattice = (geometry: Geometry) => {
       .filter(({ candidate, candidateIndex }) =>
         candidateIndex !== nodeIndex && candidate.region === node.region,
       )
-      .sort((left, right) => left.distance - right.distance)[1];
-    if (nearestExtra && random() < 0.52) {
-      addNeuralLink(geometry, linkKeys, nodeIndex, nearestExtra.candidateIndex, random);
-    }
+      .sort((left, right) => left.distance - right.distance)
+      .slice(1, 3);
+    const probabilities = node.region === 0 ? [0.7, 0.3] : [0.66, 0.18];
+    const maximumDistance = node.region === 0 ? 0.18 : 0.16;
+    localCandidates.forEach((candidate, rank) => {
+      if (candidate.distance > maximumDistance || random() >= probabilities[rank]) return;
+      addNeuralLink(geometry, linkKeys, nodeIndex, candidate.candidateIndex, random);
+    });
   });
 
-  HUBS.slice(1).forEach((hub, offset) => {
-    const hubIndex = offset + 1;
-    const start = HUBS[0].position;
-    const end = hub.position;
+  const routePairs = [
+    [0, 1],
+    [0, 4],
+    [1, 2],
+    [1, 3],
+    [4, 5],
+  ] as const;
+  routePairs.forEach(([from, to], routeIndex) => {
+    const start = HUBS[from].position;
+    const end = HUBS[to].position;
+    const trunk = from === 0;
     const controlOne = add(multiply(start, 0.7), multiply(end, 0.3));
     const controlTwo = add(multiply(start, 0.28), multiply(end, 0.72));
-    controlOne.z += 0.28;
-    controlTwo.z += 0.2;
-    controlOne.y += offset % 2 === 0 ? 0.12 : -0.08;
-    controlTwo.y += offset % 2 === 0 ? 0.08 : -0.06;
+    controlOne.z += trunk ? 0.28 : 0.1;
+    controlTwo.z += trunk ? 0.2 : 0.07;
+    controlOne.y += routeIndex % 2 === 0 ? 0.1 : -0.07;
+    controlTwo.y += routeIndex % 2 === 0 ? 0.07 : -0.05;
     const curve: Curve3 = [start, controlOne, controlTwo, end];
     geometry.routes.push({
-      from: 0,
-      to: hubIndex,
+      from,
+      to,
       points: Array.from({ length: 34 }, (_, index) => cubicVector(curve, index / 33)),
       phase: random(),
     });
@@ -562,20 +665,28 @@ const createBrainGeometry = () => {
     fragments: [],
   };
   const edgeKeys = new Set<string>();
-  const cortexDirections = fibonacciDirections(340, 0x434f5254);
+  const cortexDirections = fibonacciDirections(420, 0x434f5254);
   HUBS.slice(1, 5).forEach((hub, index) => {
-    cortexDirections.push(...clusteredDirections(hub, 28, 0x48423130 + index));
+    cortexDirections.push(...clusteredDirections(hub, 45, 0x48423130 + index));
   });
-  addSurfaceGroup(geometry, cortexDirections, cerebrumPoint, "cortex", 0x43545832, edgeKeys);
+  const cortexIndices = addSurfaceGroup(
+    geometry,
+    cortexDirections,
+    cerebrumPoint,
+    "cortex",
+    0x43545832,
+    edgeKeys,
+  );
   addSurfaceGroup(
     geometry,
-    fibonacciDirections(142, 0x4342524c),
+    fibonacciDirections(128, 0x4342524c),
     cerebellumPoint,
     "cerebellum",
     0x43424c32,
     edgeKeys,
   );
-  addIrregularStem(geometry, edgeKeys);
+  const stemIndices = addIrregularStem(geometry, edgeKeys);
+  addCerebrumBridge(geometry, edgeKeys, cortexIndices, stemIndices);
   createNeuralLattice(geometry);
 
   const fragmentRandom = seededRandom(0x46524147);
@@ -616,12 +727,12 @@ const rotatePoint = (point: Vector3, yaw: number, pitch: number, roll: number): 
 };
 
 const quietShellColors = [
-  "rgb(92 55 0 / 0.006)",
-  "rgb(112 67 0 / 0.012)",
-  "rgb(139 84 0 / 0.026)",
-  "rgb(170 105 0 / 0.06)",
-  "rgb(207 140 0 / 0.15)",
-  "rgb(244 179 0 / 0.3)",
+  "rgb(92 55 0 / 0.008)",
+  "rgb(112 67 0 / 0.018)",
+  "rgb(139 84 0 / 0.038)",
+  "rgb(170 105 0 / 0.085)",
+  "rgb(207 140 0 / 0.18)",
+  "rgb(244 179 0 / 0.34)",
 ] as const;
 
 const activeShellColors = [
@@ -645,8 +756,12 @@ const mountBrain = (field: HTMLElement) => {
 
   const geometry = createBrainGeometry();
   const projected = new Float32Array(geometry.vertices.length * 3);
+  const projectedNormalDepth = new Float32Array(geometry.vertices.length);
   const projectedNodes = new Float32Array(geometry.nodes.length * 3);
   const lastHubProjection = new Float32Array(HUBS.length * 2);
+  const incomingRouteIndices = HUBS.map((_, hubIndex) =>
+    geometry.routes.findIndex((route) => route.to === hubIndex),
+  );
   const pulses: NeuralPulse[] = [];
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const pointer = {
@@ -776,9 +891,11 @@ const mountBrain = (field: HTMLElement) => {
     let maximumY = Number.NEGATIVE_INFINITY;
     geometry.vertices.forEach((vertex, index) => {
       const point = projectPoint(vertex.position);
+      const rotatedNormal = rotatePoint(vertex.normal, yaw, pitch, -0.025);
       projected[index * 3] = point.x;
       projected[index * 3 + 1] = point.y;
       projected[index * 3 + 2] = point.z;
+      projectedNormalDepth[index] = rotatedNormal.z;
       minimumX = Math.min(minimumX, point.x);
       minimumY = Math.min(minimumY, point.y);
       maximumX = Math.max(maximumX, point.x);
@@ -798,7 +915,7 @@ const mountBrain = (field: HTMLElement) => {
 
     const facetBuckets = Array.from({ length: SHELL_LEVELS }, () => new Path2D());
     geometry.faces.forEach((face) => {
-      if (face.phase < face.dissolve * 0.28) return;
+      if (face.phase < face.dissolve * 0.22) return;
       const depth = (projected[face.a * 3 + 2] + projected[face.b * 3 + 2] + projected[face.c * 3 + 2]) / 3;
       const front = smoothstep(-0.35, 0.95, depth);
       const bucket = Math.min(SHELL_LEVELS - 1, Math.floor(front * SHELL_LEVELS));
@@ -820,11 +937,17 @@ const mountBrain = (field: HTMLElement) => {
     pulses.splice(0, pulses.length, ...activePulses);
     const quietBuckets = Array.from({ length: SHELL_LEVELS }, () => new Path2D());
     const activeBuckets = Array.from({ length: SHELL_LEVELS }, () => new Path2D());
+    const stemBuckets = Array.from({ length: 3 }, () => new Path2D());
     const autoWavePath = new Path2D();
     const pulsePaths = activePulses.map(() => new Path2D());
 
     geometry.edges.forEach((edge) => {
-      if (edge.phase < edge.dissolve * 0.31) return;
+      if (edge.phase < edge.dissolve * 0.24) return;
+      if (geometry.vertices[edge.a].region === "cortex") {
+        const normalDepth = (projectedNormalDepth[edge.a] + projectedNormalDepth[edge.b]) * 0.5;
+        const rim = 1 - smoothstep(0.1, 0.42, Math.abs(normalDepth));
+        if (edge.activity < 0.36 && rim < 0.55 && edge.phase > 0.94) return;
+      }
       const ax = projected[edge.a * 3];
       const ay = projected[edge.a * 3 + 1];
       const bx = projected[edge.b * 3];
@@ -832,7 +955,11 @@ const mountBrain = (field: HTMLElement) => {
       const depth = (projected[edge.a * 3 + 2] + projected[edge.b * 3 + 2]) * 0.5;
       const front = smoothstep(-0.35, 0.95, depth);
       const bucket = Math.min(SHELL_LEVELS - 1, Math.floor(front * SHELL_LEVELS));
-      const path = edge.activity > 0.42 ? activeBuckets[bucket] : quietBuckets[bucket];
+      const path = geometry.vertices[edge.a].region === "stem"
+        ? stemBuckets[Math.min(2, Math.floor(front * 3))]
+        : edge.activity > 0.42
+          ? activeBuckets[bucket]
+          : quietBuckets[bucket];
       path.moveTo(ax, ay);
       path.lineTo(bx, by);
 
@@ -866,6 +993,16 @@ const mountBrain = (field: HTMLElement) => {
       context.lineWidth = 0.28 + index * 0.065;
       context.stroke(path);
     });
+    const stemColors = [
+      "rgb(139 84 0 / 0.025)",
+      "rgb(220 151 0 / 0.12)",
+      "rgb(255 197 18 / 0.32)",
+    ] as const;
+    stemBuckets.forEach((path, index) => {
+      context.strokeStyle = stemColors[index];
+      context.lineWidth = 0.36 + index * 0.1;
+      context.stroke(path);
+    });
 
     const coreX = projectedNodes[0];
     const coreY = projectedNodes[1];
@@ -893,6 +1030,22 @@ const mountBrain = (field: HTMLElement) => {
     context.strokeStyle = "rgb(173 105 0 / 0.34)";
     context.lineWidth = 0.48;
     context.stroke(sulcusPath);
+    context.restore();
+
+    const pedunclePath = new Path2D();
+    PEDUNCLE_GUIDES.forEach((guide) => {
+      for (let step = 0; step <= 22; step += 1) {
+        const point = projectPoint(cubicVector(guide, step / 22));
+        if (step === 0) pedunclePath.moveTo(point.x, point.y);
+        else pedunclePath.lineTo(point.x, point.y);
+      }
+    });
+    context.save();
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.strokeStyle = "rgb(255 190 8 / 0.46)";
+    context.lineWidth = 0.64;
+    context.stroke(pedunclePath);
     context.restore();
 
     const linkBuckets = Array.from({ length: 4 }, () => new Path2D());
@@ -926,7 +1079,10 @@ const mountBrain = (field: HTMLElement) => {
 
       if (node.hub) {
         const hub = HUBS[index];
-        const routeHead = index > 0 ? (cycleElapsed - (index - 1) * 135) / 3050 : -1;
+        const incomingRouteIndex = incomingRouteIndices[index];
+        const routeHead = incomingRouteIndex >= 0
+          ? (cycleElapsed - incomingRouteIndex * 135) / 3050
+          : -1;
         const arrival = routeHead >= 0.72 && routeHead <= 1.14
           ? smoothstep(0.72, 0.97, routeHead) * (1 - smoothstep(1, 1.14, routeHead))
           : 0;
