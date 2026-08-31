@@ -389,14 +389,22 @@
   outline-offset: -2px;
 }
 
+.home-brain-static-canvas,
 .home-brain-canvas {
-  z-index: 0;
   pointer-events: none;
+}
+
+.home-brain-static-canvas {
+  z-index: 0;
+}
+
+.home-brain-canvas {
+  z-index: 1;
 }
 
 .home-brain-visual::after {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   inset: 0;
   border: 1px solid rgb(255 255 255 / 0.045);
   background:
