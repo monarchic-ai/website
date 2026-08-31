@@ -2133,6 +2133,9 @@ const mountBrain = async (field: HTMLElement) => {
     ...particleCerebellum.slice(3),
     ...particleStem.slice(1),
   ];
+  const particleFiberRank = new Map(
+    particleFibers.map((fiber, index) => [fiber, index]),
+  );
   const outboundCandidates = fibers
     .filter((fiber) => fiber.escapeStart >= 0)
     .sort(
@@ -2167,6 +2170,9 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
+  const mediumFiberGain = 1.075;
+  const idleSignalSpeed = 0.22;
+  const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
   const pointer = {
     x: 0,
     y: 0,
@@ -2180,7 +2186,12 @@ const mountBrain = async (field: HTMLElement) => {
   let pixelRatio = 1;
   let animationFrame = 0;
   let lastFrame = 0;
-  let inViewport = true;
+  const initialBounds = field.getBoundingClientRect();
+  let inViewport =
+    initialBounds.bottom > 0 &&
+    initialBounds.right > 0 &&
+    initialBounds.top < window.innerHeight &&
+    initialBounds.left < window.innerWidth;
   let yaw = -0.34;
   let pitch = -0.055;
   let statusTimer = 0;
@@ -2234,7 +2245,13 @@ const mountBrain = async (field: HTMLElement) => {
   const addPulse = (x: number, y: number) => {
     const candidates: { index: number; distance: number }[] = [];
     fibers.forEach((fiber, fiberIndex) => {
-      if (!fiber.visible) return;
+      if (
+        !fiber.visible ||
+        fiber.escapeStart >= 0 ||
+        renderPlans[fiberIndex].suppressed
+      ) {
+        return;
+      }
       let nearestDistance = Number.POSITIVE_INFINITY;
       const pointCount = fiber.projected.length / 3;
       for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 2) {
@@ -2247,11 +2264,29 @@ const mountBrain = async (field: HTMLElement) => {
       }
       candidates.push({ index: fiberIndex, distance: nearestDistance });
     });
-    const signalCount = width < 520 ? 7 : 9;
-    const fiberIndices = candidates
-      .sort((left, right) => left.distance - right.distance)
-      .slice(0, signalCount)
+    const rankedCandidates = candidates.sort(
+      (left, right) => left.distance - right.distance,
+    );
+    const primary = rankedCandidates[0];
+    if (!primary || !Number.isFinite(primary.distance)) return;
+    const primaryFiber = fibers[primary.index];
+    const signalCount = width < 520 ? 4 : 5;
+    const supportIndices = rankedCandidates
+      .slice(1)
+      .filter(({ index }) => fibers[index].region === primaryFiber.region)
+      .sort((left, right) => {
+        const leftFamilyGain =
+          fibers[left.index].family === primaryFiber.family ? 0.82 : 1;
+        const rightFamilyGain =
+          fibers[right.index].family === primaryFiber.family ? 0.82 : 1;
+        return (
+          left.distance * leftFamilyGain -
+          right.distance * rightFamilyGain
+        );
+      })
+      .slice(0, signalCount - 1)
       .map(({ index }) => index);
+    const fiberIndices = [primary.index, ...supportIndices];
     pulses.push({
       fiberIndices,
       startedAt: performance.now(),
@@ -2266,6 +2301,7 @@ const mountBrain = async (field: HTMLElement) => {
           : "MODEL FIELD / LIVE",
         pointer.active ? "tracking" : "idle",
       );
+      scheduleFrame();
     }, 720);
     scheduleFrame();
   };
@@ -2292,10 +2328,10 @@ const mountBrain = async (field: HTMLElement) => {
     const normalizedPointerY = pointer.y / height - 0.5;
     const idleYaw = reducedMotion.matches
       ? -0.34
-      : -0.34 + Math.sin((time / 26000) * TAU) * 0.105;
+      : -0.34 + Math.sin((time / 56000) * TAU) * 0.038;
     const idlePitch = reducedMotion.matches
       ? -0.055
-      : -0.055 + Math.sin((time / 23000) * TAU) * 0.024;
+      : -0.055 + Math.sin((time / 67000) * TAU) * 0.014;
     const pointerDepthActive = pointer.active && !reducedMotion.matches;
     const targetYaw = pointerDepthActive
       ? -0.34 + normalizedPointerX * 0.12
@@ -2307,12 +2343,50 @@ const mountBrain = async (field: HTMLElement) => {
       yaw = targetYaw;
       pitch = targetPitch;
     } else {
-      yaw += (targetYaw - yaw) * 0.055;
-      pitch += (targetPitch - pitch) * 0.055;
+      yaw += (targetYaw - yaw) * 0.032;
+      pitch += (targetPitch - pitch) * 0.032;
     }
 
     const matrix = buildRotationMatrix(yaw, pitch, -0.018);
     const mobile = width < 520;
+    const particleLimit = mobile ? 6 : PARTICLE_FIBER_COUNT;
+    const currentPulseDuration = pulseDuration();
+    const activePulses = pulses.filter(
+      (pulse) => time - pulse.startedAt < currentPulseDuration,
+    );
+    pulses.splice(0, pulses.length, ...activePulses);
+    const pulseActivityByFiber = new Map<
+      number,
+      { progress: number; strength: number; primary: boolean }
+    >();
+    activePulses.forEach((pulse) => {
+      const age = time - pulse.startedAt;
+      const pulsePosition = age / Math.max(1, currentPulseDuration);
+      const fade = 1 - smoothstep(0.72, 1, pulsePosition);
+      pulse.fiberIndices.forEach((fiberIndex, rank) => {
+        const progress = reducedMotion.matches
+          ? 0.5
+          : clamp(age / 1900 - rank * 0.045, 0, 1);
+        if (!reducedMotion.matches && progress <= 0) return;
+        const supportPosition =
+          rank / Math.max(1, pulse.fiberIndices.length - 1);
+        const strength =
+          fade * (rank === 0 ? 1 : lerp(0.64, 0.4, supportPosition));
+        const existing = pulseActivityByFiber.get(fiberIndex);
+        const primary = rank === 0;
+        if (
+          !existing ||
+          primary ||
+          (!existing.primary && strength > existing.strength)
+        ) {
+          pulseActivityByFiber.set(fiberIndex, {
+            progress,
+            strength,
+            primary,
+          });
+        }
+      });
+    });
     const visibleOutboundFiberSet = !mobile
       ? outboundFiberSet
       : width < 360
@@ -2335,8 +2409,23 @@ const mountBrain = async (field: HTMLElement) => {
       },
       () => new Path2D(),
     );
+    const mediumPaths = Array.from(
+      {
+        length:
+          OPACITY_LEVELS *
+          DEPTH_LEVELS *
+          WIDTH_LEVELS *
+          CORTEX_LIGHT_LEVELS,
+      },
+      () => new Path2D(),
+    );
     const activePaths = Array.from(
       { length: DEPTH_LEVELS * WIDTH_LEVELS * 2 },
+      () => new Path2D(),
+    );
+    const signalResponseLevels = 5;
+    const signalResponsePaths = Array.from(
+      { length: signalResponseLevels * DEPTH_LEVELS },
       () => new Path2D(),
     );
     const outboundPaths = Array.from(
@@ -2410,6 +2499,21 @@ const mountBrain = async (field: HTMLElement) => {
 
       const useBundlePlan = !mobile && fiber.region === "cerebrum";
       if (useBundlePlan && renderPlan.suppressed) return;
+      const pulseActivity = pulseActivityByFiber.get(fiberIndex);
+      const ambientParticleRank = particleFiberRank.get(fiber);
+      const ambientActivity =
+        ambientParticleRank !== undefined &&
+        ambientParticleRank < particleLimit &&
+        fiber.particle
+          ? {
+              progress: reducedMotion.matches
+                ? fiber.phase
+                : (fiber.phase + time * fiber.speed * idleSignalSpeed) % 1,
+              strength: fiber.hot ? 0.46 : 0.36,
+              primary: true,
+            }
+          : undefined;
+      const signalActivity = pulseActivity ?? ambientActivity;
 
       for (let pointIndex = 1; pointIndex < pointCount; pointIndex += 1) {
         const previousOffset = (pointIndex - 1) * 3;
@@ -2615,7 +2719,10 @@ const mountBrain = async (field: HTMLElement) => {
             previousStrandOffset * renderPreviousSpread;
           const nextOffsetPixels = nextStrandOffset * renderNextSpread;
           if (!isEscapeSegment) {
-            const structuralPath = structuralPaths[structuralIndex];
+            const structuralPath =
+              fiber.bundleTier === "medium"
+                ? mediumPaths[structuralIndex]
+                : structuralPaths[structuralIndex];
             structuralPath.moveTo(
               fiber.projected[previousOffset] +
                 previousNormalX * previousOffsetPixels,
@@ -2626,6 +2733,41 @@ const mountBrain = async (field: HTMLElement) => {
               fiber.projected[offset] + nextNormalX * nextOffsetPixels,
               fiber.projected[offset + 1] + nextNormalY * nextOffsetPixels,
             );
+
+            if (signalActivity) {
+              const signalDistance =
+                signalActivity.progress - segmentPosition;
+              const signalEnvelope =
+                signalDistance < 0
+                  ? smoothstep(-0.03, 0, signalDistance)
+                  : 1 - smoothstep(0.035, 0.16, signalDistance);
+              const responseStrength =
+                signalEnvelope * signalActivity.strength;
+              const responseLane =
+                signalActivity.primary || centerDistance <= 1;
+              if (responseLane && responseStrength >= 0.025) {
+                const responseBand = Math.min(
+                  signalResponseLevels - 1,
+                  Math.floor(responseStrength * signalResponseLevels),
+                );
+                const responsePath =
+                  signalResponsePaths[
+                    responseBand * DEPTH_LEVELS + depthBand
+                  ];
+                responsePath.moveTo(
+                  fiber.projected[previousOffset] +
+                    previousNormalX * previousOffsetPixels,
+                  fiber.projected[previousOffset + 1] +
+                    previousNormalY * previousOffsetPixels,
+                );
+                responsePath.lineTo(
+                  fiber.projected[offset] +
+                    nextNormalX * nextOffsetPixels,
+                  fiber.projected[offset + 1] +
+                    nextNormalY * nextOffsetPixels,
+                );
+              }
+            }
           } else {
             const tailPosition =
               (pointIndex - fiber.escapeStart) /
@@ -2744,17 +2886,26 @@ const mountBrain = async (field: HTMLElement) => {
                 widthBand) *
                 CORTEX_LIGHT_LEVELS +
                 cortexLightBand);
+            const alpha =
+              structuralAlpha[opacityBand] *
+              depthStrength *
+              (cortexLightBand === 1 ? 0.8 : 1);
+            context.lineWidth =
+              (widthBand === 0 ? 1 : 1.2) * onePhysicalPixel;
             context.strokeStyle = rgba(
               255,
               190 + depthBand * 3,
               22 + depthBand * 2,
-              structuralAlpha[opacityBand] *
-                depthStrength *
-                (cortexLightBand === 1 ? 0.8 : 1),
+              alpha,
             );
-            context.lineWidth =
-              (widthBand === 0 ? 1 : 1.2) * onePhysicalPixel;
             context.stroke(structuralPaths[index]);
+            context.strokeStyle = rgba(
+              255,
+              190 + depthBand * 3,
+              22 + depthBand * 2,
+              alpha * mediumFiberGain,
+            );
+            context.stroke(mediumPaths[index]);
           }
         }
       }
@@ -2831,68 +2982,29 @@ const mountBrain = async (field: HTMLElement) => {
       }
     }
 
-    const activePulses = pulses.filter(
-      (pulse) => time - pulse.startedAt < 2200,
-    );
-    pulses.splice(0, pulses.length, ...activePulses);
-    activePulses.forEach((pulse) => {
-      const age = time - pulse.startedAt;
-      const fade = clamp(1 - age / 2200, 0, 1);
-      const pulsePath = new Path2D();
-      pulse.fiberIndices.forEach((fiberIndex) => {
-        const fiber = fibers[fiberIndex];
-        if (!fiber.visible) return;
-        const pointCount = fiber.projected.length / 3;
-        for (
-          let pointIndex = 0;
-          pointIndex < pointCount;
-          pointIndex += 1
-        ) {
-          const offset = pointIndex * 3;
-          if (pointIndex === 0) {
-            pulsePath.moveTo(
-              fiber.projected[offset],
-              fiber.projected[offset + 1],
-            );
-          } else {
-            pulsePath.lineTo(
-              fiber.projected[offset],
-              fiber.projected[offset + 1],
-            );
-          }
-        }
-      });
-      context.save();
-      context.globalCompositeOperation = "lighter";
-      context.lineCap = "round";
-      context.lineJoin = "round";
-      context.strokeStyle = rgba(255, 174, 0, 0.045 * fade);
-      context.lineWidth = 3.2;
-      context.stroke(pulsePath);
-      context.strokeStyle = rgba(255, 211, 42, 0.52 * fade);
-      context.lineWidth = 0.88;
-      context.stroke(pulsePath);
-      context.restore();
-
-      pulse.fiberIndices.forEach((fiberIndex, rank) => {
-        const fiber = fibers[fiberIndex];
-        if (!fiber.visible) return;
-        const progress = reducedMotion.matches
-          ? 0.48 + rank * 0.035
-          : clamp(age / 1900 - rank * 0.045, 0, 1);
-        if (!reducedMotion.matches && progress <= 0) return;
-        const point = pathPointAt(fiber, progress);
-        const front = smoothstep(-0.92, 0.92, point.z);
-        drawParticle(
-          context,
-          glowSprite,
-          point,
-          rank < 2,
-          fade * (0.46 + front * 0.54),
-          rank < 2 ? 1.35 : 1.05,
+    const signalResponseAlpha = [0.018, 0.03, 0.05, 0.075, 0.11];
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (
+      let responseBand = 0;
+      responseBand < signalResponseLevels;
+      responseBand += 1
+    ) {
+      for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+        const depthStrength =
+          0.32 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.68;
+        context.strokeStyle = rgba(
+          255,
+          211 + depthBand * 3,
+          46 + depthBand * 2,
+          signalResponseAlpha[responseBand] * depthStrength,
         );
-      });
-    });
+        context.lineWidth = onePhysicalPixel;
+        context.stroke(
+          signalResponsePaths[responseBand * DEPTH_LEVELS + depthBand],
+        );
+      }
+    }
 
     const bundleParticlePoint = (
       fiber: Fiber,
@@ -2937,7 +3049,28 @@ const mountBrain = async (field: HTMLElement) => {
       };
     };
 
-    const particleLimit = mobile ? 6 : PARTICLE_FIBER_COUNT;
+    pulseActivityByFiber.forEach((activity, fiberIndex) => {
+      const fiber = fibers[fiberIndex];
+      if (!fiber.visible) return;
+      const lane =
+        fiber.region === "cerebrum"
+          ? activity.primary
+            ? 0
+            : (fiber.bundleId % 3) - 1
+          : 0;
+      const point = bundleParticlePoint(fiber, activity.progress, lane);
+      const front = smoothstep(-0.92, 0.92, point.z);
+      if (front < 0.08) return;
+      drawParticle(
+        context,
+        glowSprite,
+        point,
+        activity.primary,
+        activity.strength * (0.4 + front * 0.5),
+        activity.primary ? 1.15 : 0.82,
+      );
+    });
+
     const particleLaneSequence = [-2, 0, 1, -1, 2, 0] as const;
     let particleCount = 0;
     let hotCount = 0;
@@ -2951,7 +3084,7 @@ const mountBrain = async (field: HTMLElement) => {
       }
       const progress = reducedMotion.matches
         ? fiber.phase
-        : (fiber.phase + time * fiber.speed) % 1;
+        : (fiber.phase + time * fiber.speed * idleSignalSpeed) % 1;
       const lane =
         fiber.region === "cerebrum"
           ? particleLaneSequence[
@@ -2966,7 +3099,10 @@ const mountBrain = async (field: HTMLElement) => {
       const nodeBrightness = reducedMotion.matches
         ? 1
         : 1 +
-          Math.sin((time / 2800) * TAU + fiber.phase * TAU) *
+          Math.sin(
+            (time / lerp(2800, 4300, fiber.activityKey)) * TAU +
+              fiber.phase * TAU,
+          ) *
             (hot ? 0.09 : 0.06);
       drawParticle(
         context,
@@ -2990,12 +3126,20 @@ const mountBrain = async (field: HTMLElement) => {
           secondaryPoint.z,
         );
         if (secondaryFront >= 0.08) {
+          const secondaryBrightness = reducedMotion.matches
+            ? 1
+            : 1 +
+              Math.sin(
+                (time / lerp(3400, 5100, fiber.qualityRank)) * TAU +
+                  (fiber.phase + 0.37) * TAU,
+              ) *
+                0.045;
           drawParticle(
             context,
             glowSprite,
             secondaryPoint,
             false,
-            0.18 + secondaryFront * 0.28,
+            (0.18 + secondaryFront * 0.28) * secondaryBrightness,
             0.62,
           );
         }
@@ -3018,7 +3162,7 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.escapeStart / Math.max(1, pointCount - 1);
       const tailPosition = reducedMotion.matches
         ? 0.22 + index * 0.055
-        : (fiber.phase + time * fiber.speed * 0.72) % 1;
+        : (fiber.phase + time * fiber.speed * idleSignalSpeed * 0.72) % 1;
       const point = pathPointAt(
         fiber,
         lerp(tailStart, 1, tailPosition),
@@ -3127,7 +3271,7 @@ const mountBrain = async (field: HTMLElement) => {
         animationFrame = 0;
       }
     },
-    { rootMargin: "120px" },
+    { rootMargin: "0px", threshold: 0 },
   );
   intersectionObserver.observe(field);
   resize();
