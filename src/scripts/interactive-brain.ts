@@ -2121,7 +2121,7 @@ const appendEscapeTail = (
       incomingTangent.z * 0.54 +
       Math.cos(phase + curveKey * TAU) * 0.11,
   });
-  const variedMaximumX = 2.68 + curveKey * 0.12;
+  const variedMaximumX = 3.08 + curveKey * 0.28;
   const maximumLength =
     (variedMaximumX - exit.x) / Math.max(0.3, endDirection.x);
   const tailLength = Math.min(
@@ -2146,7 +2146,7 @@ const appendEscapeTail = (
     ),
     end,
   ];
-  const tailSamples = 14;
+  const tailSamples = 32;
   const combined = new Float32Array(points.length + tailSamples * 3);
   combined.set(points);
   for (let index = 1; index <= tailSamples; index += 1) {
@@ -2169,6 +2169,19 @@ const appendEscapeTail = (
         3 * inverse * position ** 2 * curve[2].z +
         position ** 3 * curve[3].z,
     };
+    const waveEnvelope = Math.sin(Math.PI * position);
+    const waveOffset =
+      Math.sin(position * TAU + phase + curveKey * TAU) *
+      tailLength *
+      0.055 *
+      waveEnvelope;
+    point.x += lateralNormal.x * waveOffset;
+    point.y += lateralNormal.y * waveOffset;
+    point.z +=
+      Math.sin(position * Math.PI + phase * 0.7) *
+      tailLength *
+      0.018 *
+      waveEnvelope;
     const offset = points.length + (index - 1) * 3;
     combined[offset] = point.x;
     combined[offset + 1] = point.y;
@@ -2811,6 +2824,7 @@ const styleFibers = (fibers: Fiber[]) => {
   ];
   const highwayFibers: Fiber[] = [];
   const highwaySet = new Set<Fiber>();
+  const highwaySupportSet = new Set<Fiber>();
   highwaySpecs.forEach((spec) => {
     const selected = fibers
       .filter(
@@ -2840,13 +2854,14 @@ const styleFibers = (fibers: Fiber[]) => {
 
   highwayFibers.forEach((highway) => {
     const profile = profileFor(highway);
-    const support = fibers
+    const supportFibers = fibers
       .filter(
         (fiber) =>
           fiber.region === "cerebrum" &&
           fiber.family === highway.family &&
           fiber !== highway &&
-          !highwaySet.has(fiber),
+          !highwaySet.has(fiber) &&
+          !highwaySupportSet.has(fiber),
       )
       .map((fiber) => {
         const candidate = profileFor(fiber);
@@ -2858,8 +2873,13 @@ const styleFibers = (fibers: Fiber[]) => {
             (candidate.z - profile.z) ** 2 * 0.4,
         };
       })
-      .sort((left, right) => left.distance - right.distance)[0]?.fiber;
-    if (support) support.bundleTier = "medium";
+      .sort((left, right) => left.distance - right.distance)
+      .slice(0, 2)
+      .map(({ fiber }) => fiber);
+    supportFibers.forEach((support) => {
+      support.bundleTier = "medium";
+      highwaySupportSet.add(support);
+    });
   });
 
   const particleRandom = seededRandom(FAMILY_SEEDS.particles);
@@ -3899,7 +3919,7 @@ const mountBrain = async (field: HTMLElement) => {
     const visibleOutboundFiberSet =
       outboundFiberSets[
         Math.round(
-          lerp(4, OUTBOUND_FIBER_COUNT, densityPosition),
+          lerp(6, OUTBOUND_FIBER_COUNT, densityPosition),
         )
       ];
     const secondaryNodeVisibility = smoothstep(
@@ -3969,6 +3989,10 @@ const mountBrain = async (field: HTMLElement) => {
       : [];
     const outboundPaths = Array.from(
       { length: DEPTH_LEVELS * OUTBOUND_OPACITY_LEVELS },
+      () => new Path2D(),
+    );
+    const outboundNodePaths = Array.from(
+      { length: DEPTH_LEVELS },
       () => new Path2D(),
     );
     const stemPaths = Array.from(
@@ -4061,15 +4085,17 @@ const mountBrain = async (field: HTMLElement) => {
       // The trajectories are densely resampled; skipping alternate samples keeps
       // the same silhouette at display scale without rebuilding redundant spans.
       const pointStep =
-        densityPosition < 0.2 && fiber.bundleTier === "active"
-          ? 3
-          : densityPosition < 0.72 &&
-              fiber.region === "cerebrum" &&
-              fiber.bundleTier === "dim"
+        fiber.escapeStart >= 0
+          ? 1
+          : densityPosition < 0.2 && fiber.bundleTier === "active"
             ? 3
-            : densityPosition < 0.72
-              ? 2
-              : 1;
+            : densityPosition < 0.72 &&
+                fiber.region === "cerebrum" &&
+                fiber.bundleTier === "dim"
+              ? 3
+              : densityPosition < 0.72
+                ? 2
+                : 1;
       for (
         let pointIndex = pointStep;
         pointIndex < pointCount;
@@ -4420,6 +4446,43 @@ const mountBrain = async (field: HTMLElement) => {
               fiber.projected[offset],
               fiber.projected[offset + 1],
             );
+            const outboundNodeKey = mixRenderKey(
+              fiber.bundleId ^ 0x544e4f44,
+            );
+            if (outboundNodeKey % 2 === 0) {
+              const tailPointCount = pointCount - fiber.escapeStart - 1;
+              const nodePointIndex =
+                fiber.escapeStart +
+                1 +
+                Math.floor(
+                  Math.max(0, tailPointCount - 1) *
+                    lerp(
+                      0.22,
+                      0.78,
+                      renderUnit(outboundNodeKey ^ 0x504f494e),
+                    ),
+                );
+              if (
+                previousPointIndex < nodePointIndex &&
+                pointIndex >= nodePointIndex
+              ) {
+                const nodeOffset = nodePointIndex * 3;
+                const nodeX = fiber.projected[nodeOffset];
+                const nodeY = fiber.projected[nodeOffset + 1];
+                const radius = 0.42 + depthBand * 0.025;
+                outboundNodePaths[depthBand].moveTo(
+                  nodeX + radius,
+                  nodeY,
+                );
+                outboundNodePaths[depthBand].arc(
+                  nodeX,
+                  nodeY,
+                  radius,
+                  0,
+                  TAU,
+                );
+              }
+            }
           }
 
           const stemEmphasis =
@@ -4547,7 +4610,7 @@ const mountBrain = async (field: HTMLElement) => {
       context.stroke(stemPaths[depthBand]);
     }
 
-    const outboundAlpha = [0.055, 0.088, 0.128, 0.175, 0.225];
+    const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
     for (
       let opacityBand = 0;
       opacityBand < OUTBOUND_OPACITY_LEVELS;
@@ -4567,6 +4630,16 @@ const mountBrain = async (field: HTMLElement) => {
         context.lineWidth = onePhysicalPixel;
         context.stroke(outboundPaths[index]);
       }
+    }
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
+      context.fillStyle = rgba(
+        255,
+        214 + depthBand * 3,
+        46 + depthBand * 2,
+        0.2 + depthStrength * 0.38,
+      );
+      context.fill(outboundNodePaths[depthBand]);
     }
 
     if (executionWaveActive) {
@@ -4628,11 +4701,11 @@ const mountBrain = async (field: HTMLElement) => {
             34 + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
-                ? 0.1
-                : 0.24
+                ? 0.12
+                : 0.29
               : fadeBand === 0
-                ? 0.035
-                : 0.085) * depthStrength,
+                ? 0.045
+                : 0.105) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
