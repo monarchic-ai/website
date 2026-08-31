@@ -572,8 +572,8 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: -0.4, y: 1.3, z: 0.82 },
     fieldMinimum: 0.008,
     fieldMaximum: 0.2,
-    lengthMinimum: 0.68,
-    lengthMaximum: 1.42,
+    lengthMinimum: 0.5,
+    lengthMaximum: 1.02,
     lengthExponent: 1.42,
   },
   {
@@ -611,8 +611,8 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
     maximum: { x: 2.16, y: 1.34, z: 0.82 },
     fieldMinimum: 0.008,
     fieldMaximum: 0.2,
-    lengthMinimum: 0.56,
-    lengthMaximum: 1.12,
+    lengthMinimum: 0.48,
+    lengthMaximum: 0.9,
     lengthExponent: 1.5,
   },
   {
@@ -949,16 +949,23 @@ const familyAxis = (
     });
   }
   if (family === "frontal-surface") {
-    const relative = subtract(point, { x: -1.18, y: 0.24, z: 0 });
-    const radialX = relative.x / 1.04;
-    const radialY = relative.y / 0.96;
+    const localCenter = {
+      x: -1.2 + Math.cos(phase * 1.37) * 0.24,
+      y: 0.25 + Math.sin(phase * 0.83) * 0.22,
+      z: 0,
+    };
+    const relative = subtract(point, localCenter);
+    const radialX = relative.x / 0.72;
+    const radialY = relative.y / 0.66;
     return normalize({
       x:
         -radialY +
-        0.1 * Math.sin(point.y * 1.7 + phase) +
-        0.04 * Math.sin(point.x * 2.1 - phase),
-      y: radialX * 0.86 + 0.055 * Math.cos(point.y * 1.5 + phase),
-      z: 0.07 * Math.sin(point.x * 1.2 + point.y + phase),
+        0.18 * Math.sin(point.y * 2.2 + phase) +
+        0.08 * Math.sin(point.x * 2.8 - phase),
+      y:
+        radialX * 0.88 +
+        0.12 * Math.cos(point.y * 2.1 + phase * 0.72),
+      z: 0.1 * Math.sin(point.x * 1.6 + point.y * 1.3 + phase),
     });
   }
   if (family === "temporal-loop") {
@@ -978,16 +985,23 @@ const familyAxis = (
     });
   }
   if (family === "posterior-surface") {
-    const relative = subtract(point, { x: 1.08, y: 0.28, z: 0 });
-    const radialX = relative.x / 1.12;
-    const radialY = relative.y / 0.98;
+    const localCenter = {
+      x: 1.12 + Math.cos(phase * 1.21) * 0.23,
+      y: 0.3 + Math.sin(phase * 0.91) * 0.2,
+      z: 0,
+    };
+    const relative = subtract(point, localCenter);
+    const radialX = relative.x / 0.7;
+    const radialY = relative.y / 0.68;
     return normalize({
       x:
         -radialY +
-        0.09 * Math.cos(point.y * 1.6 + phase) +
-        0.035 * Math.sin(point.x * 2.2 - phase),
-      y: radialX * 0.8 + 0.05 * Math.sin(point.y * 1.4 + phase),
-      z: 0.07 * Math.cos(point.x + point.y * 1.1 + phase),
+        0.17 * Math.cos(point.y * 2.15 + phase) +
+        0.075 * Math.sin(point.x * 2.7 - phase),
+      y:
+        radialX * 0.86 +
+        0.11 * Math.sin(point.y * 2 + phase * 0.78),
+      z: 0.1 * Math.cos(point.x * 1.55 + point.y * 1.25 + phase),
     });
   }
   if (family === "local-cortical") {
@@ -2558,12 +2572,12 @@ const styleFibers = (fibers: Fiber[]) => {
         fiber.family === "posterior-fan" ||
         fiber.family === "frontal-loop" ||
         surfaceFamily) &&
-      activityKey < (surfaceFamily ? 0.24 : 0.44);
+      activityKey < (surfaceFamily ? 0.12 : 0.44);
     fiber.particle = false;
     fiber.hot = false;
     fiber.activityKey = activityKey;
     fiber.bundleTier =
-      (fiber.family === "cortical-fold" && activityKey < 0.45) ||
+      (fiber.family === "cortical-fold" && activityKey < 0.56) ||
       fiber.family === "central-tract" ||
       boundaryMedium ||
       fiber.region === "stem" ||
@@ -2650,7 +2664,9 @@ const styleFibers = (fibers: Fiber[]) => {
   }> = [
     { family: "central-tract", x: -0.28, y: 0.23 },
     { family: "central-tract", x: 0.42, y: -0.14 },
+    { family: "projection-tract", x: -0.58, y: 0.7 },
     { family: "projection-tract", x: -0.18, y: 0.56 },
+    { family: "projection-tract", x: 0.54, y: 0.66 },
     { family: "association", x: -0.46, y: 0.34 },
     { family: "association", x: 0.58, y: 0.12 },
     { family: "frontal-diagonal", x: -0.82, y: 0.34 },
@@ -3230,7 +3246,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 1.82;
+  const mediumFiberGain = 1.96;
   const idleSignalSpeed = 0.22;
   const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
   const executionWaveCycle = 16000;
@@ -3372,7 +3388,12 @@ const mountBrain = async (field: HTMLElement) => {
       }
 
       const pointCount = fiber.points.length / 3;
-      const pointStep = fiber.region === "cerebrum" ? 3 : 2;
+      const pointStep =
+        fiber.region === "cerebrum"
+          ? width >= 680
+            ? 2
+            : 3
+          : 2;
       for (
         let pointIndex = pointStep;
         pointIndex < pointCount;
@@ -3443,7 +3464,7 @@ const mountBrain = async (field: HTMLElement) => {
       }
 
       const nodeKey = mixRenderKey(fiber.bundleId ^ 0x4e4f4445);
-      if (staticNodeCount < 64 && nodeKey % 13 === 0) {
+      if (staticNodeCount < 150 && nodeKey % 7 === 0) {
         const nodeIndex = Math.floor(
           lerp(
             2,
@@ -3476,7 +3497,7 @@ const mountBrain = async (field: HTMLElement) => {
             centerX + rotatedX * horizontalModelScale * perspective;
           const projectedY =
             centerY - rotatedY * modelScale * perspective;
-          const radius = 0.42 + depthBand * 0.025;
+          const radius = 0.42 + depthBand * 0.022;
           staticNodePaths[depthBand].moveTo(
             projectedX + radius,
             projectedY,
@@ -3904,10 +3925,10 @@ const mountBrain = async (field: HTMLElement) => {
           : densityPosition < 0.72 &&
               fiber.region === "cerebrum" &&
               fiber.bundleTier === "dim"
-          ? 3
-          : densityPosition < 0.72
-            ? 2
-            : 1;
+            ? 3
+            : densityPosition < 0.72
+              ? 2
+              : 1;
       for (
         let pointIndex = pointStep;
         pointIndex < pointCount;
