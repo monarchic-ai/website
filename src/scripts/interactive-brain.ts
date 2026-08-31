@@ -825,6 +825,13 @@ const cerebrumField = (point: Vector3) => {
 const cerebellumField = (point: Vector3) =>
   fieldForLobes(point, [CEREBELLUM]);
 
+const cerebellarSeparationVisibility = (point: Vector3) => {
+  const overlap = smoothstep(-0.16, 0.1, cerebellumField(point).value);
+  const posteriorInfluence = smoothstep(0.18, 0.62, point.x);
+  const lowerInfluence = 1 - smoothstep(0.02, 0.28, point.y);
+  return 1 - overlap * posteriorInfluence * lowerInfluence * 0.92;
+};
+
 const brainstemCenterX = (position: number) =>
   lerp(BRAINSTEM.top.x, BRAINSTEM.bottom.x, position) -
   BRAINSTEM.curve * Math.sin(Math.PI * position);
@@ -2244,6 +2251,13 @@ const createFiber = (
         z: points[offset + 2],
       });
     }
+    if (region === "cerebrum") {
+      fade *= cerebellarSeparationVisibility({
+        x: points[offset],
+        y: points[offset + 1],
+        z: points[offset + 2],
+      });
+    }
     if (escapeStart >= 0 && pointIndex >= escapeStart) {
       const escapePosition =
         (pointIndex - escapeStart) /
@@ -2493,7 +2507,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const random = seededRandom(FAMILY_SEEDS.cerebellar);
   let generatedBundles = 0;
   const foliaDepths = [-0.5, -0.17, 0.17, 0.5] as const;
-  const foliaBandCount = 19;
+  const foliaBandCount = 16;
   for (let band = 0; band < foliaBandCount; band += 1) {
     const normalizedY =
       lerp(-0.72, 0.72, (band + 0.5) / foliaBandCount) +
@@ -2508,71 +2522,78 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         Math.max(0.16, 1 - (normalizedZ / 0.64) ** 2),
       );
       const fullExtent = verticalSection * depthSection;
-      const centerOffset = lerp(-0.085, 0.085, random());
-      const lengthScale = lerp(0.6, 0.96, random());
-      const startX =
-        centerOffset - fullExtent * lengthScale * lerp(0.78, 1.04, random());
-      const endX =
-        centerOffset + fullExtent * lengthScale * lerp(0.78, 1.04, random());
-      const phase = band * 0.57 + lane * 0.1 + random() * 0.32;
-      const archDirection = normalizedY < -0.18 ? -1 : 1;
-      const archAmplitude =
-        lerp(0.18, 0.34, verticalSection) *
-        lerp(0.82, 1.18, random());
-      const rippleAmplitude = lerp(0.032, 0.075, random());
-      const rippleCount = lerp(1.1, 1.75, random());
-      const tilt = lerp(-0.11, 0.11, random());
-      const endTurn = lerp(0.03, 0.065, random());
-      const controls: Vector3[] = [];
-      for (let step = 0; step <= 22; step += 1) {
-        const position = step / 22;
-        const envelope = Math.sin(Math.PI * position);
-        const endEnvelope = Math.sin(TAU * position);
-        const normalizedX =
-          lerp(startX, endX, position) +
-          Math.sin(TAU * position + phase) * 0.028 * envelope;
-        const bend =
-          envelope * archAmplitude * archDirection +
-          Math.sin(TAU * rippleCount * position + phase) *
-            rippleAmplitude *
-            envelope +
-          endEnvelope * endTurn * archDirection;
-        const localY =
-          normalizedY + bend + normalizedX * tilt * verticalSection;
-        const localZ =
-          normalizedZ * verticalSection +
-          Math.sin(Math.PI * position + phase) * 0.046 * depthSection +
-          Math.sin(TAU * rippleCount * position + phase) * 0.018;
-        controls.push(
-          constrainToLobe(
-            {
-              x:
-                CEREBELLUM.center.x +
-                normalizedX * CEREBELLUM.radius.x,
-              y:
-                CEREBELLUM.center.y +
-                localY * CEREBELLUM.radius.y,
-              z:
-                CEREBELLUM.center.z +
-                localZ * CEREBELLUM.radius.z,
-            },
-            CEREBELLUM,
-            0.95,
+      const lobuleCount = (band + lane) % 5 === 0 ? 3 : 2;
+      const centerOffset = lerp(-0.07, 0.07, random());
+      const leftEdge = centerOffset - fullExtent * lerp(0.78, 0.94, random());
+      const rightEdge = centerOffset + fullExtent * lerp(0.78, 0.94, random());
+      for (let lobule = 0; lobule < lobuleCount; lobule += 1) {
+        const overlap = lerp(0.08, 0.16, random());
+        const startX =
+          lerp(leftEdge, rightEdge, lobule / lobuleCount) -
+          (lobule > 0 ? overlap : 0);
+        const endX =
+          lerp(leftEdge, rightEdge, (lobule + 1) / lobuleCount) +
+          (lobule < lobuleCount - 1 ? overlap : 0);
+        const phase =
+          band * 0.61 + lane * 0.23 + lobule * 1.17 + random() * 0.42;
+        const boundaryDirection = normalizedY < -0.18 ? -1 : 1;
+        const archAmplitude =
+          lerp(0.14, 0.24, random()) *
+          lerp(0.72, 1, verticalSection);
+        const rippleAmplitude = lerp(0.028, 0.058, random());
+        const rippleCount = lerp(0.68, 1.02, random());
+        const tilt = lerp(-0.13, 0.13, random());
+        const controls: Vector3[] = [];
+        for (let step = 0; step <= 16; step += 1) {
+          const position = step / 16;
+          const envelope = Math.sin(Math.PI * position);
+          const normalizedX =
+            lerp(startX, endX, position) +
+            Math.sin(TAU * position + phase) * 0.04 * envelope;
+          const bend =
+            envelope * archAmplitude * boundaryDirection +
+            Math.sin(TAU * rippleCount * position + phase) *
+              rippleAmplitude *
+              envelope;
+          const localY =
+            normalizedY +
+            bend +
+            (normalizedX - centerOffset) * tilt * verticalSection;
+          const localZ =
+            normalizedZ * verticalSection +
+            Math.sin(Math.PI * position + phase) * 0.052 * depthSection +
+            Math.sin(TAU * rippleCount * position + phase) * 0.026;
+          controls.push(
+            constrainToLobe(
+              {
+                x:
+                  CEREBELLUM.center.x +
+                  normalizedX * CEREBELLUM.radius.x,
+                y:
+                  CEREBELLUM.center.y +
+                  localY * CEREBELLUM.radius.y,
+                z:
+                  CEREBELLUM.center.z +
+                  localZ * CEREBELLUM.radius.z,
+              },
+              CEREBELLUM,
+              0.95,
+            ),
+          );
+        }
+        fibers.push(
+          ...createBundle(
+            resampleTrajectory(smoothTrajectory(controls), 0.018, 16, 34),
+            "cerebellum",
+            "cerebellar-folia",
+            0.0046,
+            cerebellumField,
           ),
         );
-      }
-      fibers.push(
-        ...createBundle(
-          resampleTrajectory(smoothTrajectory(controls), 0.021, 18, 42),
-          "cerebellum",
-          "cerebellar-folia",
-          0.0046,
-          cerebellumField,
-        ),
-      );
-      generatedBundles += 1;
-      if (generatedBundles % GEOMETRY_BATCH_SIZE === 0) {
-        await yieldToBrowser();
+        generatedBundles += 1;
+        if (generatedBundles % GEOMETRY_BATCH_SIZE === 0) {
+          await yieldToBrowser();
+        }
       }
     }
   }
@@ -2725,7 +2746,7 @@ const styleFibers = (fibers: Fiber[]) => {
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
-            (fiber.region === "cerebellum" && activityKey < 0.52) ||
+            (fiber.region === "cerebellum" && activityKey < 0.68) ||
             (fiber.region === "cerebrum" && activityKey < 0.2)
           ? "medium"
           : "dim";
@@ -3674,7 +3695,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.13, 0.21, 0.32] as const;
+    const staticAlpha = [0.145, 0.23, 0.35] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
