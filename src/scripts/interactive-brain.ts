@@ -100,6 +100,8 @@ type FiberFamilyConfig = {
 
 type SulcalGuide = {
   name: string;
+  kind: "major" | "branch";
+  parent?: string;
   controls: readonly Vector3[];
   channelRadius: number;
   bundleCount: number;
@@ -220,6 +222,7 @@ const CEREBRUM_LOBES: Lobe[] = [
 const SULCAL_GUIDES: SulcalGuide[] = [
   {
     name: "central-sulcus",
+    kind: "major",
     controls: [
       { x: -0.06, y: 1.32, z: 0 },
       { x: -0.14, y: 1.05, z: 0 },
@@ -229,11 +232,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: 0.06, y: 0.06, z: 0 },
     ],
     channelRadius: 0.042,
-    bundleCount: 16,
+    bundleCount: 12,
     seed: 0x43454e54,
   },
   {
     name: "precentral-sulcus",
+    kind: "major",
     controls: [
       { x: -0.42, y: 1.28, z: 0 },
       { x: -0.51, y: 1.02, z: 0 },
@@ -242,11 +246,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: -0.36, y: 0.19, z: 0 },
     ],
     channelRadius: 0.033,
-    bundleCount: 14,
+    bundleCount: 10,
     seed: 0x50524543,
   },
   {
     name: "postcentral-sulcus",
+    kind: "major",
     controls: [
       { x: 0.31, y: 1.26, z: 0 },
       { x: 0.22, y: 1.02, z: 0 },
@@ -255,11 +260,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: 0.48, y: 0.29, z: 0 },
     ],
     channelRadius: 0.033,
-    bundleCount: 14,
+    bundleCount: 10,
     seed: 0x504f5354,
   },
   {
     name: "lateral-fissure",
+    kind: "major",
     controls: [
       { x: -1.22, y: 0.08, z: 0 },
       { x: -0.87, y: -0.01, z: 0 },
@@ -269,11 +275,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: 0.87, y: 0.15, z: 0 },
     ],
     channelRadius: 0.046,
-    bundleCount: 18,
+    bundleCount: 12,
     seed: 0x4c415445,
   },
   {
     name: "superior-temporal-sulcus",
+    kind: "major",
     controls: [
       { x: -1.02, y: -0.31, z: 0 },
       { x: -0.58, y: -0.39, z: 0 },
@@ -282,11 +289,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: 0.9, y: -0.18, z: 0 },
     ],
     channelRadius: 0.034,
-    bundleCount: 16,
+    bundleCount: 10,
     seed: 0x5354454d,
   },
   {
-    name: "inferior-temporal-sulcus",
+    name: "middle-temporal-sulcus",
+    kind: "major",
     controls: [
       { x: -0.92, y: -0.61, z: 0 },
       { x: -0.48, y: -0.69, z: 0 },
@@ -295,11 +303,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: 0.76, y: -0.45, z: 0 },
     ],
     channelRadius: 0.031,
-    bundleCount: 12,
+    bundleCount: 10,
     seed: 0x4954454d,
   },
   {
     name: "superior-frontal-sulcus",
+    kind: "major",
     controls: [
       { x: -1.79, y: 0.9, z: 0 },
       { x: -1.42, y: 0.82, z: 0 },
@@ -308,11 +317,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: -0.33, y: 0.7, z: 0 },
     ],
     channelRadius: 0.03,
-    bundleCount: 14,
+    bundleCount: 10,
     seed: 0x5346524f,
   },
   {
-    name: "inferior-frontal-sulcus",
+    name: "middle-frontal-sulcus",
+    kind: "major",
     controls: [
       { x: -1.75, y: 0.47, z: 0 },
       { x: -1.42, y: 0.38, z: 0 },
@@ -321,11 +331,12 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: -0.45, y: 0.28, z: 0 },
     ],
     channelRadius: 0.03,
-    bundleCount: 14,
+    bundleCount: 10,
     seed: 0x4946524f,
   },
   {
     name: "intraparietal-sulcus",
+    kind: "major",
     controls: [
       { x: 0.31, y: 0.84, z: 0 },
       { x: 0.64, y: 0.72, z: 0 },
@@ -334,100 +345,97 @@ const SULCAL_GUIDES: SulcalGuide[] = [
       { x: 1.58, y: 0.58, z: 0 },
     ],
     channelRadius: 0.034,
-    bundleCount: 16,
+    bundleCount: 10,
     seed: 0x494e5452,
   },
   {
     name: "parieto-occipital-sulcus",
+    kind: "branch",
+    parent: "intraparietal-sulcus",
     controls: [
-      { x: 1.18, y: 1.15, z: 0 },
-      { x: 1.06, y: 0.92, z: 0 },
-      { x: 1.19, y: 0.69, z: 0 },
-      { x: 1.06, y: 0.46, z: 0 },
-      { x: 1.15, y: 0.25, z: 0 },
+      { x: 1.18, y: 0.7, z: 0 },
+      { x: 1.08, y: 0.83, z: 0 },
+      { x: 1.16, y: 0.96, z: 0 },
+      { x: 1.11, y: 1.1, z: 0 },
+      { x: 1.2, y: 1.2, z: 0 },
     ],
-    channelRadius: 0.032,
-    bundleCount: 12,
+    channelRadius: 0.022,
+    bundleCount: 6,
     seed: 0x5041524f,
   },
   {
     name: "calcarine-sulcus",
+    kind: "branch",
+    parent: "intraparietal-sulcus",
     controls: [
-      { x: 0.77, y: 0.24, z: 0 },
-      { x: 1.04, y: 0.18, z: 0 },
-      { x: 1.34, y: 0.25, z: 0 },
-      { x: 1.62, y: 0.15, z: 0 },
-      { x: 1.85, y: 0.12, z: 0 },
+      { x: 1.34, y: 0.64, z: 0 },
+      { x: 1.42, y: 0.49, z: 0 },
+      { x: 1.55, y: 0.38, z: 0 },
+      { x: 1.69, y: 0.27, z: 0 },
+      { x: 1.84, y: 0.21, z: 0 },
     ],
-    channelRadius: 0.029,
-    bundleCount: 12,
+    channelRadius: 0.019,
+    bundleCount: 6,
     seed: 0x43414c43,
   },
   {
     name: "frontal-oblique-sulcus",
+    kind: "branch",
+    parent: "superior-frontal-sulcus",
     controls: [
-      { x: -1.55, y: 1.12, z: 0 },
-      { x: -1.35, y: 0.91, z: 0 },
-      { x: -1.18, y: 0.72, z: 0 },
-      { x: -0.93, y: 0.55, z: 0 },
-      { x: -0.7, y: 0.4, z: 0 },
+      { x: -1.38, y: 0.83, z: 0 },
+      { x: -1.48, y: 0.96, z: 0 },
+      { x: -1.61, y: 1.04, z: 0 },
+      { x: -1.76, y: 1.01, z: 0 },
     ],
-    channelRadius: 0.027,
-    bundleCount: 12,
+    channelRadius: 0.019,
+    bundleCount: 6,
     seed: 0x464f424c,
   },
   {
     name: "orbital-frontal-sulcus",
+    kind: "branch",
+    parent: "lateral-fissure",
     controls: [
-      { x: -1.78, y: 0.04, z: 0 },
-      { x: -1.49, y: -0.1, z: 0 },
-      { x: -1.16, y: -0.08, z: 0 },
-      { x: -0.83, y: -0.18, z: 0 },
-      { x: -0.55, y: -0.12, z: 0 },
+      { x: -1.08, y: 0.04, z: 0 },
+      { x: -1.24, y: -0.09, z: 0 },
+      { x: -1.43, y: -0.15, z: 0 },
+      { x: -1.62, y: -0.09, z: 0 },
+      { x: -1.78, y: 0.02, z: 0 },
     ],
-    channelRadius: 0.028,
-    bundleCount: 10,
+    channelRadius: 0.019,
+    bundleCount: 6,
     seed: 0x4f524249,
   },
   {
     name: "inferior-temporal-fold",
+    kind: "branch",
+    parent: "middle-temporal-sulcus",
     controls: [
-      { x: -0.75, y: -0.79, z: 0 },
-      { x: -0.41, y: -0.83, z: 0 },
-      { x: -0.06, y: -0.76, z: 0 },
-      { x: 0.27, y: -0.72, z: 0 },
-      { x: 0.52, y: -0.64, z: 0 },
+      { x: -0.36, y: -0.67, z: 0 },
+      { x: -0.47, y: -0.76, z: 0 },
+      { x: -0.34, y: -0.84, z: 0 },
+      { x: -0.12, y: -0.83, z: 0 },
+      { x: 0.08, y: -0.77, z: 0 },
     ],
-    channelRadius: 0.026,
-    bundleCount: 10,
+    channelRadius: 0.018,
+    bundleCount: 6,
     seed: 0x54464f4c,
   },
   {
     name: "occipital-arc",
+    kind: "branch",
+    parent: "intraparietal-sulcus",
     controls: [
-      { x: 0.9, y: 1.06, z: 0 },
-      { x: 1.2, y: 0.98, z: 0 },
-      { x: 1.47, y: 0.86, z: 0 },
-      { x: 1.7, y: 0.7, z: 0 },
-      { x: 1.86, y: 0.5, z: 0 },
+      { x: 1.03, y: 0.75, z: 0 },
+      { x: 1.22, y: 0.84, z: 0 },
+      { x: 1.43, y: 0.83, z: 0 },
+      { x: 1.62, y: 0.73, z: 0 },
+      { x: 1.76, y: 0.59, z: 0 },
     ],
-    channelRadius: 0.029,
-    bundleCount: 12,
+    channelRadius: 0.02,
+    bundleCount: 6,
     seed: 0x4f434349,
-  },
-  {
-    name: "cingulate-arc",
-    controls: [
-      { x: -0.76, y: 0.24, z: 0 },
-      { x: -0.45, y: 0.42, z: 0 },
-      { x: -0.1, y: 0.51, z: 0 },
-      { x: 0.28, y: 0.45, z: 0 },
-      { x: 0.62, y: 0.34, z: 0 },
-      { x: 0.9, y: 0.28, z: 0 },
-    ],
-    channelRadius: 0.032,
-    bundleCount: 16,
-    seed: 0x43494e47,
   },
 ];
 
@@ -579,7 +587,7 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
   },
   {
     family: "local-cortical",
-    bundleCount: 322,
+    bundleCount: 410,
     bundleSpread: 0.0075,
     seed: FAMILY_SEEDS.localCortical,
     minimum: { x: -1.95, y: -0.72, z: -0.86 },
@@ -1308,9 +1316,32 @@ const buildSulcalGuideGeometry = (
   };
 };
 
-const SULCAL_GUIDE_GEOMETRY = SULCAL_GUIDES.map(
-  buildSulcalGuideGeometry,
-);
+const MAJOR_SULCAL_GUIDE_GEOMETRY = SULCAL_GUIDES.filter(
+  (guide) => guide.kind === "major",
+).map(buildSulcalGuideGeometry);
+
+const SULCAL_GUIDE_GEOMETRY = [
+  ...MAJOR_SULCAL_GUIDE_GEOMETRY,
+  ...SULCAL_GUIDES.filter((guide) => guide.kind === "branch").map(
+    (guide) => {
+      const parent = MAJOR_SULCAL_GUIDE_GEOMETRY.find(
+        (candidate) => candidate.name === guide.parent,
+      );
+      if (!parent) return buildSulcalGuideGeometry(guide);
+      const requestedAttachment = guide.controls[0];
+      const attachment = parent.samples.reduce((nearest, sample) =>
+        distance(sample, requestedAttachment) <
+        distance(nearest, requestedAttachment)
+          ? sample
+          : nearest,
+      );
+      return buildSulcalGuideGeometry({
+        ...guide,
+        controls: [attachment, ...guide.controls.slice(1)],
+      });
+    },
+  ),
+];
 
 const pointOnSulcalGuide = (
   guide: SulcalGuideGeometry,
@@ -1548,24 +1579,13 @@ const createCorticalFoldTrajectory = (
 ) => {
   const bankSign = bundleIndex % 2 === 0 ? -1 : 1;
   const bankRank = Math.floor(bundleIndex / 2);
-  const lanePosition = (bankRank % 9) / 8;
-  const depthLayer = Math.floor(bankRank / 9);
-  const anchorFiber = bankRank < 2;
-  const maximumLocalLength = Math.max(
-    0.36,
-    Math.min(1.04, guide.length * 0.76),
-  );
-  const targetLength = anchorFiber
-    ? guide.length * lerp(0.82, 0.96, random())
-    : lerp(
-        Math.min(0.4, maximumLocalLength),
-        maximumLocalLength,
-        random() ** 0.78,
-      );
-  const coverage = clamp(targetLength / guide.length, 0.24, 0.98);
-  const start = anchorFiber
-    ? (1 - coverage) * lerp(0.38, 0.62, random())
-    : random() * (1 - coverage);
+  const bankFiberCount = Math.ceil(guide.bundleCount / 2);
+  const lanePosition = bankRank / Math.max(1, bankFiberCount - 1);
+  const coverage =
+    guide.kind === "major"
+      ? lerp(0.78, 0.97, random())
+      : lerp(0.68, 0.9, random());
+  const start = random() * (1 - coverage);
   const end = start + coverage;
   const segmentLength = guide.length * coverage;
   const sampleCount = clamp(
@@ -1575,31 +1595,35 @@ const createCorticalFoldTrajectory = (
   );
   const guidePhase = renderUnit(guide.seed ^ 0x50484153) * TAU;
   const guideWave = lerp(
-    0.2,
-    0.34,
+    guide.kind === "major" ? 0.34 : 0.24,
+    guide.kind === "major" ? 0.52 : 0.38,
     renderUnit(guide.seed ^ 0x57415645),
   );
   const guideAmplitude = lerp(
-    0.008,
-    0.018,
+    0.003,
+    guide.kind === "major" ? 0.009 : 0.007,
     renderUnit(guide.seed ^ 0x414d504c),
   );
-  const broadPhase = guidePhase + (random() - 0.5) * 0.46;
-  const broadWave = guideWave * lerp(0.9, 1.12, random());
-  const broadAmplitude = lerp(0.012, 0.032, random());
+  const broadPhase = guidePhase + (random() - 0.5) * 0.28;
+  const broadWave = guideWave * lerp(0.92, 1.08, random());
+  const broadAmplitude = lerp(
+    0.005,
+    guide.kind === "major" ? 0.014 : 0.01,
+    random(),
+  );
   const localPhase = random() * TAU;
-  const localWave = lerp(0.1, 0.2, random());
-  const localAmplitude = lerp(0.004, 0.012, random());
+  const localWave = lerp(0.14, 0.26, random());
+  const localAmplitude = lerp(0.0015, 0.005, random());
   const effectiveChannelRadius = guide.channelRadius * 0.64;
   const baseOffset =
     effectiveChannelRadius +
-    0.012 +
-    lanePosition * 0.054 +
-    (random() - 0.5) * 0.006;
+    (guide.kind === "major" ? 0.013 : 0.01) +
+    lanePosition * (guide.kind === "major" ? 0.04 : 0.025) +
+    (random() - 0.5) * 0.004;
   const targetField = clamp(
-    0.07 + depthLayer * 0.16 + random() * 0.07,
+    0.065 + random() * 0.06,
     0.06,
-    0.42,
+    0.16,
   );
   const trajectory: Vector3[] = [];
   for (let index = 0; index < sampleCount; index += 1) {
@@ -1902,7 +1926,7 @@ const createBundleFactory = (): BundleFactory => {
     nextBundleId += 1;
     const strandCount =
       family === "cortical-fold"
-        ? 3
+        ? 1
         : region === "cerebrum"
         ? CEREBRUM_STRAND_CYCLE[bundleId % CEREBRUM_STRAND_CYCLE.length]
         : LOWER_STRAND_CYCLE[bundleId % LOWER_STRAND_CYCLE.length];
@@ -2033,117 +2057,84 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.cerebellar);
   let generatedBundles = 0;
-  const foliaStarts = [-1, -0.333, 0.333] as const;
-  const foliaOffsets = [
-    { x: -0.02, y: 0.014, scale: 0.96 },
-    { x: 0.018, y: 0.008, scale: 1 },
-    { x: 0, y: -0.018, scale: 0.94 },
-  ] as const;
-  for (let shell = 0; shell < 14; shell += 1) {
-    const shellPosition = (shell + 0.5) / 14;
-    const shellScale = lerp(0.22, 0.97, shellPosition);
-    const shellPhase = random() * TAU;
-    const shellCenterX = Math.sin(shell * 1.61) * 0.06;
-    const shellCenterY = Math.cos(shell * 1.37) * 0.07;
-    const shellRotation = Math.sin(shellPhase) * 0.12;
-    const brokenSector = (shell * 2 + 1) % foliaStarts.length;
-    for (let sector = 0; sector < foliaStarts.length; sector += 1) {
-      for (let lane = 0; lane < 4; lane += 1) {
-        const depthIndex = (lane * 3 + shell) % 4;
-        const normalizedZ = lerp(-0.48, 0.48, (depthIndex + 0.5) / 4);
-        const section = Math.sqrt(Math.max(0.22, 1 - normalizedZ ** 2));
-        const startAngle =
-          (foliaStarts[sector] +
-            shellRotation +
-            lerp(-0.04, 0.04, random())) *
-          Math.PI;
-        const arcSpan =
-          lerp(0.5, 0.62, random()) *
-          (sector === brokenSector ? lerp(0.5, 0.68, random()) : 1) *
-          Math.PI;
-        const verticalScale = lerp(0.78, 0.96, shellPosition);
-        const regionalScale = foliaOffsets[sector].scale;
-        const phase = shellPhase + sector * 0.74 + lane * 0.16;
-        const controls: Vector3[] = [];
-        for (let step = 0; step <= 12; step += 1) {
-          const position = step / 12;
-          const angle = startAngle + arcSpan * position;
-          const radiusPulse =
-            1 + 0.018 * Math.sin(TAU * position + phase);
-          const normalizedX =
-            shellCenterX +
-            foliaOffsets[sector].x +
-            Math.cos(angle) *
-              shellScale *
-              regionalScale *
-              section *
-              radiusPulse +
-            0.01 * Math.sin(Math.PI * position + phase);
-          const localY =
-            shellCenterY +
-            foliaOffsets[sector].y +
-            Math.sin(angle) *
-              shellScale *
-              regionalScale *
-              verticalScale *
-              section *
-              radiusPulse +
-            0.008 * Math.cos(TAU * position + phase);
-          const localZ =
-            normalizedZ + 0.01 * Math.sin(Math.PI * position + phase);
-          controls.push(
-            constrainToLobe(
-              {
-                x:
-                  CEREBELLUM.center.x +
-                  normalizedX * CEREBELLUM.radius.x,
-                y:
-                  CEREBELLUM.center.y +
-                  localY * CEREBELLUM.radius.y,
-                z:
-                  CEREBELLUM.center.z +
-                  localZ * CEREBELLUM.radius.z,
-              },
-              CEREBELLUM,
-              0.94,
-            ),
-          );
-        }
-        fibers.push(
-          ...createBundle(
-            resampleTrajectory(smoothTrajectory(controls), 0.03, 12, 26),
-            "cerebellum",
-            "cerebellar-folia",
-            0.0045,
-            cerebellumField,
+  const foliaDepths = [-0.48, -0.16, 0.16, 0.48] as const;
+  for (let band = 0; band < 18; band += 1) {
+    const normalizedY = lerp(-0.78, 0.78, (band + 0.5) / 18);
+    const normalizedBand = normalizedY / 0.8;
+    const verticalSection = Math.sqrt(
+      Math.max(0.04, 1 - normalizedBand ** 2),
+    );
+    for (let lane = 0; lane < foliaDepths.length; lane += 1) {
+      const normalizedZ = foliaDepths[(lane + band * 2) % foliaDepths.length];
+      const depthSection = Math.sqrt(
+        Math.max(0.14, 1 - (normalizedZ / 0.62) ** 2),
+      );
+      const extent =
+        verticalSection * depthSection * lerp(0.78, 0.92, random());
+      const centerOffset = lerp(-0.025, 0.025, random());
+      const phase = band * 0.47 + lane * 0.61;
+      const controls: Vector3[] = [];
+      for (let step = 0; step <= 12; step += 1) {
+        const position = step / 12;
+        const normalizedX =
+          centerOffset +
+          lerp(-extent, extent, position) +
+          0.015 * Math.sin(TAU * position + phase);
+        const localY =
+          normalizedY +
+          Math.sin(Math.PI * position) *
+            -Math.sign(normalizedY || (band % 2 === 0 ? 1 : -1)) *
+            lerp(0.025, 0.05, verticalSection) +
+          0.005 * Math.sin(TAU * position + phase);
+        const localZ =
+          normalizedZ * verticalSection +
+          0.012 * Math.sin(Math.PI * position + phase);
+        controls.push(
+          constrainToLobe(
+            {
+              x: CEREBELLUM.center.x + normalizedX * CEREBELLUM.radius.x,
+              y:
+                CEREBELLUM.center.y +
+                localY * CEREBELLUM.radius.y,
+              z:
+                CEREBELLUM.center.z +
+                localZ * CEREBELLUM.radius.z,
+            },
+            CEREBELLUM,
+            0.95,
           ),
         );
-        generatedBundles += 1;
-        if (generatedBundles % GEOMETRY_BATCH_SIZE === 0) {
-          await yieldToBrowser();
-        }
+      }
+      fibers.push(
+        ...createBundle(
+          resampleTrajectory(smoothTrajectory(controls), 0.03, 12, 26),
+          "cerebellum",
+          "cerebellar-folia",
+          0.0045,
+          cerebellumField,
+        ),
+      );
+      generatedBundles += 1;
+      if (generatedBundles % GEOMETRY_BATCH_SIZE === 0) {
+        await yieldToBrowser();
       }
     }
   }
 
-  for (let index = 0; index < 16; index += 1) {
-    const direction = index % 2 === 0 ? 1 : -1;
-    const normalizedX = lerp(-0.42, 0.42, random());
-    const normalizedY = lerp(-0.48, 0.44, random());
-    const normalizedZ = lerp(-0.42, 0.42, random());
-    const radiusX = lerp(0.11, 0.25, random());
-    const radiusY = lerp(0.07, 0.15, random());
-    const startAngle =
-      (direction > 0 ? -0.42 : 0.58) * Math.PI +
-      lerp(-0.12, 0.12, random());
-    const arcSpan = lerp(0.45, 0.7, random()) * Math.PI;
+  for (let index = 0; index < 8; index += 1) {
+    const shellPosition = (index + 0.5) / 8;
+    const shellScale = lerp(0.46, 0.96, shellPosition);
+    const normalizedZ = lerp(-0.38, 0.38, (index % 4 + 0.5) / 4);
+    const phase = lerp(-0.05, 0.05, random());
+    const startAngle = (-0.88 + phase) * Math.PI;
+    const arcSpan = lerp(1.56, 1.72, random()) * Math.PI;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 12; step += 1) {
       const position = step / 12;
-      const angle = startAngle + direction * arcSpan * position;
-      const localX = normalizedX + Math.cos(angle) * radiusX;
-      const localY = normalizedY + Math.sin(angle) * radiusY;
-      const localZ = normalizedZ + 0.014 * Math.sin(Math.PI * position);
+      const angle = startAngle + arcSpan * position;
+      const localX = Math.cos(angle) * shellScale;
+      const localY = Math.sin(angle) * shellScale * 0.72;
+      const localZ = normalizedZ + 0.008 * Math.sin(Math.PI * position);
       controls.push(
         constrainToLobe(
           {
@@ -2261,6 +2252,7 @@ const styleFibers = (fibers: Fiber[]) => {
     fiber.hot = false;
     fiber.activityKey = activityKey;
     fiber.bundleTier =
+      fiber.family === "cortical-fold" ||
       fiber.region === "stem" ||
       (fiber.region === "cerebellum" && activityKey < 0.32) ||
       (fiber.region === "cerebrum" && activityKey < 0.12)
@@ -2519,11 +2511,12 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     mixRenderKey(bundleKey ^ 0x55505252) % 5 === 0;
   const suppressed =
     suppressible &&
+    fiber.family !== "cortical-fold" &&
     (upperRightCrosshatch ||
       (fiber.bundleTier === "dim" &&
-        bundleKey % (fiber.family === "cortical-fold" ? 7 : 4) === 0) ||
+        bundleKey % 4 === 0) ||
       (fiber.bundleTier === "medium" &&
-        bundleKey % (fiber.family === "cortical-fold" ? 18 : 10) === 0));
+        bundleKey % 10 === 0));
   const pattern: readonly number[] =
     fiber.escapeStart >= 0
       ? fiber.bundleId % 2 === 0
@@ -3204,6 +3197,7 @@ const mountBrain = async (field: HTMLElement) => {
       );
       fiber.visible =
         fiber.region === "stem" ||
+        fiber.family === "cortical-fold" ||
         (fiber.escapeStart >= 0 && fiber.bundleId % 2 === 0) ||
         visibleOutboundFiberSet.has(fiber) ||
         fiber.active ||
