@@ -11,6 +11,7 @@ type FiberRegion = "cerebrum" | "cerebellum" | "stem";
 type CerebrumFamily =
   | "association"
   | "cortical-fold"
+  | "cortical-microfold"
   | "cortical-arc"
   | "deep"
   | "temporal-longitudinal"
@@ -183,6 +184,7 @@ const yieldToBrowser = () => {
 const FAMILY_SEEDS = {
   association: 0x4153534f,
   corticalFold: 0x464f4c44,
+  corticalMicrofold: 0x4d464f4c,
   corticalArc: 0x43544152,
   deep: 0x44454550,
   temporalLongitudinal: 0x544c4f4e,
@@ -1829,6 +1831,96 @@ const createCorticalFoldTrajectory = (
   );
 };
 
+const createCorticalMicrofoldTrajectory = (
+  guide: SulcalGuideGeometry,
+  bundleIndex: number,
+  bundleCount: number,
+  random: () => number,
+) => {
+  const bankSign = bundleIndex % 2 === 0 ? -1 : 1;
+  const bankRank = Math.floor(bundleIndex / 2);
+  const bankCount = Math.ceil(bundleCount / 2);
+  const lanePosition = clamp(
+    bankRank / Math.max(1, bankCount - 1) +
+      (random() - 0.5) * 0.18,
+    0,
+    1.12,
+  );
+  const coverage =
+    guide.kind === "major"
+      ? lerp(0.34, 0.7, random())
+      : lerp(0.28, 0.58, random());
+  const start = random() * (1 - coverage);
+  const end = start + coverage;
+  const sampleCount = clamp(
+    Math.ceil((guide.length * coverage) / 0.042) + 1,
+    8,
+    34,
+  );
+  const broadPhase = random() * TAU;
+  const broadWave = lerp(0.24, 0.52, random());
+  const broadAmplitude = lerp(0.012, 0.035, random());
+  const localPhase = random() * TAU;
+  const localWave = lerp(0.11, 0.22, random());
+  const localAmplitude = lerp(0.002, 0.007, random());
+  const effectiveChannelRadius = guide.channelRadius * 0.64;
+  const baseOffset =
+    effectiveChannelRadius +
+    lerp(0.035, guide.kind === "major" ? 0.19 : 0.13, lanePosition) +
+    (random() - 0.5) * 0.014;
+  const endDrift = (random() - 0.5) * 0.09;
+  const targetField = lerp(0.025, 0.14, random());
+  const trajectory: Vector3[] = [];
+
+  for (let index = 0; index < sampleCount; index += 1) {
+    const position = index / Math.max(1, sampleCount - 1);
+    const guideProgress = lerp(start, end, position);
+    const guidePoint = pointOnSulcalGuide(guide, guideProgress);
+    const tangentBefore = pointOnSulcalGuide(
+      guide,
+      Math.max(0, guideProgress - 0.012),
+    );
+    const tangentAfter = pointOnSulcalGuide(
+      guide,
+      Math.min(1, guideProgress + 0.012),
+    );
+    const tangent = normalize({
+      x: tangentAfter.x - tangentBefore.x,
+      y: tangentAfter.y - tangentBefore.y,
+      z: 0,
+    });
+    const normal = { x: -tangent.y, y: tangent.x, z: 0 };
+    const guideDistance = guideProgress * guide.length;
+    const endpointEnvelope = Math.sin(Math.PI * position);
+    const broadNoise =
+      Math.sin((guideDistance / broadWave) * TAU + broadPhase) *
+      broadAmplitude;
+    const localNoise =
+      Math.sin((guideDistance / localWave) * TAU + localPhase) *
+      localAmplitude;
+    const offset =
+      baseOffset +
+      broadNoise * endpointEnvelope +
+      localNoise * endpointEnvelope +
+      endDrift * smoothstep(0.42, 1, position);
+    const candidate = {
+      x: guidePoint.x + normal.x * offset * bankSign,
+      y: guidePoint.y + normal.y * offset * bankSign,
+      z: 0,
+    };
+    trajectory.push(
+      pointOnCorticalSurface(candidate, guidePoint, targetField),
+    );
+  }
+
+  return resampleTrajectory(
+    smoothTrajectory(trajectory),
+    0.034,
+    10,
+    46,
+  );
+};
+
 const PROJECTION_SECTORS = [
   {
     minimum: { x: -1.9, y: 0.46, z: -0.82 },
@@ -2023,8 +2115,8 @@ const appendEscapeTail = (
     x: Math.max(0.62, incomingTangent.x * 0.78 + 0.36),
     y:
       incomingTangent.y * 0.38 +
-      (curveKey - 0.5) * 0.16 +
-      Math.sin(phase + 0.8) * 0.04,
+      (curveKey - 0.5) * 0.24 +
+      Math.sin(phase + 0.8) * 0.06,
     z:
       incomingTangent.z * 0.54 +
       Math.cos(phase + curveKey * TAU) * 0.11,
@@ -2044,7 +2136,7 @@ const appendEscapeTail = (
   });
   const curveDirection = curveKey < 0.5 ? -1 : 1;
   const lateralOffset =
-    tailLength * lerp(0.065, 0.13, Math.abs(curveKey - 0.5) * 2);
+    tailLength * lerp(0.1, 0.18, Math.abs(curveKey - 0.5) * 2);
   const curve = [
     exit,
     add(exit, multiply(incomingTangent, tailLength * 0.3)),
@@ -2184,13 +2276,19 @@ const createBundleFactory = (): BundleFactory => {
     const bundleId = nextBundleId;
     nextBundleId += 1;
     const strandCount =
-      family === "cortical-fold" ||
-      family === "projection-tract" ||
-      family === "central-tract"
-        ? 3
-        : region === "cerebrum"
-        ? CEREBRUM_STRAND_CYCLE[bundleId % CEREBRUM_STRAND_CYCLE.length]
-        : LOWER_STRAND_CYCLE[bundleId % LOWER_STRAND_CYCLE.length];
+      family === "cortical-microfold"
+        ? 1
+        : family === "cortical-fold" ||
+            family === "projection-tract" ||
+            family === "central-tract"
+          ? 3
+          : region === "cerebrum"
+            ? CEREBRUM_STRAND_CYCLE[
+                bundleId % CEREBRUM_STRAND_CYCLE.length
+              ]
+            : LOWER_STRAND_CYCLE[
+                bundleId % LOWER_STRAND_CYCLE.length
+              ];
     let points = trunk;
     let escapeStart = -1;
     if (escapeTail) {
@@ -2229,6 +2327,37 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
           "cerebrum",
           "cortical-fold",
           0.0045,
+          cerebrumField,
+        ),
+      );
+      generatedBundles += 1;
+      if (generatedBundles % GEOMETRY_BATCH_SIZE === 0) {
+        await yieldToBrowser();
+      }
+    }
+  }
+  for (const guide of SULCAL_GUIDE_GEOMETRY) {
+    const random = seededRandom(
+      guide.seed ^ FAMILY_SEEDS.corticalMicrofold,
+    );
+    const bundleCount =
+      guide.name === "central-sulcus" || guide.name === "lateral-fissure"
+        ? 22
+        : guide.kind === "major"
+          ? 18
+          : 12;
+    for (let index = 0; index < bundleCount; index += 1) {
+      fibers.push(
+        ...createBundle(
+          createCorticalMicrofoldTrajectory(
+            guide,
+            index,
+            bundleCount,
+            random,
+          ),
+          "cerebrum",
+          "cortical-microfold",
+          0,
           cerebrumField,
         ),
       );
@@ -2577,14 +2706,16 @@ const styleFibers = (fibers: Fiber[]) => {
     fiber.hot = false;
     fiber.activityKey = activityKey;
     fiber.bundleTier =
-      (fiber.family === "cortical-fold" && activityKey < 0.56) ||
-      fiber.family === "central-tract" ||
-      boundaryMedium ||
-      fiber.region === "stem" ||
-      (fiber.region === "cerebellum" && activityKey < 0.52) ||
-      (fiber.region === "cerebrum" && activityKey < 0.2)
-        ? "medium"
-        : "dim";
+      fiber.family === "cortical-microfold"
+        ? "dim"
+        : (fiber.family === "cortical-fold" && activityKey < 0.56) ||
+            fiber.family === "central-tract" ||
+            boundaryMedium ||
+            fiber.region === "stem" ||
+            (fiber.region === "cerebellum" && activityKey < 0.52) ||
+            (fiber.region === "cerebrum" && activityKey < 0.2)
+          ? "medium"
+          : "dim";
     fiber.opacityBand = fiber.bundleTier === "medium" ? 1 : 0;
     fiber.active = false;
     fiber.phase = random();
@@ -2738,6 +2869,7 @@ const styleFibers = (fibers: Fiber[]) => {
       .filter(
         (fiber) =>
           fiber.region === region &&
+          fiber.family !== "cortical-microfold" &&
           fiber.escapeStart < 0 &&
           !particleFibers.includes(fiber) &&
           fiber.points.length >= 24,
@@ -2830,6 +2962,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
   const suppressible = fiber.escapeStart < 0;
   const boundaryFamily =
     fiber.family === "cortical-fold" ||
+    fiber.family === "cortical-microfold" ||
     fiber.family === "cortical-arc" ||
     fiber.family === "projection-tract" ||
     fiber.family === "central-tract" ||
@@ -3343,13 +3476,16 @@ const mountBrain = async (field: HTMLElement) => {
       (width - horizontalModelPadding * 2) / 4.66,
       (height - verticalModelPadding * 2) / 2.71,
     );
-    const horizontalModelScale = modelScale * 0.98;
+    const horizontalModelScale = modelScale * 0.86;
     const centerX = width * 0.5 - modelScale * 0.29;
     const centerY = height * 0.5 + modelScale * 0.155;
     const cameraDistance = 7.8;
 
     fibers.forEach((fiber, fiberIndex) => {
+      const staticOnlyMicrofold =
+        fiber.family === "cortical-microfold";
       const staticSurfaceFamily =
+        staticOnlyMicrofold ||
         fiber.family === "local-cortical" ||
         fiber.family === "cortical-arc" ||
         fiber.family === "crown-longitudinal" ||
@@ -3381,8 +3517,9 @@ const mountBrain = async (field: HTMLElement) => {
         densityPosition,
       );
       if (
-        fiber.qualityRank <= liveQualityCutoff ||
-        fiber.qualityRank > 0.97
+        (!staticOnlyMicrofold &&
+          fiber.qualityRank <= liveQualityCutoff) ||
+        fiber.qualityRank > (staticOnlyMicrofold ? 0.985 : 0.97)
       ) {
         return;
       }
@@ -3546,7 +3683,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         207 + depthBand * 3,
         28 + depthBand * 2,
-        0.18 + depthStrength * 0.3,
+        0.22 + depthStrength * 0.34,
       );
       staticContext.fill(staticNodePaths[depthBand]);
     }
@@ -3777,7 +3914,7 @@ const mountBrain = async (field: HTMLElement) => {
       (width - horizontalModelPadding * 2) / 4.66,
       (height - verticalModelPadding * 2) / 2.71,
     );
-    const horizontalModelScale = modelScale * 0.98;
+    const horizontalModelScale = modelScale * 0.86;
     const centerX = width * 0.5 - modelScale * 0.29;
     const centerY = height * 0.5 + modelScale * 0.155;
     const cameraDistance = 7.8;
@@ -3844,6 +3981,10 @@ const mountBrain = async (field: HTMLElement) => {
     let maximumY = Number.NEGATIVE_INFINITY;
 
     fibers.forEach((fiber, fiberIndex) => {
+      if (fiber.family === "cortical-microfold") {
+        fiber.visible = false;
+        return;
+      }
       const renderPlan = renderPlans[fiberIndex];
       const qualityFloor =
         fiber.region !== "cerebellum"
