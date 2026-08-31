@@ -829,7 +829,7 @@ const cerebellarSeparationVisibility = (point: Vector3) => {
   const overlap = smoothstep(-0.16, 0.1, cerebellumField(point).value);
   const posteriorInfluence = smoothstep(0.18, 0.62, point.x);
   const lowerInfluence = 1 - smoothstep(0.02, 0.28, point.y);
-  return 1 - overlap * posteriorInfluence * lowerInfluence * 0.96;
+  return 1 - overlap * posteriorInfluence * lowerInfluence;
 };
 
 const brainstemCenterX = (position: number) =>
@@ -2511,7 +2511,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   for (let band = 0; band < foliaBandCount; band += 1) {
     const bandPhase = band * 0.61 + random() * 0.26;
     const bandTilt = lerp(-0.1, 0.1, random());
-    const bandArchAmplitude = lerp(0.15, 0.23, random());
+    const bandArchAmplitude = lerp(0.17, 0.25, random());
     const bandArchDirection = band % 2 === 0 ? 1 : -1;
     const normalizedY =
       lerp(-0.72, 0.72, (band + 0.5) / foliaBandCount) +
@@ -2544,16 +2544,19 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           bandArchAmplitude *
           lerp(0.9, 1.1, random()) *
           lerp(0.72, 1, verticalSection);
-        const rippleAmplitude = lerp(0.028, 0.058, random());
-        const rippleCount = lerp(0.68, 1.02, random());
+        const rippleAmplitude = lerp(0.04, 0.075, random());
+        const rippleCount = lerp(0.9, 1.45, random());
         const tilt = bandTilt + lerp(-0.025, 0.025, random());
         const controls: Vector3[] = [];
-        for (let step = 0; step <= 16; step += 1) {
-          const position = step / 16;
+        for (let step = 0; step <= 20; step += 1) {
+          const position = step / 20;
           const envelope = Math.sin(Math.PI * position);
           const normalizedX =
             lerp(startX, endX, position) +
-            Math.sin(TAU * position + phase) * 0.04 * envelope;
+            Math.sin(TAU * position + phase) * 0.04 * envelope +
+            Math.sin(TAU * 2.2 * position + phase * 0.73) *
+              0.01 *
+              envelope;
           const bend =
             envelope * archAmplitude * bandArchDirection +
             Math.sin(TAU * rippleCount * position + phase) *
@@ -2587,7 +2590,12 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         }
         fibers.push(
           ...createBundle(
-            resampleTrajectory(smoothTrajectory(controls), 0.018, 16, 34),
+            resampleTrajectory(
+              smoothTrajectory(smoothTrajectory(controls)),
+              0.012,
+              24,
+              64,
+            ),
             "cerebellum",
             "cerebellar-folia",
             0.0046,
@@ -2604,18 +2612,27 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
 
   for (let index = 0; index < 28; index += 1) {
     const shellPosition = (index + 0.5) / 28;
-    const shellScale = lerp(0.14, 0.96, shellPosition);
+    const shellScale = lerp(0.14, 0.94, shellPosition);
     const normalizedZ = lerp(-0.38, 0.38, (index % 4 + 0.5) / 4);
-    const phase = lerp(-0.05, 0.05, random());
+    const phase = lerp(-0.06, 0.06, random());
     const startAngle = (-0.88 + phase) * Math.PI;
-    const arcSpan = lerp(1.7, 1.86, random()) * Math.PI;
+    const arcSpan = lerp(1.7, 1.84, random()) * Math.PI;
     const controls: Vector3[] = [];
-    for (let step = 0; step <= 12; step += 1) {
-      const position = step / 12;
+    for (let step = 0; step <= 24; step += 1) {
+      const position = step / 24;
       const angle = startAngle + arcSpan * position;
-      const localX = Math.cos(angle) * shellScale;
-      const localY = Math.sin(angle) * shellScale * 0.72;
-      const localZ = normalizedZ + 0.008 * Math.sin(Math.PI * position);
+      const envelope = Math.sin(Math.PI * position);
+      const radialVariation =
+        1 + Math.sin(angle * 3 + phase * TAU) * 0.018 * envelope;
+      const localX = Math.cos(angle) * shellScale * radialVariation;
+      const localY =
+        Math.sin(angle) * shellScale * 0.72 * radialVariation +
+        Math.sin(TAU * 1.35 * position + phase * TAU) *
+          0.015 *
+          envelope;
+      const localZ =
+        normalizedZ +
+        0.012 * Math.sin(Math.PI * position + phase * TAU) * envelope;
       controls.push(
         constrainToLobe(
           {
@@ -2630,7 +2647,12 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     }
     fibers.push(
       ...createBundle(
-        resampleTrajectory(smoothTrajectory(controls), 0.03, 12, 26),
+        resampleTrajectory(
+          smoothTrajectory(smoothTrajectory(controls)),
+          0.012,
+          28,
+          72,
+        ),
         "cerebellum",
         "cerebellar-curl",
         0.0045,
@@ -2645,79 +2667,103 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
 const createStemFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.stem);
-  const xLanes = [-0.8, -0.4, 0, 0.4, 0.8];
-  const zLanes = [-0.72, -0.43, -0.14, 0.14, 0.43, 0.72];
-  for (const normalizedX of xLanes) {
-    for (const zLane of zLanes) {
-      const normalizedZ =
-        zLane * Math.sqrt(Math.max(0.12, 1 - normalizedX ** 2));
-      const endProgress = lerp(0.88, 1, random());
-      const phase = random() * TAU;
-      const controls: Vector3[] = [];
-      for (let step = 0; step <= 12; step += 1) {
-        const position = (step / 12) * endProgress;
-        const taper = brainstemTaper(position);
-        const terminalSeparation = lerp(
-          1,
-          0.9,
-          smoothstep(0.62, 1, position),
-        );
-        controls.push({
-          x:
-            brainstemCenterX(position) +
-            normalizedX *
-              BRAINSTEM.topRadius.x *
-              taper *
-              terminalSeparation +
-            Math.sin(position * Math.PI + phase) * 0.003,
-          y: lerp(BRAINSTEM.top.y, BRAINSTEM.bottom.y, position),
-          z:
-            BRAINSTEM.centerZ +
-            normalizedZ * BRAINSTEM.topRadius.z * taper,
-        });
-      }
-      fibers.push(
-        ...createBundle(
-          resampleTrajectory(
-            smoothTrajectory(controls),
-            0.032,
-            15,
-            28,
-          ),
-          "stem",
-          "stem",
-          0.0042,
-          brainstemField,
-        ),
-      );
-    }
-  }
-
-  for (let index = 0; index < 8; index += 1) {
-    const normalizedX = lerp(-0.9, 0.9, (index + 0.5) / 8);
-    const normalizedZ = lerp(-0.24, 0.24, random());
-    const junctionEnd = lerp(0.34, 0.48, random());
+  const stemLaneCount = 30;
+  for (let lane = 0; lane < stemLaneCount; lane += 1) {
+    const lanePosition = (lane + 0.5) / stemLaneCount;
+    const normalizedX = clamp(
+      lerp(-0.92, 0.92, lanePosition) + lerp(-0.035, 0.035, random()),
+      -0.94,
+      0.94,
+    );
+    const depthExtent = Math.sqrt(Math.max(0.08, 1 - normalizedX ** 2));
+    const normalizedZ = lerp(-0.86, 0.86, random()) * depthExtent;
+    const endProgress = lerp(0.85, 1, random());
+    const phase = random() * TAU;
+    const lateralSway = lerp(-0.045, 0.045, random());
+    const terminalScale = lerp(0.88, 1.04, random());
     const controls: Vector3[] = [];
-    for (let step = 0; step <= 8; step += 1) {
-      const position = (step / 8) * junctionEnd;
+    for (let step = 0; step <= 14; step += 1) {
+      const position = (step / 14) * endProgress;
       const taper = brainstemTaper(position);
+      const terminalSeparation = lerp(
+        1,
+        terminalScale,
+        smoothstep(0.6, 1, position),
+      );
+      const curveEnvelope = Math.sin(Math.PI * position);
       controls.push({
         x:
           brainstemCenterX(position) +
-          normalizedX * BRAINSTEM.topRadius.x * taper,
+          normalizedX *
+            BRAINSTEM.topRadius.x *
+            taper *
+            terminalSeparation +
+          lateralSway * curveEnvelope +
+          Math.sin(position * TAU + phase) * 0.008 * curveEnvelope,
         y: lerp(BRAINSTEM.top.y, BRAINSTEM.bottom.y, position),
         z:
           BRAINSTEM.centerZ +
-          normalizedZ * BRAINSTEM.topRadius.z * taper,
+          normalizedZ * BRAINSTEM.topRadius.z * taper +
+          Math.sin(position * Math.PI + phase) * 0.018 * curveEnvelope,
       });
     }
     fibers.push(
       ...createBundle(
-        resampleTrajectory(smoothTrajectory(controls), 0.03, 10, 20),
+        resampleTrajectory(
+          smoothTrajectory(controls),
+          0.028,
+          16,
+          32,
+        ),
         "stem",
         "stem",
         0.0042,
         brainstemField,
+      ),
+    );
+  }
+
+  const junctionFiberCount = 12;
+  for (let index = 0; index < junctionFiberCount; index += 1) {
+    const lanePosition = (index + 0.5) / junctionFiberCount;
+    const normalizedX = lerp(-0.9, 0.9, lanePosition);
+    const normalizedZ = lerp(-0.3, 0.3, random());
+    const junctionEnd = lerp(0.34, 0.5, random());
+    const sourceX =
+      BRAINSTEM.top.x +
+      lerp(-0.34, 0.38, lanePosition) +
+      lerp(-0.025, 0.025, random());
+    const sourceY = BRAINSTEM.top.y + lerp(0.1, 0.25, random());
+    const sourceZ =
+      BRAINSTEM.centerZ + normalizedZ * BRAINSTEM.topRadius.z * 1.08;
+    const junctionSway = lerp(-0.025, 0.025, random());
+    const controls: Vector3[] = [];
+    for (let step = 0; step <= 10; step += 1) {
+      const blend = step / 10;
+      const position = blend * junctionEnd;
+      const taper = brainstemTaper(position);
+      const convergence = smoothstep(0, 1, blend);
+      const targetX =
+        brainstemCenterX(position) +
+        normalizedX * BRAINSTEM.topRadius.x * taper;
+      const targetY = lerp(BRAINSTEM.top.y, BRAINSTEM.bottom.y, position);
+      const targetZ =
+        BRAINSTEM.centerZ +
+        normalizedZ * BRAINSTEM.topRadius.z * taper;
+      controls.push({
+        x:
+          lerp(sourceX, targetX, convergence) +
+          Math.sin(Math.PI * blend) * junctionSway,
+        y: lerp(sourceY, targetY, convergence),
+        z: lerp(sourceZ, targetZ, convergence),
+      });
+    }
+    fibers.push(
+      ...createBundle(
+        resampleTrajectory(smoothTrajectory(controls), 0.026, 12, 24),
+        "stem",
+        "stem",
+        0.0042,
       ),
     );
   }
@@ -2942,7 +2988,7 @@ const styleFibers = (fibers: Fiber[]) => {
   };
   selectParticles("cerebrum", 42);
   selectParticles("cerebellum", 12);
-  selectParticles("stem", 4);
+  selectParticles("stem", 2);
   particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber, rank) => {
     fiber.bundleTier = "active";
     fiber.opacityBand = 3;
