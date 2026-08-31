@@ -476,7 +476,7 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
   },
   {
     family: "cortical-arc",
-    bundleCount: 80,
+    bundleCount: 96,
     bundleSpread: 0.007,
     seed: FAMILY_SEEDS.corticalArc,
     minimum: { x: -1.45, y: 0.28, z: -0.8 },
@@ -515,7 +515,7 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
   },
   {
     family: "crown-longitudinal",
-    bundleCount: 65,
+    bundleCount: 81,
     bundleSpread: 0.0075,
     seed: FAMILY_SEEDS.crownLongitudinal,
     minimum: { x: -1.75, y: 0.72, z: -0.84 },
@@ -606,7 +606,7 @@ const CEREBRUM_FAMILIES: FiberFamilyConfig[] = [
   },
   {
     family: "posterior-surface",
-    bundleCount: 220,
+    bundleCount: 276,
     bundleSpread: 0.006,
     seed: FAMILY_SEEDS.posteriorSurface,
     minimum: { x: 0.42, y: -0.22, z: -0.82 },
@@ -3699,7 +3699,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.157, 0.248, 0.378] as const;
+    const staticAlpha = [0.17, 0.28, 0.44] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
@@ -3715,7 +3715,7 @@ const mountBrain = async (field: HTMLElement) => {
           255,
           184 + depthBand * 3,
           0,
-          staticAlpha[opacityBand] * (0.42 + depthStrength * 0.58),
+          staticAlpha[opacityBand] * (0.24 + depthStrength * 0.76),
         );
         staticContext.stroke(
           staticPaths[opacityBand * DEPTH_LEVELS + depthBand],
@@ -4726,11 +4726,11 @@ const mountBrain = async (field: HTMLElement) => {
             34 + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
-                ? 0.12
-                : 0.29
+                ? 0.17
+                : 0.42
               : fadeBand === 0
-                ? 0.045
-                : 0.105) * depthStrength,
+                ? 0.065
+                : 0.15) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
