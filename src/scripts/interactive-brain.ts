@@ -2097,38 +2097,56 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.cerebellar);
   let generatedBundles = 0;
-  const foliaDepths = [-0.48, -0.16, 0.16, 0.48] as const;
-  for (let band = 0; band < 18; band += 1) {
-    const normalizedY = lerp(-0.78, 0.78, (band + 0.5) / 18);
+  const foliaDepths = [-0.46, 0, 0.46] as const;
+  const foliaBandCount = 16;
+  for (let band = 0; band < foliaBandCount; band += 1) {
+    const normalizedY = lerp(
+      -0.76,
+      0.76,
+      (band + 0.5) / foliaBandCount,
+    );
     const normalizedBand = normalizedY / 0.8;
     const verticalSection = Math.sqrt(
       Math.max(0.04, 1 - normalizedBand ** 2),
     );
     for (let lane = 0; lane < foliaDepths.length; lane += 1) {
-      const normalizedZ = foliaDepths[(lane + band * 2) % foliaDepths.length];
+      const normalizedZ =
+        foliaDepths[(lane + band) % foliaDepths.length];
       const depthSection = Math.sqrt(
         Math.max(0.14, 1 - (normalizedZ / 0.62) ** 2),
       );
-      const extent =
-        verticalSection * depthSection * lerp(0.78, 0.92, random());
-      const centerOffset = lerp(-0.025, 0.025, random());
-      const phase = band * 0.47 + lane * 0.61;
+      const fullExtent = verticalSection * depthSection;
+      const coverage = lerp(0.74, 0.96, random());
+      const extent = fullExtent * coverage;
+      const centerOffset =
+        lerp(-0.1, 0.1, random()) * Math.max(0.2, 1 - extent);
+      const phase = band * 0.63 + lane * 0.81 + random() * 0.32;
+      const archDirection =
+        Math.abs(normalizedY) < 0.08
+          ? band % 2 === 0
+            ? -1
+            : 1
+          : Math.sign(normalizedY);
+      const archAmplitude =
+        lerp(0.055, 0.12, verticalSection) * lerp(0.84, 1.16, random());
+      const rippleAmplitude = lerp(0.012, 0.026, random());
       const controls: Vector3[] = [];
-      for (let step = 0; step <= 12; step += 1) {
-        const position = step / 12;
+      for (let step = 0; step <= 16; step += 1) {
+        const position = step / 16;
+        const archEnvelope = Math.sin(Math.PI * position);
+        const terminalCurl = Math.sin(TAU * position + phase);
         const normalizedX =
           centerOffset +
           lerp(-extent, extent, position) +
-          0.015 * Math.sin(TAU * position + phase);
+          terminalCurl * 0.022 * archEnvelope;
         const localY =
           normalizedY +
-          Math.sin(Math.PI * position) *
-            -Math.sign(normalizedY || (band % 2 === 0 ? 1 : -1)) *
-            lerp(0.025, 0.05, verticalSection) +
-          0.005 * Math.sin(TAU * position + phase);
+          archEnvelope * archAmplitude * archDirection +
+          terminalCurl * rippleAmplitude * archEnvelope;
         const localZ =
           normalizedZ * verticalSection +
-          0.012 * Math.sin(Math.PI * position + phase);
+          Math.sin(Math.PI * position + phase) * 0.026 * depthSection +
+          Math.sin(TAU * position + phase) * 0.01;
         controls.push(
           constrainToLobe(
             {
@@ -2147,7 +2165,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       }
       fibers.push(
         ...createBundle(
-          resampleTrajectory(smoothTrajectory(controls), 0.03, 12, 26),
+          resampleTrajectory(smoothTrajectory(controls), 0.026, 14, 30),
           "cerebellum",
           "cerebellar-folia",
           0.0045,
