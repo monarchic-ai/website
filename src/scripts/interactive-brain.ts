@@ -116,8 +116,7 @@ const OUTBOUND_OPACITY_LEVELS = 5;
 const OUTBOUND_FIBER_COUNT = 10;
 const STRUCTURAL_DEPTH_ALPHA = [0.04, 0.09, 0.18, 0.31, 0.49, 0.75, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
-const MOBILE_DENSITY_CUTOFF = 0.075;
-const MOBILE_NARROW_DENSITY_CUTOFF = 0.055;
+const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.075;
 const PARTICLE_FIBER_COUNT = 10;
 const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
 const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
@@ -2109,6 +2108,18 @@ const mountBrain = async (field: HTMLElement) => {
 
   const fibers = await createFiberField();
   const renderPlans = fibers.map(createFiberRenderPlan);
+  const executionWaveEligible = new Uint8Array(fibers.length);
+  const executionWaveBias = new Float32Array(fibers.length);
+  fibers.forEach((fiber, index) => {
+    const waveKey = mixRenderKey(fiber.bundleId ^ 0x57415645);
+    executionWaveEligible[index] =
+      fiber.escapeStart < 0 &&
+      (fiber.bundleTier !== "dim" || waveKey % 5 < 2)
+        ? 1
+        : 0;
+    executionWaveBias[index] =
+      (renderUnit(waveKey ^ 0x42494153) - 0.5) * 0.05;
+  });
   const renderPlanByFiber = new Map(
     fibers.map((fiber, index) => [fiber, renderPlans[index]]),
   );
@@ -2158,12 +2169,18 @@ const mountBrain = async (field: HTMLElement) => {
         )
       ],
   );
-  const outboundFiberSet = new Set(outboundFibers);
-  const mobileOutboundFiberSet = new Set(
-    outboundFibers.filter((_, index) => index % 2 === 0),
-  );
-  const narrowOutboundFiberSet = new Set(
-    outboundFibers.filter((_, index) => index % 3 === 0),
+  const outboundFiberPriority = [0, 9, 4, 7, 2, 6, 1, 8, 3, 5]
+    .filter((index) => index < outboundFibers.length)
+    .map((index) => outboundFibers[index]);
+  const outboundFiberSets = Array.from(
+    { length: OUTBOUND_FIBER_COUNT + 1 },
+    (_, count) =>
+      new Set(
+        outboundFiberPriority.slice(
+          0,
+          Math.min(count, outboundFiberPriority.length),
+        ),
+      ),
   );
   const glowSprite = createGlowSprite();
   const pulses: Pulse[] = [];
@@ -2173,6 +2190,22 @@ const mountBrain = async (field: HTMLElement) => {
   const mediumFiberGain = 1.075;
   const idleSignalSpeed = 0.22;
   const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
+  const executionWaveCycle = 16000;
+  const executionWaveTravel = 6000;
+  const executionWaveStepPattern = [
+    0,
+    0.055,
+    0.055,
+    -0.035,
+    -0.035,
+    0.085,
+    0.025,
+    0.025,
+    -0.065,
+    -0.01,
+    0.05,
+    0.05,
+  ] as const;
   const pointer = {
     x: 0,
     y: 0,
@@ -2204,6 +2237,9 @@ const mountBrain = async (field: HTMLElement) => {
         MAX_DEVICE_PIXEL_RATIO,
       ),
     );
+
+  const responsiveDensityPosition = () =>
+    Math.pow(smoothstep(320, 760, width), 1.35);
 
   const updateStatus = (
     label: string,
@@ -2270,7 +2306,13 @@ const mountBrain = async (field: HTMLElement) => {
     const primary = rankedCandidates[0];
     if (!primary || !Number.isFinite(primary.distance)) return;
     const primaryFiber = fibers[primary.index];
-    const signalCount = width < 520 ? 4 : 5;
+    const signalCount = Math.round(
+      lerp(
+        4,
+        5,
+        responsiveDensityPosition(),
+      ),
+    );
     const supportIndices = rankedCandidates
       .slice(1)
       .filter(({ index }) => fibers[index].region === primaryFiber.region)
@@ -2348,8 +2390,15 @@ const mountBrain = async (field: HTMLElement) => {
     }
 
     const matrix = buildRotationMatrix(yaw, pitch, -0.018);
-    const mobile = width < 520;
-    const particleLimit = mobile ? 6 : PARTICLE_FIBER_COUNT;
+    const densityPosition = responsiveDensityPosition();
+    const compactCerebrumFloor = lerp(
+      COMPACT_CEREBRUM_DENSITY_FLOOR,
+      0.1,
+      smoothstep(320, 390, width),
+    );
+    const particleLimit = Math.round(
+      lerp(6, PARTICLE_FIBER_COUNT, densityPosition),
+    );
     const currentPulseDuration = pulseDuration();
     const activePulses = pulses.filter(
       (pulse) => time - pulse.startedAt < currentPulseDuration,
@@ -2387,18 +2436,40 @@ const mountBrain = async (field: HTMLElement) => {
         }
       });
     });
-    const visibleOutboundFiberSet = !mobile
-      ? outboundFiberSet
-      : width < 360
-        ? narrowOutboundFiberSet
-        : mobileOutboundFiberSet;
-    const modelScale = mobile
-      ? Math.min(width / 4.77, height / 3.82)
-      : Math.min(width / 4.69, height / 3.75);
-    const centerX = width * (mobile ? 0.44 : 0.42);
-    const centerY = height * 0.47;
+    const visibleOutboundFiberSet =
+      outboundFiberSets[
+        Math.round(
+          lerp(4, OUTBOUND_FIBER_COUNT, densityPosition),
+        )
+      ];
+    const secondaryNodeVisibility = smoothstep(
+      0.1,
+      0.55,
+      densityPosition,
+    );
+    const layoutPosition = smoothstep(440, 680, width);
+    const horizontalModelPadding = clamp(width * 0.02, 8, 16);
+    const verticalModelPadding = clamp(height * 0.08, 28, 52);
+    const modelScale = Math.min(
+      (width - horizontalModelPadding * 2) / 4.66,
+      (height - verticalModelPadding * 2) / 2.71,
+    );
+    const centerX = width * 0.5 - modelScale * 0.29;
+    const centerY = height * 0.5 + modelScale * 0.215;
     const cameraDistance = 7.8;
     const onePhysicalPixel = 1 / pixelRatio;
+    const executionWaveCycleTime = time % executionWaveCycle;
+    const executionWaveActive =
+      !reducedMotion.matches &&
+      executionWaveCycleTime < executionWaveTravel;
+    const executionWavePosition = lerp(
+      -2.5,
+      2.55,
+      clamp(executionWaveCycleTime / executionWaveTravel, 0, 1),
+    );
+    const executionWaveRowHeight = lerp(0.19, 0.145, layoutPosition);
+    const executionWaveHeadWidth = lerp(0.065, 0.045, layoutPosition);
+    const executionWaveEchoSpacing = lerp(0.15, 0.12, layoutPosition);
     const structuralPaths = Array.from(
       {
         length:
@@ -2428,6 +2499,13 @@ const mountBrain = async (field: HTMLElement) => {
       { length: signalResponseLevels * DEPTH_LEVELS },
       () => new Path2D(),
     );
+    const executionWaveLevels = 4;
+    const executionWavePaths = executionWaveActive
+      ? Array.from(
+          { length: executionWaveLevels * DEPTH_LEVELS },
+          () => new Path2D(),
+        )
+      : [];
     const outboundPaths = Array.from(
       { length: DEPTH_LEVELS * OUTBOUND_OPACITY_LEVELS },
       () => new Path2D(),
@@ -2443,25 +2521,24 @@ const mountBrain = async (field: HTMLElement) => {
 
     fibers.forEach((fiber, fiberIndex) => {
       const renderPlan = renderPlans[fiberIndex];
-      const cerebralMobileCutoff =
-        width < 360
-          ? MOBILE_NARROW_DENSITY_CUTOFF
-          : MOBILE_DENSITY_CUTOFF;
-      const mobileQualityCutoff =
+      const qualityFloor =
         fiber.region !== "cerebellum"
-          ? cerebralMobileCutoff
+          ? compactCerebrumFloor
           : fiber.family === "cerebellar-folia"
             ? 0.48
             : 0.34;
+      const qualityCutoff = lerp(
+        qualityFloor,
+        1,
+        densityPosition,
+      );
       fiber.visible =
-        !mobile ||
         fiber.region === "stem" ||
         (fiber.escapeStart >= 0 && fiber.bundleId % 2 === 0) ||
         visibleOutboundFiberSet.has(fiber) ||
         fiber.active ||
         fiber.bundleTier === "active" ||
-        fiber.qualityRank <=
-          mobileQualityCutoff;
+        fiber.qualityRank <= qualityCutoff;
       if (!fiber.visible) return;
 
       const pointCount = fiber.points.length / 3;
@@ -2497,7 +2574,7 @@ const mountBrain = async (field: HTMLElement) => {
         }
       }
 
-      const useBundlePlan = !mobile && fiber.region === "cerebrum";
+      const useBundlePlan = fiber.region === "cerebrum";
       if (useBundlePlan && renderPlan.suppressed) return;
       const pulseActivity = pulseActivityByFiber.get(fiberIndex);
       const ambientParticleRank = particleFiberRank.get(fiber);
@@ -2597,6 +2674,37 @@ const mountBrain = async (field: HTMLElement) => {
         const modelY =
           (fiber.points[previousOffset + 1] + fiber.points[offset + 1]) *
           0.5;
+        let executionWaveBand = -1;
+        if (executionWaveActive && executionWaveEligible[fiberIndex]) {
+          const modelX =
+            (fiber.points[previousOffset] + fiber.points[offset]) * 0.5;
+          const row = Math.floor(
+            (modelY + 1.25) / executionWaveRowHeight,
+          );
+          const patternIndex =
+            ((row % executionWaveStepPattern.length) +
+              executionWaveStepPattern.length) %
+            executionWaveStepPattern.length;
+          const steppedWaveX =
+            executionWavePosition +
+            executionWaveStepPattern[patternIndex] +
+            executionWaveBias[fiberIndex];
+          const distanceFromHead = steppedWaveX - modelX;
+          for (
+            let echoIndex = 0;
+            echoIndex < executionWaveLevels;
+            echoIndex += 1
+          ) {
+            const echoDistance = echoIndex * executionWaveEchoSpacing;
+            const bandWidth = executionWaveHeadWidth * (1 - echoIndex * 0.08);
+            if (
+              Math.abs(distanceFromHead - echoDistance) <= bandWidth
+            ) {
+              executionWaveBand = executionWaveLevels - 1 - echoIndex;
+              break;
+            }
+          }
+        }
         const boundaryStrength =
           (fiber.boundaryScale[pointIndex - 1] +
             fiber.boundaryScale[pointIndex]) *
@@ -2767,6 +2875,28 @@ const mountBrain = async (field: HTMLElement) => {
                     nextNormalY * nextOffsetPixels,
                 );
               }
+            }
+
+            if (
+              executionWaveBand >= 0 &&
+              strandIndex === centerStrand
+            ) {
+              const wavePath =
+                executionWavePaths[
+                  executionWaveBand * DEPTH_LEVELS + depthBand
+                ];
+              wavePath.moveTo(
+                fiber.projected[previousOffset] +
+                  previousNormalX * previousOffsetPixels,
+                fiber.projected[previousOffset + 1] +
+                  previousNormalY * previousOffsetPixels,
+              );
+              wavePath.lineTo(
+                fiber.projected[offset] +
+                  nextNormalX * nextOffsetPixels,
+                fiber.projected[offset + 1] +
+                  nextNormalY * nextOffsetPixels,
+              );
             }
           } else {
             const tailPosition =
@@ -2940,13 +3070,41 @@ const mountBrain = async (field: HTMLElement) => {
           24,
           outboundAlpha[opacityBand] *
             (0.55 + depthStrength * 0.45) *
-            (mobile ? 0.88 : 1),
+            lerp(0.88, 1, densityPosition),
         );
         context.lineWidth = onePhysicalPixel;
         context.stroke(outboundPaths[index]);
       }
     }
 
+    if (executionWaveActive) {
+      const executionWaveAlpha = [0.022, 0.04, 0.07, 0.115];
+      context.lineCap = "butt";
+      context.lineJoin = "miter";
+      for (
+        let waveBand = 0;
+        waveBand < executionWaveLevels;
+        waveBand += 1
+      ) {
+        for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+          const depthStrength =
+            0.28 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.72;
+          context.strokeStyle = rgba(
+            255,
+            213 + depthBand * 3,
+            44 + depthBand * 2,
+            executionWaveAlpha[waveBand] * depthStrength,
+          );
+          context.lineWidth = onePhysicalPixel;
+          context.stroke(
+            executionWavePaths[waveBand * DEPTH_LEVELS + depthBand],
+          );
+        }
+      }
+    }
+
+    context.lineCap = "round";
+    context.lineJoin = "round";
     for (let fadeBand = 0; fadeBand < 2; fadeBand += 1) {
       for (
         let depthBand = 0;
@@ -3112,7 +3270,10 @@ const mountBrain = async (field: HTMLElement) => {
         (0.34 + front * 0.5) * nodeBrightness,
         hot ? 1.25 : 0.9,
       );
-      if (!mobile && fiber.region === "cerebrum") {
+      if (
+        secondaryNodeVisibility > 0 &&
+        fiber.region === "cerebrum"
+      ) {
         const secondaryProgress = (progress + 0.31) % 1;
         const secondaryLane = lane === 0 ? 2 : -lane;
         const secondaryPoint = bundleParticlePoint(
@@ -3139,7 +3300,9 @@ const mountBrain = async (field: HTMLElement) => {
             glowSprite,
             secondaryPoint,
             false,
-            (0.18 + secondaryFront * 0.28) * secondaryBrightness,
+            (0.18 + secondaryFront * 0.28) *
+              secondaryBrightness *
+              secondaryNodeVisibility,
             0.62,
           );
         }
