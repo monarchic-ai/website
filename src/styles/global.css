@@ -292,6 +292,14 @@
 
 .home-editorial-copy {
   isolation: isolate;
+  overflow: hidden;
+}
+
+.home-editorial,
+.home-editorial-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
 }
 
 .home-editorial-index {
@@ -302,11 +310,13 @@
   .home-editorial-copy {
     z-index: 2;
   }
+}
 
+@media (min-width: 80rem) {
   .home-editorial-index {
     position: absolute;
     z-index: 20;
-    right: -1.625rem;
+    right: 1rem;
     bottom: 1rem;
     display: flex;
     width: 5.25rem;

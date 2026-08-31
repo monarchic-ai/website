@@ -113,7 +113,7 @@ const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 2;
 const OUTBOUND_OPACITY_LEVELS = 5;
-const OUTBOUND_FIBER_COUNT = 8;
+const OUTBOUND_FIBER_COUNT = 10;
 const STRUCTURAL_DEPTH_ALPHA = [0.04, 0.09, 0.18, 0.31, 0.49, 0.75, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const MOBILE_DENSITY_CUTOFF = 0.075;
@@ -1853,7 +1853,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
     upperRightOccupancy >= 0.25 &&
-    mixRenderKey(bundleKey ^ 0x55505252) % 6 === 0;
+    mixRenderKey(bundleKey ^ 0x55505252) % 5 === 0;
   const suppressed =
     suppressible &&
     (upperRightCrosshatch ||
@@ -2296,11 +2296,12 @@ const mountBrain = async (field: HTMLElement) => {
     const idlePitch = reducedMotion.matches
       ? -0.055
       : -0.055 + Math.sin((time / 23000) * TAU) * 0.024;
-    const targetYaw = pointer.active
-      ? -0.34 + normalizedPointerX * 0.35
+    const pointerDepthActive = pointer.active && !reducedMotion.matches;
+    const targetYaw = pointerDepthActive
+      ? -0.34 + normalizedPointerX * 0.12
       : idleYaw;
-    const targetPitch = pointer.active
-      ? -0.055 - normalizedPointerY * 0.21
+    const targetPitch = pointerDepthActive
+      ? -0.055 - normalizedPointerY * 0.07
       : idlePitch;
     if (reducedMotion.matches) {
       yaw = targetYaw;
@@ -2715,7 +2716,7 @@ const mountBrain = async (field: HTMLElement) => {
 
     context.lineCap = "butt";
     context.lineJoin = "miter";
-    const structuralAlpha = [0.075, 0.112, 0.145, 0.18];
+    const structuralAlpha = [0.075, 0.123, 0.16, 0.18];
     for (
       let opacityBand = 0;
       opacityBand < OPACITY_LEVELS;
@@ -2962,12 +2963,17 @@ const mountBrain = async (field: HTMLElement) => {
       if (front < 0.08) return;
       const hot = fiber.hot && hotCount < 3;
       if (hot) hotCount += 1;
+      const nodeBrightness = reducedMotion.matches
+        ? 1
+        : 1 +
+          Math.sin((time / 2800) * TAU + fiber.phase * TAU) *
+            (hot ? 0.09 : 0.06);
       drawParticle(
         context,
         glowSprite,
         point,
         hot,
-        0.34 + front * 0.5,
+        (0.34 + front * 0.5) * nodeBrightness,
         hot ? 1.25 : 0.9,
       );
       if (!mobile && fiber.region === "cerebrum") {
