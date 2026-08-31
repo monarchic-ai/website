@@ -145,7 +145,7 @@ const OUTBOUND_FIBER_COUNT = 28;
 const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
-const PARTICLE_FIBER_COUNT = 70;
+const PARTICLE_FIBER_COUNT = 73;
 const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
 const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
 const GEOMETRY_BATCH_SIZE = 48;
@@ -829,7 +829,7 @@ const cerebellarSeparationVisibility = (point: Vector3) => {
   const overlap = smoothstep(-0.16, 0.1, cerebellumField(point).value);
   const posteriorInfluence = smoothstep(0.18, 0.62, point.x);
   const lowerInfluence = 1 - smoothstep(0.02, 0.28, point.y);
-  return 1 - overlap * posteriorInfluence * lowerInfluence * 0.92;
+  return 1 - overlap * posteriorInfluence * lowerInfluence * 0.96;
 };
 
 const brainstemCenterX = (position: number) =>
@@ -2509,6 +2509,10 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const foliaDepths = [-0.5, -0.17, 0.17, 0.5] as const;
   const foliaBandCount = 16;
   for (let band = 0; band < foliaBandCount; band += 1) {
+    const bandPhase = band * 0.61 + random() * 0.26;
+    const bandTilt = lerp(-0.1, 0.1, random());
+    const bandArchAmplitude = lerp(0.15, 0.23, random());
+    const bandArchDirection = band % 2 === 0 ? 1 : -1;
     const normalizedY =
       lerp(-0.72, 0.72, (band + 0.5) / foliaBandCount) +
       lerp(-0.045, 0.045, random());
@@ -2535,14 +2539,14 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           lerp(leftEdge, rightEdge, (lobule + 1) / lobuleCount) +
           (lobule < lobuleCount - 1 ? overlap : 0);
         const phase =
-          band * 0.61 + lane * 0.23 + lobule * 1.17 + random() * 0.42;
-        const boundaryDirection = normalizedY < -0.18 ? -1 : 1;
+          bandPhase + lane * 0.08 + lobule * 0.27 + random() * 0.12;
         const archAmplitude =
-          lerp(0.14, 0.24, random()) *
+          bandArchAmplitude *
+          lerp(0.9, 1.1, random()) *
           lerp(0.72, 1, verticalSection);
         const rippleAmplitude = lerp(0.028, 0.058, random());
         const rippleCount = lerp(0.68, 1.02, random());
-        const tilt = lerp(-0.13, 0.13, random());
+        const tilt = bandTilt + lerp(-0.025, 0.025, random());
         const controls: Vector3[] = [];
         for (let step = 0; step <= 16; step += 1) {
           const position = step / 16;
@@ -2551,7 +2555,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             lerp(startX, endX, position) +
             Math.sin(TAU * position + phase) * 0.04 * envelope;
           const bend =
-            envelope * archAmplitude * boundaryDirection +
+            envelope * archAmplitude * bandArchDirection +
             Math.sin(TAU * rippleCount * position + phase) *
               rippleAmplitude *
               envelope;
@@ -2598,13 +2602,13 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     }
   }
 
-  for (let index = 0; index < 16; index += 1) {
-    const shellPosition = (index + 0.5) / 16;
-    const shellScale = lerp(0.46, 0.96, shellPosition);
+  for (let index = 0; index < 28; index += 1) {
+    const shellPosition = (index + 0.5) / 28;
+    const shellScale = lerp(0.14, 0.96, shellPosition);
     const normalizedZ = lerp(-0.38, 0.38, (index % 4 + 0.5) / 4);
     const phase = lerp(-0.05, 0.05, random());
     const startAngle = (-0.88 + phase) * Math.PI;
-    const arcSpan = lerp(1.56, 1.72, random()) * Math.PI;
+    const arcSpan = lerp(1.7, 1.86, random()) * Math.PI;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 12; step += 1) {
       const position = step / 12;
@@ -2936,7 +2940,7 @@ const styleFibers = (fibers: Fiber[]) => {
       .map(({ fiber }) => fiber);
     particleFibers.push(...selected);
   };
-  selectParticles("cerebrum", 54);
+  selectParticles("cerebrum", 42);
   selectParticles("cerebellum", 12);
   selectParticles("stem", 4);
   particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber, rank) => {
@@ -3420,7 +3424,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 1.96;
+  const mediumFiberGain = 2.12;
   const idleSignalSpeed = 0.22;
   const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
   const executionWaveCycle = 16000;
@@ -3642,7 +3646,7 @@ const mountBrain = async (field: HTMLElement) => {
       }
 
       const nodeKey = mixRenderKey(fiber.bundleId ^ 0x4e4f4445);
-      if (staticNodeCount < 150 && nodeKey % 7 === 0) {
+      if (staticNodeCount < 180 && nodeKey % 5 === 0) {
         const nodeIndex = Math.floor(
           lerp(
             2,
@@ -3695,7 +3699,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.145, 0.23, 0.35] as const;
+    const staticAlpha = [0.157, 0.248, 0.378] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
@@ -3724,7 +3728,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         207 + depthBand * 3,
         28 + depthBand * 2,
-        0.22 + depthStrength * 0.34,
+        0.25 + depthStrength * 0.38,
       );
       staticContext.fill(staticNodePaths[depthBand]);
     }
