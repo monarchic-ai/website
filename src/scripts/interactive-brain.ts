@@ -1771,19 +1771,21 @@ const curveRegionalTrajectory = (
   family: CerebrumFamily,
 ) => {
   const broadAmplitude =
-    family === "frontal-diagonal"
-      ? 0.055
-      : family === "association"
-        ? 0.046
-        : family === "deep"
-          ? 0.04
-          : family === "posterior-fan"
-            ? 0.035
-            : family === "crown-longitudinal"
-              ? 0.03
-              : family === "temporal-longitudinal"
-                ? 0.026
-                : 0;
+    family === "frontal-surface"
+      ? 0.045
+      : family === "frontal-diagonal"
+        ? 0.055
+        : family === "association"
+          ? 0.06
+          : family === "deep"
+            ? 0.04
+            : family === "posterior-fan"
+              ? 0.035
+              : family === "crown-longitudinal"
+                ? 0.03
+                : family === "temporal-longitudinal"
+                  ? 0.026
+                  : 0;
   if (broadAmplitude === 0 || points.length < 4) return points;
   const first = points[0];
   const last = points[points.length - 1];
@@ -2210,7 +2212,7 @@ const CENTRAL_TRACT_GUIDES: readonly (readonly Vector3[])[] = [
   ],
 ] as const;
 
-const CENTRAL_TRACT_BUNDLE_COUNT = 60;
+const CENTRAL_TRACT_BUNDLE_COUNT = 48;
 const CENTRAL_TRACT_VERTICAL_OFFSET = -0.075;
 
 const createCentralTractTrajectory = (
@@ -3435,7 +3437,7 @@ const styleFibers = (fibers: Fiber[]) => {
         fiber.family === "posterior-fan") &&
       activityKey < 0.4;
     const frontalMedium =
-      (fiber.family === "frontal-surface" && activityKey < 0.78) ||
+      (fiber.family === "frontal-surface" && activityKey < 0.64) ||
       (fiber.family === "frontal-loop" && activityKey < 0.38);
     const posteriorMedium =
       fiber.family === "posterior-surface" && activityKey < 0.16;
@@ -3871,6 +3873,25 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     trajectoryLength >= 0.9 &&
     straightness >= 0.82 &&
     mixRenderKey(bundleKey ^ 0x46524453) % 3 !== 0;
+  const straightFrontalSurface =
+    fiber.bundleTier !== "active" &&
+    fiber.family === "frontal-surface" &&
+    frontalOccupancy >= 0.3 &&
+    trajectoryLength >= 0.5 &&
+    maximumPlanarDeviation < 0.07 &&
+    mixRenderKey(bundleKey ^ 0x46525354) % 2 === 0;
+  const redundantFrontalProjection =
+    fiber.bundleTier !== "active" &&
+    fiber.family === "projection-tract" &&
+    frontalOccupancy >= 0.3 &&
+    mixRenderKey(bundleKey ^ 0x46525052) % 3 !== 0;
+  const angularFrontalScaffold =
+    fiber.bundleTier !== "active" &&
+    !boundaryFamily &&
+    frontalOccupancy >= 0.16 &&
+    trajectoryLength >= 0.8 &&
+    maximumPlanarDeviation < 0.095 &&
+    mixRenderKey(bundleKey ^ 0x4652414e) % 3 !== 0;
   const dimFrontalClutter =
     fiber.bundleTier === "dim" &&
     !boundaryFamily &&
@@ -3909,6 +3930,9 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     straightLocalChord ||
     straightDeepFamilyScaffold ||
     straightFrontalDiagonal ||
+    straightFrontalSurface ||
+    redundantFrontalProjection ||
+    angularFrontalScaffold ||
     straightDeepScaffold ||
     dimFrontalClutter ||
     dimCrownClutter ||
@@ -5901,9 +5925,9 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         174 + depthBand * 3,
         0,
-        0.018 + depthStrength * 0.085,
+        0.014 + depthStrength * 0.066,
       );
-      context.lineWidth = 3.6 * onePhysicalPixel;
+      context.lineWidth = 3 * onePhysicalPixel;
       context.stroke(centralTractHaloPaths[depthBand]);
     }
 
