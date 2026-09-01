@@ -3517,16 +3517,34 @@ const mountBrain = async (field: HTMLElement) => {
   const particleStem = fibers.filter(
     (fiber) => fiber.particle && fiber.region === "stem",
   );
-  const particleFibers = [
-    ...particleCerebrum.slice(0, 4),
-    ...particleCerebellum.slice(0, 1),
-    ...particleStem.slice(0, 1),
-    ...particleCerebrum.slice(4, 10),
-    ...particleCerebellum.slice(1, 3),
-    ...particleCerebrum.slice(10),
-    ...particleCerebellum.slice(3),
-    ...particleStem.slice(1),
+  const particleQueues = {
+    cerebrum: [...particleCerebrum],
+    cerebellum: [...particleCerebellum],
+    stem: [...particleStem],
+  };
+  const particleRegionPattern: FiberRegion[] = [
+    "cerebrum",
+    "cerebrum",
+    "cerebrum",
+    "cerebrum",
+    "cerebellum",
+    "cerebrum",
+    "cerebrum",
+    "cerebrum",
+    "cerebellum",
+    "stem",
   ];
+  const particleFibers: Fiber[] = [];
+  let particleQueueProgress = true;
+  while (particleQueueProgress) {
+    particleQueueProgress = false;
+    particleRegionPattern.forEach((region) => {
+      const fiber = particleQueues[region].shift();
+      if (!fiber) return;
+      particleFibers.push(fiber);
+      particleQueueProgress = true;
+    });
+  }
   const particleFiberRank = new Map(
     particleFibers.map((fiber, index) => [fiber, index]),
   );
@@ -3638,6 +3656,19 @@ const mountBrain = async (field: HTMLElement) => {
       smoothstep(1, MAX_DEVICE_PIXEL_RATIO, pixelRatio),
     );
     return cssDensity * pixelDensityBudget;
+  };
+
+  const responsiveSignalPosition = () => {
+    const cssSignalDensity = Math.pow(
+      smoothstep(320, 980, width),
+      0.78,
+    );
+    const highDprBudget = lerp(
+      1,
+      0.82,
+      smoothstep(1, MAX_DEVICE_PIXEL_RATIO, pixelRatio),
+    );
+    return cssSignalDensity * highDprBudget;
   };
 
   const drawStaticSubstrate = () => {
@@ -4054,8 +4085,9 @@ const mountBrain = async (field: HTMLElement) => {
       0.14,
       smoothstep(320, 390, width),
     );
+    const signalDensityPosition = responsiveSignalPosition();
     const particleLimit = Math.round(
-      lerp(6, PARTICLE_FIBER_COUNT, densityPosition),
+      lerp(8, PARTICLE_FIBER_COUNT, signalDensityPosition),
     );
     const currentPulseDuration = pulseDuration();
     const activePulses = pulses.filter(
@@ -4101,9 +4133,9 @@ const mountBrain = async (field: HTMLElement) => {
         )
       ];
     const secondaryNodeVisibility = smoothstep(
-      0.1,
-      0.55,
-      densityPosition,
+      0.08,
+      0.42,
+      signalDensityPosition,
     );
     const layoutPosition = smoothstep(440, 680, width);
     const horizontalModelPadding = clamp(width * 0.02, 8, 16);
@@ -4869,7 +4901,7 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             174 + depthBand * 3,
             0,
-            (fadeBand === 0 ? 0.018 : 0.05) * depthStrength,
+            (fadeBand === 0 ? 0.022 : 0.065) * depthStrength,
           );
           context.lineWidth = 2.8 * onePhysicalPixel;
           context.stroke(activePaths[index]);
@@ -4879,11 +4911,11 @@ const mountBrain = async (field: HTMLElement) => {
             34 + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
-                ? 0.17
-                : 0.42
+                ? 0.21
+                : 0.52
               : fadeBand === 0
-                ? 0.065
-                : 0.15) * depthStrength,
+                ? 0.08
+                : 0.18) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
