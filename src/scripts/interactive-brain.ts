@@ -5000,6 +5000,10 @@ const mountBrain = async (field: HTMLElement) => {
       },
       () => new Path2D(),
     );
+    const corticalRidgePaths = Array.from(
+      { length: DEPTH_LEVELS },
+      () => new Path2D(),
+    );
     const cerebellumStructuralPaths = Array.from(
       {
         length:
@@ -5018,6 +5022,10 @@ const mountBrain = async (field: HTMLElement) => {
           WIDTH_LEVELS *
           CORTEX_LIGHT_LEVELS,
       },
+      () => new Path2D(),
+    );
+    const cerebellarRidgePaths = Array.from(
+      { length: DEPTH_LEVELS },
       () => new Path2D(),
     );
     const cerebellumNodePhaseCount = 4;
@@ -5175,7 +5183,7 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.family === "cerebellar-folia"
       ) {
         const nodeKey = mixRenderKey(fiber.bundleId ^ 0x43424e44);
-        if (nodeKey % 3 === 0) {
+        if (nodeKey % 4 === 0) {
           const requestedNodeIndex = Math.floor(
             lerp(
               0.14,
@@ -5551,6 +5559,50 @@ const mountBrain = async (field: HTMLElement) => {
                 : structuralPaths[structuralIndex];
             structuralPath.moveTo(segmentStartX, segmentStartY);
             structuralPath.lineTo(segmentEndX, segmentEndY);
+            const corticalRidgeKey = mixRenderKey(
+              fiber.bundleId ^ 0x46524944,
+            );
+            const corticalRidgeFiber =
+              modelY > -0.55 &&
+              ((modelX < -0.55 &&
+                ((fiber.family === "cortical-fold" &&
+                  centerDistance === 0 &&
+                  corticalRidgeKey % 3 === 0) ||
+                  (fiber.family === "frontal-surface" &&
+                    centerDistance <= 1 &&
+                    corticalRidgeKey % 12 === 0))) ||
+                (modelX >= -0.55 &&
+                  fiber.family === "cortical-fold" &&
+                  centerDistance === 0 &&
+                  corticalRidgeKey % 4 === 0) ||
+                (modelX > 0.45 &&
+                  modelY > 0.05 &&
+                  fiber.family === "posterior-surface" &&
+                  centerDistance === 0 &&
+                  corticalRidgeKey % 28 === 0));
+            if (corticalRidgeFiber) {
+              corticalRidgePaths[depthBand].moveTo(
+                segmentStartX,
+                segmentStartY,
+              );
+              corticalRidgePaths[depthBand].lineTo(
+                segmentEndX,
+                segmentEndY,
+              );
+            }
+            if (
+              fiber.family === "cerebellar-ridge" &&
+              centerDistance === 0
+            ) {
+              cerebellarRidgePaths[depthBand].moveTo(
+                segmentStartX,
+                segmentStartY,
+              );
+              cerebellarRidgePaths[depthBand].lineTo(
+                segmentEndX,
+                segmentEndY,
+              );
+            }
             if (fiber.family === "central-tract") {
               centralTractHaloPaths[depthBand].moveTo(
                 segmentStartX,
@@ -5729,7 +5781,11 @@ const mountBrain = async (field: HTMLElement) => {
           if (
             fiber.hot &&
             centerDistance === 0 &&
-            modelY <= 0.68 &&
+            modelY <=
+              (fiber.family === "frontal-surface" ||
+              fiber.family === "cortical-fold"
+                ? 1.12
+                : 0.68) &&
             fade >= 0.14
           ) {
             hotActivePaths[depthBand].moveTo(segmentStartX, segmentStartY);
@@ -5836,6 +5892,21 @@ const mountBrain = async (field: HTMLElement) => {
     context.lineCap = "round";
     context.lineJoin = "round";
     for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength =
+        0.14 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.86;
+      context.strokeStyle = rgba(
+        255,
+        230 + depthBand * 3,
+        86 + depthBand * 3,
+        0.22 + depthStrength * 0.66,
+      );
+      context.lineWidth = onePhysicalPixel;
+      context.stroke(corticalRidgePaths[depthBand]);
+    }
+
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
       const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
       context.strokeStyle = rgba(
         255,
@@ -5892,6 +5963,21 @@ const mountBrain = async (field: HTMLElement) => {
       55,
     );
 
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength =
+        0.14 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.86;
+      context.strokeStyle = rgba(
+        255,
+        218 + depthBand * 3,
+        52 + depthBand * 3,
+        0.2 + depthStrength * 0.6,
+      );
+      context.lineWidth = onePhysicalPixel;
+      context.stroke(cerebellarRidgePaths[depthBand]);
+    }
+
     for (
       let phaseBand = 0;
       phaseBand < cerebellumNodePhaseCount;
@@ -5899,8 +5985,8 @@ const mountBrain = async (field: HTMLElement) => {
     ) {
       const nodePulse = reducedMotion.matches
         ? 0.72
-        : 0.52 +
-          0.48 *
+        : 0.32 +
+          0.68 *
             (0.5 +
               Math.sin(time * 0.001 + phaseBand * 1.67) * 0.5);
       for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
@@ -5917,7 +6003,7 @@ const mountBrain = async (field: HTMLElement) => {
           255,
           238 + depthBand * 2,
           128 + depthBand * 2,
-          (0.72 + depthStrength * 0.28) * (0.82 + nodePulse * 0.18),
+          (0.72 + depthStrength * 0.28) * (0.48 + nodePulse * 0.52),
         );
         context.fill(cerebellumNodeCorePaths[nodePathIndex]);
       }
