@@ -2677,33 +2677,27 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       : lerp(-0.07, 0.07, random());
     const baseHalfExtent =
       verticalSection *
-      lerp(localBundle ? 0.34 : 0.65, localBundle ? 0.61 : 0.84, random());
-    const archDirection =
-      normalizedY < -0.08
-        ? -1
-        : normalizedY > 0.08
-          ? 1
-          : band % 2 === 0
-            ? -1
-            : 1;
+      lerp(localBundle ? 0.35 : 0.6, localBundle ? 0.62 : 0.82, random());
+    const archDirection = normalizedY < 0 ? -1 : 1;
     const centralArchScale = lerp(
-      0.52,
+      0.74,
       1,
       smoothstep(0.04, 0.5, Math.abs(normalizedY)),
     );
     const bandArchAmplitude =
-      lerp(0.08, 0.14, random()) *
+      lerp(0.18, 0.28, random()) *
       lerp(0.78, 1, verticalSection) *
       centralArchScale *
       archDirection;
-    const bandArchExponent = lerp(0.88, 1.18, random());
-    const bandFlowTilt = lerp(-0.04, 0.04, random());
-    const bandBroadAmplitude = lerp(0.065, 0.11, random());
-    const bandLocalAmplitude = lerp(0.018, 0.032, random());
-    const bandLocalCycles = lerp(1.2, 1.8, random());
-    const bandLateralAmplitude = lerp(0.025, 0.05, random());
+    const bandArchExponent = lerp(0.86, 1.2, random());
+    const bandFlowTilt = lerp(-0.035, 0.035, random());
+    const bandBroadAmplitude = lerp(0.05, 0.09, random());
+    const bandLocalAmplitude = lerp(0.008, 0.018, random());
+    const bandLocalCycles = lerp(0.8, 1.25, random());
+    const bandLateralAmplitude = lerp(0.035, 0.07, random());
+    const bandCurlAmplitude = lerp(0.02, 0.04, random());
     const bandRotation =
-      Math.sin(bandPhase * 1.37) * 0.11 + lobulePosition * 0.08;
+      Math.sin(bandPhase * 1.37) * 0.07 + lobulePosition * 0.08;
     const bandRotationCosine = Math.cos(bandRotation);
     const bandRotationSine = Math.sin(bandRotation);
     for (let lane = 0; lane < foliaDepths.length; lane += 1) {
@@ -2736,6 +2730,13 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           Math.sin(TAU * 1.9 * position + phase * 0.72) *
             0.01 *
             envelope;
+        const lobularCurl =
+          Math.sin(
+            Math.PI * lerp(0.78, 1.18, verticalSection) * position +
+              phase * 0.82,
+          ) *
+          bandCurlAmplitude *
+          envelope;
         const unrotatedY =
           normalizedY +
           bandFlowTilt * (position - 0.5) +
@@ -2746,7 +2747,8 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             envelope +
           Math.sin(TAU * bandLocalCycles * position + phase * 1.31) *
             bandLocalAmplitude *
-            envelope;
+            envelope +
+          lobularCurl;
         const centeredX = unrotatedX - horizontalCenter;
         const centeredY = unrotatedY - normalizedY;
         const localX =
@@ -2777,7 +2779,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       }
       fibers.push(
         ...createBundle(
-        resampleTrajectory(
+          resampleTrajectory(
             smoothTrajectory(controls),
             0.012,
             28,
@@ -3655,18 +3657,17 @@ const drawParticle = (
 
 const drawCornerBrackets = (
   context: CanvasRenderingContext2D,
-  minimumX: number,
-  minimumY: number,
-  maximumX: number,
-  maximumY: number,
+  width: number,
+  height: number,
 ) => {
-  if (!Number.isFinite(minimumX) || !Number.isFinite(minimumY)) return;
-  const bracket = 14;
-  const inset = 8;
-  const left = minimumX - inset;
-  const top = minimumY - inset;
-  const right = maximumX + inset;
-  const bottom = maximumY + inset;
+  const bracket = clamp(width * 0.014, 12, 24);
+  const horizontalInset = clamp(width * 0.018, 10, 30);
+  const topInset = clamp(height * 0.076, 34, 72);
+  const bottomInset = clamp(height * 0.05, 18, 48);
+  const left = horizontalInset;
+  const top = topInset;
+  const right = width - horizontalInset;
+  const bottom = height - bottomInset;
   context.beginPath();
   context.moveTo(left, top + bracket);
   context.lineTo(left, top);
@@ -4246,7 +4247,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.149, 0.265, 0.425] as const;
+    const staticAlpha = [0.154, 0.274, 0.44] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
@@ -4271,7 +4272,7 @@ const mountBrain = async (field: HTMLElement) => {
             staticLightBand;
           staticContext.strokeStyle = rgba(
             255,
-            184 + depthBand * 3,
+            174 + depthBand * 3,
             0,
             staticAlpha[opacityBand] *
               staticDepthStrength *
@@ -4283,7 +4284,7 @@ const mountBrain = async (field: HTMLElement) => {
           );
           staticContext.strokeStyle = rgba(
             255,
-            184 + depthBand * 3,
+            174 + depthBand * 3,
             0,
             staticAlpha[opacityBand] *
               staticDepthStrength *
@@ -4638,10 +4639,6 @@ const mountBrain = async (field: HTMLElement) => {
       { length: DEPTH_LEVELS },
       () => new Path2D(),
     );
-    let minimumX = Number.POSITIVE_INFINITY;
-    let minimumY = Number.POSITIVE_INFINITY;
-    let maximumX = Number.NEGATIVE_INFINITY;
-    let maximumY = Number.NEGATIVE_INFINITY;
     let cerebellumMinimumX = Number.POSITIVE_INFINITY;
     let cerebellumMinimumY = Number.POSITIVE_INFINITY;
     let cerebellumMaximumX = Number.NEGATIVE_INFINITY;
@@ -4739,16 +4736,6 @@ const mountBrain = async (field: HTMLElement) => {
           cerebellumMinimumY = Math.min(cerebellumMinimumY, projectedY);
           cerebellumMaximumX = Math.max(cerebellumMaximumX, projectedX);
           cerebellumMaximumY = Math.max(cerebellumMaximumY, projectedY);
-        }
-        if (
-          fiber.region !== "cerebrum" ||
-          fiber.escapeStart < 0 ||
-          pointIndex <= fiber.escapeStart
-        ) {
-          minimumX = Math.min(minimumX, projectedX);
-          minimumY = Math.min(minimumY, projectedY);
-          maximumX = Math.max(maximumX, projectedX);
-          maximumY = Math.max(maximumY, projectedY);
         }
         if (pointIndex === pointCount - 1) break;
       }
@@ -5335,13 +5322,13 @@ const mountBrain = async (field: HTMLElement) => {
       context.stroke(centralTractHaloPaths[depthBand]);
     }
 
-    const structuralAlpha = [0.135, 0.182, 0.248, 0.324];
+    const structuralAlpha = [0.14, 0.188, 0.257, 0.335];
     const drawStructuralBatches = (
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
       lightBandGains: readonly number[] = [1, 0.6, 1.85],
-      greenBase = 176,
+      greenBase = 166,
       blueBase = 0,
       mediumGain = mediumFiberGain,
       mediumGreenBase = greenBase,
@@ -5420,7 +5407,7 @@ const mountBrain = async (field: HTMLElement) => {
       const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
       context.strokeStyle = rgba(
         255,
-        190,
+        180,
         28,
         0.118 + depthStrength * 0.085,
       );
@@ -5464,12 +5451,12 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      2.45,
+      2.55,
       [1.18, 1.18, 1.32],
-      170,
+      162,
       0,
       1.4,
-      204,
+      196,
       55,
     );
 
@@ -5515,7 +5502,7 @@ const mountBrain = async (field: HTMLElement) => {
         const index = opacityBand * DEPTH_LEVELS + depthBand;
         context.strokeStyle = rgba(
           255,
-          188,
+          178,
           24,
           outboundAlpha[opacityBand] *
             (0.55 + depthStrength * 0.45) *
@@ -5881,13 +5868,7 @@ const mountBrain = async (field: HTMLElement) => {
     });
     context.restore();
 
-    drawCornerBrackets(
-      context,
-      minimumX,
-      minimumY,
-      maximumX,
-      maximumY,
-    );
+    drawCornerBrackets(context, width, height);
   };
 
   const frame = (time: number) => {
