@@ -4465,7 +4465,7 @@ const mountBrain = async (field: HTMLElement) => {
                 ? 2
                 : 3
             : fiber.bundleTier === "dim" &&
-                fiber.region === "cerebrum"
+              fiber.region === "cerebrum"
               ? 3
               : 2;
       const projectionStep =
@@ -4656,12 +4656,15 @@ const mountBrain = async (field: HTMLElement) => {
             fiber.boundaryScale[pointIndex]) *
           0.5;
         const cortexLightBand =
-          useBundlePlan &&
-          fiber.bundleTier !== "active" &&
-          modelY > 0.48 &&
-          boundaryStrength > 0.55
+          fiber.region === "cerebellum" &&
+          modelY < CEREBELLUM.center.y - 0.02
             ? 1
-            : 0;
+            : useBundlePlan &&
+                fiber.bundleTier !== "active" &&
+                modelY > 0.48 &&
+                boundaryStrength > 0.55
+              ? 1
+              : 0;
         const upperCortexGap =
           useBundlePlan &&
           fiber.family !== "cortical-fold" &&
@@ -5022,6 +5025,7 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
+      lightBandGains: readonly [number, number] = [1, 0.92],
     ) => {
       context.lineCap = "butt";
       context.lineJoin = "miter";
@@ -5055,7 +5059,7 @@ const mountBrain = async (field: HTMLElement) => {
               const alpha =
                 structuralAlpha[opacityBand] *
                 depthStrength *
-                (cortexLightBand === 1 ? 0.92 : 1) *
+                lightBandGains[cortexLightBand] *
                 alphaGain;
               context.lineWidth =
                 (widthBand === 0 ? 2.35 : 2.7) * onePhysicalPixel;
@@ -5098,7 +5102,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         198,
         28,
-        0.105 + depthStrength * 0.075,
+        0.118 + depthStrength * 0.085,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(stemPaths[depthBand]);
@@ -5141,6 +5145,7 @@ const mountBrain = async (field: HTMLElement) => {
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
       1.05,
+      [1, 1.32],
     );
 
     const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
