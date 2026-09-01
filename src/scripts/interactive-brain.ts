@@ -1983,39 +1983,55 @@ const createProjectionTractTrajectory = (
   const regionalDirection = sectorIndex < 2 ? -1 : 1;
   const bendDirection =
     regionalRank % 6 === 0 ? -regionalDirection : regionalDirection;
-  const broadBend = lerp(0.08, 0.2, random()) * bendDirection;
+  const broadBend = lerp(0.1, 0.23, random()) * bendDirection;
+  const bendExponent = lerp(0.78, 1.28, random());
   const localAmplitude = lerp(0.018, 0.045, random());
+  const secondaryAmplitude = lerp(0.008, 0.02, random());
+  const localCycles = lerp(1.15, 1.75, random());
+  const secondaryCycles = lerp(2.3, 3.4, random());
+  const depthJitter = lerp(0.035, 0.075, random());
   const phase = random() * TAU;
   const controlAt = (
     position: number,
-    bendStrength: number,
-    depthJitter: number,
   ) => {
     const envelope = Math.sin(Math.PI * position);
+    const bendEnvelope = Math.sin(
+      Math.PI * position ** bendExponent,
+    );
     const localWave =
-      Math.sin(position * TAU * 1.35 + phase) *
+      Math.sin(position * TAU * localCycles + phase) *
       localAmplitude *
       envelope;
+    const secondaryWave =
+      Math.sin(position * TAU * secondaryCycles + phase * 1.37) *
+      secondaryAmplitude *
+      envelope;
+    const lateralOffset =
+      broadBend * bendEnvelope + localWave + secondaryWave;
     return {
       x:
         lerp(seed.x, hub.x, position) +
-        chordNormal.x * (broadBend * bendStrength + localWave),
+        chordNormal.x * lateralOffset,
       y:
         lerp(seed.y, hub.y, position) +
-        chordNormal.y * (broadBend * bendStrength + localWave) +
-        Math.sin(position * Math.PI * 1.7 + phase * 0.6) *
-          0.018 *
+        chordNormal.y * lateralOffset +
+        Math.sin(position * Math.PI * 1.7 + phase * 0.6) * 0.018 *
           envelope,
       z:
         lerp(seed.z, hub.z, position) +
-        Math.sin(position * Math.PI + phase) * depthJitter * envelope,
+        Math.sin(position * Math.PI + phase) *
+          depthJitter *
+          envelope +
+        Math.sin(position * TAU * 2.2 + phase * 0.73) *
+          0.012 *
+          envelope,
     };
   };
-  const shoulder = controlAt(0.2, 0.58, lerp(0.025, 0.055, random()));
-  const elbow = controlAt(0.5, 1, lerp(0.035, 0.075, random()));
-  const approach = controlAt(0.78, 0.52, lerp(0.02, 0.05, random()));
+  const controls = Array.from({ length: 19 }, (_, index) =>
+    controlAt(index / 18),
+  );
   const smoothed = smoothTrajectory(
-    smoothTrajectory([seed, shoulder, elbow, approach, hub]),
+    smoothTrajectory(controls),
   );
   return resampleTrajectory(smoothed, 0.035, 22, 66);
 };
