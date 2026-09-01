@@ -1884,8 +1884,8 @@ const createCorticalFoldTrajectory = (
       ? lerp(0.86, 0.98, random())
       : lerp(0.8, 0.96, random())
     : guide.kind === "major"
-      ? lerp(0.66, 0.94, random())
-      : lerp(0.58, 0.86, random());
+      ? lerp(0.58, 0.93, random())
+      : lerp(0.5, 0.84, random());
   const start = random() * (1 - coverage);
   const end = start + coverage;
   const segmentLength = guide.length * coverage;
@@ -1905,16 +1905,16 @@ const createCorticalFoldTrajectory = (
     guide.kind === "major" ? 0.02 : 0.015,
     renderUnit(guide.seed ^ 0x414d504c),
   );
-  const broadPhase = guidePhase + (random() - 0.5) * 0.46;
-  const broadWave = guideWave * lerp(0.86, 1.16, random());
+  const broadPhase = guidePhase + (random() - 0.5) * 1.2;
+  const broadWave = guideWave * lerp(0.72, 1.3, random());
   const broadAmplitude = lerp(
-    0.012,
-    guide.kind === "major" ? 0.032 : 0.024,
+    0.016,
+    guide.kind === "major" ? 0.045 : 0.033,
     random(),
   );
   const localPhase = random() * TAU;
   const localWave = lerp(0.14, 0.26, random());
-  const localAmplitude = lerp(0.002, 0.008, random());
+  const localAmplitude = lerp(0.003, 0.01, random());
   const effectiveChannelRadius = guide.channelRadius * 0.64;
   const baseOffset =
     effectiveChannelRadius +
@@ -1924,15 +1924,17 @@ const createCorticalFoldTrajectory = (
   const branchingGuide =
     guide.name === "superior-frontal-sulcus" ||
     guide.name === "superior-temporal-sulcus" ||
-    guide.name === "intraparietal-sulcus";
+    guide.name === "intraparietal-sulcus" ||
+    guide.name === "precentral-sulcus" ||
+    guide.name === "postcentral-sulcus";
   const branchFiber =
     branchingGuide &&
     bankRank === bankFiberCount - 1 &&
     bundleIndex % 2 === guide.seed % 2;
-  const longitudinalSkew = (random() - 0.5) * 0.03;
+  const longitudinalSkew = (random() - 0.5) * 0.05;
   const terminalDrift = anchorFiber
     ? 0
-    : (random() - 0.5) * (guide.kind === "major" ? 0.055 : 0.038);
+    : (random() - 0.5) * (guide.kind === "major" ? 0.075 : 0.052);
   const terminalDriftStart = lerp(0.38, 0.64, random());
   const targetField = clamp(
     0.065 + random() * 0.06,
@@ -1982,7 +1984,7 @@ const createCorticalFoldTrajectory = (
         localNoise +
         longitudinalSkew * (position - 0.5) +
         terminalDrift * smoothstep(terminalDriftStart, 1, position) +
-        (branchFiber ? smoothstep(0.58, 1, position) * 0.026 : 0),
+        (branchFiber ? smoothstep(0.52, 1, position) * 0.042 : 0),
     );
     const candidate = {
       x: guidePoint.x + normal.x * offsetMagnitude * bankSign,
