@@ -1988,21 +1988,26 @@ const createProjectionTractTrajectory = (
 
 const CENTRAL_TRACT_GUIDES: readonly (readonly Vector3[])[] = [
   [
-    { x: -1.34, y: 0.16, z: 0 },
-    { x: -0.94, y: 0.36, z: 0 },
-    { x: -0.4, y: 0.44, z: 0 },
-    { x: 0.14, y: 0.41, z: 0 },
-    { x: 0.72, y: 0.32, z: 0 },
-    { x: 1.42, y: 0.16, z: 0 },
+    { x: -1.38, y: 0.12, z: 0 },
+    { x: -1, y: 0.32, z: 0 },
+    { x: -0.52, y: 0.5, z: 0 },
+    { x: 0, y: 0.54, z: 0 },
+    { x: 0.55, y: 0.43, z: 0 },
+    { x: 1.1, y: 0.27, z: 0 },
+    { x: 1.5, y: 0.1, z: 0 },
   ],
   [
-    { x: -1.18, y: -0.2, z: 0 },
-    { x: -0.68, y: -0.12, z: 0 },
-    { x: -0.12, y: 0.02, z: 0 },
-    { x: 0.44, y: 0.06, z: 0 },
-    { x: 1.12, y: -0.08, z: 0 },
+    { x: -1.22, y: -0.24, z: 0 },
+    { x: -0.82, y: -0.08, z: 0 },
+    { x: -0.28, y: 0.12, z: 0 },
+    { x: 0.25, y: 0.16, z: 0 },
+    { x: 0.76, y: 0.05, z: 0 },
+    { x: 1.18, y: -0.16, z: 0 },
   ],
 ] as const;
+
+const CENTRAL_TRACT_BUNDLE_COUNT = 48;
+const CENTRAL_TRACT_VERTICAL_OFFSET = -0.075;
 
 const createCentralTractTrajectory = (
   bundleIndex: number,
@@ -2010,19 +2015,33 @@ const createCentralTractTrajectory = (
 ) => {
   const guide = CENTRAL_TRACT_GUIDES[bundleIndex % CENTRAL_TRACT_GUIDES.length];
   const guideRank = Math.floor(bundleIndex / CENTRAL_TRACT_GUIDES.length);
-  const lanePosition = guideRank / 23 - 0.5;
-  const laneOffset = lanePosition * 0.11 + lerp(-0.012, 0.012, random());
+  const guideBundleCount = Math.ceil(
+    CENTRAL_TRACT_BUNDLE_COUNT / CENTRAL_TRACT_GUIDES.length,
+  );
+  const lanePosition =
+    guideRank / Math.max(1, guideBundleCount - 1) - 0.5;
+  const laneOffset = lanePosition * 0.14 + lerp(-0.014, 0.014, random());
   const depth = lerp(0.06, 0.54, random());
   const phase = random() * TAU;
+  const bundleArch = lerp(-0.038, 0.052, random());
+  const bundleSkew = lerp(-0.045, 0.045, random());
+  const localAmplitude = lerp(0.012, 0.026, random());
   const controls = guide.map((point, index) => {
     const position = index / Math.max(1, guide.length - 1);
     const envelope = Math.sin(Math.PI * position);
     return {
-      x: point.x + Math.sin(position * TAU + phase) * 0.018 * envelope,
+      x:
+        point.x +
+        Math.sin(position * TAU + phase) * 0.024 * envelope,
       y:
         point.y +
+        CENTRAL_TRACT_VERTICAL_OFFSET +
         laneOffset +
-        Math.sin(position * Math.PI * 1.6 + phase) * 0.012 * envelope,
+        bundleArch * envelope +
+        bundleSkew * (position - 0.5) +
+        Math.sin(position * Math.PI * 1.7 + phase) *
+          localAmplitude *
+          envelope,
       z: depth + Math.cos(position * Math.PI + phase) * 0.055 * envelope,
     };
   });
@@ -2305,9 +2324,9 @@ const createBundleFactory = (): BundleFactory => {
     const strandCount =
       family === "cortical-microfold"
         ? 1
-        : family === "cortical-fold" ||
-            family === "projection-tract" ||
-            family === "central-tract"
+        : family === "central-tract"
+          ? 2
+          : family === "cortical-fold" || family === "projection-tract"
           ? 3
           : region === "cerebrum"
             ? CEREBRUM_STRAND_CYCLE[
@@ -2411,7 +2430,7 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
     }
   }
   const centralRandom = seededRandom(FAMILY_SEEDS.centralTract);
-  for (let index = 0; index < 48; index += 1) {
+  for (let index = 0; index < CENTRAL_TRACT_BUNDLE_COUNT; index += 1) {
     fibers.push(
       ...createBundle(
         createCentralTractTrajectory(index, centralRandom),
@@ -3053,7 +3072,7 @@ const styleFibers = (fibers: Fiber[]) => {
         };
       })
       .sort((left, right) => left.distance - right.distance)
-      .slice(0, 2)
+      .slice(0, highway.family === "central-tract" ? 4 : 2)
       .map(({ fiber }) => fiber);
     supportFibers.forEach((support) => {
       support.bundleTier = "medium";
