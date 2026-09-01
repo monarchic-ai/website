@@ -31,6 +31,7 @@ type FiberFamily =
   | CerebrumFamily
   | "cerebellar-folia"
   | "cerebellar-curl"
+  | "cerebellar-ridge"
   | "cerebellar-shell"
   | "stem";
 
@@ -828,8 +829,8 @@ const cerebellumField = (point: Vector3) =>
 
 const cerebellarSeparationVisibility = (point: Vector3) => {
   const overlap = smoothstep(-0.25, 0.14, cerebellumField(point).value);
-  const posteriorInfluence = smoothstep(0.28, 0.64, point.x);
-  const lowerInfluence = 1 - smoothstep(0.08, 0.36, point.y);
+  const posteriorInfluence = smoothstep(0.3, 0.68, point.x);
+  const lowerInfluence = 1 - smoothstep(0.18, 0.5, point.y);
   return 1 - overlap * posteriorInfluence * lowerInfluence;
 };
 
@@ -2305,6 +2306,16 @@ const createFiber = (
         z: points[offset + 2],
       });
     }
+    if (
+      region === "cerebellum" &&
+      family !== "cerebellar-ridge" &&
+      family !== "cerebellar-shell"
+    ) {
+      const normalizedCerebellarY =
+        (points[offset + 1] - CEREBELLUM.center.y) /
+        CEREBELLUM.radius.y;
+      fade *= 1 - smoothstep(0.28, 0.5, normalizedCerebellarY);
+    }
     if (escapeStart >= 0 && pointIndex >= escapeStart) {
       const escapePosition =
         (pointIndex - escapeStart) /
@@ -2352,6 +2363,8 @@ const createBundleFactory = (): BundleFactory => {
     const strandCount =
       family === "cortical-microfold"
         ? 1
+        : family === "cerebellar-ridge"
+          ? 3
         : family === "central-tract" || family === "projection-tract"
           ? 2
           : family === "cortical-fold"
@@ -2744,6 +2757,61 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     );
   }
 
+  const upperRidgeCount = 8;
+  for (let index = 0; index < upperRidgeCount; index += 1) {
+    const depthPosition = (index + 0.5) / upperRidgeCount;
+    const normalizedZ =
+      lerp(-0.3, 0.3, depthPosition) +
+      lerp(-0.012, 0.012, random());
+    const depthSection = Math.sqrt(
+      Math.max(0.2, 1 - normalizedZ ** 2),
+    );
+    const horizontalExtent = depthSection * lerp(0.76, 0.86, random());
+    const edgeHeight = lerp(0.12, 0.18, random());
+    const archHeight = lerp(0.16, 0.22, random()) * depthSection;
+    const phase = random() * TAU;
+    const controls: Vector3[] = [];
+    for (let step = 0; step <= 24; step += 1) {
+      const position = step / 24;
+      const envelope = Math.sin(Math.PI * position);
+      const localX =
+        lerp(-horizontalExtent, horizontalExtent, position) +
+        Math.sin(TAU * position + phase) * 0.018 * envelope;
+      const localY =
+        edgeHeight +
+        archHeight * envelope +
+        Math.sin(TAU * 1.7 * position + phase) * 0.018 * envelope;
+      const localZ =
+        normalizedZ +
+        Math.sin(Math.PI * position + phase) * 0.018 * envelope;
+      controls.push(
+        constrainToLobe(
+          {
+            x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
+            y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
+            z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
+          },
+          CEREBELLUM,
+          0.94,
+        ),
+      );
+    }
+    fibers.push(
+      ...createBundle(
+        resampleTrajectory(
+          smoothTrajectory(smoothTrajectory(controls)),
+          0.012,
+          32,
+          72,
+        ),
+        "cerebellum",
+        "cerebellar-ridge",
+        0.0042,
+        cerebellumField,
+      ),
+    );
+  }
+
   const enclosureLoopCount = 8;
   for (let index = 0; index < enclosureLoopCount; index += 1) {
     const depthPosition = (index + 0.5) / enclosureLoopCount;
@@ -2940,7 +3008,8 @@ const styleFibers = (fibers: Fiber[]) => {
       fiber.family === "cortical-microfold" ||
       fiber.family === "cerebellar-shell"
         ? "dim"
-        : (fiber.family === "cortical-fold" && activityKey < 0.38) ||
+        : fiber.family === "cerebellar-ridge" ||
+            (fiber.family === "cortical-fold" && activityKey < 0.38) ||
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
