@@ -3452,7 +3452,7 @@ const styleFibers = (fibers: Fiber[]) => {
       posteriorMedium ||
       descendingMedium;
     const cerebellarMedium =
-      (fiber.family === "cerebellar-folia" && activityKey < 0.16) ||
+      (fiber.family === "cerebellar-folia" && activityKey < 0.11) ||
       (fiber.family === "cerebellar-ridge" && activityKey < 0.3) ||
       (fiber.family === "cerebellar-shell" && activityKey < 0.14);
     fiber.particle = false;
@@ -5222,7 +5222,7 @@ const mountBrain = async (field: HTMLElement) => {
       const keepCerebellarStructure =
         fiber.region === "cerebellum" &&
         (denselyLayeredCerebellarFiber
-          ? fiber.bundleId % 2 === 0
+          ? fiber.bundleId % 3 !== 1
           : fiber.bundleId % 3 === 0);
       fiber.visible =
         (fiber.escapeStart >= 0 && fiber.bundleId % 2 === 0) ||
@@ -5306,7 +5306,7 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.family === "cerebellar-folia"
       ) {
         const nodeKey = mixRenderKey(fiber.bundleId ^ 0x43424e44);
-        if (nodeKey % 4 === 0) {
+        if (nodeKey % 5 === 0) {
           const requestedNodeIndex = Math.floor(
             lerp(
               0.14,
@@ -5336,8 +5336,8 @@ const mountBrain = async (field: HTMLElement) => {
               phaseBand * DEPTH_LEVELS + nodeDepthBand;
             const nodeX = fiber.projected[nodeOffset];
             const nodeY = fiber.projected[nodeOffset + 1];
-            const coreRadius = 1.04 + nodeDepthBand * 0.085;
-            const haloRadius = 2.35 + nodeDepthBand * 0.15;
+            const coreRadius = 0.9 + nodeDepthBand * 0.07;
+            const haloRadius = 2 + nodeDepthBand * 0.12;
             cerebellumNodeCorePaths[nodePathIndex].moveTo(
               nodeX + coreRadius,
               nodeY,
@@ -6077,13 +6077,13 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      1.3,
+      1.5,
       [1.12, 1.12, 1.24, 1.12],
       162,
       0,
-      1.55,
-      196,
-      55,
+      1.22,
+      190,
+      45,
     );
 
     context.lineCap = "round";
@@ -6095,7 +6095,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         218 + depthBand * 3,
         52 + depthBand * 3,
-        0.2 + depthStrength * 0.6,
+        0.15 + depthStrength * 0.52,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(cerebellarRidgePaths[depthBand]);
@@ -6126,7 +6126,7 @@ const mountBrain = async (field: HTMLElement) => {
           255,
           238 + depthBand * 2,
           128 + depthBand * 2,
-          (0.72 + depthStrength * 0.28) * (0.48 + nodePulse * 0.52),
+          (0.64 + depthStrength * 0.24) * (0.48 + nodePulse * 0.52),
         );
         context.fill(cerebellumNodeCorePaths[nodePathIndex]);
       }
