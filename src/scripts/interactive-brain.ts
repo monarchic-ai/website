@@ -446,17 +446,17 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 0.98, y: -0.48, z: 0.06 },
-  radius: { x: 0.66, y: 0.63, z: 0.53 },
+  center: { x: 1.02, y: -0.42, z: 0.06 },
+  radius: { x: 0.61, y: 0.7, z: 0.55 },
 };
 
 const BRAINSTEM = {
-  top: { x: 0.48, y: -0.46 },
-  bottom: { x: 0.17, y: -1.3 },
-  topRadius: { x: 0.31, z: 0.25 },
+  top: { x: 0.78, y: -0.44 },
+  bottom: { x: 0.46, y: -1.22 },
+  topRadius: { x: 0.36, z: 0.28 },
   centerZ: 0.07,
-  curve: 0.065,
-  endScale: 0.62,
+  curve: 0.075,
+  endScale: 0.58,
 } as const;
 
 // Local cortical bundles form the substrate; regional families carry long tracts.
@@ -826,9 +826,9 @@ const cerebellumField = (point: Vector3) =>
   fieldForLobes(point, [CEREBELLUM]);
 
 const cerebellarSeparationVisibility = (point: Vector3) => {
-  const overlap = smoothstep(-0.16, 0.1, cerebellumField(point).value);
-  const posteriorInfluence = smoothstep(0.18, 0.62, point.x);
-  const lowerInfluence = 1 - smoothstep(0.02, 0.28, point.y);
+  const overlap = smoothstep(-0.25, 0.14, cerebellumField(point).value);
+  const posteriorInfluence = smoothstep(0.28, 0.64, point.x);
+  const lowerInfluence = 1 - smoothstep(0.08, 0.36, point.y);
   return 1 - overlap * posteriorInfluence * lowerInfluence;
 };
 
@@ -2897,7 +2897,8 @@ const styleFibers = (fibers: Fiber[]) => {
     fiber.hot = false;
     fiber.activityKey = activityKey;
     fiber.bundleTier =
-      fiber.family === "cortical-microfold"
+      fiber.family === "cortical-microfold" ||
+      fiber.family === "cerebellar-stitch"
         ? "dim"
         : (fiber.family === "cortical-fold" && activityKey < 0.56) ||
             fiber.family === "central-tract" ||
@@ -3068,6 +3069,7 @@ const styleFibers = (fibers: Fiber[]) => {
         (fiber) =>
           fiber.region === region &&
           fiber.family !== "cortical-microfold" &&
+          fiber.family !== "cerebellar-stitch" &&
           fiber.escapeStart < 0 &&
           !particleFibers.includes(fiber) &&
           fiber.points.length >= 24,
@@ -3914,7 +3916,7 @@ const mountBrain = async (field: HTMLElement) => {
       }
 
       const nodeKey = mixRenderKey(fiber.bundleId ^ 0x4e4f4445);
-      if (staticNodeCount < 180 && nodeKey % 5 === 0) {
+      if (staticNodeCount < 240 && nodeKey % 3 === 0) {
         const nodeIndex = Math.floor(
           lerp(
             2,
@@ -3947,7 +3949,7 @@ const mountBrain = async (field: HTMLElement) => {
             centerX + rotatedX * horizontalModelScale * perspective;
           const projectedY =
             centerY - rotatedY * modelScale * perspective;
-          const radius = 0.42 + depthBand * 0.022;
+          const radius = 0.5 + depthBand * 0.03;
           staticNodePaths[depthBand].moveTo(
             projectedX + radius,
             projectedY,
@@ -4007,7 +4009,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         207 + depthBand * 3,
         28 + depthBand * 2,
-        0.25 + depthStrength * 0.38,
+        0.3 + depthStrength * 0.46,
       );
       staticContext.fill(staticNodePaths[depthBand]);
     }
@@ -5000,7 +5002,7 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             174 + depthBand * 3,
             0,
-            (fadeBand === 0 ? 0.022 : 0.065) * depthStrength,
+            (fadeBand === 0 ? 0.028 : 0.08) * depthStrength,
           );
           context.lineWidth = 2.8 * onePhysicalPixel;
           context.stroke(activePaths[index]);
@@ -5010,11 +5012,11 @@ const mountBrain = async (field: HTMLElement) => {
             34 + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
-                ? 0.21
-                : 0.52
+                ? 0.25
+                : 0.62
               : fadeBand === 0
-                ? 0.08
-                : 0.18) * depthStrength,
+                ? 0.1
+                : 0.22) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
