@@ -5250,12 +5250,12 @@ const mountBrain = async (field: HTMLElement) => {
           context.stroke(activePaths[index]);
           context.strokeStyle = rgba(
             255,
-            212 + depthBand * 4,
-            48 + depthBand * 3,
+            (widthBand === 1 ? 222 : 212) + depthBand * 3,
+            (widthBand === 1 ? 74 : 48) + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
                 ? 0.3
-                : 0.8
+                : 0.88
               : fadeBand === 0
                 ? 0.13
                 : 0.3) * depthStrength,
