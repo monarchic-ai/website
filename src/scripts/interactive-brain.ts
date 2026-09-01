@@ -139,7 +139,7 @@ const TAU = Math.PI * 2;
 const DEPTH_LEVELS = 7;
 const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
-const CORTEX_LIGHT_LEVELS = 2;
+const CORTEX_LIGHT_LEVELS = 3;
 const OUTBOUND_OPACITY_LEVELS = 5;
 const OUTBOUND_NODE_PHASES = 4;
 const OUTBOUND_FIBER_COUNT = 28;
@@ -3772,6 +3772,36 @@ const mountBrain = async (field: HTMLElement) => {
     "(prefers-reduced-motion: reduce)",
   );
   const mediumFiberGain = 2.43;
+  const staticLightGains = [1, 0.72, 3.2] as const;
+  const cerebrumLightBand = (
+    modelX: number,
+    modelY: number,
+    boundaryStrength: number,
+  ) => {
+    if (
+      modelX > 0.32 &&
+      modelY > 0.48 &&
+      boundaryStrength > 0.55
+    ) {
+      return 1;
+    }
+    if (
+      modelX > 0.35 &&
+      modelY < -0.05 &&
+      boundaryStrength > 0.15
+    ) {
+      return 2;
+    }
+    if (
+      modelX > -0.7 &&
+      modelX <= 0.35 &&
+      modelY < -0.05 &&
+      boundaryStrength > 0.15
+    ) {
+      return 1;
+    }
+    return 0;
+  };
   const idleSignalSpeed = 0.22;
   const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
   const executionWaveCycle = 16000;
@@ -3891,12 +3921,19 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.clearRect(0, 0, width, height);
 
     const staticOpacityLevels = 3;
+    const staticLightLevels = 3;
     const staticPaths = Array.from(
-      { length: staticOpacityLevels * DEPTH_LEVELS },
+      {
+        length:
+          staticOpacityLevels * DEPTH_LEVELS * staticLightLevels,
+      },
       () => new Path2D(),
     );
     const staticCompanionPaths = Array.from(
-      { length: staticOpacityLevels * DEPTH_LEVELS },
+      {
+        length:
+          staticOpacityLevels * DEPTH_LEVELS * staticLightLevels,
+      },
       () => new Path2D(),
     );
     const staticNodePaths = Array.from(
@@ -4023,8 +4060,20 @@ const mountBrain = async (field: HTMLElement) => {
           staticOpacityLevels - 1,
           Math.floor(fade * staticOpacityLevels),
         );
+        const modelX = (previousX + nextX) * 0.5;
+        const modelY = (previousY + nextY) * 0.5;
+        const staticLightBand =
+          fiber.region === "cerebellum"
+            ? 2
+            : fiber.region === "cerebrum"
+              ? cerebrumLightBand(modelX, modelY, 1)
+              : 0;
+        const staticPathIndex =
+          (opacityBand * DEPTH_LEVELS + depthBand) *
+            staticLightLevels +
+          staticLightBand;
         const staticPath =
-          staticPaths[opacityBand * DEPTH_LEVELS + depthBand];
+          staticPaths[staticPathIndex];
         const previousProjectedX =
           centerX +
           previousRotatedX * horizontalModelScale * previousPerspective;
@@ -4062,7 +4111,7 @@ const mountBrain = async (field: HTMLElement) => {
             Math.sin(TAU * nextPosition + companionPhase) *
             companionDrift;
           const companionPath =
-            staticCompanionPaths[opacityBand * DEPTH_LEVELS + depthBand];
+            staticCompanionPaths[staticPathIndex];
           for (
             let companionIndex = 0;
             companionIndex < companionCount;
@@ -4158,26 +4207,38 @@ const mountBrain = async (field: HTMLElement) => {
       ) {
         const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
         const staticDepthStrength = 0.08 + depthStrength * 0.92;
-        staticContext.strokeStyle = rgba(
-          255,
-          184 + depthBand * 3,
-          0,
-          staticAlpha[opacityBand] *
-            staticDepthStrength *
-            0.48,
-        );
-        staticContext.stroke(
-          staticCompanionPaths[opacityBand * DEPTH_LEVELS + depthBand],
-        );
-        staticContext.strokeStyle = rgba(
-          255,
-          184 + depthBand * 3,
-          0,
-          staticAlpha[opacityBand] * staticDepthStrength,
-        );
-        staticContext.stroke(
-          staticPaths[opacityBand * DEPTH_LEVELS + depthBand],
-        );
+        for (
+          let staticLightBand = 0;
+          staticLightBand < staticLightLevels;
+          staticLightBand += 1
+        ) {
+          const staticLightGain = staticLightGains[staticLightBand];
+          const staticPathIndex =
+            (opacityBand * DEPTH_LEVELS + depthBand) *
+              staticLightLevels +
+            staticLightBand;
+          staticContext.strokeStyle = rgba(
+            255,
+            184 + depthBand * 3,
+            0,
+            staticAlpha[opacityBand] *
+              staticDepthStrength *
+              staticLightGain *
+              0.48,
+          );
+          staticContext.stroke(
+            staticCompanionPaths[staticPathIndex],
+          );
+          staticContext.strokeStyle = rgba(
+            255,
+            184 + depthBand * 3,
+            0,
+            staticAlpha[opacityBand] *
+              staticDepthStrength *
+              staticLightGain,
+          );
+          staticContext.stroke(staticPaths[staticPathIndex]);
+        }
       }
     }
     for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
@@ -4749,15 +4810,12 @@ const mountBrain = async (field: HTMLElement) => {
             fiber.boundaryScale[pointIndex]) *
           0.5;
         const cortexLightBand =
-          fiber.region === "cerebellum" &&
-          modelY < CEREBELLUM.center.y - 0.02
-            ? 1
-            : useBundlePlan &&
-                fiber.bundleTier !== "active" &&
-                modelY > 0.48 &&
-                modelX > 0.32 &&
-                boundaryStrength > 0.55
-              ? 1
+          fiber.region === "cerebellum"
+            ? modelY < CEREBELLUM.center.y - 0.02
+              ? 2
+              : 0
+            : useBundlePlan && fiber.bundleTier !== "active"
+              ? cerebrumLightBand(modelX, modelY, boundaryStrength)
               : 0;
         const upperCortexGap =
           useBundlePlan &&
@@ -5116,7 +5174,7 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
-      lightBandGains: readonly [number, number] = [1, 0.6],
+      lightBandGains: readonly [number, number, number] = [1, 0.6, 1.85],
     ) => {
       context.lineCap = "butt";
       context.lineJoin = "miter";
@@ -5236,7 +5294,7 @@ const mountBrain = async (field: HTMLElement) => {
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
       1.9,
-      [1.18, 1.32],
+      [1.18, 1.18, 1.32],
     );
 
     const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
