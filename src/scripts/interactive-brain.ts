@@ -938,8 +938,9 @@ const familyAxis = (
   if (family === "crown-descending") {
     return normalize({
       x:
-        0.22 * Math.sin(point.y * 1.5 + phase) +
-        0.12 * Math.sin(point.x * 1.2 - phase),
+        0.36 * Math.sin(point.y * 1.7 + phase) +
+        0.18 * Math.sin(point.x * 1.9 - phase) +
+        0.08 * Math.cos((point.x + point.y) * 2.2 + phase * 0.7),
       y: -1,
       z: 0.14 * Math.cos(point.y + phase),
     });
@@ -2351,6 +2352,9 @@ const createFiber = (
         z: points[offset + 2],
       });
     }
+    if (region === "cerebrum" && family === "cortical-fold") {
+      fade *= 0.42;
+    }
     if (region === "cerebrum") {
       fade *= cerebellarSeparationVisibility({
         x: points[offset],
@@ -2466,7 +2470,7 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
           createCorticalFoldTrajectory(guide, index, random),
           "cerebrum",
           "cortical-fold",
-          0.0045,
+          0.0085,
           cerebrumField,
         ),
       );
@@ -2996,7 +3000,7 @@ const styleFibers = (fibers: Fiber[]) => {
         ? "dim"
         : (fiber.family === "cerebellar-folia" && activityKey < 0.1) ||
             (fiber.family === "cerebellar-ridge" && activityKey < 0.16) ||
-            (fiber.family === "cortical-fold" && activityKey < 0.38) ||
+            (fiber.family === "cortical-fold" && activityKey < 0.2) ||
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
