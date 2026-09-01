@@ -2350,7 +2350,7 @@ const createFiber = (
       const normalizedCerebellarY =
         (points[offset + 1] - CEREBELLUM.center.y) /
         CEREBELLUM.radius.y;
-      fade *= 1 - smoothstep(0.28, 0.5, normalizedCerebellarY);
+      fade *= 1 - smoothstep(0.56, 0.82, normalizedCerebellarY);
     }
     if (escapeStart >= 0 && pointIndex >= escapeStart) {
       const escapePosition =
@@ -2618,11 +2618,15 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         Math.max(0.16, 1 - (normalizedZ / 0.64) ** 2),
       );
       const fullExtent = verticalSection * depthSection;
+      const horizontalCenter =
+        lerp(-0.065, 0.065, random()) +
+        Math.sin(normalizedY * Math.PI * 1.35 + lane * 0.42) * 0.035;
+      const halfExtent = fullExtent * lerp(0.7, 0.91, random());
       const startX =
-        -fullExtent * lerp(0.8, 0.94, random()) +
+        horizontalCenter - halfExtent * lerp(0.88, 1, random()) +
         lerp(-0.025, 0.025, random());
       const endX =
-        fullExtent * lerp(0.8, 0.94, random()) +
+        horizontalCenter + halfExtent * lerp(0.88, 1, random()) +
         lerp(-0.025, 0.025, random());
       const phase = band * 0.39 + lane * 0.09 + random() * 0.08;
       const archDirection =
@@ -2632,12 +2636,13 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             : -1
           : Math.sign(normalizedY);
       const archAmplitude =
-        lerp(0.055, 0.095, random()) *
-        lerp(0.75, 1, verticalSection) *
+        lerp(0.12, 0.19, random()) *
+        lerp(0.72, 1, verticalSection) *
         archDirection;
-      const broadAmplitude = lerp(0.018, 0.034, random());
-      const localAmplitude = lerp(0.012, 0.022, random());
-      const localCycles = lerp(1.55, 2.35, random());
+      const archSkew = lerp(-0.3, 0.3, random());
+      const broadAmplitude = lerp(0.025, 0.048, random());
+      const localAmplitude = lerp(0.011, 0.025, random());
+      const localCycles = lerp(1.25, 2.05, random());
       const controls: Vector3[] = [];
       for (let step = 0; step <= 24; step += 1) {
         const position = step / 24;
@@ -2647,7 +2652,9 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           Math.sin(TAU * position + phase) * 0.024 * envelope;
         const localY =
           normalizedY +
-          archAmplitude * envelope ** 1.15 +
+          archAmplitude *
+            envelope ** 1.08 *
+            (1 + archSkew * (position - 0.5)) +
           Math.sin(TAU * lerp(0.72, 0.96, verticalSection) * position + phase) *
             broadAmplitude *
             envelope +
@@ -4322,6 +4329,26 @@ const mountBrain = async (field: HTMLElement) => {
       },
       () => new Path2D(),
     );
+    const cerebellumStructuralPaths = Array.from(
+      {
+        length:
+          OPACITY_LEVELS *
+          DEPTH_LEVELS *
+          WIDTH_LEVELS *
+          CORTEX_LIGHT_LEVELS,
+      },
+      () => new Path2D(),
+    );
+    const cerebellumMediumPaths = Array.from(
+      {
+        length:
+          OPACITY_LEVELS *
+          DEPTH_LEVELS *
+          WIDTH_LEVELS *
+          CORTEX_LIGHT_LEVELS,
+      },
+      () => new Path2D(),
+    );
     const centralTractHaloPaths = Array.from(
       { length: DEPTH_LEVELS },
       () => new Path2D(),
@@ -4362,6 +4389,10 @@ const mountBrain = async (field: HTMLElement) => {
     let minimumY = Number.POSITIVE_INFINITY;
     let maximumX = Number.NEGATIVE_INFINITY;
     let maximumY = Number.NEGATIVE_INFINITY;
+    let cerebellumMinimumX = Number.POSITIVE_INFINITY;
+    let cerebellumMinimumY = Number.POSITIVE_INFINITY;
+    let cerebellumMaximumX = Number.NEGATIVE_INFINITY;
+    let cerebellumMaximumY = Number.NEGATIVE_INFINITY;
 
     fibers.forEach((fiber, fiberIndex) => {
       if (fiber.family === "cortical-microfold") {
@@ -4377,6 +4408,7 @@ const mountBrain = async (field: HTMLElement) => {
       fiber.visible =
         (fiber.escapeStart >= 0 && fiber.bundleId % 2 === 0) ||
         visibleOutboundFiberSet.has(fiber) ||
+        (fiber.region === "cerebellum" && fiber.bundleId % 3 === 0) ||
         pulseActivity !== undefined ||
         fiber.active ||
         fiber.bundleTier === "active" ||
@@ -4428,6 +4460,12 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.projected[offset] = projectedX;
         fiber.projected[offset + 1] = projectedY;
         fiber.projected[offset + 2] = rotatedZ;
+        if (fiber.region === "cerebellum") {
+          cerebellumMinimumX = Math.min(cerebellumMinimumX, projectedX);
+          cerebellumMinimumY = Math.min(cerebellumMinimumY, projectedY);
+          cerebellumMaximumX = Math.max(cerebellumMaximumX, projectedX);
+          cerebellumMaximumY = Math.max(cerebellumMaximumY, projectedY);
+        }
         if (
           fiber.region !== "cerebrum" ||
           fiber.escapeStart < 0 ||
@@ -4743,8 +4781,11 @@ const mountBrain = async (field: HTMLElement) => {
           const segmentEndY =
             fiber.projected[offset + 1] + nextNormalY * nextOffsetPixels;
           if (!isEscapeSegment) {
-            const structuralPath =
-              fiber.bundleTier === "medium"
+            const structuralPath = fiber.region === "cerebellum"
+              ? fiber.bundleTier === "medium"
+                ? cerebellumMediumPaths[structuralIndex]
+                : cerebellumStructuralPaths[structuralIndex]
+              : fiber.bundleTier === "medium"
                 ? mediumPaths[structuralIndex]
                 : structuralPaths[structuralIndex];
             structuralPath.moveTo(segmentStartX, segmentStartY);
@@ -4942,69 +4983,78 @@ const mountBrain = async (field: HTMLElement) => {
       context.stroke(centralTractHaloPaths[depthBand]);
     }
 
-    context.lineCap = "butt";
-    context.lineJoin = "miter";
     const structuralAlpha = [0.16, 0.215, 0.29, 0.38];
-    for (
-      let opacityBand = 0;
-      opacityBand < OPACITY_LEVELS;
-      opacityBand += 1
-    ) {
+    const drawStructuralBatches = (
+      structuralBatch: Path2D[],
+      mediumBatch: Path2D[],
+      alphaGain = 1,
+    ) => {
+      context.lineCap = "butt";
+      context.lineJoin = "miter";
       for (
-        let depthBand = 0;
-        depthBand < DEPTH_LEVELS;
-        depthBand += 1
+        let opacityBand = 0;
+        opacityBand < OPACITY_LEVELS;
+        opacityBand += 1
       ) {
-        const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
         for (
-          let widthBand = 0;
-          widthBand < WIDTH_LEVELS;
-          widthBand += 1
+          let depthBand = 0;
+          depthBand < DEPTH_LEVELS;
+          depthBand += 1
         ) {
+          const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
           for (
-            let cortexLightBand = 0;
-            cortexLightBand < CORTEX_LIGHT_LEVELS;
-            cortexLightBand += 1
+            let widthBand = 0;
+            widthBand < WIDTH_LEVELS;
+            widthBand += 1
           ) {
-            const index =
-              (((opacityBand * DEPTH_LEVELS + depthBand) *
-                WIDTH_LEVELS +
-                widthBand) *
-                CORTEX_LIGHT_LEVELS +
-                cortexLightBand);
-            const alpha =
-              structuralAlpha[opacityBand] *
-              depthStrength *
-              (cortexLightBand === 1 ? 0.92 : 1);
-            context.lineWidth =
-              (widthBand === 0 ? 2.35 : 2.7) * onePhysicalPixel;
-            context.strokeStyle = rgba(
-              255,
-              172 + depthBand * 3,
-              0,
-              alpha * mediumFiberGain * 0.13,
-            );
-            context.stroke(mediumPaths[index]);
-            context.lineWidth =
-              (widthBand === 0 ? 1 : 1.2) * onePhysicalPixel;
-            context.strokeStyle = rgba(
-              255,
-              200 + depthBand * 3,
-              4 + depthBand * 2,
-              alpha,
-            );
-            context.stroke(structuralPaths[index]);
-            context.strokeStyle = rgba(
-              255,
-              200 + depthBand * 3,
-              4 + depthBand * 2,
-              alpha * mediumFiberGain,
-            );
-            context.stroke(mediumPaths[index]);
+            for (
+              let cortexLightBand = 0;
+              cortexLightBand < CORTEX_LIGHT_LEVELS;
+              cortexLightBand += 1
+            ) {
+              const index =
+                (((opacityBand * DEPTH_LEVELS + depthBand) *
+                  WIDTH_LEVELS +
+                  widthBand) *
+                  CORTEX_LIGHT_LEVELS +
+                  cortexLightBand);
+              const alpha =
+                structuralAlpha[opacityBand] *
+                depthStrength *
+                (cortexLightBand === 1 ? 0.92 : 1) *
+                alphaGain;
+              context.lineWidth =
+                (widthBand === 0 ? 2.35 : 2.7) * onePhysicalPixel;
+              context.strokeStyle = rgba(
+                255,
+                172 + depthBand * 3,
+                0,
+                alpha * mediumFiberGain * 0.13,
+              );
+              context.stroke(mediumBatch[index]);
+              context.lineWidth =
+                (widthBand === 0 ? 1 : 1.2) * onePhysicalPixel;
+              context.strokeStyle = rgba(
+                255,
+                200 + depthBand * 3,
+                4 + depthBand * 2,
+                alpha,
+              );
+              context.stroke(structuralBatch[index]);
+              context.strokeStyle = rgba(
+                255,
+                200 + depthBand * 3,
+                4 + depthBand * 2,
+                alpha * mediumFiberGain,
+              );
+              context.stroke(mediumBatch[index]);
+            }
           }
         }
       }
-    }
+    };
+
+    drawStructuralBatches(structuralPaths, mediumPaths);
 
     context.lineCap = "round";
     context.lineJoin = "round";
@@ -5019,6 +5069,45 @@ const mountBrain = async (field: HTMLElement) => {
       context.lineWidth = onePhysicalPixel;
       context.stroke(stemPaths[depthBand]);
     }
+
+    if (
+      Number.isFinite(cerebellumMinimumX) &&
+      Number.isFinite(cerebellumMinimumY) &&
+      Number.isFinite(cerebellumMaximumX) &&
+      Number.isFinite(cerebellumMaximumY)
+    ) {
+      const cerebellumCenterX =
+        (cerebellumMinimumX + cerebellumMaximumX) * 0.5;
+      const cerebellumCenterY =
+        (cerebellumMinimumY + cerebellumMaximumY) * 0.5;
+      const cerebellumRadiusX = Math.max(
+        1,
+        (cerebellumMaximumX - cerebellumMinimumX) * 0.54,
+      );
+      const cerebellumRadiusY = Math.max(
+        1,
+        (cerebellumMaximumY - cerebellumMinimumY) * 0.54,
+      );
+      const depthField = context.createRadialGradient(0, 0, 0, 0, 0, 1);
+      depthField.addColorStop(0, "rgba(0, 0, 0, 0.9)");
+      depthField.addColorStop(0.76, "rgba(0, 0, 0, 0.8)");
+      depthField.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+      context.save();
+      context.translate(cerebellumCenterX, cerebellumCenterY);
+      context.scale(cerebellumRadiusX, cerebellumRadiusY);
+      context.fillStyle = depthField;
+      context.beginPath();
+      context.arc(0, 0, 1, 0, TAU);
+      context.fill();
+      context.restore();
+    }
+
+    drawStructuralBatches(
+      cerebellumStructuralPaths,
+      cerebellumMediumPaths,
+      0.74,
+    );
 
     const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
     for (
