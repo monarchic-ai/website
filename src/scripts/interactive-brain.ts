@@ -31,7 +31,7 @@ type FiberFamily =
   | CerebrumFamily
   | "cerebellar-folia"
   | "cerebellar-curl"
-  | "cerebellar-stitch"
+  | "cerebellar-shell"
   | "stem";
 
 type OpacityBand = 0 | 1 | 2 | 3;
@@ -446,8 +446,8 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 1.02, y: -0.38, z: 0.06 },
-  radius: { x: 0.64, y: 0.75, z: 0.55 },
+  center: { x: 0.98, y: -0.35, z: 0.06 },
+  radius: { x: 0.61, y: 0.84, z: 0.55 },
 };
 
 const BRAINSTEM = {
@@ -2743,73 +2743,68 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     );
   }
 
-  const enclosureRowCount = 12;
-  const enclosureDepths = [-0.26, 0.26] as const;
-  for (let row = 0; row < enclosureRowCount; row += 1) {
-    const normalizedY =
-      lerp(-0.64, 0.64, (row + 0.5) / enclosureRowCount) +
-      lerp(-0.018, 0.018, random());
-    const verticalSection = Math.sqrt(
-      Math.max(0.1, 1 - normalizedY ** 2),
+  const enclosureLoopCount = 8;
+  for (let index = 0; index < enclosureLoopCount; index += 1) {
+    const depthPosition = (index + 0.5) / enclosureLoopCount;
+    const normalizedZ =
+      lerp(-0.18, 0.18, depthPosition) +
+      lerp(-0.012, 0.012, random());
+    const depthSection = Math.sqrt(
+      Math.max(0.16, 1 - normalizedZ ** 2),
     );
-    for (let depthIndex = 0; depthIndex < enclosureDepths.length; depthIndex += 1) {
-      const normalizedZ =
-        enclosureDepths[depthIndex] + lerp(-0.018, 0.018, random());
-      const depthSection = Math.sqrt(
-        Math.max(0.16, 1 - normalizedZ ** 2),
-      );
-      const horizontalRadius =
-        verticalSection * depthSection * lerp(0.82, 0.94, random());
-      const verticalRadius =
-        lerp(0.065, 0.12, random()) * lerp(0.72, 1, verticalSection);
-      const phase = random() * TAU;
-      const startAngle = random() * TAU;
-      const broadRipple = lerp(0.012, 0.026, random());
-      const localRipple = lerp(0.004, 0.012, random());
-      const controls: Vector3[] = [];
-      for (let step = 0; step <= 32; step += 1) {
-        const position = step / 32;
-        const angle = startAngle + TAU * position;
-        const radialVariation =
-          1 +
-          Math.sin(angle * 2 + phase) * broadRipple +
-          Math.sin(angle * 4.2 + phase * 1.31) * localRipple;
-        const localX = Math.cos(angle) * horizontalRadius * radialVariation;
-        const localY =
-          normalizedY +
-          Math.sin(angle) * verticalRadius +
-          Math.sin(angle * 3 + phase) * 0.012;
-        const localZ =
-          normalizedZ +
-          Math.cos(angle + phase) * 0.018 +
-          Math.sin(angle * 2.4 + phase * 0.73) * 0.007;
-        controls.push(
-          constrainToLobe(
-            {
-              x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
-              y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
-              z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
-            },
-            CEREBELLUM,
-            0.92,
-          ),
-        );
-      }
-      fibers.push(
-        ...createBundle(
-          resampleTrajectory(
-            smoothTrajectory(smoothTrajectory(controls)),
-            0.012,
-            30,
-            68,
-          ),
-          "cerebellum",
-          "cerebellar-stitch",
-          0.0038,
-          cerebellumField,
+    const shellScale = depthSection * lerp(0.94, 0.98, random());
+    const horizontalRadius = shellScale * lerp(0.94, 1, random());
+    const verticalRadius = shellScale * lerp(0.78, 0.9, random());
+    const centerY = lerp(-0.035, 0.035, random());
+    const phase = random() * TAU;
+    const startAngle = random() * TAU;
+    const broadRipple = lerp(0.012, 0.028, random());
+    const localRipple = lerp(0.004, 0.012, random());
+    const controls: Vector3[] = [];
+    for (let step = 0; step <= 40; step += 1) {
+      const position = step / 40;
+      const angle = startAngle + TAU * position;
+      const radialVariation =
+        1 +
+        Math.sin(angle * 2 + phase) * broadRipple +
+        Math.sin(angle * 4.2 + phase * 1.31) * localRipple;
+      const localX =
+        Math.cos(angle) * horizontalRadius * radialVariation +
+        Math.sin(angle * 3 + phase) * 0.012;
+      const localY =
+        centerY +
+        Math.sin(angle) * verticalRadius * radialVariation +
+        Math.sin(angle * 3.2 + phase * 0.82) * 0.018;
+      const localZ =
+        normalizedZ +
+        Math.cos(angle + phase) * 0.016 +
+        Math.sin(angle * 2.4 + phase * 0.73) * 0.007;
+      controls.push(
+        constrainToLobe(
+          {
+            x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
+            y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
+            z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
+          },
+          CEREBELLUM,
+          0.94,
         ),
       );
     }
+    fibers.push(
+      ...createBundle(
+        resampleTrajectory(
+          smoothTrajectory(smoothTrajectory(controls)),
+          0.012,
+          42,
+          88,
+        ),
+        "cerebellum",
+        "cerebellar-shell",
+        0.0038,
+        cerebellumField,
+      ),
+    );
   }
   await yieldToBrowser();
   return fibers;
@@ -2942,7 +2937,7 @@ const styleFibers = (fibers: Fiber[]) => {
     fiber.activityKey = activityKey;
     fiber.bundleTier =
       fiber.family === "cortical-microfold" ||
-      fiber.family === "cerebellar-stitch"
+      fiber.family === "cerebellar-shell"
         ? "dim"
         : (fiber.family === "cortical-fold" && activityKey < 0.48) ||
             fiber.family === "central-tract" ||
@@ -3113,7 +3108,7 @@ const styleFibers = (fibers: Fiber[]) => {
         (fiber) =>
           fiber.region === region &&
           fiber.family !== "cortical-microfold" &&
-          fiber.family !== "cerebellar-stitch" &&
+          fiber.family !== "cerebellar-shell" &&
           fiber.escapeStart < 0 &&
           !particleFibers.includes(fiber) &&
           fiber.points.length >= 24,
