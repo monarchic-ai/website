@@ -2040,7 +2040,7 @@ const CENTRAL_TRACT_GUIDES: readonly (readonly Vector3[])[] = [
   ],
 ] as const;
 
-const CENTRAL_TRACT_BUNDLE_COUNT = 44;
+const CENTRAL_TRACT_BUNDLE_COUNT = 60;
 const CENTRAL_TRACT_VERTICAL_OFFSET = -0.075;
 
 const createCentralTractTrajectory = (
