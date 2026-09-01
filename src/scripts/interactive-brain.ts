@@ -454,11 +454,11 @@ const CEREBELLUM: Lobe = {
 
 const BRAINSTEM = {
   top: { x: 0.78, y: -0.44 },
-  bottom: { x: 0.46, y: -1.22 },
-  topRadius: { x: 0.4, z: 0.3 },
+  bottom: { x: 0.66, y: -1.22 },
+  topRadius: { x: 0.46, z: 0.32 },
   centerZ: 0.07,
-  curve: 0.075,
-  endScale: 0.46,
+  curve: 0.11,
+  endScale: 0.34,
 } as const;
 
 // Local cortical bundles form the substrate; regional families carry long tracts.
@@ -2576,11 +2576,16 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   for (let band = 0; band < foliaBandCount; band += 1) {
     const bandPhase = band * 0.61 + random() * 0.26;
     const bandTilt = lerp(-0.1, 0.1, random());
-    const bandArchAmplitude = lerp(0.1, 0.17, random());
-    const bandArchDirection = band % 2 === 0 ? 1 : -1;
     const normalizedY =
       lerp(-0.72, 0.72, (band + 0.5) / foliaBandCount) +
       lerp(-0.045, 0.045, random());
+    const bandArchAmplitude = lerp(0.12, 0.19, random());
+    const bandArchDirection =
+      Math.abs(normalizedY) < 0.08
+        ? band % 2 === 0
+          ? 1
+          : -1
+        : Math.sign(normalizedY);
     const verticalSection = Math.sqrt(
       Math.max(0.06, 1 - (normalizedY / 0.8) ** 2),
     );
@@ -2591,12 +2596,12 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         Math.max(0.16, 1 - (normalizedZ / 0.64) ** 2),
       );
       const fullExtent = verticalSection * depthSection;
-      const lobuleCount = (band + lane) % 5 === 0 ? 3 : 2;
-      const centerOffset = lerp(-0.07, 0.07, random());
+      const lobuleCount = (band + lane) % 4 === 0 ? 3 : 2;
+      const centerOffset = lerp(-0.08, 0.08, random());
       const leftEdge = centerOffset - fullExtent * lerp(0.78, 0.94, random());
       const rightEdge = centerOffset + fullExtent * lerp(0.78, 0.94, random());
       for (let lobule = 0; lobule < lobuleCount; lobule += 1) {
-        const overlap = lerp(0.08, 0.16, random());
+        const overlap = lerp(0.04, 0.11, random());
         const startX =
           lerp(leftEdge, rightEdge, lobule / lobuleCount) -
           (lobule > 0 ? overlap : 0);
@@ -2609,16 +2614,16 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           bandArchAmplitude *
           lerp(0.9, 1.1, random()) *
           lerp(0.72, 1, verticalSection);
-        const rippleAmplitude = lerp(0.025, 0.05, random());
-        const rippleCount = lerp(0.82, 1.2, random());
-        const tilt = bandTilt + lerp(-0.025, 0.025, random());
+        const rippleAmplitude = lerp(0.032, 0.058, random());
+        const rippleCount = lerp(0.72, 1.12, random());
+        const tilt = bandTilt + lerp(-0.035, 0.035, random());
         const controls: Vector3[] = [];
         for (let step = 0; step <= 20; step += 1) {
           const position = step / 20;
           const envelope = Math.sin(Math.PI * position);
           const normalizedX =
             lerp(startX, endX, position) +
-            Math.sin(TAU * position + phase) * 0.04 * envelope +
+            Math.sin(TAU * position + phase) * 0.045 * envelope +
             Math.sin(TAU * 2.2 * position + phase * 0.73) *
               0.01 *
               envelope;
@@ -2675,7 +2680,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     }
   }
 
-  const layeredRowCount = 16;
+  const layeredRowCount = 14;
   const layeredDepthCount = 4;
   for (
     let index = 0;
@@ -2693,31 +2698,34 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     const radialExtent = Math.sqrt(
       Math.max(0.08, 1 - normalizedY ** 2 - normalizedZ ** 2),
     );
-    const centerOffset = lerp(-0.045, 0.045, random());
-    const startX =
-      centerOffset - radialExtent * lerp(0.82, 0.98, random());
-    const endX =
-      centerOffset + radialExtent * lerp(0.82, 0.98, random());
+    const centerOffset = lerp(-0.24, 0.24, random()) * radialExtent;
+    const localExtent = radialExtent * lerp(0.48, 0.76, random());
+    const startX = Math.max(-radialExtent, centerOffset - localExtent);
+    const endX = Math.min(radialExtent, centerOffset + localExtent);
     const phase = row * 0.58 + depthLane * 0.045 + random() * 0.1;
     const verticalCapacity = lerp(0.48, 1, radialExtent);
+    const archDirection =
+      Math.abs(normalizedY) < 0.09
+        ? (row + depthLane) % 2 === 0
+          ? 1
+          : -1
+        : Math.sign(normalizedY);
     const archAmplitude =
-      lerp(0.035, 0.085, random()) *
-      verticalCapacity *
-      (row % 4 < 2 ? 1 : -1);
+      lerp(0.065, 0.12, random()) * verticalCapacity * archDirection;
     const broadCycles = lerp(0.78, 1.12, random());
     const broadAmplitude =
-      lerp(0.024, 0.048, random()) * verticalCapacity;
+      lerp(0.026, 0.052, random()) * verticalCapacity;
     const localCycles = lerp(1.7, 2.3, random());
     const localAmplitude =
-      lerp(0.008, 0.02, random()) * verticalCapacity;
-    const tilt = lerp(-0.025, 0.025, random()) * verticalCapacity;
+      lerp(0.01, 0.022, random()) * verticalCapacity;
+    const tilt = lerp(-0.04, 0.04, random()) * verticalCapacity;
     const controls: Vector3[] = [];
     for (let step = 0; step <= 24; step += 1) {
       const position = step / 24;
       const envelope = Math.sin(Math.PI * position);
       const localX =
         lerp(startX, endX, position) +
-        Math.sin(TAU * position + phase) * 0.026 * envelope;
+        Math.sin(TAU * position + phase) * 0.035 * envelope;
       const localY =
         normalizedY +
         archAmplitude * envelope +
@@ -2899,8 +2907,8 @@ const createStemFibers = async (createBundle: BundleFactory) => {
     const normalizedZ = lerp(-0.86, 0.86, random()) * depthExtent;
     const endProgress = lerp(0.85, 1, random());
     const phase = random() * TAU;
-    const lateralSway = lerp(-0.045, 0.045, random());
-    const terminalScale = lerp(0.88, 1.04, random());
+    const lateralSway = lerp(-0.055, 0.055, random());
+    const terminalScale = lerp(0.82, 1.12, random());
     const controls: Vector3[] = [];
     for (let step = 0; step <= 14; step += 1) {
       const position = (step / 14) * endProgress;
@@ -2943,7 +2951,7 @@ const createStemFibers = async (createBundle: BundleFactory) => {
     );
   }
 
-  const junctionFiberCount = 12;
+  const junctionFiberCount = 16;
   for (let index = 0; index < junctionFiberCount; index += 1) {
     const lanePosition = (index + 0.5) / junctionFiberCount;
     const normalizedX = lerp(-0.9, 0.9, lanePosition);
@@ -2951,9 +2959,9 @@ const createStemFibers = async (createBundle: BundleFactory) => {
     const junctionEnd = lerp(0.34, 0.5, random());
     const sourceX =
       BRAINSTEM.top.x +
-      lerp(-0.34, 0.38, lanePosition) +
+      lerp(-0.42, 0.44, lanePosition) +
       lerp(-0.025, 0.025, random());
-    const sourceY = BRAINSTEM.top.y + lerp(0.1, 0.25, random());
+    const sourceY = BRAINSTEM.top.y + lerp(0.12, 0.28, random());
     const sourceZ =
       BRAINSTEM.centerZ + normalizedZ * BRAINSTEM.topRadius.z * 1.08;
     const junctionSway = lerp(-0.025, 0.025, random());
