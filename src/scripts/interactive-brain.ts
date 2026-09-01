@@ -142,7 +142,7 @@ const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 3;
 const OUTBOUND_OPACITY_LEVELS = 5;
 const OUTBOUND_NODE_PHASES = 4;
-const OUTBOUND_FIBER_COUNT = 28;
+const OUTBOUND_FIBER_COUNT = 36;
 const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
@@ -2205,27 +2205,46 @@ const appendEscapeTail = (
       multiply(averagedTangent, 0.25),
     ),
   );
+  const outboundTangent = normalize({
+    x: Math.max(0.68, incomingTangent.x),
+    y: incomingTangent.y * 0.28,
+    z: incomingTangent.z * 0.55,
+  });
   const curveKey = random();
   const lengthKey = random();
-  const desiredLength = lerp(0.74, 1.72, lengthKey ** 1.22);
+  const desiredLength = lerp(0.38, 1.35, lengthKey ** 1.55);
   const endDirection = normalize({
-    x: Math.max(0.62, incomingTangent.x * 0.78 + 0.36),
+    x: Math.max(0.72, outboundTangent.x * 0.82 + 0.32),
     y:
-      incomingTangent.y * 0.38 +
-      (curveKey - 0.5) * 0.24 +
-      Math.sin(phase + 0.8) * 0.06,
+      outboundTangent.y * 0.35 +
+      (curveKey - 0.5) * 0.14 +
+      Math.sin(phase + 0.8) * 0.035,
     z:
-      incomingTangent.z * 0.54 +
-      Math.cos(phase + curveKey * TAU) * 0.11,
+      outboundTangent.z * 0.54 +
+      Math.cos(phase + curveKey * TAU) * 0.08,
   });
   const variedMaximumX = 3.08 + curveKey * 0.28;
-  const maximumLength =
-    (variedMaximumX - exit.x) / Math.max(0.3, endDirection.x);
-  const tailLength = Math.min(
-    desiredLength,
-    Math.max(0.34, maximumLength),
+  const minimumEndX =
+    2.15 + lerp(0.18, 1.05, lengthKey ** 1.4);
+  const requestedEndX = exit.x + endDirection.x * desiredLength;
+  const endX = Math.min(
+    variedMaximumX,
+    Math.max(minimumEndX, requestedEndX),
   );
-  const end = add(exit, multiply(endDirection, tailLength));
+  const tailLength =
+    (endX - exit.x) / Math.max(0.3, endDirection.x);
+  const posteriorBandY =
+    clamp(exit.y, -0.12, 0.72) + Math.sin(phase + curveKey * TAU) * 0.035;
+  const posteriorBandZ = clamp(exit.z, -0.35, 0.35);
+  const end = {
+    x: endX,
+    y:
+      posteriorBandY +
+      clamp(endDirection.y * tailLength, -0.14, 0.14),
+    z:
+      posteriorBandZ +
+      clamp(endDirection.z * tailLength, -0.12, 0.12),
+  };
   const lateralNormal = normalize({
     x: -endDirection.y,
     y: endDirection.x,
@@ -2233,10 +2252,10 @@ const appendEscapeTail = (
   });
   const curveDirection = curveKey < 0.5 ? -1 : 1;
   const lateralOffset =
-    tailLength * lerp(0.1, 0.18, Math.abs(curveKey - 0.5) * 2);
+    tailLength * lerp(0.06, 0.13, Math.abs(curveKey - 0.5) * 2);
   const curve = [
     exit,
-    add(exit, multiply(incomingTangent, tailLength * 0.3)),
+    add(exit, multiply(outboundTangent, tailLength * 0.3)),
     add(
       subtract(end, multiply(endDirection, tailLength * 0.28)),
       multiply(lateralNormal, lateralOffset * curveDirection),
@@ -2588,7 +2607,7 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
         points = trimPosteriorEnd(
           points,
           escaping
-            ? lerp(1.62, 1.82, random())
+            ? lerp(1.9, 2.08, random())
             : lerp(1.94, 2.2, random()),
         );
       }
@@ -4553,7 +4572,11 @@ const mountBrain = async (field: HTMLElement) => {
       if (!fiber.visible) return;
 
       const useBundlePlan = fiber.region === "cerebrum";
-      if (useBundlePlan && renderPlan.suppressed) {
+      if (
+        useBundlePlan &&
+        renderPlan.suppressed &&
+        fiber.escapeStart < 0
+      ) {
         fiber.visible = false;
         return;
       }
@@ -4718,6 +4741,13 @@ const mountBrain = async (field: HTMLElement) => {
         const isEscapeSegment =
           fiber.escapeStart >= 0 && pointIndex > fiber.escapeStart;
         if (isEscapeSegment && !visibleOutboundFiberSet.has(fiber)) {
+          continue;
+        }
+        if (
+          useBundlePlan &&
+          renderPlan.suppressed &&
+          !isEscapeSegment
+        ) {
           continue;
         }
         const rearBundleKey = fiber.bundleId % 10;
@@ -5075,8 +5105,8 @@ const mountBrain = async (field: HTMLElement) => {
                 Math.floor(
                   Math.max(0, tailPointCount - 1) *
                     lerp(
-                      0.22,
-                      0.78,
+                      0.32,
+                      0.84,
                       renderUnit(outboundNodeKey ^ 0x504f494e),
                     ),
                 );
@@ -5091,8 +5121,8 @@ const mountBrain = async (field: HTMLElement) => {
                   (outboundNodeKey >>> 5) % OUTBOUND_NODE_PHASES;
                 const nodePathIndex =
                   phaseBand * DEPTH_LEVELS + depthBand;
-                const coreRadius = 0.56 + depthBand * 0.035;
-                const haloRadius = 1.32 + depthBand * 0.055;
+                const coreRadius = 1.08 + depthBand * 0.055;
+                const haloRadius = 2.7 + depthBand * 0.11;
                 outboundNodeHaloPaths[nodePathIndex].moveTo(
                   nodeX + haloRadius,
                   nodeY,
@@ -5344,7 +5374,7 @@ const mountBrain = async (field: HTMLElement) => {
       }
     }
 
-    const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
+    const outboundAlpha = [0.16, 0.23, 0.32, 0.44, 0.58];
     for (
       let opacityBand = 0;
       opacityBand < OUTBOUND_OPACITY_LEVELS;
@@ -5390,9 +5420,9 @@ const mountBrain = async (field: HTMLElement) => {
         context.fill(outboundNodeHaloPaths[nodePathIndex]);
         context.fillStyle = rgba(
           255,
-          214 + depthBand * 3,
-          46 + depthBand * 2,
-          (0.22 + depthStrength * 0.42) * (0.6 + nodePulse * 0.4),
+          222 + depthBand * 3,
+          56 + depthBand * 2,
+          (0.48 + depthStrength * 0.46) * (0.6 + nodePulse * 0.4),
         );
         context.fill(outboundNodeCorePaths[nodePathIndex]);
       }
