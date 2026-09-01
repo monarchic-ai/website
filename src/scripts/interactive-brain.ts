@@ -2040,7 +2040,7 @@ const CENTRAL_TRACT_GUIDES: readonly (readonly Vector3[])[] = [
   ],
 ] as const;
 
-const CENTRAL_TRACT_BUNDLE_COUNT = 48;
+const CENTRAL_TRACT_BUNDLE_COUNT = 44;
 const CENTRAL_TRACT_VERTICAL_OFFSET = -0.075;
 
 const createCentralTractTrajectory = (
@@ -2054,7 +2054,7 @@ const createCentralTractTrajectory = (
   );
   const lanePosition =
     guideRank / Math.max(1, guideBundleCount - 1) - 0.5;
-  const laneOffset = lanePosition * 0.14 + lerp(-0.014, 0.014, random());
+  const laneOffset = lanePosition * 0.11 + lerp(-0.011, 0.011, random());
   const depth = lerp(0.06, 0.54, random());
   const phase = random() * TAU;
   const bundleArch = lerp(-0.038, 0.052, random());
@@ -2085,6 +2085,26 @@ const createCentralTractTrajectory = (
     24,
     72,
   );
+};
+
+const centralTractCorridorVisibility = (point: Vector3) => {
+  const depthInfluence = smoothstep(-0.18, 0.42, point.z) * 0.82;
+  if (depthInfluence <= 0) return 1;
+  let nearestDistance = Number.POSITIVE_INFINITY;
+  for (const guide of CENTRAL_TRACT_GUIDES) {
+    for (let index = 1; index < guide.length; index += 1) {
+      nearestDistance = Math.min(
+        nearestDistance,
+        planarDistanceToSegment(point, guide[index - 1], guide[index]),
+      );
+    }
+  }
+  const corridorVisibility = lerp(
+    0.24,
+    1,
+    smoothstep(0.035, 0.13, nearestDistance),
+  );
+  return lerp(1, corridorVisibility, depthInfluence);
 };
 
 const reversePoints = (points: Float32Array) => {
@@ -2299,6 +2319,17 @@ const createFiber = (
       family !== "central-tract"
     ) {
       fade *= sulcalChannelVisibility({
+        x: points[offset],
+        y: points[offset + 1],
+        z: points[offset + 2],
+      });
+    }
+    if (
+      region === "cerebrum" &&
+      family !== "projection-tract" &&
+      family !== "central-tract"
+    ) {
+      fade *= centralTractCorridorVisibility({
         x: points[offset],
         y: points[offset + 1],
         z: points[offset + 2],
