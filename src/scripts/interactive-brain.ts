@@ -6046,6 +6046,24 @@ const mountBrain = async (field: HTMLElement) => {
       }
     }
 
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.save();
+    context.globalCompositeOperation = "lighter";
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength =
+        0.12 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.88;
+      context.strokeStyle = rgba(
+        255,
+        182 + depthBand * 2,
+        8 + depthBand * 2,
+        0.028 + depthStrength * 0.072,
+      );
+      context.lineWidth = 3.4 * onePhysicalPixel;
+      context.stroke(hotActivePaths[depthBand]);
+    }
+    context.restore();
+
     for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
       const depthStrength =
         0.16 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.84;
