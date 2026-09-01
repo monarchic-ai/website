@@ -146,6 +146,7 @@ const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
 const PARTICLE_FIBER_COUNT = 73;
+const HOT_PARTICLE_COUNT = 8;
 const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
 const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
 const GEOMETRY_BATCH_SIZE = 48;
@@ -2931,7 +2932,7 @@ const styleFibers = (fibers: Fiber[]) => {
         fiber.family === "posterior-fan" ||
         fiber.family === "frontal-loop" ||
         surfaceFamily) &&
-      activityKey < (surfaceFamily ? 0.12 : 0.44);
+      activityKey < (surfaceFamily ? 0.1 : 0.34);
     fiber.particle = false;
     fiber.hot = false;
     fiber.activityKey = activityKey;
@@ -2939,12 +2940,12 @@ const styleFibers = (fibers: Fiber[]) => {
       fiber.family === "cortical-microfold" ||
       fiber.family === "cerebellar-shell"
         ? "dim"
-        : (fiber.family === "cortical-fold" && activityKey < 0.48) ||
+        : (fiber.family === "cortical-fold" && activityKey < 0.38) ||
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
             (fiber.region === "cerebellum" && activityKey < 0.68) ||
-            (fiber.region === "cerebrum" && activityKey < 0.2)
+            (fiber.region === "cerebrum" && activityKey < 0.12)
           ? "medium"
           : "dim";
     fiber.opacityBand = fiber.bundleTier === "medium" ? 1 : 0;
@@ -3142,7 +3143,7 @@ const styleFibers = (fibers: Fiber[]) => {
     fiber.opacityBand = 3;
     fiber.active = true;
     fiber.particle = true;
-    fiber.hot = rank < 3;
+    fiber.hot = rank < HOT_PARTICLE_COUNT;
   });
 
   fibers.forEach((fiber) => {
@@ -3465,12 +3466,13 @@ const drawParticle = (
   context.globalAlpha = alpha;
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = "high";
+  const glowSize = hot ? 20 : 16;
   context.drawImage(
     sprite,
-    point.x - 8,
-    point.y - 8,
-    16,
-    16,
+    point.x - glowSize * 0.5,
+    point.y - glowSize * 0.5,
+    glowSize,
+    glowSize,
   );
   context.fillStyle = hot
     ? "rgb(255, 248, 210)"
@@ -3638,7 +3640,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 2.12;
+  const mediumFiberGain = 2.28;
   const idleSignalSpeed = 0.22;
   const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
   const executionWaveCycle = 16000;
@@ -3992,7 +3994,7 @@ const mountBrain = async (field: HTMLElement) => {
             centerX + rotatedX * horizontalModelScale * perspective;
           const projectedY =
             centerY - rotatedY * modelScale * perspective;
-          const radius = 0.5 + depthBand * 0.03;
+          const radius = 0.56 + depthBand * 0.04;
           staticNodePaths[depthBand].moveTo(
             projectedX + radius,
             projectedY,
@@ -4052,7 +4054,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         207 + depthBand * 3,
         28 + depthBand * 2,
-        0.3 + depthStrength * 0.46,
+        0.34 + depthStrength * 0.48,
       );
       staticContext.fill(staticNodePaths[depthBand]);
     }
@@ -5045,7 +5047,7 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             174 + depthBand * 3,
             0,
-            (fadeBand === 0 ? 0.028 : 0.08) * depthStrength,
+            (fadeBand === 0 ? 0.035 : 0.1) * depthStrength,
           );
           context.lineWidth = 2.8 * onePhysicalPixel;
           context.stroke(activePaths[index]);
@@ -5055,11 +5057,11 @@ const mountBrain = async (field: HTMLElement) => {
             34 + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
-                ? 0.25
-                : 0.62
+                ? 0.3
+                : 0.8
               : fadeBand === 0
-                ? 0.1
-                : 0.22) * depthStrength,
+                ? 0.13
+                : 0.3) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
@@ -5179,7 +5181,7 @@ const mountBrain = async (field: HTMLElement) => {
       const point = bundleParticlePoint(fiber, progress, lane);
       const front = smoothstep(-0.92, 0.92, point.z);
       if (front < 0.08) return;
-      const hot = fiber.hot && hotCount < 3;
+      const hot = fiber.hot && hotCount < HOT_PARTICLE_COUNT;
       if (hot) hotCount += 1;
       const nodeBrightness = reducedMotion.matches
         ? 1
@@ -5195,7 +5197,7 @@ const mountBrain = async (field: HTMLElement) => {
         point,
         hot,
         (0.34 + front * 0.5) * nodeBrightness,
-        hot ? 1.25 : 0.9,
+        hot ? 1.4 : 1,
       );
       if (
         secondaryNodeVisibility > 0 &&
@@ -5230,7 +5232,7 @@ const mountBrain = async (field: HTMLElement) => {
             (0.18 + secondaryFront * 0.28) *
               secondaryBrightness *
               secondaryNodeVisibility,
-            0.62,
+            0.7,
           );
         }
       }
