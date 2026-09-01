@@ -1951,7 +1951,9 @@ const createProjectionTractTrajectory = (
   bundleIndex: number,
   random: () => number,
 ) => {
-  const sector = PROJECTION_SECTORS[bundleIndex % PROJECTION_SECTORS.length];
+  const sectorIndex = bundleIndex % PROJECTION_SECTORS.length;
+  const sector = PROJECTION_SECTORS[sectorIndex];
+  const regionalRank = Math.floor(bundleIndex / PROJECTION_SECTORS.length);
   const seed = sampleSeed(
     random,
     sector.minimum,
@@ -1962,28 +1964,53 @@ const createProjectionTractTrajectory = (
   );
   const hub = {
     x: clamp(
-      seed.x * 0.42 + lerp(-0.16, 0.16, random()),
-      -0.56,
-      0.76,
+      seed.x * 0.38 + lerp(-0.22, 0.22, random()),
+      -0.72,
+      0.86,
     ),
-    y: lerp(0.18, 0.46, random()),
-    z: lerp(-0.24, 0.34, random()),
+    y: lerp(0.08, 0.44, random()),
+    z: lerp(-0.28, 0.36, random()),
   };
-  const lateralBias = (random() - 0.5) * 0.36;
-  const shoulder = {
-    x: lerp(seed.x, hub.x, 0.28) + lateralBias,
-    y: lerp(seed.y, hub.y, 0.2) + lerp(-0.035, 0.065, random()),
-    z: lerp(seed.z, hub.z, 0.3) + lerp(-0.045, 0.045, random()),
+  const chord = subtract(hub, seed);
+  const chordNormal = normalize({ x: -chord.y, y: chord.x, z: 0 });
+  const regionalDirection = sectorIndex < 2 ? -1 : 1;
+  const bendDirection =
+    regionalRank % 6 === 0 ? -regionalDirection : regionalDirection;
+  const broadBend = lerp(0.08, 0.2, random()) * bendDirection;
+  const localAmplitude = lerp(0.018, 0.045, random());
+  const phase = random() * TAU;
+  const controlAt = (
+    position: number,
+    bendStrength: number,
+    depthJitter: number,
+  ) => {
+    const envelope = Math.sin(Math.PI * position);
+    const localWave =
+      Math.sin(position * TAU * 1.35 + phase) *
+      localAmplitude *
+      envelope;
+    return {
+      x:
+        lerp(seed.x, hub.x, position) +
+        chordNormal.x * (broadBend * bendStrength + localWave),
+      y:
+        lerp(seed.y, hub.y, position) +
+        chordNormal.y * (broadBend * bendStrength + localWave) +
+        Math.sin(position * Math.PI * 1.7 + phase * 0.6) *
+          0.018 *
+          envelope,
+      z:
+        lerp(seed.z, hub.z, position) +
+        Math.sin(position * Math.PI + phase) * depthJitter * envelope,
+    };
   };
-  const approach = {
-    x: lerp(seed.x, hub.x, 0.72) - lateralBias * 0.65,
-    y: lerp(seed.y, hub.y, 0.67) + lerp(-0.04, 0.04, random()),
-    z: lerp(seed.z, hub.z, 0.74) + lerp(-0.035, 0.035, random()),
-  };
+  const shoulder = controlAt(0.2, 0.58, lerp(0.025, 0.055, random()));
+  const elbow = controlAt(0.5, 1, lerp(0.035, 0.075, random()));
+  const approach = controlAt(0.78, 0.52, lerp(0.02, 0.05, random()));
   const smoothed = smoothTrajectory(
-    smoothTrajectory([seed, shoulder, approach, hub]),
+    smoothTrajectory([seed, shoulder, elbow, approach, hub]),
   );
-  return resampleTrajectory(smoothed, 0.045, 18, 58);
+  return resampleTrajectory(smoothed, 0.035, 22, 66);
 };
 
 const CENTRAL_TRACT_GUIDES: readonly (readonly Vector3[])[] = [
@@ -2324,17 +2351,17 @@ const createBundleFactory = (): BundleFactory => {
     const strandCount =
       family === "cortical-microfold"
         ? 1
-        : family === "central-tract"
+        : family === "central-tract" || family === "projection-tract"
           ? 2
-          : family === "cortical-fold" || family === "projection-tract"
-          ? 3
-          : region === "cerebrum"
-            ? CEREBRUM_STRAND_CYCLE[
-                bundleId % CEREBRUM_STRAND_CYCLE.length
-              ]
-            : LOWER_STRAND_CYCLE[
-                bundleId % LOWER_STRAND_CYCLE.length
-              ];
+          : family === "cortical-fold"
+            ? 3
+            : region === "cerebrum"
+              ? CEREBRUM_STRAND_CYCLE[
+                  bundleId % CEREBRUM_STRAND_CYCLE.length
+                ]
+              : LOWER_STRAND_CYCLE[
+                  bundleId % LOWER_STRAND_CYCLE.length
+                ];
     let points = trunk;
     let escapeStart = -1;
     if (escapeTail) {
