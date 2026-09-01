@@ -4312,6 +4312,11 @@ const mountBrain = async (field: HTMLElement) => {
       0.42,
       signalDensityPosition,
     );
+    const tertiaryNodeVisibility = smoothstep(
+      0.22,
+      0.55,
+      signalDensityPosition,
+    );
     const layoutPosition = smoothstep(440, 680, width);
     const horizontalModelPadding = clamp(width * 0.02, 8, 16);
     const verticalModelPadding = clamp(height * 0.08, 28, 52);
@@ -5426,6 +5431,41 @@ const mountBrain = async (field: HTMLElement) => {
               secondaryNodeVisibility,
             0.7,
           );
+        }
+        if (tertiaryNodeVisibility > 0) {
+          const tertiaryProgress =
+            (progress + 0.54 + fiber.activityKey * 0.17) % 1;
+          const tertiaryLane = lane > 0 ? -2 : 2;
+          const tertiaryPoint = bundleParticlePoint(
+            fiber,
+            tertiaryProgress,
+            tertiaryLane,
+          );
+          const tertiaryFront = smoothstep(
+            -0.92,
+            0.92,
+            tertiaryPoint.z,
+          );
+          if (tertiaryFront >= 0.08) {
+            const tertiaryBrightness = reducedMotion.matches
+              ? 1
+              : 1 +
+                Math.sin(
+                  (time / lerp(3900, 5600, fiber.activityKey)) * TAU +
+                    (fiber.phase + 0.61) * TAU,
+                ) *
+                  0.035;
+            drawParticle(
+              context,
+              glowSprite,
+              tertiaryPoint,
+              false,
+              (0.08 + tertiaryFront * 0.17) *
+                tertiaryBrightness *
+                tertiaryNodeVisibility,
+              0.52,
+            );
+          }
         }
       }
       particleCount += 1;
