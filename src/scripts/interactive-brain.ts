@@ -142,6 +142,7 @@ const OPACITY_LEVELS = 4;
 const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 2;
 const OUTBOUND_OPACITY_LEVELS = 5;
+const OUTBOUND_NODE_PHASES = 4;
 const OUTBOUND_FIBER_COUNT = 28;
 const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
@@ -4453,8 +4454,12 @@ const mountBrain = async (field: HTMLElement) => {
       { length: DEPTH_LEVELS * OUTBOUND_OPACITY_LEVELS },
       () => new Path2D(),
     );
-    const outboundNodePaths = Array.from(
-      { length: DEPTH_LEVELS },
+    const outboundNodeCorePaths = Array.from(
+      { length: DEPTH_LEVELS * OUTBOUND_NODE_PHASES },
+      () => new Path2D(),
+    );
+    const outboundNodeHaloPaths = Array.from(
+      { length: DEPTH_LEVELS * OUTBOUND_NODE_PHASES },
       () => new Path2D(),
     );
     const stemPaths = Array.from(
@@ -4941,15 +4946,31 @@ const mountBrain = async (field: HTMLElement) => {
                 const nodeOffset = nodePointIndex * 3;
                 const nodeX = fiber.projected[nodeOffset];
                 const nodeY = fiber.projected[nodeOffset + 1];
-                const radius = 0.42 + depthBand * 0.025;
-                outboundNodePaths[depthBand].moveTo(
-                  nodeX + radius,
+                const phaseBand =
+                  (outboundNodeKey >>> 5) % OUTBOUND_NODE_PHASES;
+                const nodePathIndex =
+                  phaseBand * DEPTH_LEVELS + depthBand;
+                const coreRadius = 0.56 + depthBand * 0.035;
+                const haloRadius = 1.32 + depthBand * 0.055;
+                outboundNodeHaloPaths[nodePathIndex].moveTo(
+                  nodeX + haloRadius,
                   nodeY,
                 );
-                outboundNodePaths[depthBand].arc(
+                outboundNodeHaloPaths[nodePathIndex].arc(
                   nodeX,
                   nodeY,
-                  radius,
+                  haloRadius,
+                  0,
+                  TAU,
+                );
+                outboundNodeCorePaths[nodePathIndex].moveTo(
+                  nodeX + coreRadius,
+                  nodeY,
+                );
+                outboundNodeCorePaths[nodePathIndex].arc(
+                  nodeX,
+                  nodeY,
+                  coreRadius,
                   0,
                   TAU,
                 );
@@ -5103,15 +5124,37 @@ const mountBrain = async (field: HTMLElement) => {
         context.stroke(outboundPaths[index]);
       }
     }
-    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
-      const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
-      context.fillStyle = rgba(
-        255,
-        214 + depthBand * 3,
-        46 + depthBand * 2,
-        0.2 + depthStrength * 0.38,
-      );
-      context.fill(outboundNodePaths[depthBand]);
+    for (
+      let phaseBand = 0;
+      phaseBand < OUTBOUND_NODE_PHASES;
+      phaseBand += 1
+    ) {
+      const phaseOffset = phaseBand * 1.73;
+      const phaseSpeed = 1 + phaseBand * 0.07;
+      const nodePulse = reducedMotion.matches
+        ? 0.72
+        : 0.52 +
+          0.48 *
+            (0.5 +
+              Math.sin(time * 0.0011 * phaseSpeed + phaseOffset) * 0.5);
+      for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+        const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
+        const nodePathIndex = phaseBand * DEPTH_LEVELS + depthBand;
+        context.fillStyle = rgba(
+          255,
+          190 + depthBand * 3,
+          6 + depthBand * 2,
+          (0.024 + depthStrength * 0.068) * nodePulse,
+        );
+        context.fill(outboundNodeHaloPaths[nodePathIndex]);
+        context.fillStyle = rgba(
+          255,
+          214 + depthBand * 3,
+          46 + depthBand * 2,
+          (0.22 + depthStrength * 0.42) * (0.6 + nodePulse * 0.4),
+        );
+        context.fill(outboundNodeCorePaths[nodePathIndex]);
+      }
     }
 
     if (executionWaveActive) {
