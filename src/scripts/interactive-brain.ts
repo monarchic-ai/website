@@ -3726,7 +3726,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 2.43;
+  const mediumFiberGain = 6;
   const staticLightGains = [1, 0.72, 3.2] as const;
   const cerebrumLightBand = (
     modelX: number,
@@ -4153,7 +4153,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.17, 0.28, 0.44] as const;
+    const staticAlpha = [0.156, 0.258, 0.405] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
@@ -5211,7 +5211,7 @@ const mountBrain = async (field: HTMLElement) => {
       context.stroke(centralTractHaloPaths[depthBand]);
     }
 
-    const structuralAlpha = [0.16, 0.215, 0.29, 0.38];
+    const structuralAlpha = [0.135, 0.182, 0.248, 0.324];
     const drawStructuralBatches = (
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
