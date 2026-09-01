@@ -2372,7 +2372,7 @@ const createFiber = (
       });
     }
     if (region === "cerebrum" && family === "cortical-fold") {
-      fade *= 0.42;
+      fade *= 0.58;
     }
     if (region === "cerebrum") {
       fade *= cerebellarSeparationVisibility({
@@ -2505,10 +2505,10 @@ const createCerebrumFibers = async (createBundle: BundleFactory) => {
     );
     const bundleCount =
       guide.name === "central-sulcus" || guide.name === "lateral-fissure"
-        ? 22
+        ? 30
         : guide.kind === "major"
-          ? 18
-          : 12;
+          ? 24
+          : 16;
     for (let index = 0; index < bundleCount; index += 1) {
       fibers.push(
         ...createBundle(
@@ -3014,8 +3014,8 @@ const styleFibers = (fibers: Fiber[]) => {
       fiber.family === "cerebellar-ridge" ||
       fiber.family === "cerebellar-shell"
         ? "dim"
-        : (fiber.family === "cortical-fold" && activityKey < 0.2) ||
-            fiber.family === "central-tract" ||
+        : (fiber.family === "cortical-fold" && activityKey < 0.28) ||
+            (fiber.family === "central-tract" && activityKey < 0.48) ||
             boundaryMedium ||
             fiber.region === "stem" ||
             (fiber.region === "cerebrum" &&
@@ -3097,16 +3097,16 @@ const styleFibers = (fibers: Fiber[]) => {
     { family: "projection-tract", x: -0.18, y: 0.56 },
     { family: "projection-tract", x: 0.12, y: 0.82 },
     { family: "projection-tract", x: 0.54, y: 0.66 },
-    { family: "association", x: -0.46, y: 0.34 },
-    { family: "association", x: 0.58, y: 0.12 },
-    { family: "frontal-diagonal", x: -0.82, y: 0.34 },
+    { family: "cortical-fold", x: -1.1, y: 0.9 },
+    { family: "cortical-fold", x: -0.4, y: 0.9 },
+    { family: "cortical-fold", x: 0.15, y: 0.72 },
+    { family: "cortical-fold", x: 0.75, y: 0.8 },
+    { family: "cortical-fold", x: -0.5, y: -0.45 },
+    { family: "cortical-fold", x: 0.35, y: -0.4 },
     { family: "frontal-surface", x: -1.42, y: 0.52 },
     { family: "frontal-loop", x: -1.18, y: 0.2 },
-    { family: "cortical-arc", x: 0.02, y: 0.72 },
     { family: "crown-longitudinal", x: -0.4, y: 0.92 },
     { family: "crown-longitudinal", x: 0.62, y: 0.98 },
-    { family: "crown-descending", x: 0.42, y: 0.64 },
-    { family: "deep", x: 0.08, y: 0.18 },
     { family: "temporal-loop", x: -0.12, y: -0.52 },
     { family: "temporal-longitudinal", x: -0.72, y: -0.52 },
     { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
@@ -3182,6 +3182,7 @@ const styleFibers = (fibers: Fiber[]) => {
         (fiber) =>
           fiber.region === region &&
           fiber.family !== "cortical-microfold" &&
+          fiber.family !== "local-cortical" &&
           fiber.family !== "cerebellar-shell" &&
           fiber.escapeStart < 0 &&
           !particleFibers.includes(fiber) &&
@@ -3723,7 +3724,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 7;
+  const mediumFiberGain = 7.4;
   const staticLightGains = [1, 0.72, 3.2] as const;
   const cerebrumLightBand = (
     modelX: number,
@@ -4150,7 +4151,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.156, 0.258, 0.405] as const;
+    const staticAlpha = [0.16, 0.266, 0.417] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
