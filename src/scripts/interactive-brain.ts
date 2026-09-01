@@ -1091,9 +1091,18 @@ const cerebrumVelocity = (
     ),
   );
   const side = normalize(cross(sample.inward, directedAxis));
+  const primaryVariation = Math.sin(
+    point.x * 1.7 + point.y * 1.1 + phase,
+  );
+  const secondaryVariation = Math.sin(
+    point.x * 2.35 - point.y * 1.75 + phase * 0.67,
+  );
   const variation =
-    0.09 +
-    0.07 * Math.sin(point.x * 1.7 + point.y * 1.1 + phase);
+    family === "local-cortical"
+      ? 0.04 + primaryVariation * 0.17 + secondaryVariation * 0.07
+      : family === "association" || family === "deep"
+        ? 0.055 + primaryVariation * 0.12 + secondaryVariation * 0.045
+        : 0.09 + primaryVariation * 0.07;
   const confinementStrength =
     family === "crown-descending"
       ? 0.65
@@ -2669,21 +2678,25 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             ? -1
             : 1;
     const centralArchScale = lerp(
-      0.48,
+      0.52,
       1,
       smoothstep(0.04, 0.5, Math.abs(normalizedY)),
     );
     const bandArchAmplitude =
-      lerp(0.13, 0.23, random()) *
+      lerp(0.08, 0.14, random()) *
       lerp(0.78, 1, verticalSection) *
       centralArchScale *
       archDirection;
     const bandArchExponent = lerp(0.88, 1.18, random());
     const bandFlowTilt = lerp(-0.04, 0.04, random());
-    const bandBroadAmplitude = lerp(0.026, 0.052, random());
-    const bandLocalAmplitude = lerp(0.008, 0.017, random());
-    const bandLocalCycles = lerp(1.15, 1.75, random());
-    const bandLateralAmplitude = lerp(0.012, 0.027, random());
+    const bandBroadAmplitude = lerp(0.065, 0.11, random());
+    const bandLocalAmplitude = lerp(0.018, 0.032, random());
+    const bandLocalCycles = lerp(1.2, 1.8, random());
+    const bandLateralAmplitude = lerp(0.025, 0.05, random());
+    const bandRotation =
+      Math.sin(bandPhase * 1.37) * 0.11 + lobulePosition * 0.08;
+    const bandRotationCosine = Math.cos(bandRotation);
+    const bandRotationSine = Math.sin(bandRotation);
     for (let lane = 0; lane < foliaDepths.length; lane += 1) {
       const normalizedZ =
         foliaDepths[(lane + band) % foliaDepths.length] +
@@ -2705,7 +2718,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         const archEnvelope = Math.sin(
           Math.PI * position ** bandArchExponent,
         );
-        const localX =
+        const unrotatedX =
           lerp(startX, endX, position) +
           Math.sin(TAU * lerp(0.72, 1.06, verticalSection) * position + phase) *
             bandLateralAmplitude *
@@ -2714,7 +2727,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           Math.sin(TAU * 1.9 * position + phase * 0.72) *
             0.01 *
             envelope;
-        const localY =
+        const unrotatedY =
           normalizedY +
           bandFlowTilt * (position - 0.5) +
           bandArchAmplitude * laneVariation * archEnvelope ** 1.08 +
@@ -2725,6 +2738,16 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
           Math.sin(TAU * bandLocalCycles * position + phase * 1.31) *
             bandLocalAmplitude *
             envelope;
+        const centeredX = unrotatedX - horizontalCenter;
+        const centeredY = unrotatedY - normalizedY;
+        const localX =
+          horizontalCenter +
+          centeredX * bandRotationCosine -
+          centeredY * bandRotationSine;
+        const localY =
+          normalizedY +
+          centeredX * bandRotationSine +
+          centeredY * bandRotationCosine;
         const localZ =
           normalizedZ * verticalSection +
           Math.sin(Math.PI * position + phase) * 0.018 * depthSection +
@@ -2783,11 +2806,11 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       const envelope = Math.sin(Math.PI * position);
       const localX =
         lerp(-horizontalExtent, horizontalExtent, position) +
-        Math.sin(TAU * position + phase) * 0.018 * envelope;
+        Math.sin(TAU * position + phase) * 0.024 * envelope;
       const localY =
         edgeHeight +
         archHeight * envelope +
-        Math.sin(TAU * 1.7 * position + phase) * 0.018 * envelope;
+        Math.sin(TAU * 1.7 * position + phase) * 0.045 * envelope;
       const localZ =
         normalizedZ +
         Math.sin(Math.PI * position + phase) * 0.018 * envelope;
@@ -4611,10 +4634,18 @@ const mountBrain = async (field: HTMLElement) => {
         fiber,
         densityPosition,
       );
+      const denselyLayeredCerebellarFiber =
+        fiber.family === "cerebellar-folia" ||
+        fiber.family === "cerebellar-ridge";
+      const keepCerebellarStructure =
+        fiber.region === "cerebellum" &&
+        (denselyLayeredCerebellarFiber
+          ? fiber.bundleId % 2 === 0
+          : fiber.bundleId % 3 === 0);
       fiber.visible =
         (fiber.escapeStart >= 0 && fiber.bundleId % 2 === 0) ||
         visibleOutboundFiberSet.has(fiber) ||
-        (fiber.region === "cerebellum" && fiber.bundleId % 3 === 0) ||
+        keepCerebellarStructure ||
         pulseActivity !== undefined ||
         fiber.active ||
         fiber.bundleTier === "active" ||
