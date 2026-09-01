@@ -151,6 +151,7 @@ const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
 const PARTICLE_FIBER_COUNT = 36;
 const HOT_PARTICLE_COUNT = 12;
+const HORIZONTAL_MODEL_ASPECT = 0.835;
 const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
 const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
 const GEOMETRY_BATCH_SIZE = 48;
@@ -4032,7 +4033,7 @@ const drawParticle = (
   context.globalAlpha = alpha;
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = "high";
-  const glowSize = hot ? 20 : 16;
+  const glowSize = hot ? 22 : 16;
   context.drawImage(
     sprite,
     point.x - glowSize * 0.5,
@@ -4401,7 +4402,7 @@ const mountBrain = async (field: HTMLElement) => {
       (width - horizontalModelPadding * 2) / 4.66,
       (height - verticalModelPadding * 2) / 2.71,
     );
-    const horizontalModelScale = modelScale * 0.86;
+    const horizontalModelScale = modelScale * HORIZONTAL_MODEL_ASPECT;
     const centerX = width * 0.5 - modelScale * 0.29;
     const centerY = height * 0.5 + modelScale * 0.155;
     const cameraDistance = 7.8;
@@ -4960,7 +4961,7 @@ const mountBrain = async (field: HTMLElement) => {
       (width - horizontalModelPadding * 2) / 4.66,
       (height - verticalModelPadding * 2) / 2.71,
     );
-    const horizontalModelScale = modelScale * 0.86;
+    const horizontalModelScale = modelScale * HORIZONTAL_MODEL_ASPECT;
     const centerX = width * 0.5 - modelScale * 0.29;
     const centerY = height * 0.5 + modelScale * 0.155;
     const cameraDistance = 7.8;
@@ -6036,8 +6037,8 @@ const mountBrain = async (field: HTMLElement) => {
                 ? 0.34
                 : 0.94
               : fadeBand === 0
-                ? 0.15
-                : 0.38) * depthStrength,
+                ? 0.18
+                : 0.5) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
@@ -6052,7 +6053,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         240 + depthBand * 2,
         124 + depthBand * 3,
-        (0.2 + depthStrength * 0.68) * 0.94,
+        (0.24 + depthStrength * 0.76) * 0.98,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(hotActivePaths[depthBand]);
@@ -6150,6 +6151,7 @@ const mountBrain = async (field: HTMLElement) => {
     const particleLaneSequence = [-2, 0, 1, -1, 2, 0] as const;
     let particleCount = 0;
     let hotCount = 0;
+    let hotCerebellumCount = 0;
     particleFibers.forEach((fiber) => {
       if (
         particleCount >= particleLimit ||
@@ -6170,8 +6172,17 @@ const mountBrain = async (field: HTMLElement) => {
       const point = bundleParticlePoint(fiber, progress, lane);
       const front = smoothstep(-0.92, 0.92, point.z);
       if (front < 0.08) return;
-      const hot = fiber.hot && hotCount < HOT_PARTICLE_COUNT;
-      if (hot) hotCount += 1;
+      const hot =
+        hotCount < HOT_PARTICLE_COUNT &&
+        (fiber.hot ||
+          (fiber.region === "cerebrum" && hotCount < 8) ||
+          (fiber.region === "cerebellum" && hotCerebellumCount < 2));
+      if (hot) {
+        hotCount += 1;
+        if (fiber.region === "cerebellum") {
+          hotCerebellumCount += 1;
+        }
+      }
       const nodeBrightness = reducedMotion.matches
         ? 1
         : 1 +
@@ -6185,8 +6196,10 @@ const mountBrain = async (field: HTMLElement) => {
         glowSprite,
         point,
         hot,
-        (0.34 + front * 0.5) * nodeBrightness,
-        hot ? 1.4 : 1,
+        hot
+          ? Math.min(1, (0.4 + front * 0.58) * nodeBrightness)
+          : (0.34 + front * 0.5) * nodeBrightness,
+        hot ? 1.6 : 1,
       );
       if (
         secondaryNodeVisibility > 0 &&
