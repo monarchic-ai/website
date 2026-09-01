@@ -208,20 +208,20 @@ const FAMILY_SEEDS = {
 
 const CEREBRUM_LOBES: Lobe[] = [
   {
-    center: { x: -1.16, y: 0.25, z: 0 },
-    radius: { x: 1.02, y: 1.01, z: 0.86 },
+    center: { x: -1.16, y: 0.35, z: 0 },
+    radius: { x: 1.02, y: 0.91, z: 0.86 },
   },
   {
     center: { x: -0.08, y: 0.5, z: 0 },
     radius: { x: 1.5, y: 1, z: 1.01 },
   },
   {
-    center: { x: 1.16, y: 0.25, z: 0 },
-    radius: { x: 1.16, y: 1.02, z: 0.92 },
+    center: { x: 1.16, y: 0.35, z: 0 },
+    radius: { x: 1.16, y: 0.92, z: 0.92 },
   },
   {
-    center: { x: -0.27, y: -0.43, z: 0.02 },
-    radius: { x: 1.12, y: 0.52, z: 0.84 },
+    center: { x: -0.27, y: -0.28, z: 0.02 },
+    radius: { x: 1.08, y: 0.43, z: 0.84 },
   },
 ];
 
@@ -446,17 +446,17 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 0.98, y: -0.35, z: 0.06 },
-  radius: { x: 0.61, y: 0.84, z: 0.55 },
+  center: { x: 1.03, y: -0.25, z: 0.06 },
+  radius: { x: 0.65, y: 0.84, z: 0.55 },
 };
 
 const BRAINSTEM = {
   top: { x: 0.78, y: -0.44 },
   bottom: { x: 0.46, y: -1.22 },
-  topRadius: { x: 0.36, z: 0.28 },
+  topRadius: { x: 0.4, z: 0.3 },
   centerZ: 0.07,
   curve: 0.075,
-  endScale: 0.58,
+  endScale: 0.46,
 } as const;
 
 // Local cortical bundles form the substrate; regional families carry long tracts.
