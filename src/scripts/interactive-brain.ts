@@ -65,6 +65,7 @@ type Fiber = {
 
 type FiberRenderPlan = {
   suppressed: boolean;
+  liveSuppressed: boolean;
   strandVisible: Uint8Array;
   strandOffset: Float32Array;
   strandDrift: Float32Array;
@@ -3398,6 +3399,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
   if (fiber.region !== "cerebrum") {
     return {
       suppressed: false,
+      liveSuppressed: false,
       strandVisible,
       strandOffset,
       strandDrift,
@@ -3473,6 +3475,15 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.family !== "central-tract" &&
     fiber.family !== "posterior-fan" &&
     upperRightOccupancy >= 0.35 &&
+    mixRenderKey(bundleKey ^ 0x42524e44) % 4 === 0;
+  const redundantUpperRightLiveBoundary =
+    fiber.bundleTier === "dim" &&
+    boundaryFamily &&
+    fiber.family !== "cortical-fold" &&
+    fiber.family !== "projection-tract" &&
+    fiber.family !== "central-tract" &&
+    fiber.family !== "posterior-fan" &&
+    upperRightOccupancy >= 0.35 &&
     mixRenderKey(bundleKey ^ 0x42524e44) % 2 === 0;
   const straightInteriorScaffold =
     fiber.bundleTier !== "active" &&
@@ -3507,17 +3518,22 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     straightness < 0.55;
   const closedFrontalSurface =
     fiber.family === "frontal-surface" && straightness < 0.4;
+  const sharedSuppression =
+    upperRightCrosshatch ||
+    straightInteriorScaffold ||
+    straightLocalScratch ||
+    dimFrontalClutter ||
+    dimCrownClutter ||
+    shortAngularFrontalLoop ||
+    closedFrontalSurface;
   const suppressed =
     suppressible &&
     fiber.family !== "cortical-fold" &&
-    (upperRightCrosshatch ||
-      redundantUpperRightBoundary ||
-      straightInteriorScaffold ||
-      straightLocalScratch ||
-      dimFrontalClutter ||
-      dimCrownClutter ||
-      shortAngularFrontalLoop ||
-      closedFrontalSurface);
+    (sharedSuppression || redundantUpperRightBoundary);
+  const liveSuppressed =
+    suppressible &&
+    fiber.family !== "cortical-fold" &&
+    (sharedSuppression || redundantUpperRightLiveBoundary);
   const pattern: readonly number[] =
     fiber.escapeStart >= 0
       ? fiber.bundleId % 2 === 0
@@ -3605,6 +3621,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
 
   return {
     suppressed,
+    liveSuppressed,
     strandVisible,
     strandOffset,
     strandDrift,
@@ -4083,12 +4100,15 @@ const mountBrain = async (field: HTMLElement) => {
     const cameraDistance = 7.8;
 
     fibers.forEach((fiber, fiberIndex) => {
+      const renderPlan = renderPlans[fiberIndex];
       const staticOnlyMicrofold =
         fiber.family === "cortical-microfold";
+      const staticOnlyRestoredBoundary =
+        renderPlan.liveSuppressed && !renderPlan.suppressed;
       if (
         fiber.escapeStart >= 0 ||
         fiber.bundleTier === "active" ||
-        renderPlans[fiberIndex].suppressed
+        renderPlan.suppressed
       ) {
         return;
       }
@@ -4098,6 +4118,7 @@ const mountBrain = async (field: HTMLElement) => {
       );
       if (
         (!staticOnlyMicrofold &&
+          !staticOnlyRestoredBoundary &&
           fiber.qualityRank <= liveQualityCutoff) ||
         fiber.qualityRank > (staticOnlyMicrofold ? 0.985 : 0.97)
       ) {
@@ -4442,7 +4463,7 @@ const mountBrain = async (field: HTMLElement) => {
       if (
         !fiber.visible ||
         fiber.escapeStart >= 0 ||
-        renderPlans[fiberIndex].suppressed
+        renderPlans[fiberIndex].liveSuppressed
       ) {
         return;
       }
@@ -4756,7 +4777,7 @@ const mountBrain = async (field: HTMLElement) => {
       const useBundlePlan = fiber.region === "cerebrum";
       if (
         useBundlePlan &&
-        renderPlan.suppressed &&
+        renderPlan.liveSuppressed &&
         fiber.escapeStart < 0
       ) {
         fiber.visible = false;
@@ -4926,7 +4947,7 @@ const mountBrain = async (field: HTMLElement) => {
         }
         if (
           useBundlePlan &&
-          renderPlan.suppressed &&
+          renderPlan.liveSuppressed &&
           !isEscapeSegment
         ) {
           continue;
@@ -5278,7 +5299,7 @@ const mountBrain = async (field: HTMLElement) => {
             const outboundNodeKey = mixRenderKey(
               fiber.bundleId ^ 0x544e4f44,
             );
-            if (outboundNodeKey % 2 === 0) {
+            if (outboundNodeKey % 3 !== 0) {
               const tailPointCount = pointCount - fiber.escapeStart - 1;
               const nodePointIndex =
                 fiber.escapeStart +
