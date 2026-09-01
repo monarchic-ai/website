@@ -3023,7 +3023,9 @@ const styleFibers = (fibers: Fiber[]) => {
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
-            (fiber.region === "cerebrum" && activityKey < 0.12)
+            (fiber.region === "cerebrum" &&
+              fiber.family !== "local-cortical" &&
+              activityKey < 0.1)
           ? "medium"
           : "dim";
     fiber.opacityBand = fiber.bundleTier === "medium" ? 1 : 0;
@@ -3726,7 +3728,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 6;
+  const mediumFiberGain = 7;
   const staticLightGains = [1, 0.72, 3.2] as const;
   const cerebrumLightBand = (
     modelX: number,
