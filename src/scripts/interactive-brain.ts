@@ -3280,7 +3280,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
     upperRightOccupancy >= 0.25 &&
-    mixRenderKey(bundleKey ^ 0x55505252) % 5 === 0;
+    mixRenderKey(bundleKey ^ 0x55505252) % 5 <= 1;
   const straightInteriorScaffold =
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
@@ -5138,7 +5138,7 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      0.74,
+      1.05,
     );
 
     const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
