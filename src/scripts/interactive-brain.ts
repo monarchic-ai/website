@@ -1748,8 +1748,8 @@ const createCorticalFoldTrajectory = (
       ? lerp(0.86, 0.98, random())
       : lerp(0.8, 0.96, random())
     : guide.kind === "major"
-      ? lerp(0.54, 0.92, random())
-      : lerp(0.46, 0.84, random());
+      ? lerp(0.66, 0.94, random())
+      : lerp(0.58, 0.86, random());
   const start = random() * (1 - coverage);
   const end = start + coverage;
   const segmentLength = guide.length * coverage;
@@ -3564,9 +3564,15 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
       : fiber.bundleTier === "medium"
         ? lerp(0.86, 0.99, coverageKey)
         : lerp(0.9, 1, coverageKey);
+  const liveFoldCoverageCompensation =
+    fiber.family === "cortical-fold" && fiber.bundleTier !== "active"
+      ? 0.1
+      : 0;
   const coverage = Math.min(
     1,
-    baseCoverage + (boundaryFamily ? 0.06 : 0),
+    baseCoverage +
+      (boundaryFamily ? 0.06 : 0) -
+      liveFoldCoverageCompensation,
   );
   const baseStart = (1 - coverage) * placementKey;
   const baseEnd = baseStart + coverage;
