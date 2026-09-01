@@ -2636,24 +2636,30 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             : -1
           : Math.sign(normalizedY);
       const archAmplitude =
-        lerp(0.12, 0.19, random()) *
+        lerp(0.09, 0.155, random()) *
         lerp(0.72, 1, verticalSection) *
         archDirection;
-      const archSkew = lerp(-0.3, 0.3, random());
-      const broadAmplitude = lerp(0.025, 0.048, random());
+      const archExponent = lerp(0.72, 1.38, random());
+      const archSkew = lerp(-0.22, 0.22, random());
+      const flowTilt = lerp(-0.075, 0.075, random());
+      const broadAmplitude = lerp(0.032, 0.058, random());
       const localAmplitude = lerp(0.011, 0.025, random());
       const localCycles = lerp(1.25, 2.05, random());
       const controls: Vector3[] = [];
       for (let step = 0; step <= 24; step += 1) {
         const position = step / 24;
         const envelope = Math.sin(Math.PI * position);
+        const archEnvelope = Math.sin(
+          Math.PI * position ** archExponent,
+        );
         const normalizedX =
           lerp(startX, endX, position) +
           Math.sin(TAU * position + phase) * 0.024 * envelope;
         const localY =
           normalizedY +
+          flowTilt * (position - 0.5) +
           archAmplitude *
-            envelope ** 1.08 *
+            archEnvelope ** 1.08 *
             (1 + archSkew * (position - 0.5)) +
           Math.sin(TAU * lerp(0.72, 0.96, verticalSection) * position + phase) *
             broadAmplitude *
