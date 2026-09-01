@@ -446,8 +446,8 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 1.02, y: -0.42, z: 0.06 },
-  radius: { x: 0.61, y: 0.7, z: 0.55 },
+  center: { x: 1.02, y: -0.38, z: 0.06 },
+  radius: { x: 0.64, y: 0.75, z: 0.55 },
 };
 
 const BRAINSTEM = {
@@ -2743,75 +2743,73 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     );
   }
 
-  const sideCapCount = 24;
-  for (let index = 0; index < sideCapCount; index += 1) {
-    const side = index % 2 === 0 ? 1 : -1;
-    const sideRank = Math.floor(index / 2);
-    const sideCount = sideCapCount / 2;
-    const foldPosition = (sideRank + 0.5) / sideCount;
-    const foldScale = lerp(0.58, 0.96, foldPosition);
-    const normalizedZ =
-      lerp(-0.3, 0.3, (index % 4 + 0.5) / 4) +
-      lerp(-0.015, 0.015, random());
-    const phase = random() * TAU;
-    const startAngle =
-      (side > 0 ? -0.5 : 0.5) * Math.PI +
-      lerp(-0.07, 0.07, random());
-    const arcSpan = Math.PI * lerp(0.88, 1.04, random());
-    const verticalOffset = lerp(-0.055, 0.055, random());
-    const broadRipple = lerp(0.018, 0.045, random());
-    const localRipple = lerp(0.008, 0.02, random());
-    const controls: Vector3[] = [];
-    for (let step = 0; step <= 24; step += 1) {
-      const position = step / 24;
-      const angle = startAngle + arcSpan * position;
-      const envelope = Math.sin(Math.PI * position);
-      const radialVariation =
-        1 +
-        Math.sin(TAU * 1.15 * position + phase) *
-          broadRipple *
-          envelope +
-        Math.sin(TAU * 2.6 * position + phase * 1.31) *
-          localRipple *
-          envelope;
-      const localX =
-        Math.cos(angle) * foldScale * radialVariation +
-        lerp(-0.025, 0.025, random()) * envelope;
-      const localY =
-        verticalOffset +
-        Math.sin(angle) * foldScale * 0.74 * radialVariation +
-        Math.sin(TAU * 1.45 * position + phase) *
-          0.022 *
-          envelope;
-      const localZ =
-        normalizedZ +
-        Math.sin(Math.PI * position + phase) * 0.018 * envelope;
-      controls.push(
-        constrainToLobe(
-          {
-            x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
-            y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
-            z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
-          },
-          CEREBELLUM,
-          0.92,
+  const enclosureRowCount = 12;
+  const enclosureDepths = [-0.26, 0.26] as const;
+  for (let row = 0; row < enclosureRowCount; row += 1) {
+    const normalizedY =
+      lerp(-0.64, 0.64, (row + 0.5) / enclosureRowCount) +
+      lerp(-0.018, 0.018, random());
+    const verticalSection = Math.sqrt(
+      Math.max(0.1, 1 - normalizedY ** 2),
+    );
+    for (let depthIndex = 0; depthIndex < enclosureDepths.length; depthIndex += 1) {
+      const normalizedZ =
+        enclosureDepths[depthIndex] + lerp(-0.018, 0.018, random());
+      const depthSection = Math.sqrt(
+        Math.max(0.16, 1 - normalizedZ ** 2),
+      );
+      const horizontalRadius =
+        verticalSection * depthSection * lerp(0.82, 0.94, random());
+      const verticalRadius =
+        lerp(0.065, 0.12, random()) * lerp(0.72, 1, verticalSection);
+      const phase = random() * TAU;
+      const startAngle = random() * TAU;
+      const broadRipple = lerp(0.012, 0.026, random());
+      const localRipple = lerp(0.004, 0.012, random());
+      const controls: Vector3[] = [];
+      for (let step = 0; step <= 32; step += 1) {
+        const position = step / 32;
+        const angle = startAngle + TAU * position;
+        const radialVariation =
+          1 +
+          Math.sin(angle * 2 + phase) * broadRipple +
+          Math.sin(angle * 4.2 + phase * 1.31) * localRipple;
+        const localX = Math.cos(angle) * horizontalRadius * radialVariation;
+        const localY =
+          normalizedY +
+          Math.sin(angle) * verticalRadius +
+          Math.sin(angle * 3 + phase) * 0.012;
+        const localZ =
+          normalizedZ +
+          Math.cos(angle + phase) * 0.018 +
+          Math.sin(angle * 2.4 + phase * 0.73) * 0.007;
+        controls.push(
+          constrainToLobe(
+            {
+              x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
+              y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
+              z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
+            },
+            CEREBELLUM,
+            0.92,
+          ),
+        );
+      }
+      fibers.push(
+        ...createBundle(
+          resampleTrajectory(
+            smoothTrajectory(smoothTrajectory(controls)),
+            0.012,
+            30,
+            68,
+          ),
+          "cerebellum",
+          "cerebellar-stitch",
+          0.0038,
+          cerebellumField,
         ),
       );
     }
-    fibers.push(
-      ...createBundle(
-        resampleTrajectory(
-          smoothTrajectory(smoothTrajectory(controls)),
-          0.012,
-          28,
-          66,
-        ),
-        "cerebellum",
-        "cerebellar-stitch",
-        0.0044,
-        cerebellumField,
-      ),
-    );
   }
   await yieldToBrowser();
   return fibers;
