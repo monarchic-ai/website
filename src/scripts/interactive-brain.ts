@@ -147,7 +147,7 @@ const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
 const PARTICLE_FIBER_COUNT = 36;
-const HOT_PARTICLE_COUNT = 8;
+const HOT_PARTICLE_COUNT = 12;
 const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
 const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
 const GEOMETRY_BATCH_SIZE = 48;
@@ -2652,7 +2652,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     const verticalSection = Math.sqrt(
       Math.max(0.06, 1 - (normalizedY / 0.8) ** 2),
     );
-    const localBundle = band % 5 !== 0;
+    const localBundle = band % 3 !== 0;
     const lobulePosition = [-0.25, -0.04, 0.2][band % 3] ?? 0;
     const horizontalCenter = localBundle
       ? lobulePosition + lerp(-0.07, 0.07, random())
@@ -3008,30 +3008,35 @@ const styleFibers = (fibers: Fiber[]) => {
     const surfaceFamily =
       fiber.family === "frontal-surface" ||
       fiber.family === "posterior-surface";
+    const frontalFamily =
+      fiber.family === "frontal-surface" ||
+      fiber.family === "frontal-loop";
     const boundaryMedium =
       (fiber.family === "cortical-arc" ||
         fiber.family === "crown-longitudinal" ||
         fiber.family === "temporal-longitudinal" ||
         fiber.family === "posterior-fan" ||
-        fiber.family === "frontal-loop" ||
         surfaceFamily) &&
-      activityKey < (surfaceFamily ? 0.1 : 0.34);
+      activityKey < (frontalFamily ? 0.62 : surfaceFamily ? 0.24 : 0.4);
+    const cerebellarMedium =
+      (fiber.family === "cerebellar-folia" ||
+        fiber.family === "cerebellar-ridge") &&
+      activityKey < 0.14;
     fiber.particle = false;
     fiber.hot = false;
     fiber.activityKey = activityKey;
     fiber.bundleTier =
       fiber.family === "cortical-microfold" ||
-      fiber.family === "cerebellar-folia" ||
-      fiber.family === "cerebellar-ridge" ||
       fiber.family === "cerebellar-shell"
         ? "dim"
-        : (fiber.family === "cortical-fold" && activityKey < 0.42) ||
-            (fiber.family === "central-tract" && activityKey < 0.48) ||
+        : cerebellarMedium ||
+            (fiber.family === "cortical-fold" && activityKey < 0.48) ||
+            (fiber.family === "central-tract" && activityKey < 0.3) ||
             boundaryMedium ||
             fiber.region === "stem" ||
             (fiber.region === "cerebrum" &&
               fiber.family !== "local-cortical" &&
-              activityKey < 0.1)
+              activityKey < 0.12)
           ? "medium"
           : "dim";
     fiber.opacityBand = fiber.bundleTier === "medium" ? 1 : 0;
@@ -3104,27 +3109,23 @@ const styleFibers = (fibers: Fiber[]) => {
   }> = [
     { family: "central-tract", x: -0.28, y: 0.23 },
     { family: "central-tract", x: 0.42, y: -0.14 },
-    { family: "projection-tract", x: -0.58, y: 0.7 },
-    { family: "projection-tract", x: -0.18, y: 0.56 },
-    { family: "projection-tract", x: 0.12, y: 0.82 },
-    { family: "projection-tract", x: 0.54, y: 0.66 },
-    { family: "cortical-fold", x: -1.1, y: 0.9 },
+    { family: "temporal-longitudinal", x: -0.72, y: -0.52 },
     { family: "cortical-fold", x: -1.42, y: 0.5 },
-    { family: "cortical-fold", x: -0.4, y: 0.9 },
-    { family: "cortical-fold", x: 0.15, y: 0.72 },
-    { family: "cortical-fold", x: 0.75, y: 0.8 },
+    { family: "cortical-fold", x: -1.62, y: 0.3 },
+    { family: "temporal-loop", x: 0.18, y: -0.54 },
+    { family: "posterior-fan", x: 1.38, y: 0.22 },
     { family: "cortical-fold", x: 1.25, y: 0.5 },
     { family: "cortical-fold", x: -0.5, y: -0.45 },
     { family: "cortical-fold", x: 0.35, y: -0.4 },
-    { family: "frontal-surface", x: -1.42, y: 0.52 },
-    { family: "frontal-loop", x: -1.18, y: 0.2 },
-    { family: "crown-longitudinal", x: -0.4, y: 0.92 },
-    { family: "crown-longitudinal", x: 0.62, y: 0.98 },
-    { family: "temporal-loop", x: -0.12, y: -0.52 },
-    { family: "temporal-longitudinal", x: -0.72, y: -0.52 },
-    { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
-    { family: "temporal-longitudinal", x: 0.62, y: -0.38 },
     { family: "posterior-surface", x: 1.14, y: 0.34 },
+    { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
+    { family: "projection-tract", x: -0.58, y: 0.7 },
+    { family: "projection-tract", x: 0.54, y: 0.66 },
+    { family: "projection-tract", x: -0.18, y: 0.56 },
+    { family: "projection-tract", x: 0.12, y: 0.82 },
+    { family: "cortical-fold", x: -1.1, y: 0.9 },
+    { family: "temporal-loop", x: -0.12, y: -0.52 },
+    { family: "temporal-longitudinal", x: 0.62, y: -0.38 },
     { family: "posterior-fan", x: 1, y: 0.45 },
   ];
   const highwayFibers: Fiber[] = [];
@@ -3179,7 +3180,7 @@ const styleFibers = (fibers: Fiber[]) => {
         };
       })
       .sort((left, right) => left.distance - right.distance)
-      .slice(0, highway.family === "central-tract" ? 4 : 2)
+      .slice(0, 2)
       .map(({ fiber }) => fiber);
     supportFibers.forEach((support) => {
       support.bundleTier = "medium";
@@ -3196,6 +3197,7 @@ const styleFibers = (fibers: Fiber[]) => {
           fiber.region === region &&
           fiber.family !== "cortical-microfold" &&
           fiber.family !== "local-cortical" &&
+          fiber.family !== "frontal-loop" &&
           fiber.family !== "cerebellar-shell" &&
           fiber.escapeStart < 0 &&
           !particleFibers.includes(fiber) &&
@@ -3222,13 +3224,14 @@ const styleFibers = (fibers: Fiber[]) => {
       .map(({ fiber }) => fiber);
     particleFibers.push(...selected);
   };
-  selectParticles("cerebrum", 15);
   selectParticles("cerebellum", 4);
   selectParticles("stem", 2);
+  selectParticles("cerebrum", 15);
   particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber, rank) => {
-    fiber.bundleTier = "active";
-    fiber.opacityBand = 3;
-    fiber.active = true;
+    const particleOnly = fiber.region === "cerebellum";
+    fiber.bundleTier = particleOnly ? "dim" : "active";
+    fiber.opacityBand = particleOnly ? 0 : 3;
+    fiber.active = !particleOnly;
     fiber.particle = true;
     fiber.hot = rank < HOT_PARTICLE_COUNT;
   });
@@ -3300,6 +3303,8 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.family === "posterior-surface";
   let upperRightPointCount = 0;
   let centralRearPointCount = 0;
+  let frontalPointCount = 0;
+  let crownPointCount = 0;
   let trajectoryLength = 0;
   for (let offset = 0; offset < fiber.points.length; offset += 3) {
     if (fiber.points[offset] > 0.55 && fiber.points[offset + 1] > 0.5) {
@@ -3307,6 +3312,12 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     }
     if (fiber.points[offset] > -0.15 && fiber.points[offset + 1] > -0.35) {
       centralRearPointCount += 1;
+    }
+    if (fiber.points[offset] < -0.55 && fiber.points[offset + 1] > -0.2) {
+      frontalPointCount += 1;
+    }
+    if (fiber.points[offset + 1] > 0.72) {
+      crownPointCount += 1;
     }
     if (offset >= 3) {
       trajectoryLength += Math.hypot(
@@ -3320,6 +3331,8 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
   const upperRightOccupancy =
     upperRightPointCount / pointCount;
   const centralRearOccupancy = centralRearPointCount / pointCount;
+  const frontalOccupancy = frontalPointCount / pointCount;
+  const crownOccupancy = crownPointCount / pointCount;
   const finalOffset = Math.max(0, fiber.points.length - 3);
   const trajectoryChord = Math.hypot(
     fiber.points[finalOffset] - fiber.points[0],
@@ -3358,13 +3371,33 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     trajectoryLength >= 0.72 &&
     straightness >= 0.82 &&
     mixRenderKey(bundleKey ^ 0x4c4f434c) % 6 !== 0;
+  const dimFrontalClutter =
+    fiber.bundleTier === "dim" &&
+    !boundaryFamily &&
+    frontalOccupancy >= 0.3 &&
+    mixRenderKey(bundleKey ^ 0x46524e54) % 10 === 0;
+  const dimCrownClutter =
+    fiber.bundleTier === "dim" &&
+    !boundaryFamily &&
+    crownOccupancy >= 0.3 &&
+    mixRenderKey(bundleKey ^ 0x43524f57) % 6 === 0;
+  const shortAngularFrontalLoop =
+    fiber.family === "frontal-loop" &&
+    trajectoryLength < 1.05 &&
+    straightness < 0.55;
+  const closedFrontalSurface =
+    fiber.family === "frontal-surface" && straightness < 0.4;
   const suppressed =
     suppressible &&
     fiber.family !== "cortical-fold" &&
     (upperRightCrosshatch ||
       redundantUpperRightBoundary ||
       straightInteriorScaffold ||
-      straightLocalScratch);
+      straightLocalScratch ||
+      dimFrontalClutter ||
+      dimCrownClutter ||
+      shortAngularFrontalLoop ||
+      closedFrontalSurface);
   const pattern: readonly number[] =
     fiber.escapeStart >= 0
       ? fiber.bundleId % 2 === 0
@@ -3575,7 +3608,7 @@ const drawParticle = (
   );
   context.fillStyle = hot
     ? "rgb(255, 248, 210)"
-    : "rgb(255, 194, 32)";
+    : "rgb(255, 224, 96)";
   context.beginPath();
   context.arc(point.x, point.y, size, 0, TAU);
   context.fill();
@@ -3739,7 +3772,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 8;
+  const mediumFiberGain = 8.35;
   const staticLightGains = [1, 0.72, 3.2] as const;
   const cerebrumLightBand = (
     modelX: number,
@@ -4166,7 +4199,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.lineCap = "round";
     staticContext.lineJoin = "round";
     staticContext.lineWidth = 1 / pixelRatio;
-    const staticAlpha = [0.156, 0.258, 0.405] as const;
+    const staticAlpha = [0.149, 0.265, 0.425] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
@@ -4217,9 +4250,9 @@ const mountBrain = async (field: HTMLElement) => {
       const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
       staticContext.fillStyle = rgba(
         255,
-        207 + depthBand * 3,
-        28 + depthBand * 2,
-        0.12 + depthStrength * 0.7,
+        228 + depthBand * 3,
+        88 + depthBand * 3,
+        0.16 + depthStrength * 0.76,
       );
       staticContext.fill(staticNodePaths[depthBand]);
     }
@@ -4526,6 +4559,10 @@ const mountBrain = async (field: HTMLElement) => {
       { length: DEPTH_LEVELS * WIDTH_LEVELS * 2 },
       () => new Path2D(),
     );
+    const hotActivePaths = Array.from(
+      { length: DEPTH_LEVELS },
+      () => new Path2D(),
+    );
     const signalResponseLevels = 5;
     const signalResponsePaths = Array.from(
       { length: signalResponseLevels * DEPTH_LEVELS },
@@ -4691,8 +4728,8 @@ const mountBrain = async (field: HTMLElement) => {
               phaseBand * DEPTH_LEVELS + nodeDepthBand;
             const nodeX = fiber.projected[nodeOffset];
             const nodeY = fiber.projected[nodeOffset + 1];
-            const coreRadius = 0.92 + nodeDepthBand * 0.08;
-            const haloRadius = 2.2 + nodeDepthBand * 0.14;
+            const coreRadius = 1.04 + nodeDepthBand * 0.085;
+            const haloRadius = 2.35 + nodeDepthBand * 0.15;
             cerebellumNodeCorePaths[nodePathIndex].moveTo(
               nodeX + coreRadius,
               nodeY,
@@ -5198,6 +5235,7 @@ const mountBrain = async (field: HTMLElement) => {
               : centerDistance <= 1;
           if (
             fiber.particle &&
+            fiber.region !== "cerebellum" &&
             highlightedActiveStrand &&
             fade >= 0.1
           ) {
@@ -5208,6 +5246,15 @@ const mountBrain = async (field: HTMLElement) => {
             const activePath = activePaths[activeIndex];
             activePath.moveTo(segmentStartX, segmentStartY);
             activePath.lineTo(segmentEndX, segmentEndY);
+          }
+          if (
+            fiber.hot &&
+            centerDistance === 0 &&
+            modelY <= 0.68 &&
+            fade >= 0.14
+          ) {
+            hotActivePaths[depthBand].moveTo(segmentStartX, segmentStartY);
+            hotActivePaths[depthBand].lineTo(segmentEndX, segmentEndY);
           }
         }
       }
@@ -5222,9 +5269,9 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         174 + depthBand * 3,
         0,
-        0.028 + depthStrength * 0.13,
+        0.018 + depthStrength * 0.085,
       );
-      context.lineWidth = 4.8 * onePhysicalPixel;
+      context.lineWidth = 3.6 * onePhysicalPixel;
       context.stroke(centralTractHaloPaths[depthBand]);
     }
 
@@ -5236,6 +5283,9 @@ const mountBrain = async (field: HTMLElement) => {
       lightBandGains: readonly [number, number, number] = [1, 0.6, 1.85],
       greenBase = 200,
       blueBase = 4,
+      mediumGain = mediumFiberGain,
+      mediumGreenBase = greenBase,
+      mediumBlueBase = blueBase,
     ) => {
       context.lineCap = "butt";
       context.lineJoin = "miter";
@@ -5277,7 +5327,7 @@ const mountBrain = async (field: HTMLElement) => {
                 255,
                 172 + depthBand * 3,
                 0,
-                alpha * mediumFiberGain * 0.13,
+                alpha * mediumGain * 0.13,
               );
               context.stroke(mediumBatch[index]);
               context.lineWidth =
@@ -5291,9 +5341,9 @@ const mountBrain = async (field: HTMLElement) => {
               context.stroke(structuralBatch[index]);
               context.strokeStyle = rgba(
                 255,
-                greenBase + depthBand * 3,
-                blueBase + depthBand * 2,
-                alpha * mediumFiberGain,
+                mediumGreenBase + depthBand * 3,
+                mediumBlueBase + depthBand * 2,
+                alpha * mediumGain,
               );
               context.stroke(mediumBatch[index]);
             }
@@ -5354,10 +5404,13 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      2.1,
+      2.45,
       [1.18, 1.18, 1.32],
       210,
       22,
+      1.4,
+      232,
+      96,
     );
 
     for (
@@ -5383,9 +5436,9 @@ const mountBrain = async (field: HTMLElement) => {
         context.fill(cerebellumNodeHaloPaths[nodePathIndex]);
         context.fillStyle = rgba(
           255,
-          228 + depthBand * 3,
-          70 + depthBand * 3,
-          (0.58 + depthStrength * 0.38) * (0.62 + nodePulse * 0.38),
+          238 + depthBand * 2,
+          128 + depthBand * 2,
+          (0.72 + depthStrength * 0.28) * (0.82 + nodePulse * 0.18),
         );
         context.fill(cerebellumNodeCorePaths[nodePathIndex]);
       }
@@ -5500,20 +5553,33 @@ const mountBrain = async (field: HTMLElement) => {
           context.stroke(activePaths[index]);
           context.strokeStyle = rgba(
             255,
-            (widthBand === 1 ? 222 : 212) + depthBand * 3,
-            (widthBand === 1 ? 74 : 48) + depthBand * 2,
+            (widthBand === 1 ? 236 : 228) + depthBand * 2,
+            (widthBand === 1 ? 118 : 90) + depthBand * 2,
             (widthBand === 1
               ? fadeBand === 0
-                ? 0.3
-                : 0.88
+                ? 0.34
+                : 0.94
               : fadeBand === 0
-                ? 0.13
-                : 0.3) * depthStrength,
+                ? 0.15
+                : 0.38) * depthStrength,
           );
           context.lineWidth = onePhysicalPixel;
           context.stroke(activePaths[index]);
         }
       }
+    }
+
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength =
+        0.16 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.84;
+      context.strokeStyle = rgba(
+        255,
+        240 + depthBand * 2,
+        124 + depthBand * 3,
+        (0.2 + depthStrength * 0.68) * 0.94,
+      );
+      context.lineWidth = onePhysicalPixel;
+      context.stroke(hotActivePaths[depthBand]);
     }
 
     const signalResponseAlpha = [0.018, 0.03, 0.05, 0.075, 0.11];
