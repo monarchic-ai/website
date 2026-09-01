@@ -453,8 +453,8 @@ const CEREBELLUM: Lobe = {
 };
 
 const BRAINSTEM = {
-  top: { x: 0.78, y: -0.44 },
-  bottom: { x: 0.66, y: -1.22 },
+  top: { x: 0.78, y: -0.34 },
+  bottom: { x: 0.66, y: -1.14 },
   topRadius: { x: 0.46, z: 0.32 },
   centerZ: 0.07,
   curve: 0.11,
@@ -2871,7 +2871,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
 const createStemFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.stem);
-  const stemLaneCount = 30;
+  const stemLaneCount = 46;
   for (let lane = 0; lane < stemLaneCount; lane += 1) {
     const lanePosition = (lane + 0.5) / stemLaneCount;
     const normalizedX = clamp(
@@ -2881,10 +2881,10 @@ const createStemFibers = async (createBundle: BundleFactory) => {
     );
     const depthExtent = Math.sqrt(Math.max(0.08, 1 - normalizedX ** 2));
     const normalizedZ = lerp(-0.86, 0.86, random()) * depthExtent;
-    const endProgress = lerp(0.85, 1, random());
+    const endProgress = lerp(0.96, 1, random());
     const phase = random() * TAU;
-    const lateralSway = lerp(-0.055, 0.055, random());
-    const terminalScale = lerp(0.82, 1.12, random());
+    const lateralSway = lerp(-0.035, 0.035, random());
+    const terminalScale = lerp(0.94, 1.06, random());
     const controls: Vector3[] = [];
     for (let step = 0; step <= 14; step += 1) {
       const position = (step / 14) * endProgress;
@@ -2927,7 +2927,7 @@ const createStemFibers = async (createBundle: BundleFactory) => {
     );
   }
 
-  const junctionFiberCount = 16;
+  const junctionFiberCount = 24;
   for (let index = 0; index < junctionFiberCount; index += 1) {
     const lanePosition = (index + 0.5) / junctionFiberCount;
     const normalizedX = lerp(-0.9, 0.9, lanePosition);
