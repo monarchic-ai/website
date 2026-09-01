@@ -3442,7 +3442,7 @@ const styleFibers = (fibers: Fiber[]) => {
       (fiber.family === "frontal-surface" && activityKey < 0.64) ||
       (fiber.family === "frontal-loop" && activityKey < 0.38);
     const posteriorMedium =
-      fiber.family === "posterior-surface" && activityKey < 0.16;
+      fiber.family === "posterior-surface" && activityKey < 0.12;
     const descendingMedium =
       (fiber.family === "frontal-diagonal" && activityKey < 0.38) ||
       (fiber.family === "crown-descending" && activityKey < 0.28);
@@ -4337,8 +4337,8 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 8.35;
-  const staticLightGains = [1, 0.72, 3.2, 1.58] as const;
+  const mediumFiberGain = 7.1;
+  const staticLightGains = [1, 0.82, 2.15, 1.32] as const;
   const cerebrumLightBand = (
     modelX: number,
     modelY: number,
@@ -4796,7 +4796,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         174 + depthBand * 3,
         0,
-        0.015 + depthStrength * 0.055,
+        0.02 + depthStrength * 0.06,
       );
       staticContext.stroke(posteriorDepthPaths[depthBand]);
     }
@@ -5938,7 +5938,7 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
-      lightBandGains: readonly number[] = [1, 0.6, 1.85, 1.42],
+      lightBandGains: readonly number[] = [1, 0.8, 1.42, 1.22],
       greenBase = 166,
       blueBase = 0,
       mediumGain = mediumFiberGain,
@@ -6021,7 +6021,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         230 + depthBand * 3,
         86 + depthBand * 3,
-        0.22 + depthStrength * 0.66,
+        0.18 + depthStrength * 0.58,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(corticalRidgePaths[depthBand]);
