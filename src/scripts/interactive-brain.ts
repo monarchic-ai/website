@@ -4322,6 +4322,10 @@ const mountBrain = async (field: HTMLElement) => {
       },
       () => new Path2D(),
     );
+    const centralTractHaloPaths = Array.from(
+      { length: DEPTH_LEVELS },
+      () => new Path2D(),
+    );
     const activePaths = Array.from(
       { length: DEPTH_LEVELS * WIDTH_LEVELS * 2 },
       () => new Path2D(),
@@ -4745,6 +4749,16 @@ const mountBrain = async (field: HTMLElement) => {
                 : structuralPaths[structuralIndex];
             structuralPath.moveTo(segmentStartX, segmentStartY);
             structuralPath.lineTo(segmentEndX, segmentEndY);
+            if (fiber.family === "central-tract") {
+              centralTractHaloPaths[depthBand].moveTo(
+                segmentStartX,
+                segmentStartY,
+              );
+              centralTractHaloPaths[depthBand].lineTo(
+                segmentEndX,
+                segmentEndY,
+              );
+            }
 
             if (signalActivity) {
               const signalDistance =
@@ -4912,6 +4926,21 @@ const mountBrain = async (field: HTMLElement) => {
         }
       }
     });
+
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength =
+        0.12 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.88;
+      context.strokeStyle = rgba(
+        255,
+        174 + depthBand * 3,
+        0,
+        0.028 + depthStrength * 0.13,
+      );
+      context.lineWidth = 4.8 * onePhysicalPixel;
+      context.stroke(centralTractHaloPaths[depthBand]);
+    }
 
     context.lineCap = "butt";
     context.lineJoin = "miter";
