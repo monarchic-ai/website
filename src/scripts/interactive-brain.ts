@@ -2946,7 +2946,7 @@ const styleFibers = (fibers: Fiber[]) => {
       fiber.family === "cortical-microfold" ||
       fiber.family === "cerebellar-stitch"
         ? "dim"
-        : (fiber.family === "cortical-fold" && activityKey < 0.56) ||
+        : (fiber.family === "cortical-fold" && activityKey < 0.48) ||
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
@@ -3281,8 +3281,10 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
         : [1, 2]
       : fiber.family === "cortical-fold"
         ? fiber.bundleTier === "dim"
-          ? [1, 2, 3]
-          : [0, 1, 2, 3, 4]
+          ? [1, 2]
+          : bundleKey % 2 === 0
+            ? [0, 1]
+            : [1, 2]
         : fiber.bundleTier === "dim"
         ? DIM_CEREBRUM_STRAND_PATTERNS[
             bundleKey % DIM_CEREBRUM_STRAND_PATTERNS.length
@@ -3816,13 +3818,15 @@ const mountBrain = async (field: HTMLElement) => {
       const companionKey = mixRenderKey(fiber.bundleId ^ 0x434f4d50);
       const companionCount = staticOnlyMicrofold
         ? 0
-        : fiber.family === "local-cortical"
-          ? companionKey % 4 === 0
-            ? 2
-            : 1
-          : companionKey % 5 === 0
-            ? 1
-            : 2;
+        : fiber.family === "cortical-fold"
+          ? 1
+          : fiber.family === "local-cortical"
+            ? companionKey % 4 === 0
+              ? 2
+              : 1
+            : companionKey % 5 === 0
+              ? 1
+              : 2;
       const companionPhase = renderUnit(companionKey ^ 0x50484153) * TAU;
       const companionDrift = lerp(
         0.1,
