@@ -3065,6 +3065,7 @@ const styleFibers = (fibers: Fiber[]) => {
     { family: "association", x: -0.46, y: 0.34 },
     { family: "association", x: 0.58, y: 0.12 },
     { family: "frontal-diagonal", x: -0.82, y: 0.34 },
+    { family: "frontal-surface", x: -1.42, y: 0.52 },
     { family: "frontal-loop", x: -1.18, y: 0.2 },
     { family: "cortical-arc", x: 0.02, y: 0.72 },
     { family: "crown-longitudinal", x: -0.4, y: 0.92 },
@@ -3072,6 +3073,7 @@ const styleFibers = (fibers: Fiber[]) => {
     { family: "crown-descending", x: 0.42, y: 0.64 },
     { family: "deep", x: 0.08, y: 0.18 },
     { family: "temporal-loop", x: -0.12, y: -0.52 },
+    { family: "temporal-longitudinal", x: -0.72, y: -0.52 },
     { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
     { family: "temporal-longitudinal", x: 0.62, y: -0.38 },
     { family: "posterior-surface", x: 1.14, y: 0.34 },
@@ -3280,7 +3282,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
     upperRightOccupancy >= 0.25 &&
-    mixRenderKey(bundleKey ^ 0x55505252) % 5 <= 1;
+    mixRenderKey(bundleKey ^ 0x55505252) % 5 <= 2;
   const straightInteriorScaffold =
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
