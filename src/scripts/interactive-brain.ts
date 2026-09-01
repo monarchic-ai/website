@@ -5206,7 +5206,7 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             174 + depthBand * 3,
             0,
-            (fadeBand === 0 ? 0.035 : 0.1) * depthStrength,
+            (fadeBand === 0 ? 0.044 : 0.12) * depthStrength,
           );
           context.lineWidth = 2.8 * onePhysicalPixel;
           context.stroke(activePaths[index]);
