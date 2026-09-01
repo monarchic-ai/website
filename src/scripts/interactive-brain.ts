@@ -146,7 +146,7 @@ const OUTBOUND_FIBER_COUNT = 28;
 const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
-const PARTICLE_FIBER_COUNT = 73;
+const PARTICLE_FIBER_COUNT = 36;
 const HOT_PARTICLE_COUNT = 8;
 const CEREBRUM_STRAND_CYCLE = [5, 5, 5, 5] as const;
 const LOWER_STRAND_CYCLE = [1, 1, 2, 2] as const;
@@ -3248,8 +3248,8 @@ const styleFibers = (fibers: Fiber[]) => {
       .map(({ fiber }) => fiber);
     particleFibers.push(...selected);
   };
-  selectParticles("cerebrum", 42);
-  selectParticles("cerebellum", 16);
+  selectParticles("cerebrum", 15);
+  selectParticles("cerebellum", 4);
   selectParticles("stem", 2);
   particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber, rank) => {
     fiber.bundleTier = "active";
@@ -4496,9 +4496,11 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.escapeStart >= 0
           ? 1
           : fiber.bundleTier === "active"
-            ? curveDetailPosition >= 0.18
-              ? 2
-              : 3
+            ? fiber.hot && curveDetailPosition >= 0.54
+              ? 1
+              : curveDetailPosition >= 0.18
+                ? 2
+                : 3
             : fiber.bundleTier === "dim" &&
                 fiber.region === "cerebrum"
               ? 3
