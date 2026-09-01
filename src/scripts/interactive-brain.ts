@@ -2415,19 +2415,20 @@ const createBundleFactory = (): BundleFactory => {
     const strandCount =
       family === "cortical-microfold"
         ? 1
-        : family === "cerebellar-ridge"
+        : family === "cerebellar-ridge" ||
+            family === "cerebellar-folia"
           ? 3
-        : family === "central-tract" || family === "projection-tract"
-          ? 2
-          : family === "cortical-fold"
-            ? 3
-            : region === "cerebrum"
-              ? CEREBRUM_STRAND_CYCLE[
-                  bundleId % CEREBRUM_STRAND_CYCLE.length
-                ]
-              : LOWER_STRAND_CYCLE[
-                  bundleId % LOWER_STRAND_CYCLE.length
-                ];
+          : family === "central-tract" || family === "projection-tract"
+            ? 2
+            : family === "cortical-fold"
+              ? 3
+              : region === "cerebrum"
+                ? CEREBRUM_STRAND_CYCLE[
+                    bundleId % CEREBRUM_STRAND_CYCLE.length
+                  ]
+                : LOWER_STRAND_CYCLE[
+                    bundleId % LOWER_STRAND_CYCLE.length
+                  ];
     let points = trunk;
     let escapeStart = -1;
     if (escapeTail) {
@@ -2651,16 +2652,23 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             ? 1
             : -1
           : Math.sign(normalizedY);
+      const centralArchScale = lerp(
+        0.3,
+        1,
+        smoothstep(0.08, 0.32, Math.abs(normalizedY)),
+      );
       const archAmplitude =
-        lerp(0.09, 0.155, random()) *
+        lerp(0.13, 0.2, random()) *
         lerp(0.72, 1, verticalSection) *
+        centralArchScale *
         archDirection;
       const archExponent = lerp(0.72, 1.38, random());
       const archSkew = lerp(-0.22, 0.22, random());
-      const flowTilt = lerp(-0.075, 0.075, random());
-      const broadAmplitude = lerp(0.032, 0.058, random());
-      const localAmplitude = lerp(0.011, 0.025, random());
-      const localCycles = lerp(1.25, 2.05, random());
+      const flowTilt = lerp(-0.09, 0.09, random());
+      const broadAmplitude = lerp(0.045, 0.075, random());
+      const localAmplitude = lerp(0.015, 0.03, random());
+      const localCycles = lerp(1.2, 1.9, random());
+      const lateralAmplitude = lerp(0.025, 0.05, random());
       const controls: Vector3[] = [];
       for (let step = 0; step <= 24; step += 1) {
         const position = step / 24;
@@ -2670,7 +2678,12 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         );
         const normalizedX =
           lerp(startX, endX, position) +
-          Math.sin(TAU * position + phase) * 0.024 * envelope;
+          Math.sin(TAU * lerp(0.72, 1.08, verticalSection) * position + phase) *
+            lateralAmplitude *
+            envelope +
+          Math.sin(TAU * 2.1 * position + phase * 0.71) *
+            0.012 *
+            envelope;
         const localY =
           normalizedY +
           flowTilt * (position - 0.5) +
@@ -2783,17 +2796,25 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     );
   }
 
-  const contourArcCount = 4;
+  const contourPairCount = 18;
+  const contourArcCount = contourPairCount * 2;
   for (let index = 0; index < contourArcCount; index += 1) {
-    const depthPosition = (Math.floor(index / 2) + 0.5) / 5;
+    const pairIndex = Math.floor(index / 2);
+    const depthPosition =
+      ((pairIndex * 7) % contourPairCount + 0.5) /
+      contourPairCount;
     const contourSign = index % 2 === 0 ? -1 : 1;
     const normalizedZ =
-      lerp(-0.2, 0.2, depthPosition) +
+      lerp(-0.36, 0.36, depthPosition) +
       lerp(-0.012, 0.012, random());
     const depthSection = Math.sqrt(
       Math.max(0.16, 1 - normalizedZ ** 2),
     );
-    const shellScale = depthSection * lerp(0.94, 0.98, random());
+    const radialPosition = (pairIndex + 0.5) / contourPairCount;
+    const shellScale =
+      depthSection *
+      lerp(0.46, 0.98, Math.sqrt(radialPosition)) *
+      lerp(0.97, 1.03, random());
     const horizontalRadius = shellScale * lerp(0.94, 1, random());
     const verticalRadius = shellScale * lerp(0.78, 0.9, random());
     const centerY = lerp(-0.025, 0.025, random());
@@ -2979,12 +3000,12 @@ const styleFibers = (fibers: Fiber[]) => {
       fiber.family === "cortical-microfold" ||
       fiber.family === "cerebellar-shell"
         ? "dim"
-        : fiber.family === "cerebellar-ridge" ||
+        : (fiber.family === "cerebellar-ridge" && activityKey < 0.4) ||
             (fiber.family === "cortical-fold" && activityKey < 0.38) ||
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
-            (fiber.region === "cerebellum" && activityKey < 0.68) ||
+            (fiber.region === "cerebellum" && activityKey < 0.22) ||
             (fiber.region === "cerebrum" && activityKey < 0.12)
           ? "medium"
           : "dim";
@@ -3283,6 +3304,15 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     !boundaryFamily &&
     upperRightOccupancy >= 0.25 &&
     mixRenderKey(bundleKey ^ 0x55505252) % 5 <= 2;
+  const redundantUpperRightBoundary =
+    fiber.bundleTier === "dim" &&
+    boundaryFamily &&
+    fiber.family !== "cortical-fold" &&
+    fiber.family !== "projection-tract" &&
+    fiber.family !== "central-tract" &&
+    fiber.family !== "posterior-fan" &&
+    upperRightOccupancy >= 0.35 &&
+    mixRenderKey(bundleKey ^ 0x42524e44) % 4 === 0;
   const straightInteriorScaffold =
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
@@ -3304,6 +3334,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     suppressible &&
     fiber.family !== "cortical-fold" &&
     (upperRightCrosshatch ||
+      redundantUpperRightBoundary ||
       straightInteriorScaffold ||
       straightLocalScratch);
   const pattern: readonly number[] =
@@ -4617,13 +4648,13 @@ const mountBrain = async (field: HTMLElement) => {
         const nextPosition =
           pointIndex / Math.max(1, pointCount - 1);
         const segmentPosition = (previousPosition + nextPosition) * 0.5;
+        const modelX =
+          (fiber.points[previousOffset] + fiber.points[offset]) * 0.5;
         const modelY =
           (fiber.points[previousOffset + 1] + fiber.points[offset + 1]) *
           0.5;
         let executionWaveBand = -1;
         if (executionWaveActive && executionWaveEligible[fiberIndex]) {
-          const modelX =
-            (fiber.points[previousOffset] + fiber.points[offset]) * 0.5;
           const row = Math.floor(
             (modelY + 1.25) / executionWaveRowHeight,
           );
@@ -4662,6 +4693,7 @@ const mountBrain = async (field: HTMLElement) => {
             : useBundlePlan &&
                 fiber.bundleTier !== "active" &&
                 modelY > 0.48 &&
+                modelX > 0.32 &&
                 boundaryStrength > 0.55
               ? 1
               : 0;
@@ -4670,10 +4702,7 @@ const mountBrain = async (field: HTMLElement) => {
           fiber.family !== "cortical-fold" &&
           fiber.bundleTier !== "active" &&
           boundaryStrength > 0.55 &&
-          insideUpperCortexGap(
-            (fiber.points[previousOffset] + fiber.points[offset]) * 0.5,
-            modelY,
-          );
+          insideUpperCortexGap(modelX, modelY);
         if (upperCortexGap) continue;
         const strandCount = isEscapeSegment ? 1 : fiber.strandCount;
         const centerStrand = Math.floor(strandCount / 2);
@@ -5025,7 +5054,7 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
-      lightBandGains: readonly [number, number] = [1, 0.92],
+      lightBandGains: readonly [number, number] = [1, 0.72],
     ) => {
       context.lineCap = "butt";
       context.lineJoin = "miter";
@@ -5144,7 +5173,7 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      1.05,
+      1.22,
       [1, 1.32],
     );
 
