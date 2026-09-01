@@ -4139,12 +4139,13 @@ const mountBrain = async (field: HTMLElement) => {
         depthBand += 1
       ) {
         const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
+        const staticDepthStrength = 0.08 + depthStrength * 0.92;
         staticContext.strokeStyle = rgba(
           255,
           184 + depthBand * 3,
           0,
           staticAlpha[opacityBand] *
-            (0.24 + depthStrength * 0.76) *
+            staticDepthStrength *
             0.48,
         );
         staticContext.stroke(
@@ -4154,7 +4155,7 @@ const mountBrain = async (field: HTMLElement) => {
           255,
           184 + depthBand * 3,
           0,
-          staticAlpha[opacityBand] * (0.24 + depthStrength * 0.76),
+          staticAlpha[opacityBand] * staticDepthStrength,
         );
         staticContext.stroke(
           staticPaths[opacityBand * DEPTH_LEVELS + depthBand],
@@ -4167,7 +4168,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         207 + depthBand * 3,
         28 + depthBand * 2,
-        0.34 + depthStrength * 0.48,
+        0.12 + depthStrength * 0.7,
       );
       staticContext.fill(staticNodePaths[depthBand]);
     }
@@ -5146,7 +5147,7 @@ const mountBrain = async (field: HTMLElement) => {
         depthBand += 1
       ) {
         const depthStrength =
-          0.22 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.78;
+          0.12 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.88;
         for (
           let widthBand = 0;
           widthBand < WIDTH_LEVELS;
@@ -5166,8 +5167,8 @@ const mountBrain = async (field: HTMLElement) => {
           context.stroke(activePaths[index]);
           context.strokeStyle = rgba(
             255,
-            204 + depthBand * 4,
-            34 + depthBand * 2,
+            212 + depthBand * 4,
+            48 + depthBand * 3,
             (widthBand === 1
               ? fadeBand === 0
                 ? 0.3
@@ -5192,7 +5193,7 @@ const mountBrain = async (field: HTMLElement) => {
     ) {
       for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
         const depthStrength =
-          0.32 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.68;
+          0.18 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.82;
         context.strokeStyle = rgba(
           255,
           211 + depthBand * 3,
