@@ -2707,7 +2707,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     const bandCurlAmplitude =
       lerp(0.05, 0.09, random()) * centralCurlGain;
     const bandRotation =
-      Math.sin(bandPhase * 1.37) * 0.2 + lobulePosition * 0.12;
+      Math.sin(bandPhase * 1.37) * 0.08 + lobulePosition * 0.08;
     const bandRotationCosine = Math.cos(bandRotation);
     const bandRotationSine = Math.sin(bandRotation);
     for (let lane = 0; lane < foliaDepths.length; lane += 1) {
@@ -2830,7 +2830,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     const broadAmplitude = lerp(0.11, 0.18, random());
     const localAmplitude = lerp(0.025, 0.048, random());
     const flowTilt = lerp(-0.075, 0.075, random());
-    const pathRotation = lerp(-0.18, 0.18, random());
+    const pathRotation = lerp(-0.06, 0.06, random());
     const pathRotationCosine = Math.cos(pathRotation);
     const pathRotationSine = Math.sin(pathRotation);
     const controls: Vector3[] = [];
@@ -3199,8 +3199,8 @@ const styleFibers = (fibers: Fiber[]) => {
         fiber.family === "posterior-fan") &&
       activityKey < 0.4;
     const frontalMedium =
-      (fiber.family === "frontal-surface" && activityKey < 0.72) ||
-      (fiber.family === "frontal-loop" && activityKey < 0.32);
+      (fiber.family === "frontal-surface" && activityKey < 0.78) ||
+      (fiber.family === "frontal-loop" && activityKey < 0.38);
     const posteriorMedium =
       fiber.family === "posterior-surface" && activityKey < 0.16;
     const descendingMedium =
@@ -3222,7 +3222,7 @@ const styleFibers = (fibers: Fiber[]) => {
       fiber.family === "interior-depth"
         ? "dim"
         : cerebellarMedium ||
-            (fiber.family === "cortical-fold" && activityKey < 0.48) ||
+            (fiber.family === "cortical-fold" && activityKey < 0.56) ||
             (fiber.family === "central-tract" && activityKey < 0.3) ||
             boundaryMedium ||
             fiber.region === "stem" ||
@@ -3580,7 +3580,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.bundleTier === "dim" &&
     !boundaryFamily &&
     frontalOccupancy >= 0.3 &&
-    mixRenderKey(bundleKey ^ 0x46524e54) % 3 === 0;
+    mixRenderKey(bundleKey ^ 0x46524e54) % 2 === 0;
   const dimCrownClutter =
     fiber.bundleTier === "dim" &&
     !boundaryFamily &&
@@ -4941,7 +4941,7 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.family === "cerebellar-folia"
       ) {
         const nodeKey = mixRenderKey(fiber.bundleId ^ 0x43424e44);
-        if (nodeKey % 4 !== 0) {
+        if (nodeKey % 3 === 0) {
           const requestedNodeIndex = Math.floor(
             lerp(
               0.14,
@@ -5647,11 +5647,11 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      2.55,
-      [1.18, 1.18, 1.32],
+      2.15,
+      [1.12, 1.12, 1.24],
       162,
       0,
-      1.4,
+      1.25,
       196,
       55,
     );
