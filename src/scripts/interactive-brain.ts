@@ -448,8 +448,8 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 1.03, y: -0.25, z: 0.06 },
-  radius: { x: 0.65, y: 0.84, z: 0.55 },
+  center: { x: 0.98, y: -0.34, z: 0.06 },
+  radius: { x: 0.78, y: 0.68, z: 0.55 },
 };
 
 const BRAINSTEM = {
@@ -2653,7 +2653,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
             : -1
           : Math.sign(normalizedY);
       const centralArchScale = lerp(
-        0.3,
+        0.45,
         1,
         smoothstep(0.08, 0.32, Math.abs(normalizedY)),
       );
@@ -2739,6 +2739,68 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
         await yieldToBrowser();
       }
     }
+  }
+
+  const crossGrainCount = 10;
+  for (let index = 0; index < crossGrainCount; index += 1) {
+    const normalizedX =
+      lerp(-0.68, 0.68, random()) + lerp(-0.035, 0.035, random());
+    const horizontalSection = Math.sqrt(
+      Math.max(0.1, 1 - (normalizedX / 0.78) ** 2),
+    );
+    const normalizedZ =
+      lerp(-0.34, 0.34, ((index * 7) % crossGrainCount) / crossGrainCount) +
+      lerp(-0.012, 0.012, random());
+    const depthSection = Math.sqrt(
+      Math.max(0.18, 1 - (normalizedZ / 0.62) ** 2),
+    );
+    const verticalExtent =
+      horizontalSection * depthSection * lerp(0.56, 0.9, random());
+    const bend =
+      lerp(0.12, 0.24, random()) * (index % 2 === 0 ? -1 : 1);
+    const phase = random() * TAU;
+    const controls: Vector3[] = [];
+    for (let step = 0; step <= 24; step += 1) {
+      const position = step / 24;
+      const envelope = Math.sin(Math.PI * position);
+      const localX =
+        normalizedX +
+        bend * envelope +
+        Math.sin(TAU * 1.15 * position + phase) * 0.035 * envelope;
+      const localY =
+        lerp(-verticalExtent, verticalExtent, position) +
+        Math.sin(TAU * 0.78 * position + phase * 0.69) *
+          0.06 *
+          envelope;
+      const localZ =
+        normalizedZ +
+        Math.sin(Math.PI * position + phase) * 0.024 * depthSection;
+      controls.push(
+        constrainToLobe(
+          {
+            x: CEREBELLUM.center.x + localX * CEREBELLUM.radius.x,
+            y: CEREBELLUM.center.y + localY * CEREBELLUM.radius.y,
+            z: CEREBELLUM.center.z + localZ * CEREBELLUM.radius.z,
+          },
+          CEREBELLUM,
+          0.94,
+        ),
+      );
+    }
+    fibers.push(
+      ...createBundle(
+        resampleTrajectory(
+          smoothTrajectory(smoothTrajectory(controls)),
+          0.012,
+          28,
+          68,
+        ),
+        "cerebellum",
+        "cerebellar-shell",
+        0.0038,
+        cerebellumField,
+      ),
+    );
   }
 
   const upperRidgeCount = 8;
@@ -2998,6 +3060,7 @@ const styleFibers = (fibers: Fiber[]) => {
     fiber.activityKey = activityKey;
     fiber.bundleTier =
       fiber.family === "cortical-microfold" ||
+      fiber.family === "cerebellar-folia" ||
       fiber.family === "cerebellar-shell"
         ? "dim"
         : (fiber.family === "cerebellar-ridge" && activityKey < 0.4) ||
@@ -3005,7 +3068,6 @@ const styleFibers = (fibers: Fiber[]) => {
             fiber.family === "central-tract" ||
             boundaryMedium ||
             fiber.region === "stem" ||
-            (fiber.region === "cerebellum" && activityKey < 0.22) ||
             (fiber.region === "cerebrum" && activityKey < 0.12)
           ? "medium"
           : "dim";
@@ -5054,7 +5116,7 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
-      lightBandGains: readonly [number, number] = [1, 0.72],
+      lightBandGains: readonly [number, number] = [1, 0.6],
     ) => {
       context.lineCap = "butt";
       context.lineJoin = "miter";
@@ -5173,8 +5235,8 @@ const mountBrain = async (field: HTMLElement) => {
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      1.22,
-      [1, 1.32],
+      1.9,
+      [1.18, 1.32],
     );
 
     const outboundAlpha = [0.064, 0.1, 0.145, 0.2, 0.25];
