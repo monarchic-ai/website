@@ -895,9 +895,10 @@ const familyAxis = (
     return normalize({
       x: 0.82,
       y:
-        0.28 * Math.sin(point.x * 1.3 + phase) +
-        0.12 * Math.sin(point.y * 1.6 - phase),
-      z: 0.16 * Math.cos(point.x + phase),
+        0.36 * Math.sin(point.x * 1.22 + phase) +
+        0.18 * Math.sin(point.y * 1.78 - phase) +
+        0.07 * Math.sin((point.x - point.y) * 2.35 + phase * 0.63),
+      z: 0.2 * Math.cos(point.x + phase),
     });
   }
   if (family === "cortical-arc") {
@@ -914,9 +915,10 @@ const familyAxis = (
     return normalize({
       x: 1,
       y:
-        -0.27 * relative.x +
-        0.16 * Math.sin(point.x * 1.25 + phase),
-      z: 0.27 * Math.cos(point.x * 0.8 + phase),
+        -0.34 * relative.x +
+        0.23 * Math.sin(point.x * 1.32 + phase) +
+        0.07 * Math.sin(point.y * 2.1 - phase * 0.72),
+      z: 0.31 * Math.cos(point.x * 0.8 + phase),
     });
   }
   if (family === "temporal-longitudinal") {
@@ -1025,29 +1027,36 @@ const familyAxis = (
           ? { x: 1.05, y: 0.3, z: 0 }
           : { x: -0.02, y: 0.42, z: 0 };
     const relative = subtract(point, regionalCenter);
-    if (orientation < 0.58) {
+    if (orientation < 0.5) {
       return normalize({
         x: 1,
         y:
-          -0.38 * relative.x +
-          0.15 * Math.sin(point.y * 2.2 + phase) +
-          0.07 * Math.sin(point.x * 2.6 - phase),
-        z: 0.075 * Math.cos(point.x * 1.7 + phase),
+          -0.48 * relative.x +
+          0.22 * Math.sin(point.y * 2.2 + phase) +
+          0.11 * Math.sin(point.x * 2.6 - phase) +
+          0.07 * Math.sin((point.x + point.y) * 2.9 + phase * 0.64),
+        z: 0.09 * Math.cos(point.x * 1.7 + phase),
       });
     }
-    if (orientation < 0.82) {
+    if (orientation < 0.78) {
       return normalize({
         x:
-          0.16 * Math.sin(point.y * 2.1 + phase) +
-          relative.x * 0.055,
-        y: -1,
-        z: 0.065 * Math.cos(point.y * 1.5 - phase),
+          0.24 * Math.sin(point.y * 2.1 + phase) +
+          relative.x * 0.09 +
+          0.07 * Math.sin(point.x * 2.55 - phase * 0.74),
+        y: -0.95 + 0.06 * Math.sin(point.x * 1.8 + phase),
+        z: 0.08 * Math.cos(point.y * 1.5 - phase),
       });
     }
     return normalize({
-      x: 0.06 - relative.y * 0.92,
-      y: relative.x * 0.7,
-      z: 0.07 * Math.sin(point.x + point.y + phase),
+      x:
+        0.06 -
+        relative.y * 1.02 +
+        0.09 * Math.sin(point.x * 1.9 + phase),
+      y:
+        relative.x * 0.82 +
+        0.06 * Math.cos(point.y * 2.05 - phase),
+      z: 0.085 * Math.sin(point.x + point.y + phase),
     });
   }
   const sample = cerebrumField(point);
@@ -3028,19 +3037,25 @@ const styleFibers = (fibers: Fiber[]) => {
   const random = seededRandom(FAMILY_SEEDS.style);
   fibers.forEach((fiber) => {
     const activityKey = random();
-    const surfaceFamily =
-      fiber.family === "frontal-surface" ||
-      fiber.family === "posterior-surface";
-    const frontalFamily =
-      fiber.family === "frontal-surface" ||
-      fiber.family === "frontal-loop";
-    const boundaryMedium =
+    const regionalBoundaryMedium =
       (fiber.family === "cortical-arc" ||
         fiber.family === "crown-longitudinal" ||
         fiber.family === "temporal-longitudinal" ||
-        fiber.family === "posterior-fan" ||
-        surfaceFamily) &&
-      activityKey < (frontalFamily ? 0.62 : surfaceFamily ? 0.24 : 0.4);
+        fiber.family === "posterior-fan") &&
+      activityKey < 0.4;
+    const frontalMedium =
+      (fiber.family === "frontal-surface" && activityKey < 0.72) ||
+      (fiber.family === "frontal-loop" && activityKey < 0.32);
+    const posteriorMedium =
+      fiber.family === "posterior-surface" && activityKey < 0.16;
+    const descendingMedium =
+      (fiber.family === "frontal-diagonal" && activityKey < 0.38) ||
+      (fiber.family === "crown-descending" && activityKey < 0.28);
+    const boundaryMedium =
+      regionalBoundaryMedium ||
+      frontalMedium ||
+      posteriorMedium ||
+      descendingMedium;
     const cerebellarMedium =
       (fiber.family === "cerebellar-folia" ||
         fiber.family === "cerebellar-ridge") &&
@@ -3376,7 +3391,7 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.family !== "central-tract" &&
     fiber.family !== "posterior-fan" &&
     upperRightOccupancy >= 0.35 &&
-    mixRenderKey(bundleKey ^ 0x42524e44) % 4 === 0;
+    mixRenderKey(bundleKey ^ 0x42524e44) % 2 === 0;
   const straightInteriorScaffold =
     fiber.bundleTier !== "active" &&
     !boundaryFamily &&
@@ -3398,12 +3413,12 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     fiber.bundleTier === "dim" &&
     !boundaryFamily &&
     frontalOccupancy >= 0.3 &&
-    mixRenderKey(bundleKey ^ 0x46524e54) % 10 === 0;
+    mixRenderKey(bundleKey ^ 0x46524e54) % 3 === 0;
   const dimCrownClutter =
     fiber.bundleTier === "dim" &&
     !boundaryFamily &&
     crownOccupancy >= 0.3 &&
-    mixRenderKey(bundleKey ^ 0x43524f57) % 6 === 0;
+    mixRenderKey(bundleKey ^ 0x43524f57) % 3 === 0;
   const shortAngularFrontalLoop =
     fiber.family === "frontal-loop" &&
     trajectoryLength < 1.05 &&
@@ -3803,6 +3818,13 @@ const mountBrain = async (field: HTMLElement) => {
     boundaryStrength: number,
   ) => {
     if (
+      modelX < -0.62 &&
+      modelY > -0.58 &&
+      boundaryStrength > 0.2
+    ) {
+      return 2;
+    }
+    if (
       modelX > 0.32 &&
       modelY > 0.48 &&
       boundaryStrength > 0.55
@@ -3945,7 +3967,7 @@ const mountBrain = async (field: HTMLElement) => {
     staticContext.clearRect(0, 0, width, height);
 
     const staticOpacityLevels = 3;
-    const staticLightLevels = 3;
+    const staticLightLevels = CORTEX_LIGHT_LEVELS;
     const staticPaths = Array.from(
       {
         length:
@@ -4094,7 +4116,9 @@ const mountBrain = async (field: HTMLElement) => {
           fiber.region === "cerebellum"
             ? 2
             : fiber.region === "cerebrum"
-              ? cerebrumLightBand(modelX, modelY, 1)
+              ? modelX < -0.62 && modelY > -0.58
+                ? 0
+                : cerebrumLightBand(modelX, modelY, 1)
               : 0;
         const staticPathIndex =
           (opacityBand * DEPTH_LEVELS + depthBand) *
@@ -4678,6 +4702,11 @@ const mountBrain = async (field: HTMLElement) => {
             : fiber.bundleTier === "dim" &&
               fiber.region === "cerebrum"
               ? 3
+              : fiber.bundleTier === "medium" &&
+                  fiber.region === "cerebrum"
+                ? curveDetailPosition >= 0.995
+                  ? 2
+                  : 3
               : 2;
       const projectionStep =
         fiber.particle || pulseActivity !== undefined ? 1 : pointStep;
@@ -5311,9 +5340,9 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
-      lightBandGains: readonly [number, number, number] = [1, 0.6, 1.85],
-      greenBase = 200,
-      blueBase = 4,
+      lightBandGains: readonly number[] = [1, 0.6, 1.85],
+      greenBase = 176,
+      blueBase = 0,
       mediumGain = mediumFiberGain,
       mediumGreenBase = greenBase,
       mediumBlueBase = blueBase,
@@ -5391,7 +5420,7 @@ const mountBrain = async (field: HTMLElement) => {
       const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
       context.strokeStyle = rgba(
         255,
-        198,
+        190,
         28,
         0.118 + depthStrength * 0.085,
       );
@@ -5437,11 +5466,11 @@ const mountBrain = async (field: HTMLElement) => {
       cerebellumMediumPaths,
       2.45,
       [1.18, 1.18, 1.32],
-      210,
-      22,
+      170,
+      0,
       1.4,
-      232,
-      96,
+      204,
+      55,
     );
 
     for (
@@ -5486,7 +5515,7 @@ const mountBrain = async (field: HTMLElement) => {
         const index = opacityBand * DEPTH_LEVELS + depthBand;
         context.strokeStyle = rgba(
           255,
-          192,
+          188,
           24,
           outboundAlpha[opacityBand] *
             (0.55 + depthStrength * 0.45) *
