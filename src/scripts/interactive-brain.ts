@@ -2532,7 +2532,7 @@ const createBundleFactory = (): BundleFactory => {
           : family === "central-tract" || family === "projection-tract"
             ? 2
             : family === "cortical-fold"
-              ? 3
+              ? 1
               : region === "cerebrum"
                 ? CEREBRUM_STRAND_CYCLE[
                     bundleId % CEREBRUM_STRAND_CYCLE.length
@@ -3455,21 +3455,20 @@ const styleFibers = (fibers: Fiber[]) => {
   }> = [
     { family: "central-tract", x: -0.28, y: 0.23 },
     { family: "central-tract", x: 0.42, y: -0.14 },
+    { family: "cortical-fold", x: -0.05, y: 0.78 },
+    { family: "frontal-surface", x: -1.5, y: 0.58 },
+    { family: "frontal-diagonal", x: -1.34, y: 0.16 },
     { family: "temporal-longitudinal", x: -0.72, y: -0.52 },
-    { family: "cortical-fold", x: -1.42, y: 0.5 },
-    { family: "cortical-fold", x: -1.62, y: 0.3 },
     { family: "temporal-loop", x: 0.18, y: -0.54 },
     { family: "posterior-fan", x: 1.38, y: 0.22 },
     { family: "cortical-fold", x: 1.25, y: 0.5 },
     { family: "cortical-fold", x: -0.5, y: -0.45 },
-    { family: "cortical-fold", x: 0.35, y: -0.4 },
     { family: "posterior-surface", x: 1.14, y: 0.34 },
     { family: "temporal-longitudinal", x: 0.04, y: -0.48 },
     { family: "projection-tract", x: -0.58, y: 0.7 },
     { family: "projection-tract", x: 0.54, y: 0.66 },
     { family: "projection-tract", x: -0.18, y: 0.56 },
     { family: "projection-tract", x: 0.12, y: 0.82 },
-    { family: "cortical-fold", x: -1.1, y: 0.9 },
     { family: "temporal-loop", x: -0.12, y: -0.52 },
     { family: "temporal-longitudinal", x: 0.62, y: -0.38 },
     { family: "posterior-fan", x: 1, y: 0.45 },
@@ -3542,6 +3541,8 @@ const styleFibers = (fibers: Fiber[]) => {
         (fiber) =>
           fiber.region === region &&
           fiber.family !== "cortical-microfold" &&
+          (region !== "cerebrum" ||
+            fiber.family !== "cortical-fold") &&
           fiber.family !== "local-cortical" &&
           fiber.family !== "frontal-loop" &&
           fiber.family !== "cerebellar-shell" &&
@@ -3577,13 +3578,23 @@ const styleFibers = (fibers: Fiber[]) => {
   selectParticles("cerebellum", 4);
   selectParticles("stem", 2);
   selectParticles("cerebrum", 15);
-  particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber, rank) => {
+  let hotFiberCount = 0;
+  let hotCorticalFoldCount = 0;
+  particleFibers.slice(0, PARTICLE_FIBER_COUNT).forEach((fiber) => {
     const particleOnly = fiber.region === "cerebellum";
+    const hotEligible =
+      fiber.family !== "cortical-fold" || hotCorticalFoldCount < 2;
     fiber.bundleTier = particleOnly ? "dim" : "active";
     fiber.opacityBand = particleOnly ? 0 : 3;
     fiber.active = !particleOnly;
     fiber.particle = true;
-    fiber.hot = rank < HOT_PARTICLE_COUNT;
+    fiber.hot = hotEligible && hotFiberCount < HOT_PARTICLE_COUNT;
+    if (fiber.hot) {
+      hotFiberCount += 1;
+      if (fiber.family === "cortical-fold") {
+        hotCorticalFoldCount += 1;
+      }
+    }
   });
 
   fibers.forEach((fiber) => {
@@ -4055,10 +4066,16 @@ const drawCornerBrackets = (
   context.moveTo(left, top + bracket);
   context.lineTo(left, top);
   context.lineTo(left + bracket, top);
+  context.moveTo(right - bracket, top);
+  context.lineTo(right, top);
+  context.lineTo(right, top + bracket);
+  context.moveTo(left, bottom - bracket);
+  context.lineTo(left, bottom);
+  context.lineTo(left + bracket, bottom);
   context.moveTo(right - bracket, bottom);
   context.lineTo(right, bottom);
   context.lineTo(right, bottom - bracket);
-  context.strokeStyle = "rgba(255, 197, 18, 0.26)";
+  context.strokeStyle = "rgba(255, 197, 18, 0.32)";
   context.lineWidth = 0.7;
   context.stroke();
 };
@@ -4195,7 +4212,7 @@ const mountBrain = async (field: HTMLElement) => {
     "(prefers-reduced-motion: reduce)",
   );
   const mediumFiberGain = 8.35;
-  const staticLightGains = [1, 0.72, 3.2, 1.85] as const;
+  const staticLightGains = [1, 0.72, 3.2, 1.58] as const;
   const cerebrumLightBand = (
     modelX: number,
     modelY: number,
@@ -5689,8 +5706,8 @@ const mountBrain = async (field: HTMLElement) => {
           }
 
           const highlightedActiveStrand =
-            fiber.region === "cerebrum"
-              ? centerDistance <= 2
+            fiber.family === "cortical-fold"
+              ? centerDistance === 0
               : centerDistance <= 1;
           if (
             fiber.particle &&
@@ -5739,7 +5756,7 @@ const mountBrain = async (field: HTMLElement) => {
       structuralBatch: Path2D[],
       mediumBatch: Path2D[],
       alphaGain = 1,
-      lightBandGains: readonly number[] = [1, 0.6, 1.85, 1.65],
+      lightBandGains: readonly number[] = [1, 0.6, 1.85, 1.42],
       greenBase = 166,
       blueBase = 0,
       mediumGain = mediumFiberGain,
