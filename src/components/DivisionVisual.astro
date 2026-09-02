@@ -173,24 +173,32 @@ const { variant } = Astro.props;
 
   .division-visual__structure,
   .division-visual__axis,
-  .division-visual__traces,
-  .division-visual__product-shell {
+  .division-visual__traces {
     stroke: rgb(242 240 232 / 0.46);
     stroke-width: 1;
+  }
+
+  .division-visual__product-shell {
+    stroke: rgb(242 240 232 / 0.7);
+    stroke-width: 1.1;
   }
 
   .division-visual__product-grid {
     stroke: rgb(242 240 232 / 0.075);
   }
 
-  .division-visual__product-decks,
+  .division-visual__product-decks {
+    stroke: rgb(242 240 232 / 0.44);
+    stroke-width: 0.95;
+  }
+
   .division-visual__product-modules {
-    stroke: rgb(242 240 232 / 0.24);
-    stroke-width: 0.85;
+    stroke: rgb(242 240 232 / 0.58);
+    stroke-width: 0.95;
   }
 
   .division-visual__product-modules path:nth-child(2n) {
-    fill: rgb(242 240 232 / 0.035);
+    fill: rgb(242 240 232 / 0.07);
   }
 
   .division-visual__product-core {
