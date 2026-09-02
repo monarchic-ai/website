@@ -4304,6 +4304,10 @@ const mountBrain = async (field: HTMLElement) => {
   const renderPlans = fibers.map(createFiberRenderPlan);
   const executionWaveEligible = new Uint8Array(fibers.length);
   const executionWaveBias = new Float32Array(fibers.length);
+  const constructionWaveEligible = new Uint8Array(fibers.length);
+  const constructionWavePhase = new Float32Array(fibers.length);
+  const constructionWaveRank = new Float32Array(fibers.length);
+  const constructionWaveDirection = new Int8Array(fibers.length);
   fibers.forEach((fiber, index) => {
     const waveKey = mixRenderKey(fiber.bundleId ^ 0x57415645);
     executionWaveEligible[index] =
@@ -4313,6 +4317,26 @@ const mountBrain = async (field: HTMLElement) => {
         : 0;
     executionWaveBias[index] =
       (renderUnit(waveKey ^ 0x42494153) - 0.5) * 0.05;
+    const constructionKey = mixRenderKey(
+      fiber.bundleId ^ 0x434f4e53,
+    );
+    constructionWaveEligible[index] =
+      fiber.escapeStart < 0 &&
+      fiber.region === "cerebrum" &&
+      fiber.bundleTier !== "active" &&
+      fiber.family !== "cortical-microfold" &&
+      fiber.family !== "interior-depth" &&
+      fiber.family !== "posterior-depth" &&
+      (fiber.bundleTier === "medium" || constructionKey % 7 < 2)
+        ? 1
+        : 0;
+    constructionWavePhase[index] = renderUnit(
+      constructionKey ^ 0x50484153,
+    );
+    constructionWaveRank[index] = renderUnit(
+      constructionKey ^ 0x52414e4b,
+    );
+    constructionWaveDirection[index] = constructionKey % 2 === 0 ? 1 : -1;
   });
   const renderPlanByFiber = new Map(
     fibers.map((fiber, index) => [fiber, renderPlans[index]]),
@@ -4456,6 +4480,11 @@ const mountBrain = async (field: HTMLElement) => {
   const pulseDuration = () => (reducedMotion.matches ? 650 : 2200);
   const executionWaveCycle = 16000;
   const executionWaveTravel = 6000;
+  const constructionWaveCycle = 15200;
+  const constructionWaveTravel = 5200;
+  const constructionWaveLevels = 4;
+  const constructionWaveEchoSpacing = 0.056;
+  const constructionWaveHeadWidth = 0.022;
   const executionWaveStepPattern = [
     0,
     0.055,
@@ -5172,6 +5201,11 @@ const mountBrain = async (field: HTMLElement) => {
       0.55,
       signalDensityPosition,
     );
+    const constructionWaveDensityCutoff = lerp(
+      0.36,
+      0.68,
+      signalDensityPosition,
+    );
     const layoutPosition = smoothstep(440, 680, width);
     const horizontalModelPadding = clamp(width * 0.02, 8, 16);
     const verticalModelPadding = clamp(height * 0.08, 28, 52);
@@ -5289,6 +5323,12 @@ const mountBrain = async (field: HTMLElement) => {
           () => new Path2D(),
         )
       : [];
+    const constructionWavePaths = reducedMotion.matches
+      ? []
+      : Array.from(
+          { length: constructionWaveLevels * DEPTH_LEVELS },
+          () => new Path2D(),
+        );
     const outboundPaths = Array.from(
       { length: DEPTH_LEVELS * OUTBOUND_OPACITY_LEVELS },
       () => new Path2D(),
@@ -5487,6 +5527,17 @@ const mountBrain = async (field: HTMLElement) => {
             }
           : undefined;
       const signalActivity = pulseActivity ?? ambientActivity;
+      const constructionCycleTime =
+        (time +
+          constructionWavePhase[fiberIndex] * constructionWaveCycle) %
+        constructionWaveCycle;
+      const constructionWaveActiveForFiber =
+        !reducedMotion.matches &&
+        constructionWaveEligible[fiberIndex] === 1 &&
+        constructionWaveRank[fiberIndex] <= constructionWaveDensityCutoff &&
+        constructionCycleTime < constructionWaveTravel;
+      const constructionWaveProgress =
+        constructionCycleTime / constructionWaveTravel;
       for (
         let pointIndex = pointStep;
         pointIndex < pointCount;
@@ -5614,6 +5665,32 @@ const mountBrain = async (field: HTMLElement) => {
               Math.abs(distanceFromHead - echoDistance) <= bandWidth
             ) {
               executionWaveBand = executionWaveLevels - 1 - echoIndex;
+              break;
+            }
+          }
+        }
+        let constructionWaveBand = -1;
+        if (constructionWaveActiveForFiber) {
+          const directedSegmentPosition =
+            constructionWaveDirection[fiberIndex] > 0
+              ? segmentPosition
+              : 1 - segmentPosition;
+          const distanceFromConstructionHead =
+            constructionWaveProgress - directedSegmentPosition;
+          for (
+            let echoIndex = 0;
+            echoIndex < constructionWaveLevels;
+            echoIndex += 1
+          ) {
+            const echoDistance = echoIndex * constructionWaveEchoSpacing;
+            const bandWidth =
+              constructionWaveHeadWidth * (1 - echoIndex * 0.08);
+            if (
+              Math.abs(distanceFromConstructionHead - echoDistance) <=
+              bandWidth
+            ) {
+              constructionWaveBand =
+                constructionWaveLevels - 1 - echoIndex;
               break;
             }
           }
@@ -5934,6 +6011,17 @@ const mountBrain = async (field: HTMLElement) => {
                 ];
               wavePath.moveTo(segmentStartX, segmentStartY);
               wavePath.lineTo(segmentEndX, segmentEndY);
+            }
+            if (
+              constructionWaveBand >= 0 &&
+              strandIndex === centerStrand
+            ) {
+              const constructionPath =
+                constructionWavePaths[
+                  constructionWaveBand * DEPTH_LEVELS + depthBand
+                ];
+              constructionPath.moveTo(segmentStartX, segmentStartY);
+              constructionPath.lineTo(segmentEndX, segmentEndY);
             }
           } else {
             const tailPosition =
@@ -6503,6 +6591,38 @@ const mountBrain = async (field: HTMLElement) => {
           context.lineWidth = onePhysicalPixel;
           context.stroke(
             executionWavePaths[waveBand * DEPTH_LEVELS + depthBand],
+          );
+        }
+      }
+    }
+
+    if (!reducedMotion.matches) {
+      const constructionWaveAlpha = [0.05, 0.085, 0.14, 0.24];
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      for (
+        let waveBand = 0;
+        waveBand < constructionWaveLevels;
+        waveBand += 1
+      ) {
+        for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+          const depthStrength =
+            0.2 + STRUCTURAL_DEPTH_ALPHA[depthBand] * 0.8;
+          context.strokeStyle = rgba(
+            255,
+            (waveBand === constructionWaveLevels - 1 ? 232 : 204) +
+              depthBand * 2,
+            (waveBand === constructionWaveLevels - 1 ? 98 : 34) +
+              depthBand * 2,
+            constructionWaveAlpha[waveBand] * depthStrength,
+          );
+          context.lineWidth =
+            (waveBand === constructionWaveLevels - 1 ? 1.45 : 1) *
+            onePhysicalPixel;
+          context.stroke(
+            constructionWavePaths[
+              waveBand * DEPTH_LEVELS + depthBand
+            ],
           );
         }
       }
