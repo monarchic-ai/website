@@ -3894,6 +3894,16 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     trajectoryLength >= 0.8 &&
     maximumPlanarDeviation < 0.095 &&
     mixRenderKey(bundleKey ^ 0x4652414e) % 3 !== 0;
+  const redundantCrownMicrofold =
+    fiber.family === "cortical-microfold" &&
+    crownOccupancy >= 0.16 &&
+    crownOccupancy < 0.3 &&
+    mixRenderKey(bundleKey ^ 0x4d43524e) % 3 === 0;
+  const redundantCentralMicrofold =
+    fiber.family === "cortical-microfold" &&
+    centralRearOccupancy >= 0.2 &&
+    crownOccupancy < 0.16 &&
+    mixRenderKey(bundleKey ^ 0x4d434e54) % 3 === 0;
   const dimFrontalClutter =
     fiber.bundleTier === "dim" &&
     !boundaryFamily &&
@@ -3935,6 +3945,8 @@ const createFiberRenderPlan = (fiber: Fiber): FiberRenderPlan => {
     straightFrontalSurface ||
     redundantFrontalProjection ||
     angularFrontalScaffold ||
+    redundantCrownMicrofold ||
+    redundantCentralMicrofold ||
     straightDeepScaffold ||
     dimFrontalClutter ||
     dimCrownClutter ||
@@ -4559,24 +4571,40 @@ const mountBrain = async (field: HTMLElement) => {
       }
 
       const pointCount = fiber.points.length / 3;
+      let staticCrownPointCount = 0;
+      let staticCentralPointCount = 0;
+      for (let offset = 0; offset < fiber.points.length; offset += 3) {
+        if (fiber.points[offset + 1] > 0.72) {
+          staticCrownPointCount += 1;
+        }
+        if (fiber.points[offset] > -0.15 && fiber.points[offset + 1] > -0.35) {
+          staticCentralPointCount += 1;
+        }
+      }
+      const suppressStaticCompanions =
+        staticOnlyFiber &&
+        (staticCrownPointCount / Math.max(1, pointCount) >= 0.22 ||
+          staticCentralPointCount / Math.max(1, pointCount) >= 0.38);
       const companionKey = mixRenderKey(fiber.bundleId ^ 0x434f4d50);
       const companionCount = fiber.family === "posterior-depth"
         ? 0
-        : fiber.region === "cerebellum"
-        ? companionKey % 3 === 0
-          ? 1
-          : 0
-        : staticOnlyMicrofold
-        ? 0
-        : fiber.family === "cortical-fold"
-          ? 1
-          : fiber.family === "local-cortical"
-            ? companionKey % 4 === 0
-              ? 2
-              : 1
-            : companionKey % 5 === 0
+        : suppressStaticCompanions
+          ? 0
+          : fiber.region === "cerebellum"
+            ? companionKey % 3 === 0
               ? 1
-              : 2;
+              : 0
+            : staticOnlyMicrofold
+              ? 0
+              : fiber.family === "cortical-fold"
+                ? 1
+                : fiber.family === "local-cortical"
+                  ? companionKey % 4 === 0
+                    ? 2
+                    : 1
+                  : companionKey % 5 === 0
+                    ? 1
+                    : 2;
       const companionPhase = renderUnit(companionKey ^ 0x50484153) * TAU;
       const companionDrift = lerp(
         0.1,
