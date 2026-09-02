@@ -4357,6 +4357,14 @@ const mountBrain = async (field: HTMLElement) => {
     boundaryStrength: number,
   ) => {
     if (
+      modelX >= -0.62 &&
+      modelX <= 1.05 &&
+      modelY > 0.42 &&
+      boundaryStrength > 0.16
+    ) {
+      return 1;
+    }
+    if (
       modelX < -0.62 &&
       modelY > -0.58 &&
       boundaryStrength > 0.2
