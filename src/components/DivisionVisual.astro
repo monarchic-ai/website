@@ -1,0 +1,222 @@
+---
+interface Props {
+  variant: "products" | "platform" | "research";
+}
+
+const { variant } = Astro.props;
+---
+
+<span
+  class:list={["division-visual relative block aspect-square overflow-hidden border border-black bg-black", `division-visual--${variant}`]}
+  aria-hidden="true"
+>
+  {variant === "products" && (
+    <>
+      <img
+        src="/model-systems-core.webp"
+        alt=""
+        class="division-visual__image h-full w-full object-cover"
+        width="1254"
+        height="1254"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="division-visual__reticle"></span>
+    </>
+  )}
+
+  {variant === "platform" && (
+    <svg viewBox="0 0 160 160" class="division-visual__svg" focusable="false">
+      <g class="division-visual__grid">
+        <path d="M16 28H144M16 80H144M16 132H144" />
+        <path d="M28 16V144M80 16V144M132 16V144" />
+      </g>
+      <g class="division-visual__structure">
+        <path d="M22 30H49L64 45V61" />
+        <path d="M138 30H111L96 45V61" />
+        <path d="M22 130H49L64 115V99" />
+        <path d="M138 130H111L96 115V99" />
+        <path d="M35 80H59M101 80H125" />
+      </g>
+      <g class="division-visual__nodes">
+        <rect x="17" y="25" width="10" height="10" />
+        <rect x="133" y="25" width="10" height="10" />
+        <rect x="17" y="125" width="10" height="10" />
+        <rect x="133" y="125" width="10" height="10" />
+        <rect x="31" y="76" width="8" height="8" />
+        <rect x="121" y="76" width="8" height="8" />
+      </g>
+      <g class="division-visual__core">
+        <rect x="59" y="59" width="42" height="42" />
+        <rect x="66" y="66" width="28" height="28" />
+        <path d="M73 73H87V87H73Z" />
+        <path d="M80 53V59M80 101V107M53 80H59M101 80H107" />
+      </g>
+      <g class="division-visual__signal">
+        <path pathLength="1" d="M22 30H49L64 45V61H80" />
+        <path pathLength="1" d="M80 99H96V115L111 130H138" />
+        <circle cx="80" cy="80" r="4" />
+      </g>
+      <g class="division-visual__ticks">
+        <path d="M8 18V8H18M142 8H152V18M8 142V152H18M142 152H152V142" />
+      </g>
+    </svg>
+  )}
+
+  {variant === "research" && (
+    <svg viewBox="0 0 160 160" class="division-visual__svg" focusable="false">
+      <g class="division-visual__grid">
+        <path d="M20 28H144M20 56H144M20 84H144M20 112H144" />
+        <path d="M40 18V132M72 18V132M104 18V132M136 18V132" />
+      </g>
+      <g class="division-visual__axis">
+        <path d="M20 18V132H146" />
+        <path d="M17 28H23M17 56H23M17 84H23M17 112H23" />
+        <path d="M40 129V135M72 129V135M104 129V135M136 129V135" />
+      </g>
+      <g class="division-visual__traces">
+        <path d="M20 111C35 108 42 94 53 96S70 111 81 88 100 67 111 72 126 54 145 48" />
+        <path d="M20 120C38 118 48 112 61 113S82 101 95 103 119 86 145 84" />
+        <path d="M20 72C35 76 49 68 62 71S84 62 98 65 121 56 145 59" />
+      </g>
+      <g class="division-visual__samples">
+        <circle cx="53" cy="96" r="2.5" />
+        <circle cx="81" cy="88" r="2.5" />
+        <circle cx="111" cy="72" r="2.5" />
+        <circle cx="145" cy="48" r="2.5" />
+      </g>
+      <g class="division-visual__signal">
+        <path pathLength="1" d="M20 111C35 108 42 94 53 96S70 111 81 88 100 67 111 72 126 54 145 48" />
+        <circle cx="111" cy="72" r="4" />
+      </g>
+      <g class="division-visual__readout">
+        <rect x="93" y="18" width="52" height="16" />
+        <path d="M99 26H112M117 26H125M130 26H139" />
+      </g>
+      <g class="division-visual__ticks">
+        <path d="M8 18V8H18M142 8H152V18M8 142V152H18M142 152H152V142" />
+      </g>
+    </svg>
+  )}
+</span>
+
+<style>
+  .division-visual {
+    color: #f2f0e8;
+  }
+
+  .division-visual::after {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(0 0 0 / 0.08), transparent 48%, rgb(0 0 0 / 0.28)),
+      linear-gradient(90deg, rgb(255 210 26 / 0.04), transparent 18% 82%, rgb(255 210 26 / 0.04));
+    content: "";
+    pointer-events: none;
+  }
+
+  .division-visual__image,
+  .division-visual__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .division-visual__svg {
+    fill: none;
+  }
+
+  .division-visual__grid {
+    stroke: rgb(242 240 232 / 0.1);
+    stroke-width: 0.7;
+  }
+
+  .division-visual__structure,
+  .division-visual__axis,
+  .division-visual__traces {
+    stroke: rgb(242 240 232 / 0.46);
+    stroke-width: 1;
+  }
+
+  .division-visual__traces path:nth-child(2),
+  .division-visual__traces path:nth-child(3) {
+    stroke: rgb(242 240 232 / 0.22);
+  }
+
+  .division-visual__nodes,
+  .division-visual__core,
+  .division-visual__samples,
+  .division-visual__readout {
+    stroke: rgb(242 240 232 / 0.74);
+    stroke-width: 1;
+  }
+
+  .division-visual__core rect:nth-child(2),
+  .division-visual__readout rect {
+    fill: rgb(242 240 232 / 0.035);
+  }
+
+  .division-visual__samples circle {
+    fill: #080808;
+  }
+
+  .division-visual__signal {
+    stroke: #ffd21a;
+    stroke-width: 1.35;
+  }
+
+  .division-visual__signal path {
+    stroke-dasharray: 0.18 0.08;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .division-visual__signal circle {
+    fill: #ffd21a;
+    stroke: rgb(255 210 26 / 0.32);
+    stroke-width: 5;
+  }
+
+  .division-visual__ticks {
+    stroke: rgb(255 210 26 / 0.5);
+    stroke-width: 1;
+  }
+
+  .division-visual__reticle {
+    position: absolute;
+    z-index: 1;
+    inset: 12%;
+    border: 1px solid rgb(255 210 26 / 0.12);
+    transform: rotate(45deg) scale(0.34);
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease;
+  }
+
+  :global(.group:hover) .division-visual__image,
+  :global(.group:focus-visible) .division-visual__image,
+  :global(.group:hover) .division-visual__svg,
+  :global(.group:focus-visible) .division-visual__svg {
+    transform: scale(1.035);
+  }
+
+  :global(.group:hover) .division-visual__signal path,
+  :global(.group:focus-visible) .division-visual__signal path {
+    stroke-dashoffset: -0.42;
+  }
+
+  :global(.group:hover) .division-visual__reticle,
+  :global(.group:focus-visible) .division-visual__reticle {
+    border-color: rgb(255 210 26 / 0.32);
+    transform: rotate(45deg) scale(0.52);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .division-visual__image,
+    .division-visual__svg,
+    .division-visual__signal path,
+    .division-visual__reticle {
+      transition: none;
+    }
+  }
+</style>
