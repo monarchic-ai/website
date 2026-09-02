@@ -1,11 +1,12 @@
 ---
+import { webappBaseUrl } from "../lib/publicUrls";
+
 interface Props {
   active?: "products" | "research" | "support";
   tone?: "dark" | "paper";
 }
 
 const { active, tone = "dark" } = Astro.props;
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const navClass = (current: boolean) => [
   "site-nav-link",
   tone === "paper"
@@ -32,6 +33,6 @@ const navClass = (current: boolean) => [
     <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}><span>Products</span></a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}><span>Research</span></a>
     <a aria-current={active === "support" ? "page" : undefined} href="/company#contact" class={navClass(active === "support")}><span>Support</span></a>
-    <a href={`${appBaseUrl}/app`} class={navClass(false)}><span>Apps</span></a>
+    <a href={`${webappBaseUrl}/app`} class={navClass(false)}><span>Apps</span></a>
   </nav>
 </header>

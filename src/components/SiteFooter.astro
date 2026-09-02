@@ -1,10 +1,11 @@
 ---
+import { webappBaseUrl } from "../lib/publicUrls";
+
 interface Props {
   tone?: "dark" | "paper";
 }
 
 const { tone = "dark" } = Astro.props;
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 ---
 
 <footer
@@ -36,7 +37,7 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
     <a href="/research" class="motion-link hover:text-signal">Research</a>
     <a href="/products" class="motion-link hover:text-signal">Products</a>
     <a href="/security" class="motion-link hover:text-signal">Security</a>
-    <a href={`${appBaseUrl}/setup`} class="motion-link hover:text-signal">Setup</a>
+    <a href={`${webappBaseUrl}/setup`} class="motion-link hover:text-signal">Setup</a>
     <a href="/privacy" class="motion-link hover:text-signal">Privacy</a>
     <a href="/terms" class="motion-link hover:text-signal">Terms</a>
   </nav>

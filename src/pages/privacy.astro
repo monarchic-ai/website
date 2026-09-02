@@ -1,9 +1,9 @@
 ---
 import LegalPageLayout from "../layouts/LegalPageLayout.astro";
+import { webappBaseUrl } from "../lib/publicUrls";
 
 const sectionClass = "border-t border-white/35 py-8 first:border-t-0 first:pt-0";
 const copyClass = "max-w-3xl space-y-4 text-sm leading-7 text-white/72 sm:text-base sm:leading-8";
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 ---
 
 <LegalPageLayout
@@ -29,7 +29,7 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
     <h2 class="text-2xl font-extrabold uppercase">Scope and controller</h2>
     <div class={copyClass}>
       <p>Monarchic LLC is responsible for the website processing described here.</p>
-      <p>This notice does not cover accounts, authentication, billing, hosted MCP calls, agent runs, product content, usage records, or product support inside the Monarchic webapp. Those activities are covered by the <a class="font-bold text-signal hover:text-white" href={`${appBaseUrl}/privacy`}>product privacy notice</a>.</p>
+      <p>This notice does not cover accounts, authentication, billing, hosted MCP calls, agent runs, product content, usage records, or product support inside the Monarchic webapp. Those activities are covered by the <a class="font-bold text-signal hover:text-white" href={`${webappBaseUrl}/privacy`}>product privacy notice</a>.</p>
     </div>
   </section>
 
@@ -91,6 +91,6 @@ const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https:/
   </div>
   <div slot="contact" class="flex flex-wrap gap-3">
     <a href="mailto:support@monarchic.io?subject=Website%20privacy%20request" class="border-2 border-signal bg-signal px-5 py-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact support</a>
-    <a href={`${appBaseUrl}/privacy`} class="border-2 border-white/50 px-5 py-3 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Product privacy</a>
+    <a href={`${webappBaseUrl}/privacy`} class="border-2 border-white/50 px-5 py-3 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal/10 hover:text-signal-soft">Product privacy</a>
   </div>
 </LegalPageLayout>

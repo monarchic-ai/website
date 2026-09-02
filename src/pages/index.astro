@@ -5,9 +5,9 @@ import DivisionVisual from "../components/DivisionVisual.astro";
 import SeoHead from "../components/SeoHead.astro";
 import { explicitMemBenchmark } from "../lib/explicitmemBenchmark";
 import { allPlans, hostedMcpStatus } from "../lib/pricing";
+import { webappBaseUrl } from "../lib/publicUrls";
 import "../styles/global.css";
 
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const publicMcpProducts = allPlans.filter((plan) => plan.kind === "single-mcp");
 const availableEnhancementCount = publicMcpProducts.filter((plan) => hostedMcpStatus(plan) === "available").length;
 
@@ -247,7 +247,7 @@ const futureWork = [
             </p>
             <div class="mt-6 flex flex-wrap gap-2">
               <a href="/products/hosted-mcps" class="motion-link inline-flex min-h-11 items-center border border-signal bg-signal px-4 text-xs font-black uppercase text-black hover:bg-signal-soft">Explore agent enhancements</a>
-              <a href={`${appBaseUrl}/products/usage-evaluation`} class="motion-link inline-flex min-h-11 items-center border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:text-signal-soft">Start free evaluation</a>
+              <a href={`${webappBaseUrl}/products/usage-evaluation`} class="motion-link inline-flex min-h-11 items-center border border-white/40 px-4 text-xs font-black uppercase text-white hover:border-signal hover:text-signal-soft">Start free evaluation</a>
             </div>
           </div>
         </header>

@@ -18,6 +18,7 @@ import {
 } from "../../lib/pricing";
 import { getProductDetail } from "../../lib/productDetails";
 import { getMcpResearchByProductSlug } from "../../lib/mcpResearch";
+import { webappBaseUrl } from "../../lib/publicUrls";
 import {
   getProductWorkflowProof,
   productWorkflowProofs,
@@ -44,7 +45,6 @@ if (!plan) {
   return Astro.redirect("/products");
 }
 
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const productDetail = getProductDetail(plan.slug);
 const workflowProof = getProductWorkflowProof(plan.slug);
 const displayPrice = resolveDisplayPrice(plan, "monthly");
@@ -296,7 +296,7 @@ function statusClasses(plan: CatalogPlan): string {
                 <p class="text-xs font-bold uppercase text-signal">Start Evaluation</p>
                 <p class="mt-4 text-2xl font-extrabold uppercase">Limited 30-day usage</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Confirm your email in the Monarchic webapp before starting. No card or automatic billing; usage pauses at the evaluation limit.</p>
-                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
+                <a href={`${webappBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Start free evaluation
                 </a>
               </>
@@ -304,7 +304,7 @@ function statusClasses(plan: CatalogPlan): string {
               <>
                 <p class="text-xs font-bold uppercase text-signal">Checkout available</p>
                 <p class="mt-4 text-sm leading-6 text-white/66">Choose monthly or annual billing in the Monarchic webapp. Usage pauses at the plan limit by default.</p>
-                <a href={`${appBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
+                <a href={`${webappBaseUrl}/products/${plan.slug}`} class="mt-6 inline-flex min-h-12 w-full items-center justify-center border-2 border-signal bg-signal px-4 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">
                   Choose plan
                 </a>
               </>

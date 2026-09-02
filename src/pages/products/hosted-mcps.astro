@@ -15,9 +15,9 @@ import {
   type CatalogPlan,
 } from "../../lib/pricing";
 import { researchHrefForProductSlug } from "../../lib/mcpResearch";
+import { webappBaseUrl } from "../../lib/publicUrls";
 import usagePolicy from "../../lib/usage-policy.generated.json" with { type: "json" };
 
-const appBaseUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
 const usageOrder = ["usage-evaluation", "usage-individual", "usage-developer", "usage-team", "usage-business"];
 const rank = (order: string[], slug: string) => {
   const index = order.indexOf(slug);
@@ -140,7 +140,7 @@ function statusClasses(plan: CatalogPlan): string {
               <a href="#mcp-catalog" class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
                 Browse enhancements <span aria-hidden="true">↓</span>
               </a>
-              <a href={`${appBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
+              <a href={`${webappBaseUrl}/products/usage-evaluation`} class="inline-flex min-h-12 items-center justify-between border-2 border-white/50 px-5 text-xs font-bold uppercase text-white transition hover:border-signal hover:bg-signal hover:text-black min-[440px]:min-w-48">
                 Start evaluation <span aria-hidden="true">↗</span>
               </a>
             </div>
@@ -214,9 +214,9 @@ function statusClasses(plan: CatalogPlan): string {
                   <div class="flex-1"></div>
                   <div class="mt-7 grid gap-2">
                     {isEvaluation ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Start free evaluation</a>
+                      <a href={`${webappBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Start free evaluation</a>
                     ) : isPurchasable ? (
-                      <a href={`${appBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Choose plan</a>
+                      <a href={`${webappBaseUrl}/products/${plan.slug}`} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Choose plan</a>
                     ) : plan.status === "contact_sales" && plan.salesContactUrl ? (
                       <a href={plan.salesContactUrl} class="inline-flex min-h-11 items-center justify-center border-2 border-signal bg-signal px-3 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Contact sales</a>
                     ) : (
@@ -389,7 +389,7 @@ function statusClasses(plan: CatalogPlan): string {
             <h2 class="mt-3 text-3xl font-extrabold uppercase">From account to first tool call</h2>
             <p class="mt-3 max-w-2xl text-sm leading-7 text-white/70">The setup guide covers access, API keys, client configuration, verification, and troubleshooting.</p>
           </div>
-          <a href={`${appBaseUrl}/setup`} class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-6 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Open setup</a>
+          <a href={`${webappBaseUrl}/setup`} class="inline-flex min-h-12 items-center justify-center border-2 border-signal bg-signal px-6 text-xs font-bold uppercase text-black transition hover:bg-signal-soft">Open setup</a>
         </section>
 
     </PublicPageFrame>
