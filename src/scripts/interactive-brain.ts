@@ -145,7 +145,7 @@ const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 4;
 const OUTBOUND_OPACITY_LEVELS = 5;
 const OUTBOUND_NODE_PHASES = 4;
-const OUTBOUND_FIBER_COUNT = 36;
+const OUTBOUND_FIBER_COUNT = 24;
 const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
@@ -455,13 +455,13 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 
 const CEREBELLUM: Lobe = {
   center: { x: 1.08, y: -0.52, z: 0.06 },
-  radius: { x: 0.68, y: 0.45, z: 0.52 },
+  radius: { x: 0.7, y: 0.4, z: 0.5 },
 };
 
 const BRAINSTEM = {
   top: { x: 0.78, y: -0.34 },
   bottom: { x: 0.66, y: -1.14 },
-  topRadius: { x: 0.46, z: 0.32 },
+  topRadius: { x: 0.48, z: 0.34 },
   centerZ: 0.07,
   curve: 0.11,
   endScale: 0.34,
@@ -844,12 +844,16 @@ const brainstemCenterX = (position: number) =>
   lerp(BRAINSTEM.top.x, BRAINSTEM.bottom.x, position) -
   BRAINSTEM.curve * Math.sin(Math.PI * position);
 
-const brainstemTaper = (position: number) =>
-  lerp(
+const brainstemTaper = (position: number) => {
+  const medullaTaper = lerp(
     1,
     BRAINSTEM.endScale,
-    smoothstep(0.24, 1, position),
+    smoothstep(0.18, 1, position),
   );
+  const ponsBulge =
+    Math.exp(-(((position - 0.3) / 0.17) ** 2)) * 0.14;
+  return medullaTaper + ponsBulge;
+};
 
 const brainstemField = (point: Vector3) => {
   const verticalSpan = BRAINSTEM.top.y - BRAINSTEM.bottom.y;
@@ -2809,11 +2813,10 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
   const random = seededRandom(FAMILY_SEEDS.cerebellar);
   let generatedBundles = 0;
   const foliaDepths = [-0.26, 0, 0.26] as const;
-  const foliaBandCount = 58;
+  const foliaBandCount = 62;
   for (let band = 0; band < foliaBandCount; band += 1) {
-    // Build the cerebellum from short, curled lobular folia. A minority of
-    // longer paths bind the lobules together, while most strands turn inside
-    // compact local regions instead of reading as horizontal scan lines.
+    // Build the cerebellum from layered folia with a few compact lobular
+    // turns, keeping the arcs coherent without becoming horizontal scan lines.
     const bandPhase = band * 0.175 + random() * 0.045;
     const normalizedY =
       lerp(-0.72, 0.72, (band + 0.5) / foliaBandCount) +
@@ -2822,7 +2825,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       Math.max(0.06, 1 - (normalizedY / 0.8) ** 2),
     );
     const lobuleIndex = band % 5;
-    const localBundle = lobuleIndex < 2;
+    const localBundle = lobuleIndex === 0;
     const lobulePosition = [-0.34, -0.15, 0.08, 0.3, 0][lobuleIndex] ?? 0;
     const horizontalCenter = localBundle
       ? lobulePosition + lerp(-0.055, 0.055, random())
@@ -2843,8 +2846,8 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       archDirection;
     const bandArchExponent = lerp(0.9, 1.12, random());
     const bandFlowTilt = lerp(-0.07, 0.07, random());
-    const bandBroadAmplitude = lerp(0.05, 0.09, random());
-    const bandLocalAmplitude = lerp(0.011, 0.022, random());
+    const bandBroadAmplitude = lerp(0.04, 0.072, random());
+    const bandLocalAmplitude = lerp(0.009, 0.018, random());
     const bandLocalCycles = lerp(1.3, 1.95, random());
     const bandLateralAmplitude = lerp(0.02, 0.05, random());
     const centralCurlGain = lerp(
@@ -2856,12 +2859,12 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
       lerp(0.022, 0.045, random()) * centralCurlGain;
     const bandCounterCurlAmplitude = lerp(0.009, 0.019, random());
     const bandRotation = localBundle
-      ? Math.sin(bandPhase * 1.37) * 0.11 +
-        lobulePosition * 0.12 +
-        lerp(-0.04, 0.04, random())
-      : Math.sin(bandPhase * 1.37) * 0.035 +
-        lobulePosition * 0.03 +
-        lerp(-0.015, 0.015, random());
+      ? Math.sin(bandPhase * 1.37) * 0.075 +
+        lobulePosition * 0.09 +
+        lerp(-0.026, 0.026, random())
+      : Math.sin(bandPhase * 1.37) * 0.022 +
+        lobulePosition * 0.02 +
+        lerp(-0.01, 0.01, random());
     const bandRotationCosine = Math.cos(bandRotation);
     const bandRotationSine = Math.sin(bandRotation);
     for (let lane = 0; lane < foliaDepths.length; lane += 1) {
@@ -2970,7 +2973,7 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
     }
   }
 
-  const transverseFoliaCount = 10;
+  const transverseFoliaCount = 6;
   for (let index = 0; index < transverseFoliaCount; index += 1) {
     const bandPosition = (index + 0.5) / transverseFoliaCount;
     const normalizedY =
@@ -3255,12 +3258,12 @@ const createStemFibers = async (createBundle: BundleFactory) => {
     const lanePosition = (index + 0.5) / junctionFiberCount;
     const normalizedX = lerp(-0.9, 0.9, lanePosition);
     const normalizedZ = lerp(-0.3, 0.3, random());
-    const junctionEnd = lerp(0.34, 0.5, random());
+    const junctionEnd = lerp(0.4, 0.56, random());
     const sourceX =
       BRAINSTEM.top.x +
-      lerp(-0.42, 0.44, lanePosition) +
+      lerp(-0.48, 0.48, lanePosition) +
       lerp(-0.025, 0.025, random());
-    const sourceY = BRAINSTEM.top.y + lerp(0.12, 0.28, random());
+    const sourceY = BRAINSTEM.top.y + lerp(0.2, 0.34, random());
     const sourceZ =
       BRAINSTEM.centerZ + normalizedZ * BRAINSTEM.topRadius.z * 1.08;
     const junctionSway = lerp(-0.025, 0.025, random());
@@ -4349,7 +4352,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 7.1;
+  const mediumFiberGain = 5.4;
   const staticLightGains = [1, 0.82, 2.15, 1.32] as const;
   const cerebrumLightBand = (
     modelX: number,
@@ -5102,7 +5105,7 @@ const mountBrain = async (field: HTMLElement) => {
     const visibleOutboundFiberSet =
       outboundFiberSets[
         Math.round(
-          lerp(6, OUTBOUND_FIBER_COUNT, densityPosition),
+          lerp(4, OUTBOUND_FIBER_COUNT, densityPosition),
         )
       ];
     const secondaryNodeVisibility = smoothstep(
@@ -5963,9 +5966,9 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         174 + depthBand * 3,
         0,
-        0.014 + depthStrength * 0.066,
+        0.01 + depthStrength * 0.04,
       );
-      context.lineWidth = 3 * onePhysicalPixel;
+      context.lineWidth = 2.4 * onePhysicalPixel;
       context.stroke(centralTractHaloPaths[depthBand]);
     }
 
@@ -6057,24 +6060,10 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         230 + depthBand * 3,
         86 + depthBand * 3,
-        0.18 + depthStrength * 0.58,
+        0.12 + depthStrength * 0.42,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(corticalRidgePaths[depthBand]);
-    }
-
-    context.lineCap = "round";
-    context.lineJoin = "round";
-    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
-      const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
-      context.strokeStyle = rgba(
-        255,
-        180,
-        28,
-        0.118 + depthStrength * 0.085,
-      );
-      context.lineWidth = onePhysicalPixel;
-      context.stroke(stemPaths[depthBand]);
     }
 
     if (
@@ -6108,6 +6097,20 @@ const mountBrain = async (field: HTMLElement) => {
       context.arc(0, 0, 1, 0, TAU);
       context.fill();
       context.restore();
+    }
+
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
+      context.strokeStyle = rgba(
+        255,
+        180,
+        28,
+        0.118 + depthStrength * 0.085,
+      );
+      context.lineWidth = onePhysicalPixel;
+      context.stroke(stemPaths[depthBand]);
     }
 
     drawStructuralBatches(
@@ -6271,9 +6274,9 @@ const mountBrain = async (field: HTMLElement) => {
             255,
             174 + depthBand * 3,
             0,
-            (fadeBand === 0 ? 0.044 : 0.12) * depthStrength,
+            (fadeBand === 0 ? 0.024 : 0.07) * depthStrength,
           );
-          context.lineWidth = 2.8 * onePhysicalPixel;
+          context.lineWidth = 2.2 * onePhysicalPixel;
           context.stroke(activePaths[index]);
           context.strokeStyle = rgba(
             255,
@@ -6304,9 +6307,9 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         182 + depthBand * 2,
         8 + depthBand * 2,
-        0.028 + depthStrength * 0.072,
+        0.016 + depthStrength * 0.044,
       );
-      context.lineWidth = 3.4 * onePhysicalPixel;
+      context.lineWidth = 2.5 * onePhysicalPixel;
       context.stroke(hotActivePaths[depthBand]);
     }
     context.restore();
