@@ -145,7 +145,7 @@ const WIDTH_LEVELS = 2;
 const CORTEX_LIGHT_LEVELS = 4;
 const OUTBOUND_OPACITY_LEVELS = 5;
 const OUTBOUND_NODE_PHASES = 4;
-const OUTBOUND_FIBER_COUNT = 24;
+const OUTBOUND_FIBER_COUNT = 12;
 const STRUCTURAL_DEPTH_ALPHA = [0.07, 0.12, 0.2, 0.32, 0.49, 0.73, 1] as const;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const COMPACT_CEREBRUM_DENSITY_FLOOR = 0.12;
@@ -454,17 +454,17 @@ const SULCAL_GUIDES: SulcalGuide[] = [
 ];
 
 const CEREBELLUM: Lobe = {
-  center: { x: 1.08, y: -0.52, z: 0.06 },
+  center: { x: 1.05, y: -0.5, z: 0.06 },
   radius: { x: 0.7, y: 0.4, z: 0.5 },
 };
 
 const BRAINSTEM = {
   top: { x: 0.78, y: -0.34 },
-  bottom: { x: 0.66, y: -1.14 },
-  topRadius: { x: 0.48, z: 0.34 },
+  bottom: { x: 0.67, y: -1.08 },
+  topRadius: { x: 0.44, z: 0.31 },
   centerZ: 0.07,
   curve: 0.11,
-  endScale: 0.34,
+  endScale: 0.26,
 } as const;
 
 // Local cortical bundles form the substrate; regional families carry long tracts.
@@ -3197,20 +3197,20 @@ const createCerebellumFibers = async (createBundle: BundleFactory) => {
 const createStemFibers = async (createBundle: BundleFactory) => {
   const fibers: Fiber[] = [];
   const random = seededRandom(FAMILY_SEEDS.stem);
-  const stemLaneCount = 46;
+  const stemLaneCount = 28;
   for (let lane = 0; lane < stemLaneCount; lane += 1) {
     const lanePosition = (lane + 0.5) / stemLaneCount;
     const normalizedX = clamp(
-      lerp(-0.92, 0.92, lanePosition) + lerp(-0.035, 0.035, random()),
-      -0.94,
-      0.94,
+      lerp(-0.78, 0.78, lanePosition) + lerp(-0.025, 0.025, random()),
+      -0.8,
+      0.8,
     );
     const depthExtent = Math.sqrt(Math.max(0.08, 1 - normalizedX ** 2));
-    const normalizedZ = lerp(-0.86, 0.86, random()) * depthExtent;
+    const normalizedZ = lerp(-0.72, 0.72, random()) * depthExtent;
     const endProgress = lerp(0.96, 1, random());
     const phase = random() * TAU;
     const lateralSway = lerp(-0.035, 0.035, random());
-    const terminalScale = lerp(0.94, 1.06, random());
+    const terminalScale = lerp(0.98, 1.02, random());
     const controls: Vector3[] = [];
     for (let step = 0; step <= 14; step += 1) {
       const position = (step / 14) * endProgress;
@@ -3470,7 +3470,7 @@ const styleFibers = (fibers: Fiber[]) => {
             (fiber.family === "cortical-fold" && activityKey < 0.56) ||
             (fiber.family === "central-tract" && activityKey < 0.3) ||
             boundaryMedium ||
-            fiber.region === "stem" ||
+            (fiber.region === "stem" && activityKey < 0.46) ||
             (fiber.region === "cerebrum" &&
               fiber.family !== "local-cortical" &&
               activityKey < 0.12)
@@ -4352,7 +4352,7 @@ const mountBrain = async (field: HTMLElement) => {
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   );
-  const mediumFiberGain = 5.4;
+  const mediumFiberGain = 4.4;
   const staticLightGains = [1, 0.82, 2.15, 1.32] as const;
   const cerebrumLightBand = (
     modelX: number,
@@ -4774,7 +4774,7 @@ const mountBrain = async (field: HTMLElement) => {
       const nodeKey = mixRenderKey(fiber.bundleId ^ 0x4e4f4445);
       if (
         fiber.family !== "posterior-depth" &&
-        staticNodeCount < 240 &&
+        staticNodeCount < 120 &&
         nodeKey % 3 === 0
       ) {
         const nodeIndex = Math.floor(
@@ -4839,7 +4839,7 @@ const mountBrain = async (field: HTMLElement) => {
       );
       staticContext.stroke(posteriorDepthPaths[depthBand]);
     }
-    const staticAlpha = [0.154, 0.274, 0.44] as const;
+    const staticAlpha = [0.13, 0.22, 0.34] as const;
     for (
       let opacityBand = 0;
       opacityBand < staticOpacityLevels;
@@ -5105,7 +5105,7 @@ const mountBrain = async (field: HTMLElement) => {
     const visibleOutboundFiberSet =
       outboundFiberSets[
         Math.round(
-          lerp(4, OUTBOUND_FIBER_COUNT, densityPosition),
+          lerp(2, OUTBOUND_FIBER_COUNT, densityPosition),
         )
       ];
     const secondaryNodeVisibility = smoothstep(
@@ -5345,7 +5345,7 @@ const mountBrain = async (field: HTMLElement) => {
         fiber.family === "cerebellar-folia"
       ) {
         const nodeKey = mixRenderKey(fiber.bundleId ^ 0x43424e44);
-        if (nodeKey % 5 === 0) {
+        if (nodeKey % 8 === 0) {
           const requestedNodeIndex = Math.floor(
             lerp(
               0.14,
@@ -5729,19 +5729,19 @@ const mountBrain = async (field: HTMLElement) => {
               ((modelX < -0.55 &&
                 ((fiber.family === "cortical-fold" &&
                   centerDistance === 0 &&
-                  corticalRidgeKey % 3 === 0) ||
+                  corticalRidgeKey % 5 === 0) ||
                   (fiber.family === "frontal-surface" &&
                     centerDistance <= 1 &&
-                    corticalRidgeKey % 12 === 0))) ||
+                    corticalRidgeKey % 18 === 0))) ||
                 (modelX >= -0.55 &&
                   fiber.family === "cortical-fold" &&
                   centerDistance === 0 &&
-                  corticalRidgeKey % 4 === 0) ||
+                  corticalRidgeKey % 6 === 0) ||
                 (modelX > 0.45 &&
                   modelY > 0.05 &&
                   fiber.family === "posterior-surface" &&
                   centerDistance === 0 &&
-                  corticalRidgeKey % 28 === 0));
+                  corticalRidgeKey % 40 === 0));
             if (corticalRidgeFiber) {
               corticalRidgePaths[depthBand].moveTo(
                 segmentStartX,
@@ -6051,6 +6051,52 @@ const mountBrain = async (field: HTMLElement) => {
 
     drawStructuralBatches(structuralPaths, mediumPaths);
 
+    const internalVoidModel = { x: 0.12, y: 0.28, z: -0.04 };
+    const internalVoidRotatedX =
+      matrix[0] * internalVoidModel.x +
+      matrix[1] * internalVoidModel.y +
+      matrix[2] * internalVoidModel.z;
+    const internalVoidRotatedY =
+      matrix[3] * internalVoidModel.x +
+      matrix[4] * internalVoidModel.y +
+      matrix[5] * internalVoidModel.z;
+    const internalVoidRotatedZ =
+      matrix[6] * internalVoidModel.x +
+      matrix[7] * internalVoidModel.y +
+      matrix[8] * internalVoidModel.z;
+    const internalVoidPerspective =
+      cameraDistance / (cameraDistance - internalVoidRotatedZ);
+    const internalVoidCenterX =
+      centerX +
+      internalVoidRotatedX * horizontalModelScale * internalVoidPerspective;
+    const internalVoidCenterY =
+      centerY -
+      internalVoidRotatedY * modelScale * internalVoidPerspective;
+    const internalVoidField = context.createRadialGradient(
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+    );
+    internalVoidField.addColorStop(0, "rgba(0, 0, 0, 0.86)");
+    internalVoidField.addColorStop(0.52, "rgba(0, 0, 0, 0.7)");
+    internalVoidField.addColorStop(0.82, "rgba(0, 0, 0, 0.34)");
+    internalVoidField.addColorStop(1, "rgba(0, 0, 0, 0)");
+    context.save();
+    context.translate(internalVoidCenterX, internalVoidCenterY);
+    context.rotate(-0.035);
+    context.scale(
+      horizontalModelScale * 1.02,
+      modelScale * 0.5,
+    );
+    context.fillStyle = internalVoidField;
+    context.beginPath();
+    context.arc(0, 0, 1, 0, TAU);
+    context.fill();
+    context.restore();
+
     context.lineCap = "round";
     context.lineJoin = "round";
     for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
@@ -6060,7 +6106,7 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         230 + depthBand * 3,
         86 + depthBand * 3,
-        0.12 + depthStrength * 0.42,
+        0.15 + depthStrength * 0.48,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(corticalRidgePaths[depthBand]);
@@ -6099,28 +6145,14 @@ const mountBrain = async (field: HTMLElement) => {
       context.restore();
     }
 
-    context.lineCap = "round";
-    context.lineJoin = "round";
-    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
-      const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
-      context.strokeStyle = rgba(
-        255,
-        180,
-        28,
-        0.118 + depthStrength * 0.085,
-      );
-      context.lineWidth = onePhysicalPixel;
-      context.stroke(stemPaths[depthBand]);
-    }
-
     drawStructuralBatches(
       cerebellumStructuralPaths,
       cerebellumMediumPaths,
-      1.5,
-      [1.12, 1.12, 1.24, 1.12],
+      1.05,
+      [0.9, 0.9, 1, 0.92],
       162,
       0,
-      1.22,
+      0.9,
       190,
       45,
     );
@@ -6134,10 +6166,24 @@ const mountBrain = async (field: HTMLElement) => {
         255,
         218 + depthBand * 3,
         52 + depthBand * 3,
-        0.15 + depthStrength * 0.52,
+        0.07 + depthStrength * 0.32,
       );
       context.lineWidth = onePhysicalPixel;
       context.stroke(cerebellarRidgePaths[depthBand]);
+    }
+
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    for (let depthBand = 0; depthBand < DEPTH_LEVELS; depthBand += 1) {
+      const depthStrength = STRUCTURAL_DEPTH_ALPHA[depthBand];
+      context.strokeStyle = rgba(
+        255,
+        188 + depthBand * 2,
+        34 + depthBand * 2,
+        0.14 + depthStrength * 0.12,
+      );
+      context.lineWidth = onePhysicalPixel;
+      context.stroke(stemPaths[depthBand]);
     }
 
     for (
@@ -6158,14 +6204,14 @@ const mountBrain = async (field: HTMLElement) => {
           255,
           190 + depthBand * 3,
           4 + depthBand * 2,
-          (0.026 + depthStrength * 0.07) * nodePulse,
+          (0.018 + depthStrength * 0.05) * nodePulse,
         );
         context.fill(cerebellumNodeHaloPaths[nodePathIndex]);
         context.fillStyle = rgba(
           255,
           238 + depthBand * 2,
           128 + depthBand * 2,
-          (0.64 + depthStrength * 0.24) * (0.48 + nodePulse * 0.52),
+          (0.48 + depthStrength * 0.2) * (0.48 + nodePulse * 0.52),
         );
         context.fill(cerebellumNodeCorePaths[nodePathIndex]);
       }
