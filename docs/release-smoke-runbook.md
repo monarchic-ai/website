@@ -109,6 +109,35 @@ a Cloudflare Worker route proxies only `staging.monarchic.io/*` to the stable
 `website-staging-lac.vercel.app` project alias. The proxy adds an
 `X-Robots-Tag: noindex, nofollow` response header.
 
+## Development Gate
+
+The remote development website uses the dedicated `website-dev` Vercel project
+at `https://website-dev-monarchic.vercel.app`. It builds with
+`PUBLIC_MONARCHIC_API_BASE_URL=https://dev-api.monarchic.io` and remains
+`noindex, nofollow`. Until a dedicated development webapp is established, its
+Apps links deliberately target the non-production staging webapp instead of
+production.
+
+Run its live smoke through the repository shell:
+
+```bash
+nix run .#smoke-development
+```
+
+Deploy a clean, pinned commit with:
+
+```bash
+MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA="$(git rev-parse HEAD)" \
+pnpm deploy:vercel:development
+
+MONARCHIC_WEBSITE_EXPECTED_COMMIT_SHA="$(git rev-parse HEAD)" \
+pnpm deploy:vercel:development -- --apply
+```
+
+`dev.monarchic.io` is reserved as the eventual public development alias. It
+requires an authenticated Cloudflare change before it can replace the Vercel
+project URL.
+
 ## Deployment Checks
 
 Production website deployment uses the authenticated local Vercel CLI. The

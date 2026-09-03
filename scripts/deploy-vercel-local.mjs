@@ -4,6 +4,17 @@ import { rmSync } from "node:fs";
 import { resolve } from "node:path";
 
 const projects = {
+  development: {
+    project: "website-dev",
+    projectId: "prj_e4J5a33B446Ifj75XrJKpwuvjAQp",
+    url: "website-dev-monarchic.vercel.app",
+    canonicalUrl: "https://website-dev-monarchic.vercel.app",
+    apiBaseUrl: "https://dev-api.monarchic.io",
+    // A dedicated remote development webapp does not exist yet. Keep this
+    // public preview on the non-production app instead of crossing into prod.
+    webappBaseUrl: "https://staging-app.monarchic.io",
+    productionAlias: "website-dev-monarchic.vercel.app",
+  },
   production: {
     project: "website",
     projectId: "prj_uvlSntyUhQQLRpG08KwpGqccIJEp",
@@ -27,7 +38,7 @@ const projects = {
 const apply = process.argv.slice(2).includes("--apply");
 const target = process.env.MONARCHIC_VERCEL_PROJECT ?? "production";
 if (!Object.hasOwn(projects, target)) {
-  throw new Error(`MONARCHIC_VERCEL_PROJECT must be production or staging, got ${target}`);
+  throw new Error(`MONARCHIC_VERCEL_PROJECT must be development, staging, or production, got ${target}`);
 }
 
 const project = projects[target];

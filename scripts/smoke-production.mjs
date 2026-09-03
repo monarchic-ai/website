@@ -10,6 +10,9 @@ const expectedCanonicalBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL ?? baseUrl,
 );
 const expectedSocialImageUrl = `${expectedCanonicalBaseUrl}/social-card.png?v=7`;
+const expectedWaitlistRobots = expectedCanonicalBaseUrl === "https://monarchic.io"
+  ? "noindex,follow"
+  : "noindex, nofollow";
 const expectedAppBaseUrl = withoutTrailingSlash(
   process.env.MONARCHIC_WEBSITE_EXPECTED_APP_URL ??
     process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ??
@@ -554,7 +557,7 @@ async function runBrowserSmoke() {
     await checkPage(page, `${baseUrl}/waitlist`, async () => {
       await page.getByRole("heading", { name: "Get Access Updates" }).waitFor();
       await expectMeta(page, "canonical", `${expectedCanonicalBaseUrl}/waitlist`);
-      await expectMeta(page, "robots", "noindex,follow");
+      await expectMeta(page, "robots", expectedWaitlistRobots);
       await page.getByLabel("Product interest").selectOption("mcp-orgfleet");
       if (await page.getByLabel("Product interest").inputValue() !== "mcp-orgfleet") {
         throw new Error("expected the planned OrgFleet MCP to be available in the waitlist selector");

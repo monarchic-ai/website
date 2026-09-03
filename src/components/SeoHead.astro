@@ -5,6 +5,7 @@ interface Props {
   path?: string;
   type?: "website" | "article";
   imagePath?: string;
+  robots?: string;
 }
 
 const {
@@ -13,15 +14,19 @@ const {
   path = Astro.url.pathname,
   type = "website",
   imagePath = "/social-card.png?v=7",
+  robots,
 } = Astro.props;
 
 const siteUrl = (import.meta.env.PUBLIC_MONARCHIC_WEBSITE_BASE_URL ?? "https://monarchic.io").replace(/\/$/, "");
+const isNonProduction = siteUrl !== "https://monarchic.io";
+const robotsDirective = isNonProduction ? "noindex, nofollow" : robots;
 const canonicalUrl = new URL(path, `${siteUrl}/`).toString();
 const imageUrl = new URL(imagePath, `${siteUrl}/`).toString();
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
+{robotsDirective && <meta name="robots" content={robotsDirective} />}
 <link rel="canonical" href={canonicalUrl} />
 <meta property="og:site_name" content="Monarchic" />
 <meta property="og:type" content={type} />

@@ -6,6 +6,8 @@ import { resolve } from "node:path";
 const root = resolve(process.cwd(), "dist");
 const failures = [];
 const appBaseUrl = (process.env.PUBLIC_MONARCHIC_WEBAPP_BASE_URL ?? "https://app.monarchic.io").replace(/\/$/, "");
+const siteBaseUrl = (process.env.PUBLIC_MONARCHIC_WEBSITE_BASE_URL ?? "https://monarchic.io").replace(/\/$/, "");
+const waitlistRobots = siteBaseUrl === "https://monarchic.io" ? "noindex,follow" : "noindex, nofollow";
 const canonicalRoutes = [
   "/",
   "/products",
@@ -155,7 +157,7 @@ includes(terms.html, [`href="${appBaseUrl}/terms"`], "Product terms boundary lin
 excludes(terms.text, ["You must be at least 18 years old", "aggregate liability", "Services and usage metering", "Billing data"], "Service terms copy");
 
 const waitlist = page("/waitlist");
-includes(waitlist.html, ['name="robots" content="noindex,follow"'], "Waitlist indexing boundary");
+includes(waitlist.html, [`name="robots" content="${waitlistRobots}"`], "Waitlist indexing boundary");
 const sitemap = readFileSync(resolve(root, "sitemap.xml"), "utf8");
 excludes(sitemap, ["/waitlist", "/research/repointel", "/research/webinfo"], "Sitemap publication boundary");
 excludes(home.html, ['href="/waitlist"'], "Global waitlist promotion");

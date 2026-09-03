@@ -164,6 +164,7 @@
           };
         in
         {
+          smoke-development = mkSmokeApp "website-smoke-development" "smoke:development";
           smoke-production = mkSmokeApp "website-smoke-production" "smoke:production";
           smoke-staging = mkSmokeApp "website-smoke-staging" "smoke:staging";
         });
