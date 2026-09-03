@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -61,7 +62,8 @@ function findCatalogDir() {
 }
 
 function buildPublicPolicy(root) {
-  const launch = readJson(resolve(root, "catalog/adaptive-subscription-launch-policy.json"), "launch policy");
+  const launchPath = resolve(root, "catalog/adaptive-subscription-launch-policy.json");
+  const launch = readJson(launchPath, "launch policy");
   const margin = readJson(resolve(root, "catalog/allowance-margin-policy.json"), "allowance margin policy");
   const gate = readJson(resolve(root, "catalog/publication-gate.json"), "publication gate");
   const rateCard = readJson(resolve(root, "catalog/operation-rate-card.json"), "operation rate card");
@@ -79,8 +81,16 @@ function buildPublicPolicy(root) {
   requireValue(launch.payg?.spendingCapRequired === true, "enterprise PAYG spending cap must be required");
   requireValue(launch.payg?.includedUsageExhaustion === "pause_until_refresh", "usage must pause until refresh");
   requireValue(
-    gate.schemaVersion === "monarchic.mcp-pricing-publication-gate.v2",
+    gate.schemaVersion === "monarchic.mcp-pricing-publication-gate.v3",
     "unsupported publication gate schema; review the website export contract before syncing",
+  );
+  requireValue(
+    gate.launchPolicyVersion === launch.policyVersion,
+    "publication gate and launch policy versions differ",
+  );
+  requireValue(
+    gate.launchPolicySha256 === sha256(readFileSync(launchPath)),
+    "publication gate launch policy digest differs from the source artifact",
   );
   requireValue(
     gate.decisions?.measuredOperationSettlement?.approved === false,
@@ -234,4 +244,8 @@ function readJson(path, label) {
 
 function requireValue(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
 }

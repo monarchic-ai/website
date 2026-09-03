@@ -2,8 +2,8 @@
   "schemaVersion": "monarchic.website-public-usage-policy.v2",
   "source": {
     "repository": "monarchic-mcp-catalog",
-    "commit": "f406d9dc608fc1d5db1d0985dac81d7aa5c16f49",
-    "policyVersion": "adaptive-subscription-launch-2026-08-29-v16",
+    "commit": "92ee132edae14ff289031cfc636a0bb2926f9596",
+    "policyVersion": "adaptive-subscription-launch-2026-08-31-v17",
     "rateCardVersion": "hosted-mcp-catalog-2026-08-29-v8",
     "rateCardSha256": "716e674257e6c1fcb65ae77428cb54ed09ca7490ab7a8afe0efafae8380db388"
   },
