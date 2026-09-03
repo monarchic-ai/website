@@ -7,13 +7,13 @@ const projects = {
   development: {
     project: "website-dev",
     projectId: "prj_e4J5a33B446Ifj75XrJKpwuvjAQp",
-    url: "monarchic-website-dev.vercel.app",
-    canonicalUrl: "https://monarchic-website-dev.vercel.app",
+    url: "website-dev-monarchic.vercel.app",
+    canonicalUrl: "https://website-dev-monarchic.vercel.app",
     apiBaseUrl: "https://dev-api.monarchic.io",
     // A dedicated remote development webapp does not exist yet. Keep this
     // public preview on the non-production app instead of crossing into prod.
     webappBaseUrl: "https://staging-app.monarchic.io",
-    productionAlias: "monarchic-website-dev.vercel.app",
+    productionAlias: "website-dev-monarchic.vercel.app",
   },
   production: {
     project: "website",

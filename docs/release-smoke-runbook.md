@@ -112,7 +112,7 @@ a Cloudflare Worker route proxies only `staging.monarchic.io/*` to the stable
 ## Development Gate
 
 The remote development website uses the dedicated `website-dev` Vercel project
-at `https://monarchic-website-dev.vercel.app`. It builds with
+at `https://website-dev-monarchic.vercel.app`. It builds with
 `PUBLIC_MONARCHIC_API_BASE_URL=https://dev-api.monarchic.io` and remains
 `noindex, nofollow`. Until a dedicated development webapp is established, its
 Apps links deliberately target the non-production staging webapp instead of

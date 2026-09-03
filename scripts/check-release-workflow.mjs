@@ -25,7 +25,7 @@ for (const [label, source, expected] of [
   ["package.json", packageJson, '"deploy:vercel:staging": "MONARCHIC_VERCEL_PROJECT=staging node scripts/deploy-vercel-local.mjs"'],
   ["package.json", packageJson, '"deploy:cloudflare:staging-proxy": "node scripts/deploy-cloudflare-staging-proxy.mjs"'],
   ["package.json", packageJson, '"smoke:production": "MONARCHIC_WEBSITE_SMOKE_URL=https://www.monarchic.io MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic.io node scripts/smoke-production.mjs"'],
-  ["package.json", packageJson, '"smoke:development": "MONARCHIC_WEBSITE_SMOKE_URL=https://monarchic-website-dev.vercel.app MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://monarchic-website-dev.vercel.app MONARCHIC_WEBSITE_EXPECTED_APP_URL=https://staging-app.monarchic.io node scripts/smoke-production.mjs"'],
+  ["package.json", packageJson, '"smoke:development": "MONARCHIC_WEBSITE_SMOKE_URL=https://website-dev-monarchic.vercel.app MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://website-dev-monarchic.vercel.app MONARCHIC_WEBSITE_EXPECTED_APP_URL=https://staging-app.monarchic.io node scripts/smoke-production.mjs"'],
   ["package.json", packageJson, '"smoke:staging": "MONARCHIC_WEBSITE_SMOKE_URL=https://staging.monarchic.io MONARCHIC_WEBSITE_EXPECTED_CANONICAL_URL=https://staging.monarchic.io MONARCHIC_WEBSITE_EXPECTED_APP_URL=https://staging-app.monarchic.io node scripts/smoke-production.mjs"'],
   ["deploy-vercel-local.mjs", deployScript, "MONARCHIC_WEBSITE_PRODUCTION_DEPLOY_APPROVED"],
   ["deploy-vercel-local.mjs", deployScript, 'project: "website-dev"'],
