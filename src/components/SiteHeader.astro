@@ -21,6 +21,7 @@ const navClass = (current: boolean) => [
 
 <header
   id="navigation"
+  data-menu-open="false"
   class:list={[
     "site-header sticky top-0 z-50",
     tone === "paper" ? "site-header--paper bg-paper text-black" : "bg-black text-white",
@@ -29,10 +30,56 @@ const navClass = (current: boolean) => [
   <a href="/" aria-label="Monarchic home" class="site-wordmark motion-link">
     <span aria-hidden="true">Monarchic</span>
   </a>
-  <nav aria-label="Primary navigation" class="site-primary-nav">
+  <button
+    type="button"
+    class="site-menu-toggle"
+    aria-expanded="false"
+    aria-controls="primary-navigation"
+    aria-label="Open navigation"
+    data-menu-toggle
+  >
+    <span class="site-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
+  <nav id="primary-navigation" aria-label="Primary navigation" class="site-primary-nav">
     <a aria-current={active === "products" ? "page" : undefined} href="/products" class={navClass(active === "products")}><span>Products</span></a>
     <a aria-current={active === "research" ? "page" : undefined} href="/research" class={navClass(active === "research")}><span>Research</span></a>
     <a aria-current={active === "support" ? "page" : undefined} href="/company#contact" class={navClass(active === "support")}><span>Support</span></a>
     <a href={`${webappBaseUrl}/app`} class={navClass(false)}><span>Apps</span></a>
   </nav>
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("#navigation");
+  const toggle = header?.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const navigation = header?.querySelector<HTMLElement>("#primary-navigation");
+
+  if (header && toggle && navigation && header.dataset.menuBound !== "true") {
+    header.dataset.menuBound = "true";
+
+    const setOpen = (open: boolean) => {
+      header.dataset.menuOpen = String(open);
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(header.dataset.menuOpen !== "true");
+    });
+
+    header.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || header.dataset.menuOpen !== "true") return;
+      setOpen(false);
+      toggle.focus();
+    });
+
+    navigation.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a")) setOpen(false);
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (header.dataset.menuOpen === "true" && !header.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    });
+  }
+</script>

@@ -242,6 +242,9 @@ async function runBrowserSmoke() {
       if (JSON.stringify(primaryNavLabels) !== JSON.stringify(["Products", "Research", "Support", "Apps"])) {
         throw new Error(`primary navigation order is incorrect: ${primaryNavLabels.join(" / ")}`);
       }
+      if (await page.locator("[data-menu-toggle]").isVisible()) {
+        throw new Error("mobile navigation toggle must remain hidden at desktop width");
+      }
       await expectHref(
         page.getByRole("link", { name: "Start free evaluation" }),
         `${expectedAppBaseUrl}/products/usage-evaluation`,
@@ -508,12 +511,22 @@ async function runBrowserSmoke() {
       if (await page.locator("[data-editorial-index]").isVisible()) {
         throw new Error("editorial index plate must stay hidden at 320px");
       }
+      const menuToggle = page.locator("[data-menu-toggle]");
+      await menuToggle.waitFor();
+      if (await page.locator("#primary-navigation").isVisible()) {
+        throw new Error("mobile navigation must be collapsed initially");
+      }
+      const closedHeaderHeight = await page.locator("#navigation").evaluate((element) => element.getBoundingClientRect().height);
+      if (closedHeaderHeight > 64) {
+        throw new Error(`collapsed mobile header must remain a single bar; received ${closedHeaderHeight}px`);
+      }
+      await menuToggle.click();
+      await page.locator("#primary-navigation").waitFor();
+      if (await menuToggle.getAttribute("aria-expanded") !== "true") {
+        throw new Error("mobile navigation toggle must expose its expanded state");
+      }
       await page.getByRole("link", { name: "Products", exact: true }).first().waitFor();
       await page.getByRole("link", { name: "Support", exact: true }).first().waitFor();
-      await expectNoElementOverlap(
-        page.locator("#navigation > a[href='/']"),
-        page.locator("#navigation nav a[href='/products']"),
-      );
       await expectNoHorizontalOverflow(page);
     }, "home route at 320px");
     await checkPage(page, `${baseUrl}/products`, async () => {
@@ -1135,21 +1148,6 @@ async function expectNoHorizontalOverflow(page) {
   }));
   if (overflow.scrollWidth > overflow.clientWidth + 1 || overflow.bodyScrollWidth > overflow.clientWidth + 1) {
     throw new Error(`Horizontal overflow detected: ${JSON.stringify(overflow)}`);
-  }
-}
-
-async function expectNoElementOverlap(first, second) {
-  await Promise.all([first.waitFor(), second.waitFor()]);
-  const [firstBox, secondBox] = await Promise.all([first.boundingBox(), second.boundingBox()]);
-  if (firstBox === null || secondBox === null) {
-    throw new Error("Expected visible elements while checking layout overlap");
-  }
-  const overlapWidth = Math.min(firstBox.x + firstBox.width, secondBox.x + secondBox.width)
-    - Math.max(firstBox.x, secondBox.x);
-  const overlapHeight = Math.min(firstBox.y + firstBox.height, secondBox.y + secondBox.height)
-    - Math.max(firstBox.y, secondBox.y);
-  if (overlapWidth > 0 && overlapHeight > 0) {
-    throw new Error(`Elements overlap: ${JSON.stringify({ firstBox, secondBox })}`);
   }
 }
 
