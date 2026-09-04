@@ -593,6 +593,14 @@ async function runBrowserSmoke() {
 
     await checkPage(page, `${baseUrl}/research/explicitmem`, async () => {
       await page.getByRole("heading", { name: "Memory evaluation report" }).waitFor();
+      const researchRail = page.locator('[data-operating-status-variant="research-context"]');
+      await researchRail.waitFor();
+      await researchRail.getByText("Research / Published", { exact: true }).waitFor();
+      await researchRail.getByText("ExplicitMem / Evaluation report", { exact: true }).waitFor();
+      await expectHref(researchRail, "/research");
+      if (await page.locator('[data-operating-status-variant="latest-research"]').count() !== 0) {
+        throw new Error("research detail must not promote itself as the latest research");
+      }
       await page.getByRole("heading", { name: "Study register" }).waitFor();
       await page.getByText("499 / 500 answers correct", { exact: false }).waitFor();
       await page.getByText("Answer accuracy", { exact: true }).first().waitFor();

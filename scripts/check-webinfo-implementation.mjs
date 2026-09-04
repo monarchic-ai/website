@@ -133,6 +133,9 @@ assert(JSON.stringify(researchDirectories) === JSON.stringify(["explicitmem"]), 
 
 const explicitMem = page("/research/explicitmem");
 includes(explicitMem.text, ["LongMemEval-S", "LoCoMo", "Generic and non-LongMemEval fixtures", "What we publish", "technical review"], "ExplicitMem study scopes and publication boundary");
+includes(explicitMem.text, ["Research / Published", "ExplicitMem / Evaluation report", "All research"], "ExplicitMem contextual research rail");
+excludes(explicitMem.text, ["Latest research"], "ExplicitMem does not promote its current page");
+includes(explicitMem.html, ['data-operating-status-variant="research-context"', 'href="/research"'], "ExplicitMem research rail return path");
 excludes(explicitMem.text, ["Public evidence boundary", "Failure evidence", "Evidence handling", "benchmark-scoped evidence", "evidence review"], "ExplicitMem avoids abstract proof language");
 includes(explicitMem.html, ['id="longmemeval-s"', 'id="locomo"', 'id="cross-dataset"', 'id="generic-answer"'], "ExplicitMem study anchors");
 excludes(explicitMem.html, [

@@ -7,9 +7,10 @@ interface Props {
   active?: "products" | "research" | "support";
   researchBrief?: string;
   researchStatus?: string;
+  researchTitle?: string;
 }
 
-const { active, researchBrief, researchStatus } = Astro.props;
+const { active, researchBrief, researchStatus, researchTitle } = Astro.props;
 ---
 
 <main
@@ -18,7 +19,7 @@ const { active, researchBrief, researchStatus } = Astro.props;
   class="site-frame mx-auto flex min-h-screen max-w-[1480px] flex-col border-x border-white/20 bg-ink text-white"
 >
   <SiteHeader active={active} />
-  <OperatingStatusRail />
+  <OperatingStatusRail currentResearch={researchTitle} />
   <div class="flex-1">
     <slot />
   </div>
