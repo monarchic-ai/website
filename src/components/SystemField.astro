@@ -12,10 +12,10 @@ const { availableEnhancementCount } = Astro.props;
   data-system-motion="stepped-machine"
 >
   <header class="flex min-h-12 items-center justify-between gap-4 border-b border-white/20 px-4 font-mono text-[0.58rem] font-bold uppercase sm:px-5">
-    <span class="text-white/54">Run architecture / 01</span>
+    <span class="text-white/54">Execution / Bounded</span>
     <span class="inline-flex items-center gap-2 text-white/72">
       <span class="system-critical-indicator" aria-hidden="true"></span>
-      Operator control
+      Operator authority / Required
     </span>
   </header>
 
@@ -44,26 +44,26 @@ const { availableEnhancementCount } = Astro.props;
     </svg>
 
     <div class="system-field-node system-field-node--research">
-      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>01 / Input</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>01 / Intent</span>
       <strong>Intent</strong>
     </div>
     <div class="system-field-node system-field-node--contract">
-      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>02 / Contract</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>02 / Policy</span>
       <strong>Plan</strong>
     </div>
     <div class="system-field-node system-field-node--tools">
-      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>03 / Dispatch</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>03 / Execution</span>
       <strong>Workers</strong>
     </div>
     <div class="system-field-node system-field-node--result">
-      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>04 / Output</span>
+      <span class="system-field-node-id"><span class="system-field-node-lamp" aria-hidden="true"></span>04 / Artifact</span>
       <strong>Result</strong>
     </div>
 
     <div class="system-field-core" data-system-core="run">
-      <span>Monarchic / Control</span>
+      <span>Identity / Bound</span>
       <strong>Run</strong>
-      <small>State / Durable</small>
+      <small>State / Persistent</small>
     </div>
 
     <span class="system-field-carriage" aria-hidden="true"></span>
@@ -71,17 +71,17 @@ const { availableEnhancementCount } = Astro.props;
       <span></span><span></span><span></span><span></span>
     </span>
     <span class="absolute bottom-3 left-4 font-mono text-[0.52rem] font-bold uppercase text-white/54 sm:left-5">
-      Reference architecture / Public view
+      Policy / Enforced · Retries / Bounded
     </span>
   </div>
 
   <dl class="grid border-t border-white/20 sm:grid-cols-2">
     <div class="border-b border-white/20 p-4 sm:border-b-0 sm:border-r sm:p-5">
-      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Available now</dt>
+      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Capability / Available</dt>
       <dd class="mt-2 text-sm font-black uppercase text-white">{availableEnhancementCount} enhancements</dd>
     </div>
     <div class="p-4 sm:p-5">
-      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">In development</dt>
+      <dt class="font-mono text-[0.56rem] font-bold uppercase text-white/54">Workflows / In development</dt>
       <dd class="mt-2 text-sm font-black uppercase text-white">Agent workflows</dd>
     </div>
   </dl>

@@ -3,7 +3,8 @@
   "description": "Presents Monarchic as an independent AI research and development company building AI engineering systems, with its current products, published research, and web application clearly separated beneath that company story.",
   "copyRules": [
     "Name the mechanism, boundary, or observable result instead of using credibility adjectives.",
-    "Use procedural authentication and security language: confirm an email, name the control, and date the check."
+    "Use procedural authentication and security language: confirm an email, name the control, and date the check.",
+    "Every interface label must communicate a fact, expose system state, or state a Monarchic operating principle; do not invent telemetry or use generic science-fiction filler."
   ],
   "pages": [
     {

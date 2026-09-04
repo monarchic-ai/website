@@ -93,6 +93,7 @@ const terms = siteMap.pages.find((page) => page.route === "/terms");
 
 assertIncludes(siteMap.copyRules, "Name the mechanism, boundary, or observable result instead of using credibility adjectives.", "Site copy specificity rule");
 assertIncludes(siteMap.copyRules, "Use procedural authentication and security language: confirm an email, name the control, and date the check.", "Site procedural trust language rule");
+assertIncludes(siteMap.copyRules, "Every interface label must communicate a fact, expose system state, or state a Monarchic operating principle; do not invent telemetry or use generic science-fiction filler.", "Site meaningful microcopy rule");
 assertIncludes(home.requiredContent, "Monarchic’s identity as a small, independent AI research and development company", "Home company identity");
 assertIncludes(home.requiredContent, "A plain statement of Monarchic’s vision for long-running agent work with human visibility and control", "Home company vision");
 assertIncludes(home.requiredContent, "An explicit separation between available hosted MCPs, the in-development Monarchic workflow product, and longer-term fields of inquiry", "Home future-work boundary");

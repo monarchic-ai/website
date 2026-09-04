@@ -4327,7 +4327,7 @@ const mountBrain = async (field: HTMLElement) => {
 
   field.dataset.brainMounted = "true";
   field.dataset.brainState = "assembling";
-  status.textContent = "MODEL FIELD / ASSEMBLING";
+  status.textContent = "SYSTEM STATE / INITIALIZING";
 
   const fibers = await createFiberField();
   const renderPlans = fibers.map(createFiberRenderPlan);
@@ -4371,7 +4371,7 @@ const mountBrain = async (field: HTMLElement) => {
     fibers.map((fiber, index) => [fiber, renderPlans[index]]),
   );
   field.dataset.brainState = "idle";
-  status.textContent = "MODEL FIELD / LIVE";
+  status.textContent = "SYSTEM STATE / ACTIVE";
   const particleCerebrum = fibers.filter(
     (fiber) => fiber.particle && fiber.region === "cerebrum",
   );
@@ -5116,13 +5116,13 @@ const mountBrain = async (field: HTMLElement) => {
       startedAt: performance.now(),
     });
     if (pulses.length > 2) pulses.shift();
-    updateStatus("MODEL FIELD / SIGNAL", "pulse");
+    updateStatus("SIGNAL TRACE / PROPAGATING", "pulse");
     window.clearTimeout(statusTimer);
     statusTimer = window.setTimeout(() => {
       updateStatus(
         pointer.active
-          ? "MODEL FIELD / TRACKING"
-          : "MODEL FIELD / LIVE",
+          ? "INSPECTION / TRACKING"
+          : "SYSTEM STATE / ACTIVE",
         pointer.active ? "tracking" : "idle",
       );
       scheduleFrame();
@@ -7071,7 +7071,7 @@ const mountBrain = async (field: HTMLElement) => {
     pointer.targetX = point.x;
     pointer.targetY = point.y;
     pointer.active = true;
-    updateStatus("MODEL FIELD / TRACKING", "tracking");
+    updateStatus("INSPECTION / TRACKING", "tracking");
     scheduleFrame();
   });
 
@@ -7079,7 +7079,7 @@ const mountBrain = async (field: HTMLElement) => {
     pointer.targetX = width * 0.5;
     pointer.targetY = height * 0.47;
     pointer.active = false;
-    updateStatus("MODEL FIELD / LIVE", "idle");
+    updateStatus("SYSTEM STATE / ACTIVE", "idle");
     scheduleFrame();
   });
 

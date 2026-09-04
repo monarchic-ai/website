@@ -37,7 +37,17 @@ includes(home.text, [
   "Products",
   "Platform",
   "Research",
-  "Reference architecture / Public view",
+  "SYSTEM STATE / INITIALIZING",
+  "INSPECT / ROTATE SELECT / TRACE",
+  "State Persistent",
+  "Control Operator",
+  "Execution Bounded",
+  "Memory Explicit",
+  "Capability / 01",
+  "Infrastructure / 17 systems",
+  "Research / Reproducible",
+  "Principle / Systems, not demos",
+  "Operator authority / Required",
   "What Monarchic builds",
   "A person should be able to assign a job and review the result",
   "agent enhancements are available",
@@ -189,6 +199,7 @@ function visibleText(html) {
     .replace(/<[^>]+>/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, " ")
     .replace(/&#39;|&apos;/g, "'")
     .replace(/&gt;/g, ">")
     .replace(/&lt;/g, "<")
