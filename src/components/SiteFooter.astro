@@ -16,11 +16,8 @@ const { tone = "dark" } = Astro.props;
   ]}
 >
   <div>
-    <a href="/" class="motion-link inline-flex items-center gap-3">
-      <span class:list={["inline-flex h-8 w-8 items-center justify-center", tone === "paper" ? "bg-black" : "bg-paper"]}>
-        <img src="/favicon.svg" alt="" class:list={["h-6 w-6 object-cover p-0.5", tone === "paper" && "invert"]} width="24" height="24" />
-      </span>
-      <span class="text-xs font-extrabold uppercase">Monarchic</span>
+    <a href="/" aria-label="Monarchic home" class="motion-link inline-flex items-center">
+      <span class="monarchic-wordmark" aria-hidden="true"></span>
     </a>
     <p class:list={["mt-4 max-w-xl text-sm leading-6", tone === "paper" ? "text-black/64" : "text-white/68"]}>
       Independent AI research and development. Systems, not demos.

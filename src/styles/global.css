@@ -32,10 +32,6 @@
     letter-spacing: 0 !important;
   }
 
-  .site-wordmark > span {
-    letter-spacing: 0.27em !important;
-  }
-
   .site-nav-link > span {
     letter-spacing: -0.035em !important;
   }
@@ -60,17 +56,24 @@
   flex: 0 1 clamp(20rem, 32.55vw, 31.25rem);
   align-items: center;
   padding-inline: clamp(1.5rem, 2.6vw, 2.5rem);
-  font-size: 1.04rem;
-  font-weight: 560;
-  letter-spacing: 0.27em !important;
-  line-height: 1;
-  text-transform: uppercase;
 }
 
-.site-wordmark > span {
-  display: inline-block;
-  transform: scaleX(1.16);
-  transform-origin: left center;
+.monarchic-wordmark {
+  display: block;
+  width: 12rem;
+  max-width: 100%;
+  aspect-ratio: 2007 / 314;
+  flex-shrink: 0;
+  background: currentColor;
+  /* Frame the ink bounds (84, 183, 2007, 314) of the original 2172 × 724 PNG. */
+  mask-image: url("/monarchic-wordmark.png");
+  mask-size: 108.221226% 230.573248%;
+  mask-position: 50.909091% 44.634146%;
+  mask-repeat: no-repeat;
+}
+
+.site-wordmark .monarchic-wordmark {
+  width: 14rem;
 }
 
 .site-menu-toggle {
@@ -174,7 +177,6 @@
     min-height: 3.5rem;
     flex-basis: auto;
     padding-inline: 1rem;
-    font-size: 0.86rem;
   }
 
   .site-menu-toggle {
